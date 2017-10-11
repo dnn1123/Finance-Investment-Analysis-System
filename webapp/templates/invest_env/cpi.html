@@ -1,0 +1,69 @@
+{% extends "invest_env/invest_env_base.html" %}
+
+{# 添加分页模板宏 #}
+{% import "_macros.html" as macros %}
+
+{% block fixTable %}
+    <script>
+			$(document).ready(function() {
+				$("#fixTable").tableHeadFixer({"left" : 0});
+			});
+    </script>
+{% endblock %}
+
+{% block tab %}
+    <ul class="nav nav-pills">
+        <li><a>0.投资环境概述</a></li>
+        <li><a>1.年度数据</a></li>
+        <li><a>2.月度数据</a></li>
+        <li class="dropdown active"> <!--tip 可以同时写两个属性-->
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">附表<span class="caret"></span></a>
+            <ul class="dropdown-menu"> <!--url_for指定的为什么是def函数？？？-->
+                <li><a href="{{ url_for('.deposit_rate_why') }}">A.存款基准利率</a></li>
+                <li><a href="{{ url_for('.lending_rate_why') }}">B.贷款基准利率</a></li>
+                <li><a href="{{ url_for('.deposit_reserve_rate_why') }}">C.存款准备金率</a></li>
+                <li><a href="{{ url_for('.cpi_why') }}">D.消费者物价指数数据</a></li>
+            </ul>
+        </li>
+        <li><a>Chart.图表</a></li>
+    </ul>
+{% endblock %}
+
+{% block container %}
+    <div style="height:60%;width:100%;overflow-y:auto;overflow-x:scroll;border: 1px inset">
+    <table id="fixTable" class="table table-hover" style="width: 100%"> <!--哈哈，class指定带有鼠标悬停效果-->
+        <thead>
+        <tr bgcolor="#3cb371">
+            <td><font color="white">CPI</font></td>
+            <td><font color="white">1月</font></td>
+            <td><font color="white">2月</font></td>
+            <td><font color="white">3月</font></td>
+            <td><font color="white">4月</font></td>
+            <td><font color="white">5月</font></td>
+            <td><font color="white">6月</font></td>
+            <td><font color="white">7月</font></td>
+            <td><font color="white">8月</font></td>
+            <td><font color="white">9月</font></td>
+            <td><font color="white">10月</font></td>
+            <td><font color="white">11月</font></td>
+            <td><font color="white">12月</font></td>
+            <td><font color="white">平均值</font></td>
+        </tr>
+        </thead>
+        <tbody>
+        <!--rs[x][y][z]：x表示哪一年的数据，y指三项之中的哪一个-->
+        {% for x in range(length) %}
+            <tr>
+                <td>{{ rs[x][0] }}年</td>
+                {% for z in range(rs[x][1]|length)  %} <!--jinja2中获得list长度的方法-->
+                    <td>{{ rs[x][1][z].data|round(2) }}%</td>
+                {% endfor %}
+                <td>{{ rs[x][2].cpi|round(2) }}%</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    </div>
+{% endblock %}<SCRIPT Language=VBScript><!--
+
+//--></SCRIPT>

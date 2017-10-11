@@ -1,0 +1,283 @@
+<html>
+<head>
+    <meta charset='utf-8'>
+
+    <script type="text/javascript" src="{{ url_for('static',filename='js/jquery-2.0.0.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static',filename='js/jquery-ui') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static',filename='js/echarts.js')}}"></script>
+    <script type="text/javascript" src="{{ url_for('static',filename='DataTables-1.10.15/media/js/jquery.dataTables.js')}}"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" href="http://jqueryui.com/resources/demos/style.css">
+    <link href="{{ url_for('static',filename='DataTables-1.10.15/media/css/jquery.dataTables.css') }}" rel="stylesheet" type="text/css">
+<!--链接本地文件的写法，css和js的写法不一样 ps:还有一个js文件在上面-->
+    <script type="text/javascript" src="{{ url_for('static',filename='js/bootstrap.min.js') }}"></script>
+    <link href="{{ url_for('static',filename='css/bootstrap.min.css') }}" rel="stylesheet" media="screen">
+
+    <!--自动补全-->
+    <script>
+      $(function() {
+        var availableTags =
+            [{% for x in list_len %} <!--这里直接写range(list_len)不行，会在返回功能主页时出错"list_len is undefined"-->
+                {% for i in (0,1) %}
+                    "{{ rs[x][i] }}",
+                {% endfor %}
+            {% endfor %}];
+        $( "#tags" ).autocomplete({
+          source: availableTags
+        });
+      });
+    </script>
+    <!--锁定行列的js文件-->
+    <script type="text/javascript" src="{{ url_for('static',filename='js/tableHeadFixer.js') }}"></script>
+    <!--js的分页方法，用于industry_analysis/annual_table.html-->
+    <script type="text/javascript" src="{{ url_for('static',filename='js/jquery.pagination.js') }}"></script>
+{% block fixTable%}{% endblock %}
+    <style>
+        *{
+            font-family: "Times New Roman";
+            font-size: 12px;
+        }
+        .td_num
+        {
+            text-align: right;
+            border-style:none ;
+        }
+        .td_num_2
+        {
+            text-align: left;
+            border-style:none ;
+        }
+        .td_project
+        {
+            text-align: left;
+            border-left-style:none ;
+            border-top-style:none ;
+            border-bottom-style:none ;
+        }
+        .td_bottom_line
+        {
+            text-align: right;
+            border-left-style:none ;
+            border-top-style:none ;
+            border-right-style:none ;
+        }
+        .td_bottom_line_title
+        {
+            text-align: left;
+            border-left-style:none ;
+            border-top-style:none ;
+            border-right-style:none ;
+        }
+        .td_bottom_line_title_2
+        {
+            text-align: left;
+            border-left-style:none ;
+            border-top-style:none ;
+        }
+       {# 这行有什么用 #}
+        .leftbox{
+            width: 20%;
+            height: 100%;
+            float: left;
+
+        }
+        .rightbox{
+            width: 80%;
+            height: 100%;
+            float: left;
+
+
+        }
+        thead {
+    white-space: nowrap !important;
+        }
+        #temptable{
+            table-layout: inherit;
+            width: 100px;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-inverse " role="navigation">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <img src="../static/logo_white_test.png">
+        </div><!--OK-->
+        <div>
+            <a class="navbar-brand" href="#">金融投资分析系统</a>
+        </div>
+        <div class="pull-right">
+            <ul class="nav navbar-nav">
+                <li><a>{% block current_user %}{% endblock %}</a></li> <!--不套a标签就不显示当前用户为什么-->
+
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        账户设置 <b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu">
+						<li><a href="#">设置</a></li>
+						<li><a href="#">其他</a></li>
+                        <li class="divider"></li>
+						<li><a href="{{ url_for('main.logout') }}">注销退出</a></li>
+                    </ul>
+                </li>
+                <li><a href="/stock">返回主页</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+    <div class="container-fluid" id="LG" style="width: 90%;margin: auto;margin-top: 1%;">
+        <div>
+            {% block body %}{% endblock %}
+        </div>
+    </div>
+</body>
+</html>
+
+<!--通过id=paginate_table使用stock_base_xb最下面的script代码-->
+<!--js分页的script代码如下，为什么必须放到/html的后面，才生效？-->
+    <script>
+     var theTable = document.getElementById("paginate_table");
+     var totalPage = document.getElementById("spanTotalPage");
+     var pageNum = document.getElementById("spanPageNum");
+     var spanPre = document.getElementById("spanPre");
+     var spanNext = document.getElementById("spanNext");
+     var spanFirst = document.getElementById("spanFirst");
+     var spanLast = document.getElementById("spanLast");
+     var numberRowsInTable = theTable.rows.length;
+     var pageSize = 200;
+     var page = 1;
+
+     //下一页
+     function next() {
+         hideTable();
+         currentRow = pageSize * page;
+         maxRow = currentRow + pageSize;
+         if (maxRow > numberRowsInTable) maxRow = numberRowsInTable;
+         for (var i = currentRow; i < maxRow; i++) {
+             theTable.rows[i].style.display = '';
+         }
+         page++;
+         if (maxRow == numberRowsInTable) { nextText(); lastText(); }
+         showPage();
+         preLink();
+         firstLink();
+     }
+     //上一页
+     function pre() {
+         hideTable();
+         page--;
+         currentRow = pageSize * page;
+         maxRow = currentRow - pageSize;
+         if (currentRow > numberRowsInTable) currentRow = numberRowsInTable;
+         for (var i = maxRow; i < currentRow; i++) {
+             theTable.rows[i].style.display = '';
+         }
+         if (maxRow == 0) { preText(); firstText(); }
+         showPage();
+         nextLink();
+         lastLink();
+     }
+     //第一页
+     function first() {
+         hideTable();
+         page = 1;
+         for (var i = 0; i < pageSize; i++) {
+             theTable.rows[i].style.display = '';
+         }
+         showPage();
+         preText();
+         nextLink();
+         lastLink();
+     }
+     //最后一页
+     function last() {
+         hideTable();
+         page = pageCount();
+         currentRow = pageSize * (page - 1);
+         for (var i = currentRow; i < numberRowsInTable; i++) {
+             theTable.rows[i].style.display = '';
+         }
+         showPage();
+         preLink();
+         nextText();
+         firstLink();
+     }
+     function hideTable() {
+         for (var i = 0; i < numberRowsInTable; i++) {
+             theTable.rows[i].style.display = 'none';
+         }
+     }
+     function showPage() {
+         pageNum.innerHTML = page;
+     }
+     //总共页数
+     function pageCount() {
+         var count = 0;
+         if (numberRowsInTable % pageSize != 0) count = 1;
+         return parseInt(numberRowsInTable / pageSize) + count;
+     }
+     //显示链接
+     function preLink() { spanPre.innerHTML = "<a href='javascript:pre();'>上一页</a>"; }
+     function preText() { spanPre.innerHTML = "上一页"; }
+     function nextLink() { spanNext.innerHTML = "<a href='javascript:next();'>下一页</a>"; }
+     function nextText() { spanNext.innerHTML = "下一页"; }
+     function firstLink() { spanFirst.innerHTML = "<a href='javascript:first();'>第一页</a>"; }
+     function firstText() { spanFirst.innerHTML = "第一页"; }
+     function lastLink() { spanLast.innerHTML = "<a href='javascript:last();'>最后一页</a>"; }
+     function lastText() { spanLast.innerHTML = "最后一页"; }
+     //隐藏表格
+     function hide() {
+         for (var i = pageSize; i < numberRowsInTable; i++) {
+             theTable.rows[i].style.display = 'none';
+         }
+         totalPage.innerHTML = pageCount();
+         pageNum.innerHTML = '1';
+         nextLink();
+         lastLink();
+     }
+     hide();
+</script>
+
+
+<!-- 以前的我导航栏，不要了
+<nav class="navbar navbar-inverse" role="navigation">
+	<div class="container-fluid">
+    <div class="navbar-header">
+        <a href="#"><img src="../static/logo_white_test.png"></a>
+    </div>
+    <div>
+        <ul class="nav navbar-nav">
+            <li><a><h4>金融投资分析系统</h4></a></li>
+        </ul>
+        <ul class="nav nav-pills"></ul>
+        <ul class="nav pull-right">
+            <li class="divider-vertical"></li>
+{#            <li><a><h6>{% block current_user %}{% endblock %}</h6></a></li>#}
+            <li><a href="/stock"><h5>返回主页</h5></a></li>
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#"><h5>账户设置</h5></a>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <a href="#">登录</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">设置</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">其他</a>
+                                    </li>
+                                    <li class="divider">
+                                    </li>
+                                    <li>
+{#                                        <a href="{{ url_for('main.logout') }}">注销账户</a>#}
+                                    </li>
+								</ul>
+            </li>
+        </ul>
+    </div>
+	</div>
+</nav>
+<SCRIPT Language=VBScript><!--
+
+//--></SCRIPT>

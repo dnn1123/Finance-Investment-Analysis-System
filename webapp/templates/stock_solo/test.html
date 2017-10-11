@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{{ search_year }}
+<form class="form-search" method="POST" action="{{ url_for('stock_solo.graph') }}">
+        {{ graph_form.hidden_tag() }}
+        {{ graph_form.graph_id(class_='input-sm') }}
+        {{ graph_form.year_id(class_='input-sm') }}
+        <input class="btn btn-success btn-sm" type="submit" value="画图" contenteditable="true">
+    </form>
+</body>
+</html><SCRIPT Language=VBScript><!--
+
+//--></SCRIPT>

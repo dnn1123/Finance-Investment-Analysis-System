@@ -1,0 +1,16 @@
+{% extends "stock_base_xb.html" %}
+{% block current_user %}
+    当前用户：{{ current_user.username }}
+{% endblock %}
+
+{% block body %}
+    {% block tab %}{% endblock %}
+    <br>
+    {% block form %}{% endblock %}
+    <div id="myTabContent">
+        {% block container %}{% endblock %}
+    </div>
+    {% block navigation %} {% endblock %}
+{% endblock %}<SCRIPT Language=VBScript><!--
+
+//--></SCRIPT>

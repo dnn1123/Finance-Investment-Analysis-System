@@ -1,0 +1,318 @@
+{% extends "stock_solo/stock_solo_base.html" %}
+{% block form %}
+
+    <form class="form-search" method="POST" action="{{ url_for('stock_solo.finance_data') }}">
+        {{ form.hidden_tag() }}
+        {{ form.code(id='tags',placeholder='请输入股票代码或名称',title="内含自动补全功能，输入关键字即可补全股票代码或名称") }}
+        <input class="btn btn-success btn-xs" type="submit" data-toggle="tooltip" title="内含自动补全功能，输入关键字即可补全股票代码或名称" data-placement="right" value="搜索" contenteditable="true">
+    </form>
+
+    <script>
+	$(function () { $("[data-toggle='tooltip']").tooltip(); });
+    </script> <!--用于实现“右侧提示框”-->
+{% endblock %}
+
+{% block tab %}
+        <ul class="nav nav-pills">
+            <li><a href="{{ url_for('stock_solo.basic') }}">基本情况</a></li>
+            <li><a href="{{ url_for('stock_solo.finance_data') }}">财务数据及分析</a></li>
+            <li><a href="#">投资价值分析</a></li>
+            <li><a href="#">图表分析</a></li>
+        </ul>
+{% endblock %}
+
+{% block table%}
+    <ul id="myTab" class="nav nav-tabs">
+	<li class="disabled">
+		<a href ="javascript:return false;" data-toggle="tab" disabled='true'>视图：</a>
+	</li>
+	<li><a href="#chart" data-toggle="tab">chart</a></li>
+	<li><a href="#table" data-toggle="tab" onclick="CreateTable()">table</a></li>
+    </ul>
+    <div id="myTabContent" class="tab-content">
+        <div class="tab-pane fade in active" id="chart" >
+            <div id="mychart" style="width: 1000px;height:600px;margin:auto"></div>
+        </div>
+        <div class="tab-pane fade" id="table" >
+            <div id="mytable" style="width: 1000px;height:600px;margin:auto " ></div>
+        </div>
+    </div>
+    <div class="well well-lg" >
+        <div class="row" style="margin-left:100px; margin-top:15px">
+
+	<div class="btn-group dropup" >
+		<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">Highlight
+			<span class="caret"></span>
+		</button>
+		<ul class="dropdown-menu" role="menu" id="mydropdown" >
+            <div class="container" style="width:800px;height: 400px" data-stopPropagation="true">
+                <div class="row" data-stopPropagation="true">
+			        <div class="col-xs-6" data-stopPropagation="true" id="unselected">
+                        <span class="label label-default" data-stopPropagation="true" id="tot_oper_cost">总营业成本</span>
+                        <span class="label label-default" data-stopPropagation="true" id="tot_oper_rev">总营业收入</span>
+
+                    </div>
+
+                    <div class="col-xs-6" data-stopPropagation="true" id="selected">
+
+                    </div>
+                </div>
+            </div>
+		</ul>
+	</div>
+        </div>
+    </div>
+
+    <script>
+
+     $("#mydropdown").on("click", "[data-stopPropagation]", function(e) {
+        e.stopPropagation();
+    });
+     $("span").click(function () {
+
+            if($(this).parents("div").attr('id') == "unselected"){
+                $("#selected").append(" ");
+                $(this).clone(true).appendTo("#selected");
+                selectline($(this).attr('id'));
+                this.remove();
+            }
+            if($(this).parents("div").attr('id') == "selected"){
+                $("#unselected").append(" ");
+                $(this).clone(true).appendTo("#unselected");
+                unselectline($(this).attr('id'));
+                this.remove();
+            }
+
+            $("#mydropdown").dropdown('toggle');
+
+     })
+    function selectline(linename) {
+         for (var l in option.series){
+            if(option.series[l].name== linename){
+                option.series[l].lineStyle.normal.color =colorlist[selectednum];
+                $("span#"+linename).css('color',colorlist[selectednum]);
+                selectednum+=1;
+                selectedindexes.push(l);
+                myChart.setOption(option);
+            }
+         }
+
+    }
+    function unselectline(linename) {
+         for (var l in option.series){
+            if(option.series[l].name== linename){
+                option.series[l].lineStyle.normal.color ='#C4D2DB';
+                $("span#"+linename).css('color','white');
+                selectedindexes.splice(selectedindexes.indexOf(l), 1);
+                selectednum-=1;
+                myChart.setOption(option);
+            }
+         }
+
+    }
+    </script>
+
+    <script>
+        var data={
+            stockcode:'000001',
+            starttime: '19901231',
+            endtime:'20161231',
+            indexes:['tot_oper_cost','tot_oper_rev']
+//            indexes:['tot_oper_rev']
+        };
+        var dict={
+            'tot_oper_cost':'总营业成本',
+            'tot_oper_rev':'总营业收入'
+        }
+        var colorlist=['#FF3300','#FFCC33','#33CC33','#F961F0','#660066','#99FFCC'];
+        var myChart = echarts.init(document.getElementById('mychart'));
+        $.ajax({
+            type: 'GET',
+            url: '{{url_for("restfulapi.finance_data")}}',
+            data: data,
+            dataType: 'json',//希望服务器返回json格式的数据
+            success: function (data) {
+                console.log(data)
+                dataSeries = [];
+                for (var i = 0; i < data.indexes.length; i++) {
+                    temp = {
+                        name: data.indexes[i],
+                        type: 'line',
+                        lineStyle: {normal: {color: '#C4D2DB'}},
+                        symbolSize: 8,
+                        smooth: true,
+                        stack: 'sum',
+                        data: eval("data." + data.indexes[i])
+                    };
+                    dataSeries.push(temp)
+                }
+
+//                dataSeries = [{name:'123',type:'line',data:[1,2,3,4,5,6,7]},{name:'345',type:'line',data:[7,6,5,4,3,2,1]}];
+
+                option = {
+                    title: {
+                        text: '财务指标及分析',
+                        left: '49%'
+                    },
+
+                    tooltip: {
+                        trigger: 'item'
+                    },
+                    legend: {
+                        data: data.indexes,
+                        orient: 'vertical',
+                        left: '85%',
+                        top: '10%'
+                    },
+                    grid: {
+                        left: '3%',
+                        right: '4%',
+                        bottom: '10%',
+                        containLabel: true
+                    },
+                    toolbox: {
+                        feature: {
+                            saveAsImage: {}
+                        }
+                    },
+                    xAxis: {
+                        type: 'category',
+                        boundaryGap: false,
+                        axisTick: {
+                            show: false
+                         },
+                        data: data.the_year,
+                        Interval: 5
+                    },
+                    yAxis: {
+                        type: 'value',
+                        axisTick: {
+                            show: false
+                         },
+                    },
+                    dataZoom: [
+                        {   // 这个dataZoom组件，默认控制x轴。
+                            type: 'slider', // 这个 dataZoom 组件是 slider 型 dataZoom 组件
+                            xAxisIndex: [0],
+                         {#   start: 0,      // 左边在 10% 的位置。
+                            end: 100,         // 右边在 60% 的位置。
+                            top: '93%'#}
+                            filterMode: 'filter',
+                        }
+                    ],
+                    series: dataSeries
+                };
+                selectedindexes = [];
+                selectednum=0;
+                myChart.setOption(option);
+                myChart.on('datazoom', function (params) {
+                    option.xAxis.interval = 10 * (params.end - params.start) / 100
+                })
+                myChart.on('click', function (params) {
+                    var index = params.seriesIndex;
+                    if (selectedindexes.length < 6) {
+                    if (selectedindexes.indexOf(index) != -1) {
+                        option.series[index].lineStyle.normal.color = '#C4D2DB';
+                        tempspan=$("span#"+option.series[index].name);
+                        $("#unselected").append(" ");
+                        tempspan.clone(true).appendTo("#unselected");
+                        tempspan.remove();
+                        $("span#"+option.series[index].name).css('color','white');
+                        selectedindexes.splice(selectedindexes.indexOf(index), 1);
+                        selectednum-=1;
+                    }
+                    else {
+                        option.series[index].lineStyle.normal.color =colorlist[selectednum];
+                        tempspan=$("span#"+option.series[index].name);
+                        $("#selected").append(" ");
+                        tempspan.clone(true).appendTo("#selected");
+                        tempspan.remove();
+                        $("span#"+option.series[index].name).css('color',colorlist[selectednum]);
+                        selectednum+=1;
+                        selectedindexes.push(index);
+                    }
+                    myChart.setOption(option)
+                    }
+                })
+                myChart.on('mouseover', function (params) {
+                    color = option.series[params.seriesIndex].lineStyle.normal.color
+                    if (color == '#C4D2DB') {
+                        option.series[params.seriesIndex].lineStyle.normal.color = '#29465A'
+                        myChart.setOption(option);
+                    }
+                })
+                myChart.on('mouseout', function (params) {
+                    color = option.series[params.seriesIndex].lineStyle.normal.color
+                    if (color == '#29465A') {
+                        option.series[params.seriesIndex].lineStyle.normal.color = '#C4D2DB'
+                        myChart.setOption(option);
+                    }
+                })
+            }
+        })
+
+    </script>
+    <script>
+
+    function CreateTable() {
+        var opt = myChart.getOption();
+        var dz = opt.dataZoom[0];
+        data1={
+            stockcode:'000001',
+            starttime: opt.xAxis[0].data[dz.endValue],
+            endtime:opt.xAxis[0].data[dz.startValue],
+            indexes:['tot_oper_cost','tot_oper_rev']
+//            indexes:['tot_oper_rev']
+        };
+        $.ajax({
+            type: 'GET',
+            url: '{{url_for("restfulapi.finance_data")}}',
+            data: data1,
+            dataType: 'json',//希望服务器返回json格式的数据
+            success: function (data) {
+                $("#mytable").empty();
+                var table = $("<table id=\"temptable\" class=\"row-border hover order-column\" cellspacing=\"0\" width=\"100%\"  >");
+                table.appendTo($("#mytable"));
+                th = $("<thead></thead>");
+                th.appendTo(table);
+                var tr = $("<tr></tr>");
+                tr.appendTo(th);
+                 var td = $("<td>" + "项目"+ "</td>");
+                    td.appendTo(tr);
+                for (var j = 0; j < data.the_year.length; j++) {
+                    var td = $("<td>" + data.the_year[j] + "</td>");
+                    td.appendTo(tr);
+                }
+                tb = $("<tbody></tbody>");
+                tb.appendTo(table);
+                $("#mytable").append("</table>");
+                var mydatatb = $('#temptable').DataTable({
+                    "info": false,
+                    "processing": true,
+                    "scrollX": true,
+                    "searching": true,
+
+
+
+                });
+                for (var i = 0; i < data.indexes.length; i++) {
+                    var rowNode = mydatatb
+                        .row.add([dict[data.indexes[i]]].concat(eval("data." + data.indexes[i])))
+                        .draw()
+                        .node();
+                    $(rowNode)
+                        .attr('id', data.indexes[i]);
+                }
+                for (var i = 0; i < selectedindexes.length; i++)   {
+                    index=selectedindexes[i];
+                    $('tr#'+option.series[index].name).css('color',option.series[index].lineStyle.normal.color)
+
+                }
+
+            }
+        })
+    }
+    </script>
+
+
+{% endblock %}

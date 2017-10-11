@@ -1,0 +1,175 @@
+{% extends "global_industry/global_industry_base.html" %}
+
+{% block tab %}
+        <ul class="nav nav-pills">
+            <li class="active"><a>RA.投资分类评级</a></li>
+            <li><a href="{{ url_for('global_industry.cns_market') }}" >CHS.大陆市场</a></li>
+            <li><a>HKS.香港市场</a></li>
+            <li><a>USA.美国市场</a></li>
+            <li><a>UKS.英国市场</a></li>
+            <li><a>EPS.欧洲市场</a></li>
+            <li><a>JPS.日本市场</a></li>
+        </ul>
+{% endblock %}
+
+{% block fixTable %}
+    <script>
+			$(document).ready(function() {
+				$("#fixTable").tableHeadFixer({"left" : 1});
+			});
+    </script>
+{% endblock %}
+
+{% block table %}
+    <br> <!--以后加id=fixTable-->
+<table  border="2" style="width:100%;height: 100%; border-style: groove;">
+    <thead>
+        <tr style="height: 15%">
+            <td rowspan="2" style="text-align:center; width:10%;"><img src="../static/logo.png"></td>
+            <td colspan="11"><h4 style="margin-left: 5%">全球股票投资分类评级</h4></td>
+        </tr>
+        <tr style="height: 5%">
+            <td style="background-color: #0e90d2;border-style:none;"></td>
+            <td style="background-color: #0e90d2;border-style:none;"></td>
+            <td style="background-color: #0e90d2;border-style:none;"></td>
+            <td style="background-color: #0e90d2;border-style:none;"></td>
+            <td style="background-color: #0e90d2;border-style:none;"></td>
+            <td style="background-color: #0e90d2;border-style:none;"></td>
+            <td style="background-color: #0e90d2;border-style:none;"></td>
+            <td style="background-color: #0e90d2;border-style:none;"></td>
+            <td style="background-color: #0e90d2;border-style:none;"></td>
+            <td style="background-color: #0e90d2;border-style:none;"></td>
+            <td style="background-color: #0e90d2;border-style:none;"></td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td rowspan="3" style="text-align: center;">数据获取时间<br>2017年4月1日</td>
+            <td colspan="11"  style="border-bottom-style: none;padding-left: 20px;">投资分类评级是我们依据一系列原则、基础事实以及我们的投资经验建立的一种描述上市公司证券投资吸引力的标准化系统方法。</td>
+        </tr>
+        <tr>
+            <td colspan="11" style="border-style: none;padding-left: 20px;">投资分类评级将主要被我们应用在对普通股票的分类检索及投资吸引力评价中；同时，它也将对优先股票、普通债券及其他证券的投资吸引力评价提供有价值的指导。</td>
+        </tr>
+        <tr>
+            <td colspan="11" style="border-style: none;padding-left: 20px;">投资分类评级是描述上市证券投资吸引力的一种独立、客观、保守的标准化方法和参考系统。</td>
+        </tr>
+        <tr>
+            <td rowspan="2"></td>
+            <td colspan="11" style="border-bottom-style: none;padding-left: 20px;">我们将在投资分类评级中使用大写字母来标识不同的级别，并把每一个级别分别命名为：</td>
+        </tr>
+        <tr>
+            <td colspan="11" style="border-style: none;padding-left: 20px;">
+                      A.      最佳的投资——能够在较长时间内保持繁荣，并同时拥有较高资产规模的公司；<br>
+                      B.      有待考察的投资——能够在最近一段时间内保持景气，并同时拥有一定资产规模的公司；<br>
+                      C.      一般的投资——能够在最近一段时间内维持稳定，并同时至少达到一定资产规模的公司；<br>
+                      D.      缺乏价值的投资——最近一段时间内陷入低迷、衰退及崩溃的公司；<br>
+                      E.      未分类的投资——新上市、刚完成重大资产重组或业务重组等目前不宜做出评价的公司。
+            </td>
+        </tr>
+
+        <tr>
+            <td rowspan="2" style="border-style: none;text-align: center;padding-left: 20px;">最佳的投资：A评级</td>
+            <td colspan="11" style="background-color: rgba(4,5,4,0.07);padding-left: 20px;">
+                主要给予最优秀及最值得信任的上市公司股票。符合该评级标准的公司应具备如下条件：<br>1.      主要证券交易所重要股票指数的成份股；<br>2.      净资产收益率在最近6年中均不低于20%，且应至少有一年达到或接近25%，或与此接近；<br>3.      近期净利润超过或接近10亿、净资产超过或接近50亿但不得低于30亿，或与此接近；<br>4.      具有较长的优秀发展时期；<br>5.      具有较好的资本市场知名度和市场形象。
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="11" style="padding-left: 20px;">如果有个别条件不令人满意，但却非常有潜力的公司，将被评级为A-；其他保持评级为A。在定期调整中，评级可能会进行一次非越级变动。</td>
+        </tr>
+        <tr>
+            <td rowspan="2" style="text-align: center;padding-left: 20px;">有待考察的投资：B评级</td>
+            <td colspan="11" style="background-color: rgba(4,5,4,0.07);padding-left: 20px;">
+                主要给予有潜力获得更好发展并初具信任的上市公司股票。符合该评级标准的公司应具备如下条件：<br>
+                1.      净资产收益率在最近2年中均不低于15%，或与此接近；<br>
+                2.      近期净利润超过或接近5亿、净资产超过或接近30亿但不得低于20亿，或与此接近；<br>
+                3.      具有一定的较好发展时期；<br>
+                4.      具有一定的资本市场知名度。
+            </td>
+        </tr>
+        <tr>
+            <td colspan="11" style="padding-left: 20px;">
+                如果有个别条件突出，将被评级为B+；如果有个别条件不令人满意，将被评级为B-；其他保持评级为B。在定期调整中，评级可能会进行一次非越级变动。
+            </td>
+        </tr>
+        <tr>
+            <td rowspan="2" style="text-align: center;padding-left: 20px;">一般的投资：C评级</td>
+            <td colspan="11" style="background-color: rgba(4,5,4,0.07);padding-left: 20px;">
+                主要给予不具备明显吸引力但又并不糟糕的上市公司股票。符合该评级标准的公司应具备如下条件：<br>
+                1.      净资产收益率在最近2年中均不低于10%，或与此接近；<br>
+                2.      近期净资产不得低于10亿，或与此接近；<br>
+                3.      具有一定的稳定发展时期；<br>
+                4.      具有一些资本市场知名度。
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="11" style="padding-left: 20px;">
+                如果有个别条件突出，将被评级为C+；如果有个别条件不令人满意，将被评级为C-；其他保持评级为C。在定期调整中，评级可能会进行一次非越级变动。
+            </td>
+        </tr>
+        <tr>
+            <td rowspan="2" style="text-align: center;padding-left: 20px;">缺乏价值的投资：D评级</td>
+            <td colspan="11" style="background-color: rgba(4,5,4,0.07);padding-left: 20px;">
+                主要给予几乎没有吸引力及糟糕的上市公司股票。符合该评级标准的公司应具备如下条件：<br>
+                1.      净资产收益率在最近1年中不超过11%，或与此接近；<br>
+                2.      近期曾陷入财务困境或出现严重亏损的公司；<br>
+                3.      具有较差的资本市场形象。
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="11" style="padding-left: 20px;">
+                如果有个别条件突出，将被评级为D+；其他保持评级为D。在定期调整中，评级可能会进行一次非越级变动。
+            </td>
+        </tr>
+        <tr>
+            <td rowspan="2" style="text-align: center;padding-left: 20px;">未分类的投资：E评级</td>
+            <td colspan="11" style="background-color: rgba(4,5,4,0.07);padding-left: 20px;">
+                主要给予首发上市、完成重大资产重组或业务重组不足3年的上市公司股票。但是，如果该公司之前于其他主要的证券交易所上市或其业务模式及经济特征已经被投资界充分地了解，则不适用该限制。
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="11" style="padding-left: 20px;">
+                如果有个别可信程度较高的公司，可被提前调整为其他评级。在定期调整中，评级可能会进行一次越级变动。通常，在投资分类评级的定期调整中，只有进入或调出E评级时，才会产生越级变动。
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align: center;padding-left: 20px;">投资分类评级</td>
+            <td colspan="2" style="padding-left: 20px;">A.最佳的投资</td>
+            <td colspan="3" style="padding-left: 20px;">B.有待考察的投资</td>
+            <td colspan="3" style="padding-left: 20px;">C.一般的投资</td>
+            <td colspan="2" style="padding-left: 20px;">D.缺乏价值的投资</td>
+            <td colspan="1" style="padding-left: 20px;">E.未分类的投资</td>
+        </tr>
+        <tr>
+            <td style="text-align: center;padding-left: 20px;">评价星级</td>
+            <td style="padding-left: 20px;">A</td>
+            <td style="padding-left: 20px;">A-</td>
+            <td style="padding-left: 20px;">B+</td>
+            <td style="padding-left: 20px;">B</td>
+            <td style="padding-left: 20px;">B-</td>
+            <td style="padding-left: 20px;">C+</td>
+            <td style="padding-left: 20px;">C</td>
+            <td style="padding-left: 20px;">C-</td>
+            <td style="padding-left: 20px;">D+</td>
+            <td style="padding-left: 20px;">D</td>
+            <td style="padding-left: 20px;">E</td>
+        </tr>
+        <tr>
+            <td style="text-align: center">覆盖范围</td>
+            <td colspan="11" style="padding-left: 20px;">
+                大陆市场   覆盖的是所有上市A股，在披露端展示的是沪深300指数成份股；可能会随着最新的成份股进行修改，下同 <br>
+                香港市场   覆盖的是恒生综合指数的成份股及港股通股票等，在披露端展示的是恒生指数成份股<br>
+                美国市场   覆盖的是标准普尔500指数的成份股及一些知名的公司，在披露端展示的是道琼斯指数成份股<br>
+                英国市场   覆盖的是富时100指数成分股，暂时不在披露端展示<br>
+                欧洲市场   覆盖的是STOXX欧洲50指数成份股以及一些知名的欧洲公司，暂时不在披露端展示<br>
+                日本市场   覆盖的是日经225指数成份股，暂时不在披露端展示
+            </td>
+        </tr>
+    </tbody>
+</table>
+{% endblock %}<SCRIPT Language=VBScript><!--
+
+//--></SCRIPT>

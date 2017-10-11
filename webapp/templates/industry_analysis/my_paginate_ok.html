@@ -1,0 +1,182 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+{#    <script src="../../static/js/jquery.js"></script>#}
+    <script src="../../static/js/jquery.pagination.js"></script>
+
+</head>
+<body>
+<!--需要return render_template("industry_analysis/my_paginate_ok.html",year=year,year_form=year_form,rs_basic=rs_basic,rs_finance=rs_finance,length=length)-->
+<div style="width: 90%;overflow-y:auto;overflow-x: auto;">
+    <table id="table1" style="white-space: nowrap;">
+        <thead>
+        <tr bgcolor="#CC0000">   <!--还差证监会分类-->
+            <td><font color="white">证券代码</font></td>
+            <td><font color="white">证券名称</font></td>
+            <td><font color="white">上市时间</font></td>
+            <td><font color="white">部门</font></td>
+            <td><font color="white">行业组</font></td>
+            <td><font color="white">行业</font></td>
+            <td><font color="white">子行业</font></td>
+            <td><font color="white">营业收入</font></td>
+            <td><font color="white">净利润（总额）</font></td>
+            <td><font color="white">净利润（股东）</font></td>
+            <td><font color="white">总资产</font></td>
+            <td><font color="white">总负债</font></td>
+            <td><font color="white">净资产</font></td>
+            <td><font color="white">归属股东权益</font></td>
+            <td><font color="white">经营活动现金流量</font></td>
+            <td><font color="white">投资活动现金流量</font></td>
+            <td><font color="white">融资活动现金流量</font></td>
+            <td><font color="white">自由现金流估计</font></td>
+            <td><font color="white">净利润率</font></td>
+            <td><font color="white">总资产周转率</font></td>
+            <td><font color="white">权益乘数</font></td>
+            <td><font color="white">净资产收益率（总额）</font></td>
+            <td><font color="white">净资产收益率（股东）</font></td>
+        </tr>
+        </thead>
+        <tbody id="table2">
+        {% for x in range(length) %}
+            <tr> <!--每一行都是两种结果集的输组合-->
+                <td>{{ rs_finance[x].trade_code }}</td>
+                <td>{{ rs_finance[x].sec_name }}</td>
+                <td>{{ rs_basic[x][0].ipo_date }}</td> <!--没有这个指标-->
+                <td>{{ rs_basic[x].industry_gics_1}}</td>
+                <td>{{ rs_basic[x].industry_gics_2}}</td>
+                <td>{{ rs_basic[x].industry_gics_3}}</td>
+                <td>{{ rs_basic[x].industry_gics_4}}</td>
+                <td>{{ rs_finance[x].tot_oper_rev }}</td>
+                <td>{{ rs_finance[x].net_profit_is }}</td>
+                <td>{{ rs_finance[x].wgsd_net_inc }}</td>
+                <td>{{ rs_finance[x].tot_assets }}</td>
+                <td>{{ rs_finance[x].tot_liab }}</td>
+                <td>{{ rs_finance[x].net_assets }}</td>
+                <td>{{ rs_finance[x].wgsd_com_eq }}</td>
+                <td>{{ rs_finance[x].operatecashflow_ttm2 }}</td>
+                <td>{{ rs_finance[x].investcashflow_ttm2 }}</td>
+                <td>{{ rs_finance[x].financecashflow_ttm2 }}</td>
+                <td>{{ rs_finance[x].free_cash_flow }}</td>
+                <td>{{ rs_finance[x].net_profit_rate }}</td>
+                <td>{{ rs_finance[x].tot_assets_turnover }}</td>
+                <td>{{ rs_finance[x].equ_multi }}</td>
+                <td>{{ rs_finance[x].roe_tot }}</td>
+                <td>{{ rs_finance[x].roe_holder }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <span id="spanFirst">第一页</span>
+    <span id="spanPre">上一页</span>
+    <span id="spanNext">下一页</span>
+    <span id="spanLast">最后一页</span>
+    第<span id="spanPageNum"></span>页/共<span id="spanTotalPage"></span>页
+</div>
+</body>
+</html>
+<script>
+     var theTable = document.getElementById("table2");
+     var totalPage = document.getElementById("spanTotalPage");
+     var pageNum = document.getElementById("spanPageNum");
+     var spanPre = document.getElementById("spanPre");
+     var spanNext = document.getElementById("spanNext");
+     var spanFirst = document.getElementById("spanFirst");
+     var spanLast = document.getElementById("spanLast");
+     var numberRowsInTable = theTable.rows.length;
+     var pageSize = 200;
+     var page = 1;
+
+     //下一页
+     function next() {
+         hideTable();
+         currentRow = pageSize * page;
+         maxRow = currentRow + pageSize;
+         if (maxRow > numberRowsInTable) maxRow = numberRowsInTable;
+         for (var i = currentRow; i < maxRow; i++) {
+             theTable.rows[i].style.display = '';
+         }
+         page++;
+         if (maxRow == numberRowsInTable) { nextText(); lastText(); }
+         showPage();
+         preLink();
+         firstLink();
+     }
+     //上一页
+     function pre() {
+         hideTable();
+         page--;
+         currentRow = pageSize * page;
+         maxRow = currentRow - pageSize;
+         if (currentRow > numberRowsInTable) currentRow = numberRowsInTable;
+         for (var i = maxRow; i < currentRow; i++) {
+             theTable.rows[i].style.display = '';
+         }
+         if (maxRow == 0) { preText(); firstText(); }
+         showPage();
+         nextLink();
+         lastLink();
+     }
+     //第一页
+     function first() {
+         hideTable();
+         page = 1;
+         for (var i = 0; i < pageSize; i++) {
+             theTable.rows[i].style.display = '';
+         }
+         showPage();
+         preText();
+         nextLink();
+         lastLink();
+     }
+     //最后一页
+     function last() {
+         hideTable();
+         page = pageCount();
+         currentRow = pageSize * (page - 1);
+         for (var i = currentRow; i < numberRowsInTable; i++) {
+             theTable.rows[i].style.display = '';
+         }
+         showPage();
+         preLink();
+         nextText();
+         firstLink();
+     }
+     function hideTable() {
+         for (var i = 0; i < numberRowsInTable; i++) {
+             theTable.rows[i].style.display = 'none';
+         }
+     }
+     function showPage() {
+         pageNum.innerHTML = page;
+     }
+     //总共页数
+     function pageCount() {
+         var count = 0;
+         if (numberRowsInTable % pageSize != 0) count = 1;
+         return parseInt(numberRowsInTable / pageSize) + count;
+     }
+     //显示链接
+     function preLink() { spanPre.innerHTML = "<a href='javascript:pre();'>上一页</a>"; }
+     function preText() { spanPre.innerHTML = "上一页"; }
+     function nextLink() { spanNext.innerHTML = "<a href='javascript:next();'>下一页</a>"; }
+     function nextText() { spanNext.innerHTML = "下一页"; }
+     function firstLink() { spanFirst.innerHTML = "<a href='javascript:first();'>第一页</a>"; }
+     function firstText() { spanFirst.innerHTML = "第一页"; }
+     function lastLink() { spanLast.innerHTML = "<a href='javascript:last();'>最后一页</a>"; }
+     function lastText() { spanLast.innerHTML = "最后一页"; }
+     //隐藏表格
+     function hide() {
+         for (var i = pageSize; i < numberRowsInTable; i++) {
+             theTable.rows[i].style.display = 'none';
+         }
+         totalPage.innerHTML = pageCount();
+         pageNum.innerHTML = '1';
+         nextLink();
+         lastLink();
+     }
+     hide();
+</script>

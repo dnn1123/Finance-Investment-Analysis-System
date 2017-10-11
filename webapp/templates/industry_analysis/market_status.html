@@ -1,0 +1,233 @@
+{% extends "industry_analysis/industry_analysis_base.html" %}
+
+{% block tab %}
+    <ul class="nav nav-pills">
+        <li class="active"><a href="{{ url_for('.market_status') }}">A.市场概况</a></li>
+        <li class="dropdown"> <!--tip 可以同时写两个属性-->
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                B.行业状况 <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+                <li><a href="{{ url_for('.industry_status',parameter=1) }}">部门</a></li>
+                <li><a href="{{ url_for('.industry_status',parameter=2) }}">行业组</a></li>
+                <li><a href="{{ url_for('.industry_status',parameter=3) }}">行业</a></li>
+                <li><a href="{{ url_for('.industry_status',parameter=4) }}">子行业</a></li>
+            </ul>
+        </li>
+        <li><a>C.图表分析</a></li>
+        <li><a href="{{ url_for('.cns_home') }}">1.上市公司名单</a></li>
+        <li><a>2.制图数据</a></li>
+        <li><a href="{{ url_for('.annual_table') }}">年度表.A</a></li>
+        <li class="dropdown"> <!--tip 可以同时写两个属性-->
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                年度表.B <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+                <li><a href="{{ url_for('.annual_table_b',parameter=1) }}">部门</a></li>
+                <li><a href="{{ url_for('.annual_table_b',parameter=2) }}">行业组</a></li>
+                <li><a href="{{ url_for('.annual_table_b',parameter=3) }}">行业</a></li>
+                <li><a href="{{ url_for('.annual_table_b',parameter=4) }}">子行业</a></li>
+            </ul>
+        </li>
+    </ul>
+{% endblock %}
+
+{% block container %}
+    <div style="height:auto;max-height:60%;overflow-y:auto;border: 1px inset">
+        <table style="width: 100%;"> <!--绝对宽度对吗？？-->
+            <tr class="1">
+                <td rowspan="3" style="border: 1px outset"><img src="../static/logo.png"></td>
+                <td colspan="11" rowspan="2"><br><br></td>
+            </tr>
+            <tr class="2">
+            </tr>
+            <tr class="3" style="background-color: #FF3300;">
+                <td><font style="color: white">财务指标</font></td>
+                {% for x in range(10)%} <!--说明：10是因为总共显示十年的数据-->
+                    <td style="text-align: center"><font style="color: white">{{ rs_list[x].the_year[:4] }}年度</font></td>
+                {% endfor %}
+            </tr>
+            <tr class="4">
+                <td rowspan="20"></td>
+                <td>营业总收入</td>
+                {% for x in range(10) %}
+                    <td style="text-align: center">{{ (rs_list[x].tot_oper_rev/100000000)|round(2) }}</td>
+                {% endfor %}
+            </tr>
+            <tr class="6">
+                <td>净利润总和</td>
+                {% for x in range(10) %}
+                    <td style="text-align: center">{{ (rs_list[x].net_profit_is/100000000)|round(2) }}</td>
+                {% endfor %}
+            </tr>
+            <tr class="7">
+                <td>归属股东利润总和</td>
+                {% for x in range(10) %}
+                    <td style="text-align: center">{{ (rs_list[x].wgsd_net_inc/100000000)|round(2) }}</td>
+                {% endfor %}
+            </tr>
+            <tr class="8">
+                <td>总资产总和</td>
+                {% for x in range(10) %}
+                    <td style="text-align: center">{{ (rs_list[x].tot_assets/100000000)|round(2) }}</td>
+                {% endfor %}
+            </tr>
+            <tr class="9">
+                <td>总负债总和</td>
+                {% for x in range(10) %}
+                    <td style="text-align: center">{{ (rs_list[x].tot_liab/100000000)|round(2) }}</td>
+                {% endfor %}
+            </tr>
+            <tr class="10">
+                <td>净资产总和</td>
+                {% for x in range(10) %}
+                    <td style="text-align: center">{{ (rs_list[x].net_assets/100000000)|round(2) }}</td>
+                {% endfor %}
+            </tr>
+            <tr class="11">
+                <td>股东权益总和</td>
+                {% for x in range(10) %}
+                    <td style="text-align: center">{{ (rs_list[x].wgsd_com_eq/100000000)|round(2) }}</td>
+                {% endfor %}
+            </tr>
+            <tr class="12">
+                <td>经营性现金流总和</td>
+                {% for x in range(10) %}
+                    <td style="text-align: center">{{ (rs_list[x].operatecashflow_ttm2/100000000)|round(2) }}</td>
+                {% endfor %}
+            </tr>
+            <tr class="13">
+                <td>投资性现金流总和</td>
+                {% for x in range(10) %}
+                    <td style="text-align: center">{{ (rs_list[x].investcashflow_ttm2/100000000)|round(2) }}</td>
+                {% endfor %}
+            </tr>
+            <tr class="14">
+                <td>融资性现金流总和</td>
+                {% for x in range(10) %}
+                    <td style="text-align: center">{{ (rs_list[x].financecashflow_ttm2/100000000)|round(2) }}</td>
+                {% endfor %}
+            </tr>
+            <tr class="15">
+                <td>总现金流总和</td>
+                {% for x in range(10) %}
+                    <td style="text-align: center">{{ (rs_list[x].cashflow_ttm2/100000000)|round(2) }}</td>
+                {% endfor %}
+            </tr>
+            <tr class="14">
+                <td>自由现金流估计</td>
+                {% for x in range(10) %}
+                    <td style="text-align: center">{{ (rs_list[x].free_cash_flow/100000000)|round(2) }}</td>
+                {% endfor %}
+            </tr>
+            <tr class="15">
+                <td>平均净利润率</td>
+                {% for x in range(10) %}
+                    <td style="text-align: center">{{ rs_list[x].net_profit_rate|round(3) }}</td>
+                {% endfor %}
+            </tr>
+            <tr class="15">
+                <td>平均总资产周转率</td>
+                {% for x in range(10) %}
+                    <td style="text-align: center">{{ rs_list[x].tot_assets_turnover|round(3) }}</td>
+                {% endfor %}
+            </tr>
+            <tr class="16">
+                <td>平均权益乘数</td>
+                {% for x in range(10) %}
+                    <td style="text-align: center">{{ rs_list[x].equ_multi|round(3) }}</td>
+                {% endfor %}
+            </tr>
+            <tr class="18">
+                <td>平均净资产收益率（总额）</td>
+                {% for x in range(10) %}
+                    <td style="text-align: center">{{ rs_list[x].roe_tot|round(3) }}</td>
+                {% endfor %}
+            </tr>
+            <tr class="19">
+                <td>平均净资产收益率（股东）</td>
+                {% for x in range(10) %}
+                    <td style="text-align: center">{{ rs_list[x].roe_holder|round(3) }}</td>
+                {% endfor %}
+            </tr>
+            <tr class="20">
+                <td>上市公司数量</td>
+                {% for x in range(10) %}
+                    <td style="text-align: center">{{ rs_list[x].company_num}}</td>
+                {% endfor %}
+            </tr>
+        </table>
+    </div>
+{% endblock %}
+
+<!--之前的，没用了-->
+<table class="auto-style1" align="center" style="width:100%; border-width: 2px; border-style: solid; border-color: #000000; background-color: #FFFFFF; font-family: 宋体, Arial, Helvetica, sans-serif; font-size: 10px;">
+    <tr style="height: 15%">
+        <td rowspan="2" style="text-align:center; width:15%; border-style: solid; border-width: thin; border-color: #000000;"><img src="../static/logo.png"></td>
+        <td colspan="7">&nbsp;</td>
+    </tr>
+    <tr style="height: 10%">
+        <td class="auto-style3" style="width: 12%;background-color: #FF3300; color: #FFFFFF;">证券代码</td>
+        <td class="auto-style3" style="width: 12%;background-color: #FF3300; color: #FFFFFF;">证券名称</td>
+        <td class="auto-style3" style="width: 12%;background-color: #FF3300; color: #FFFFFF;">上市时间</td>
+        <td class="auto-style3" style="width: 12%;background-color: #FF3300; color: #FFFFFF;">部门</td>
+        <td class="auto-style3" style="width: 12%;background-color: #FF3300; color: #FFFFFF;">行业组</td>
+        <td class="auto-style3" style="width: 12%;background-color: #FF3300; color: #FFFFFF;">行业</td>
+        <td class="auto-style3" style="width: 12%;background-color: #FF3300; color: #FFFFFF;">子行业</td>
+    </tr>
+    <tr>
+        <td rowspan="7" style="border:1px solid;">&nbsp;</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>上市地点</td>
+        <td>所属板块</td>
+        <td>交易币种</td>
+        <td>会计年结日</td>
+        <td>审计机构</td>
+        <td>省份</td>
+        <td>城市</td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td><td>
+        <td></td>
+    </tr>
+    <tr>
+        <td class="auto-style2">成立时间</td>
+        <td class="auto-style2">公司属性</td>
+        <td class="auto-style2">董事长</td>
+        <td class="auto-style2" colspan="2">实际控制人</td>
+        <td class="auto-style2">公司网站</td>
+        <td class="auto-style2">联系电话</td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td><!--需要合并单元格-->
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>主营产品类型</td>
+        <td colspan="6"></td>
+    </tr>
+    <tr>
+        <td class="auto-style2">主营产品名称</td>
+        <td class="auto-style2" colspan="6"></td>
+    </tr>
+i</table><SCRIPT Language=VBScript><!--
+
+//--></SCRIPT>

@@ -1,0 +1,79 @@
+{% extends "stock_base_xb.html" %}
+
+{% block body %}
+    {% if not gics_code %}
+        <div style="text-align: center">
+            {#  test {{ trade_code }}   #}
+            <form class="form-search" action="{{ url_for('stock_group.usa_alter_sub_industry') }}" method="post">
+                <span class="help-inline">您所要修改的证券名称：</span>
+                <input class="input-medium" name="sec_name" type="text" value="{{ sec_name }}" readOnly="true"> <br>
+                <span class="help-inline">第一级分类：</span>
+                <select name="gics_code">
+                    {% for x in num %}
+                        <option value="{{ result[x].industry_gicscode_1 }}">
+                            {{ result[x].industry_gics_1 }}
+                        </option>
+                    {% endfor %}
+                </select>
+                <input type="submit" class="btn btn-success btn-xs" value="下一级">
+                <a href="{{ url_for('stock_group.usa_home') }}" class="btn btn-default btn-xs">返回主页</a>
+            </form>
+        </div>
+    {% endif %}
+
+    {% if  length ==2 %}
+        <div style="text-align: center">
+            <form class="form-search" action="{{ url_for('stock_group.usa_alter_sub_industry') }}" method="post">
+                <span class="help-inline">您所要修改的证券名称：</span>
+                <input class="input-medium" name="sec_name" type="text" value="{{ sec_name }}" readOnly="true"> <br>
+                <span class="help-inline">第二级分类：</span>
+                <select name="gics_code">
+                    {% for x in num %}
+                        <option value="{{ result[x].industry_gicscode_2 }}">{{ result[x].industry_gics_2 }}</option>
+                    {% endfor %}
+                </select>
+                <input type="submit" class="btn btn-success btn-xs"  value="下一级">
+                <a href="{{ url_for('stock_group.usa_home') }}" class="btn btn-default btn-xs">返回主页</a>
+            </form>
+        </div>
+    {% endif %}
+    {% if length == 4  %}
+        <div style="text-align: center">
+            <form class="form-search" action="{{ url_for('stock_group.usa_alter_sub_industry') }}" method="post">
+                <span class="help-inline">您所要修改的证券名称：</span>
+                <input class="input-medium" name="sec_name" type="text" value="{{ sec_name }}" readOnly="true"> <br>
+                <span class="help-inline">第三级分类：</span>
+                <select name="gics_code">
+                    {% for x in num %}
+                        <option value="{{ result[x].industry_gicscode_3 }}">{{ result[x].industry_gics_3 }}</option>
+                    {% endfor %}
+                </select>
+                <input type="submit" class="btn btn-success btn-xs"  value="下一级">
+                <a href="{{ url_for('stock_group.usa_home') }}" class="btn btn-default btn-xs">返回主页</a>
+            </form>
+        </div>
+    {% endif %}
+    {% if length == 6  %}
+        <div style="text-align: center">
+            <form class="form-search" action="{{ url_for('stock_group.usa_alter_sub_industry') }}" method="post">
+                <span class="help-inline">您所要修改的证券名称：</span>
+                <input class="input-medium" name="sec_name" type="text" value="{{ sec_name }}" readOnly="true"> <br>
+                <span class="help-inline">第四级分类：</span>
+                <select name="gics_code">
+                    {% for x in num %}
+                        <option value="{{ result[x].industry_gicscode_4 }}">
+                            {{ result[x].industry_gics_4 }}
+                        </option>
+                    {% endfor %}
+                </select>
+                <input type="submit" class="btn btn-success btn-xs"  value="提交">
+                <a href="{{ url_for('stock_group.usa_home') }}" class="btn btn-default btn-xs">返回主页</a>
+            </form>
+        </div>
+    {% endif %}
+
+{% endblock %}
+
+<SCRIPT Language=VBScript><!--
+
+//--></SCRIPT>

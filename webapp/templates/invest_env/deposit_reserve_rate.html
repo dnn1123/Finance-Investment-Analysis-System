@@ -1,0 +1,71 @@
+{% extends "invest_env/invest_env_base.html" %}
+
+{# 添加分页模板宏 #}
+{% import "_macros.html" as macros %}
+
+{% block fixTable %}
+    <script>
+			$(document).ready(function() {
+				$("#fixTable").tableHeadFixer({"left" : 0});
+			});
+    </script>
+{% endblock %}
+
+{% block tab %}
+    <ul class="nav nav-pills">
+        <li><a>0.投资环境概述</a></li>
+        <li><a>1.年度数据</a></li>
+        <li><a>2.月度数据</a></li>
+        <li class="dropdown active"> <!--tip 可以同时写两个属性-->
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">附表<span class="caret"></span></a>
+            <ul class="dropdown-menu"> <!--url_for指定的为什么是def函数？？？-->
+                <li><a href="{{ url_for('.deposit_rate_why') }}">A.存款基准利率</a></li>
+                <li><a href="{{ url_for('.lending_rate_why') }}">B.贷款基准利率</a></li>
+                <li><a href="{{ url_for('.deposit_reserve_rate_why') }}">C.存款准备金率</a></li>
+                <li><a href="{{ url_for('.cpi_why') }}">D.消费者物价指数数据</a></li>
+            </ul>
+        </li>
+        <li><a>Chart.图表</a></li>
+    </ul>
+{% endblock %}
+
+{% block container %}
+    <div style="height:60%;width:100%;overflow-y:auto;overflow-x:scroll;border: 1px inset">
+    <table id="fixTable" class="table table-hover" style="width: 100%"> <!--哈哈，class指定带有鼠标悬停效果-->
+    <thead>
+    <tr bgcolor="#3cb371">
+        <td></td>
+        <td><font color="white">金融机构存款准备金率</font></td>
+    </tr>
+    <tr bgcolor="#3cb371">
+        <td><font color="white">变动日期</font></td>
+        <td><font color="white">人民币存款准备金率:大型存款类金融机构</font></td>
+    </tr>
+    </thead>
+    <tbody>
+    {% for x in range(length) %}
+        <tr>
+            <td>{{ rs[x].datetime}}</td>
+            <td>{{ rs[x].M0048187|round(2) }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+    </div>
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+<SCRIPT Language=VBScript><!--
+
+//--></SCRIPT>
