@@ -21,6 +21,62 @@
         </ul>
 {% endblock %}
 
+{% block choice %}
+<label style="margin-top: 20px" for="name">选项</label>
+<div style="margin-top: 50px" >
+    <div class="checkbox">
+        <label><input type="checkbox" value="tot_oper_cost">总营业成本</label>
+    </div>
+    <div class="checkbox">
+        <label><input type="checkbox" value="tot_oper_rev">总营业收入</label>
+    </div>
+    <div style="text-align:right">
+    <input type="button" value="全选" id="CheckAll"/>
+    <input type="button" value="全不选" id="UnCheckAll" />
+    <input type="button" value="提交" id="commit" />
+    </div>
+</div>
+
+
+    <script>
+        Chosenindexes=[];
+        $(document).ready(function(){
+          $('input').iCheck({
+            checkboxClass: 'icheckbox_minimal',
+            radioClass: 'iradio_minimal',
+            increaseArea: '20%' // optional
+          });
+        });
+        $("input#commit").click(function () {
+            Chosenindexes=[];
+            $("div#unselected").empty();
+            $("div#selected").empty();
+            $("input[type=checkbox]").each(function(){//each()方法遍历所有的复选框
+                if($(this).is(':checked')==true){//这里就可以判断当前是否被选择了
+                    indexname=$(this).val();
+                     Chosenindexes.push(indexname);
+                    var tempspan=$("<span class=\"label label-default\" data-stopPropagation=\"true\" id=\""+indexname+"\">"+dict[indexname]+"</span>")
+                    tempspan.appendTo($("div#unselected"));
+                    $("div#unselected").append(" ");
+                }
+             })
+            CreateChart();
+        })
+        $("input#CheckAll").click(function () {
+            $("input[type=checkbox]").each(function () {
+                $(this).iCheck('check');
+            })
+        })
+        $("input#UnCheckAll").click(function () {
+            $("input[type=checkbox]").each(function () {
+                $(this).iCheck('uncheck');
+            })
+        })
+
+    </script>
+
+{% endblock %}
+
 {% block table%}
     <ul id="myTab" class="nav nav-tabs">
 	<li class="disabled">
@@ -47,13 +103,13 @@
 		<ul class="dropdown-menu" role="menu" id="mydropdown" >
             <div class="container" style="width:800px;height: 400px" data-stopPropagation="true">
                 <div class="row" data-stopPropagation="true">
-			        <div class="col-xs-6" data-stopPropagation="true" id="unselected">
-                        <span class="label label-default" data-stopPropagation="true" id="tot_oper_cost">总营业成本</span>
-                        <span class="label label-default" data-stopPropagation="true" id="tot_oper_rev">总营业收入</span>
+			        <div class="col-xs-6" data-stopPropagation="true" id="unselected" style="margin-top: 20px">
+                    {#    <span class="label label-default" data-stopPropagation="true" id="tot_oper_cost">总营业成本</span>
+                        <span class="label label-default" data-stopPropagation="true" id="tot_oper_rev">总营业收入</span>#}
 
                     </div>
 
-                    <div class="col-xs-6" data-stopPropagation="true" id="selected">
+                    <div class="col-xs-6" data-stopPropagation="true" id="selected" style="margin-top: 20px">
 
                     </div>
                 </div>
@@ -64,17 +120,17 @@
     </div>
 
     <script>
-
-     $("#mydropdown").on("click", "[data-stopPropagation]", function(e) {
+        $("#mydropdown").on("click", "[data-stopPropagation]", function(e) {
         e.stopPropagation();
-    });
-     $("span").click(function () {
+        });
+    $("ul#mydropdown").on("click","span",function () {
 
             if($(this).parents("div").attr('id') == "unselected"){
                 $("#selected").append(" ");
                 $(this).clone(true).appendTo("#selected");
                 selectline($(this).attr('id'));
                 this.remove();
+                console.log(selectedindexes);
             }
             if($(this).parents("div").attr('id') == "selected"){
                 $("#unselected").append(" ");
@@ -83,29 +139,41 @@
                 this.remove();
             }
 
-            $("#mydropdown").dropdown('toggle');
+{#           $("#mydropdown").dropdown('toggle');#}
 
-     })
+    });
     function selectline(linename) {
-         for (var l in option.series){
+         for (var line in option.series){
+             l=parseInt(line);
             if(option.series[l].name== linename){
-                option.series[l].lineStyle.normal.color =colorlist[selectednum];
-                $("span#"+linename).css('color',colorlist[selectednum]);
-                selectednum+=1;
+                tempcolor=NewColor();
+                option.series[l].lineStyle.normal.color =tempcolor;
+                option.series[l].itemStyle.normal.color =tempcolor;
+                $("span#"+linename).css('color',tempcolor);
                 selectedindexes.push(l);
+                selectedindexname.push(option.series[l].name);
+                option.legend.data=selectedindexname;
                 myChart.setOption(option);
+                {#if($('tr#'+option.series[l].name).length>0) {  列头不变色 将查询的data存储 分割函数 代码冗余度高
+                    $('tr#' + option.series[l].name).css('color', option.series[l].lineStyle.normal.color)
+                }#}
+
             }
          }
 
     }
     function unselectline(linename) {
-         for (var l in option.series){
+         for (var line in option.series){
+             l=parseInt(line);
             if(option.series[l].name== linename){
                 option.series[l].lineStyle.normal.color ='#C4D2DB';
+                option.series[l].itemStyle.normal.color ='#C4D2DB';
                 $("span#"+linename).css('color','white');
                 selectedindexes.splice(selectedindexes.indexOf(l), 1);
-                selectednum-=1;
+                selectedindexname.splice(selectedindexname.indexOf(option.series[l].name), 1);
+                option.legend.data=selectedindexname;
                 myChart.setOption(option);
+
             }
          }
 
@@ -113,147 +181,165 @@
     </script>
 
     <script>
-        var data={
-            stockcode:'000001',
-            starttime: '19901231',
-            endtime:'20161231',
-            indexes:['tot_oper_cost','tot_oper_rev']
-//            indexes:['tot_oper_rev']
-        };
+        var myChart = echarts.init(document.getElementById('mychart'));
         var dict={
             'tot_oper_cost':'总营业成本',
             'tot_oper_rev':'总营业收入'
-        }
-        var colorlist=['#FF3300','#FFCC33','#33CC33','#F961F0','#660066','#99FFCC'];
-        var myChart = echarts.init(document.getElementById('mychart'));
-        $.ajax({
-            type: 'GET',
-            url: '{{url_for("restfulapi.finance_data")}}',
-            data: data,
-            dataType: 'json',//希望服务器返回json格式的数据
-            success: function (data) {
-                console.log(data)
-                dataSeries = [];
-                for (var i = 0; i < data.indexes.length; i++) {
-                    temp = {
-                        name: data.indexes[i],
-                        type: 'line',
-                        lineStyle: {normal: {color: '#C4D2DB'}},
-                        symbolSize: 8,
-                        smooth: true,
-                        stack: 'sum',
-                        data: eval("data." + data.indexes[i])
-                    };
-                    dataSeries.push(temp)
-                }
+        };
+        selectedindexes = [];
+        selectedindexname=[]
+        function CreateChart() {
+            var data = {
+                stockcode: '000001',
+                starttime: '19901231',
+                endtime: '20161231',
+                indexes: Chosenindexes
+//            indexes:['tot_oper_rev']
+            };
+            $.ajax({
+                type: 'GET',
+                url: '{{url_for("restfulapi.finance_data")}}',
+                data: data,
+                dataType: 'json',//希望服务器返回json格式的数据
+                success: function (data) {
+                    dataSeries = [];
+                    for (var i = 0; i < data.indexes.length; i++) {
+                        temp = {
+                            name: data.indexes[i],
+                            type: 'line',
+                            lineStyle: {normal: {color: '#C4D2DB'}},
+                            itemStyle : {normal : {color:'#C4D2DB'}},
+                            symbolSize: 8,
+                            smooth: true,
+                            stack: 'sum',
+                            data: eval("data." + data.indexes[i])
+                        };
+                        dataSeries.push(temp)
+                    }
 
 //                dataSeries = [{name:'123',type:'line',data:[1,2,3,4,5,6,7]},{name:'345',type:'line',data:[7,6,5,4,3,2,1]}];
 
-                option = {
-                    title: {
-                        text: '财务指标及分析',
-                        left: '49%'
-                    },
+                    option = {
+                        title: {
+                            text: '财务指标及分析',
+                            left: '49%'
+                        },
 
-                    tooltip: {
-                        trigger: 'item'
-                    },
-                    legend: {
-                        data: data.indexes,
-                        orient: 'vertical',
-                        left: '85%',
-                        top: '10%'
-                    },
-                    grid: {
-                        left: '3%',
-                        right: '4%',
-                        bottom: '10%',
-                        containLabel: true
-                    },
-                    toolbox: {
-                        feature: {
-                            saveAsImage: {}
-                        }
-                    },
-                    xAxis: {
-                        type: 'category',
-                        boundaryGap: false,
-                        axisTick: {
-                            show: false
-                         },
-                        data: data.the_year,
-                        Interval: 5
-                    },
-                    yAxis: {
-                        type: 'value',
-                        axisTick: {
-                            show: false
-                         },
-                    },
-                    dataZoom: [
-                        {   // 这个dataZoom组件，默认控制x轴。
-                            type: 'slider', // 这个 dataZoom 组件是 slider 型 dataZoom 组件
-                            xAxisIndex: [0],
-                         {#   start: 0,      // 左边在 10% 的位置。
+                        tooltip: {
+                            trigger: 'item',
+
+                        formatter: function (params) {
+                                return dict[params.seriesName]+"<br/> 时间："+params.name+"<br/> 数据："+params.data;
+                            }
+                        },
+                        legend: {
+                            data: [],
+                            orient: 'vertical',
+                            left: '85%',
+                            top: '10%',
+                            formatter:function (name) {
+                                return dict[name];
+                            }
+
+                        },
+                        grid: {
+                            left: '3%',
+                            right: '4%',
+                            bottom: '10%',
+                            containLabel: true
+                        },
+                        toolbox: {
+                            feature: {
+                                saveAsImage: {},
+                            }
+                        },
+                        xAxis: {
+                            type: 'category',
+                            boundaryGap: false,
+                            axisTick: {
+                                show: false
+                            },
+                            data: data.the_year,
+                            Interval: 5
+                        },
+                        yAxis: {
+                            type: 'value',
+                            name:"单位：元",
+                            axisTick: {
+                                show: false
+                            },
+                        },
+                        dataZoom: [
+                            {   // 这个dataZoom组件，默认控制x轴。
+                                type: 'slider', // 这个 dataZoom 组件是 slider 型 dataZoom 组件
+                                xAxisIndex: [0],
+                                {#   start: 0,      // 左边在 10% 的位置。
                             end: 100,         // 右边在 60% 的位置。
                             top: '93%'#}
-                            filterMode: 'filter',
+                                filterMode: 'filter',
+                            }
+                        ],
+                        series: dataSeries
+                    };
+
+                    myChart.setOption(option,true);
+                    myChart.on('datazoom', function (params) {
+                        option.xAxis.interval = 10 * (params.end - params.start) / 100
+                    })
+                    myChart.on('click', function (params) {
+                        var index = params.seriesIndex;
+                        if (selectedindexes.indexOf(index) != -1) {
+                            console.log(selectedindexes);
+                            option.series[index].lineStyle.normal.color = '#C4D2DB';
+                            option.series[index].itemStyle.normal.color = '#C4D2DB';
+                            tempspan = $("span#" + option.series[index].name);
+                            $("#unselected").append(" ");
+                            tempspan.clone(true).appendTo("#unselected");
+                            tempspan.remove();
+                            $("span#" + option.series[index].name).css('color', 'white');
+                            selectedindexes.splice(selectedindexes.indexOf(index), 1);
+                            selectedindexname.splice(selectedindexes.indexOf(option.series[index].name), 1)
+                            option.legend.data=selectedindexname;
                         }
-                    ],
-                    series: dataSeries
-                };
-                selectedindexes = [];
-                selectednum=0;
-                myChart.setOption(option);
-                myChart.on('datazoom', function (params) {
-                    option.xAxis.interval = 10 * (params.end - params.start) / 100
-                })
-                myChart.on('click', function (params) {
-                    var index = params.seriesIndex;
-                    if (selectedindexes.length < 6) {
-                    if (selectedindexes.indexOf(index) != -1) {
-                        option.series[index].lineStyle.normal.color = '#C4D2DB';
-                        tempspan=$("span#"+option.series[index].name);
-                        $("#unselected").append(" ");
-                        tempspan.clone(true).appendTo("#unselected");
-                        tempspan.remove();
-                        $("span#"+option.series[index].name).css('color','white');
-                        selectedindexes.splice(selectedindexes.indexOf(index), 1);
-                        selectednum-=1;
-                    }
-                    else {
-                        option.series[index].lineStyle.normal.color =colorlist[selectednum];
-                        tempspan=$("span#"+option.series[index].name);
-                        $("#selected").append(" ");
-                        tempspan.clone(true).appendTo("#selected");
-                        tempspan.remove();
-                        $("span#"+option.series[index].name).css('color',colorlist[selectednum]);
-                        selectednum+=1;
-                        selectedindexes.push(index);
-                    }
-                    myChart.setOption(option)
-                    }
-                })
-                myChart.on('mouseover', function (params) {
-                    color = option.series[params.seriesIndex].lineStyle.normal.color
-                    if (color == '#C4D2DB') {
-                        option.series[params.seriesIndex].lineStyle.normal.color = '#29465A'
-                        myChart.setOption(option);
-                    }
-                })
-                myChart.on('mouseout', function (params) {
-                    color = option.series[params.seriesIndex].lineStyle.normal.color
-                    if (color == '#29465A') {
-                        option.series[params.seriesIndex].lineStyle.normal.color = '#C4D2DB'
-                        myChart.setOption(option);
-                    }
-                })
-            }
-        })
+                        else {
+
+                            tempcolor = NewColor();
+                            option.series[index].lineStyle.normal.color = tempcolor;
+                            option.series[index].itemStyle.normal.color = tempcolor;
+                            tempspan = $("span#" + option.series[index].name);
+                            $("#selected").append(" ");
+                            tempspan.clone(true).appendTo("#selected");
+                            tempspan.remove();
+                            $("span#" + option.series[index].name).css('color', tempcolor);
+                            selectedindexes.push(index);
+                            selectedindexname.push(option.series[index].name)
+                            option.legend.data=selectedindexname;
+                        }
+                        myChart.setOption(option)
+
+                    })
+                    myChart.on('mouseover', function (params) {
+                        color = option.series[params.seriesIndex].lineStyle.normal.color
+                        if (color == '#C4D2DB') {
+                            option.series[params.seriesIndex].lineStyle.normal.color = '#29465A';
+                            option.series[params.seriesIndex].itemStyle.normal.color = '#29465A'
+                            myChart.setOption(option);
+                        }
+                    })
+                    myChart.on('mouseout', function (params) {
+                        color = option.series[params.seriesIndex].lineStyle.normal.color
+                        if (color == '#29465A') {
+                            option.series[params.seriesIndex].lineStyle.normal.color = '#C4D2DB';
+                            option.series[params.seriesIndex].itemStyle.normal.color = '#C4D2DB';
+                            myChart.setOption(option);
+                        }
+                    })
+                }
+            })
+        }
 
     </script>
     <script>
-
     function CreateTable() {
         var opt = myChart.getOption();
         var dz = opt.dataZoom[0];
@@ -261,7 +347,7 @@
             stockcode:'000001',
             starttime: opt.xAxis[0].data[dz.endValue],
             endtime:opt.xAxis[0].data[dz.startValue],
-            indexes:['tot_oper_cost','tot_oper_rev']
+            indexes: Chosenindexes
 //            indexes:['tot_oper_rev']
         };
         $.ajax({
@@ -277,7 +363,7 @@
                 th.appendTo(table);
                 var tr = $("<tr></tr>");
                 tr.appendTo(th);
-                 var td = $("<td>" + "项目"+ "</td>");
+                var td = $("<td id=\"subject\">" + "项目"+ "</td>");
                     td.appendTo(tr);
                 for (var j = 0; j < data.the_year.length; j++) {
                     var td = $("<td>" + data.the_year[j] + "</td>");
@@ -291,10 +377,14 @@
                     "processing": true,
                     "scrollX": true,
                     "searching": true,
+                    "fixedColumns": { //固定列的配置项
+                        "leftColumns": 1//固定左边第一列
+                    },
 
 
 
                 });
+
                 for (var i = 0; i < data.indexes.length; i++) {
                     var rowNode = mydatatb
                         .row.add([dict[data.indexes[i]]].concat(eval("data." + data.indexes[i])))
@@ -306,12 +396,23 @@
                 for (var i = 0; i < selectedindexes.length; i++)   {
                     index=selectedindexes[i];
                     $('tr#'+option.series[index].name).css('color',option.series[index].lineStyle.normal.color)
-
                 }
+
+                setTimeout("$(\"#subject\").trigger(\"click\")",100)
 
             }
         })
     }
+    function NewColor() {
+        var colorElements = "0,1,2,3,4,5,6,7,8,9,a,b,c,d,e,f";
+        var colorArray = colorElements.split(",");
+        var color ="#";
+        for(var i =0;i<6;i++){
+            color+=colorArray[Math.floor(Math.random()*16)];
+        }
+        return color;
+    }
+
     </script>
 
 
