@@ -7,10 +7,33 @@
     {% block tab %}{% endblock %}
     <br>
     {% block form %}{% endblock %}
-    <div id="myTabContent">
-        {% block container %}{% endblock %} <!--annual和status两个表的height不一样-->
-    </div>
-    {% block navigation %} {% endblock %}
-{% endblock %}<SCRIPT Language=VBScript><!--
+            <div id="basics" style="height:70%;width: 100%;">
+            <div class="leftbox">
+                {% block choice %}{% endblock %}
+            </div>
+            <div class="rightbox">
+                <ul id="myTab" class="nav nav-tabs">
+                    <li class="disabled">
+                        <a href="javascript:return false;" data-toggle="tab" disabled='true'>视图：</a>
+                    </li>
+                    <li><a href="#chart" data-toggle="tab">图表</a></li>
+                    <li><a href="#table" data-toggle="tab" onclick="CreateTable()">数据</a></li>
+                </ul>
+                <div id="myTabContent" class="tab-content">
+                    <div class="tab-pane fade in active" id="chart">
+                        {% block chart %}{% endblock %}
+                    </div>
+                    <div class="tab-pane fade" id="table">
+                        {% block table %}{% endblock %}
+                    </div>
+                </div>
+                <div class="well well-lg" >
+                    {% block toolbox %}{% endblock %}
+                </div>
 
-//--></SCRIPT>
+            </div>
+
+        </div>
+    </div>
+    {% block scripts %} {% endblock %} <!--auto complete-->
+{% endblock %}

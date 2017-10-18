@@ -16,7 +16,25 @@
                 {% block choice %}{% endblock %}
             </div>
             <div class="rightbox">
-                {% block table %}{% endblock %}
+                <ul id="myTab" class="nav nav-tabs">
+                    <li class="disabled">
+                        <a href="javascript:return false;" data-toggle="tab" disabled='true'>视图：</a>
+                    </li>
+                    <li><a href="#chart" data-toggle="tab">图表</a></li>
+                    <li><a href="#table" data-toggle="tab" onclick="CreateTable()">数据</a></li>
+                </ul>
+                <div id="myTabContent" class="tab-content">
+                    <div class="tab-pane fade in active" id="chart">
+                        {% block chart %}{% endblock %}
+                    </div>
+                    <div class="tab-pane fade" id="table">
+                        {% block table %}{% endblock %}
+                    </div>
+                </div>
+                <div class="well well-lg" >
+                    {% block toolbox %}{% endblock %}
+                </div>
+
             </div>
 
         </div>
