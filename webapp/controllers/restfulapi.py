@@ -1,5 +1,5 @@
-#encoding=utf-8
-from flask import Blueprint, redirect, render_template, url_for, request,session,make_response,jsonify
+# encoding=utf-8
+from flask import Blueprint, redirect, render_template, url_for, request, session, make_response, jsonify
 from webapp.models import *
 import MySQLdb, time, re
 
@@ -9,15 +9,14 @@ api_blueprint = Blueprint(
     url_prefix='/api'
 )
 
-@api_blueprint.route("/finance_data/",methods=('GET','POST'))
-def finance_data():
 
+# 数据库查询api 用于Ajax数据返回 json格式数据
+@api_blueprint.route("/finance_data/", methods=('GET', 'POST'))
+def finance_data():
     stockcode = request.args.get('stockcode')
     starttime = request.args.get('starttime')
     endtime = request.args.get('endtime')
     indexes = request.args.getlist('indexes[]')
-
-
     filters = {
         finance_basics.trade_code == stockcode,
         finance_basics.the_year >= starttime,
@@ -26,23 +25,56 @@ def finance_data():
     results = finance_basics.query.filter(*filters).all()
 
     data = {}
-    year_list=[]
-
-
+    year_list = []
 
     for index in indexes:
-        exec(index+"_list=[]")
+        exec (index + "_list=[]")
 
     for result in results:
-        year_list.append (result.the_year)
+        year_list.append(result.the_year)
         for index in indexes:
-            if eval("result."+index) is None:
-                exec (index + "_list.append(result."+index+")")
+            if eval("result." + index) is None:
+                exec (index + "_list.append(result." + index + ")")
             else:
-                exec(index+"_list.append(float(result."+index+"))")
+                exec (index + "_list.append(float(result." + index + "))")
     data['stock_code'] = stockcode
     data['the_year'] = year_list
-    data['indexes']=indexes
+    data['indexes'] = indexes
     for index in indexes:
-        exec("data['"+index+"']="+index+"_list")
+        exec ("data['" + index + "']=" + index + "_list")
+    return jsonify(data)
+
+
+@api_blueprint.route("/invest_data/", methods=('GET', 'POST'))
+def invest_data():
+    stockcode = request.args.get('stockcode')
+    starttime = request.args.get('starttime')
+    endtime = request.args.get('endtime')
+    indexes = request.args.getlist('indexes[]')
+
+    filters = {
+        invest_values.trade_code == stockcode,
+        invest_values.the_year >= starttime,
+        invest_values.the_year <= endtime,
+    }
+    results = invest_values.query.filter(*filters).all()
+
+    data = {}
+    year_list = []
+
+    for index in indexes:
+        exec (index + "_list=[]")
+
+    for result in results:
+        year_list.append(result.the_year)
+        for index in indexes:
+            if eval("result." + index) is None:
+                exec (index + "_list.append(result." + index + ")")
+            else:
+                exec (index + "_list.append(float(result." + index + "))")
+    data['stock_code'] = stockcode
+    data['the_year'] = year_list
+    data['indexes'] = indexes
+    for index in indexes:
+        exec ("data['" + index + "']=" + index + "_list")
     return jsonify(data)

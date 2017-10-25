@@ -1,3 +1,0 @@
-1 stock_solo.py中的画图功能是将图保存到了本地，因此需要修改自己的本地地址
-  原代码：plt.savefig('D:/MasteringFlask/webapp/static/test.svg')
-  改成：plt.savefig('——*自己的地址*——')

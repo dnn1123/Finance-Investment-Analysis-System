@@ -1,4 +1,4 @@
-{% extends "stock_base_xb.html" %}
+{% extends "stock_base.html" %}
 
 {% block current_user %}
     当前用户：{{ current_user.username }}
@@ -7,12 +7,10 @@
 {% block body %}
 	{% block tab %}{% endblock %}
 <br>
-	{% block form %}{% endblock %}
-
-    <!-- 以下对应四个功能页面-->
+	{% block search %}{% endblock %}
     <div id="myTabContent">
-        <div id="basics" style="height:70%;width: 100%;">
-            <div class="leftbox">
+        <div id="basics" style="height:80%;width: 100%;">
+            <div class="leftbox" style="position:relative;">
                 {% block choice %}{% endblock %}
             </div>
             <div class="rightbox">
@@ -21,7 +19,7 @@
                         <a href="javascript:return false;" data-toggle="tab" disabled='true'>视图：</a>
                     </li>
                     <li><a href="#chart" data-toggle="tab">图表</a></li>
-                    <li><a href="#table" data-toggle="tab" onclick="CreateTable()">数据</a></li>
+                    <li><a href="#table" data-toggle="tab" onclick="RequestTable()">数据</a></li>
                 </ul>
                 <div id="myTabContent" class="tab-content">
                     <div class="tab-pane fade in active" id="chart">
@@ -40,5 +38,5 @@
         </div>
     </div>
 
-    {% block scripts %} {% endblock %} <!--auto complete-->
+    {% block scripts %} {% endblock %}
 {% endblock %}
