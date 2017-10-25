@@ -1,51 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="64cee1a6-6dc2-43ac-8557-6a1bfe29d5ef" name="默认的" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/flask.wsgi" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/mytest5-4.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/controllers/test.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/plt.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/templates/base.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/templates/main/base.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/templates/main/register.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/templates/test.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/说明-170807.txt" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/manage.py" afterPath="$PROJECT_DIR$/manage.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/requirements.txt" afterPath="$PROJECT_DIR$/requirements.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/webapp/__init__.py" afterPath="$PROJECT_DIR$/webapp/__init__.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/webapp/config.py" afterPath="$PROJECT_DIR$/webapp/config.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/webapp/controllers/global_industry.py" afterPath="$PROJECT_DIR$/webapp/controllers/global_industry.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/webapp/controllers/industry_analysis.py" afterPath="$PROJECT_DIR$/webapp/controllers/industry_analysis.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/webapp/controllers/invest_env.py" afterPath="$PROJECT_DIR$/webapp/controllers/invest_env.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/webapp/controllers/main.py" afterPath="$PROJECT_DIR$/webapp/controllers/main.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/webapp/controllers/restfulapi.py" afterPath="$PROJECT_DIR$/webapp/controllers/restfulapi.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/webapp/controllers/stock.py" afterPath="$PROJECT_DIR$/webapp/controllers/stock.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/webapp/controllers/stock_group.py" afterPath="$PROJECT_DIR$/webapp/controllers/stock_group.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/webapp/controllers/stock_solo.py" afterPath="$PROJECT_DIR$/webapp/controllers/stock_solo.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/webapp/extensions.py" afterPath="$PROJECT_DIR$/webapp/extensions.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/webapp/forms.py" afterPath="$PROJECT_DIR$/webapp/forms.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/webapp/models.py" afterPath="$PROJECT_DIR$/webapp/models.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/webapp/templates/global_industry/global_industry_base.html" afterPath="$PROJECT_DIR$/webapp/templates/global_industry/global_industry_base.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/webapp/templates/industry_analysis/industry_analysis_base.html" afterPath="$PROJECT_DIR$/webapp/templates/industry_analysis/industry_analysis_base.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/webapp/templates/invest_env/invest_env_base.html" afterPath="$PROJECT_DIR$/webapp/templates/invest_env/invest_env_base.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/webapp/templates/main/login.html" afterPath="$PROJECT_DIR$/webapp/templates/main/login.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/webapp/templates/stock/home.html" afterPath="$PROJECT_DIR$/webapp/templates/stock/home.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/webapp/templates/stock_group/cns/cns_base.html" afterPath="$PROJECT_DIR$/webapp/templates/stock_group/cns/cns_base.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/webapp/templates/stock_group/hks/hks_base.html" afterPath="$PROJECT_DIR$/webapp/templates/stock_group/hks/hks_base.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/webapp/templates/stock_group/navigation.html" afterPath="$PROJECT_DIR$/webapp/templates/stock_group/navigation.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/webapp/templates/stock_group/usa/first.html" afterPath="$PROJECT_DIR$/webapp/templates/stock_group/usa/first.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/webapp/templates/stock_group/usa/industry_filter.html" afterPath="$PROJECT_DIR$/webapp/templates/stock_group/usa/industry_filter.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/webapp/templates/stock_group/usa/usa_alter_sub_industry.html" afterPath="$PROJECT_DIR$/webapp/templates/stock_group/usa/usa_alter_sub_industry.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/webapp/templates/stock_group/usa/usa_base.html" afterPath="$PROJECT_DIR$/webapp/templates/stock_group/usa/usa_base.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/webapp/templates/stock_solo/finance_data.html" afterPath="$PROJECT_DIR$/webapp/templates/stock_solo/finance_data.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/webapp/templates/stock_solo/stock_solo_base.html" afterPath="$PROJECT_DIR$/webapp/templates/stock_solo/stock_solo_base.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/webapp/templates/stock_solo/stock_solo_basic.html" afterPath="$PROJECT_DIR$/webapp/templates/stock_solo/stock_solo_basic.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/webapp/templates/stock_solo/stock_solo_finance_data.html" afterPath="$PROJECT_DIR$/webapp/templates/stock_solo/stock_solo_finance_data.html" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/webapp/templates/stock_base.html" afterPath="$PROJECT_DIR$/webapp/templates/main/homepage_base.html" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/webapp/templates/stock_base_xb.html" afterPath="$PROJECT_DIR$/webapp/templates/stock_base.html" />
-    </list>
+    <list default="true" id="64cee1a6-6dc2-43ac-8557-6a1bfe29d5ef" name="默认的" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -625,7 +581,14 @@
       <option name="project" value="LOCAL" />
       <updated>1508291661783</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="2017-10-25">
+      <created>1508941368265</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1508941368265</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TodoView">
@@ -640,7 +603,7 @@
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="784" extended-state="6" />
     <layout>
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.37291983" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.37291983" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="调试" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32923076" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="12" side_tool="true" content_ui="tabs" />
@@ -649,7 +612,7 @@
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.30461538" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="运行" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.33692306" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="运行" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33692306" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -697,7 +660,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="2017-10-17" />
     <MESSAGE value="2017-10-18" />
-    <option name="LAST_COMMIT_MESSAGE" value="2017-10-18" />
+    <MESSAGE value="2017-10-25" />
+    <option name="LAST_COMMIT_MESSAGE" value="2017-10-25" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
