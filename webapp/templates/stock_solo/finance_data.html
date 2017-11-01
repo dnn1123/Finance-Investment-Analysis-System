@@ -12,7 +12,13 @@
     <div class="container-fluid">
       <form class="navbar-form navbar-left" role="search" method="post" action="{{ url_for('stock_solo.invest_value') }}">
         <div class="input-group">
-          <input type="text" class="form-control" placeholder="Search" name="stockcode">
+         <input type="text" class="form-control" placeholder="Search" name="stockcode">
+            {#<select  class="selectpicker form-control"  data-live-search="true"  name="stockcode">
+                        <option>cow</option>
+                        <option>bull</option>
+                        <option class="get-class" disabled>ox</option>
+
+            </select>#}
           <div class="input-group-btn">
             <button class="btn btn-default" type="submit" onclick="search()" style="padding: 8.5px 12px"><span class="glyphicon glyphicon-search"></span></button>
           </div>
@@ -20,7 +26,13 @@
       </form>
     </div>
     <script>
+$(document).ready(function () {
 
+    $('.selectpicker').selectpicker({
+    });
+
+    // $('.selectpicker').selectpicker('hide');
+})
     </script>
 {% endblock %}
 
