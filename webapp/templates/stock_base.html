@@ -2,29 +2,28 @@
 <head>
     <meta charset='utf-8'>
 
-    <script type="text/javascript" src="{{ url_for('static',filename='js/jquery-2.0.0.min.js') }}"></script>
-    <script type="text/javascript" src="{{ url_for('static',filename='js/jquery-ui') }}"></script>
-    <script type="text/javascript" src="{{ url_for('static',filename='js/echarts.js')}}"></script>
-    <script type="text/javascript" src="{{ url_for('static',filename='DataTables-1.10.15/media/js/jquery.dataTables.js')}}"></script>
-    <script type="text/javascript" src="{{ url_for('static',filename='DataTables-1.10.15/fixedcolumns/js/dataTables.fixedColumns.js')}}"></script>
-    <script type="text/javascript" src="{{ url_for('static',filename='icheck/icheck.js')}}"></script>
-    <script type="text/javascript" src="{{ url_for('static',filename='js/bootstrap.min.js') }}"></script>
-    <script type="text/javascript" src="{{ url_for('static',filename='bootstrap_datetimepicker/js/bootstrap-datetimepicker.js') }}"></script>
-    <script type="text/javascript" src="{{ url_for('static',filename='bootstrap_select/js/bootstrap-select.js') }}"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
 
-
-
-    <link href="{{ url_for('static',filename='bootstrap_select/css/bootstrap-select.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ url_for('static',filename='bootstrap_datetimepicker/css/bootstrap-datetimepicker.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ url_for('static',filename='icheck/skins/minimal/blue.css') }}" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+    <script src="https://cdn.bootcss.com/jqueryui/1.11.0/jquery-ui.min.js"></script>
+    <link href="https://cdn.bootcss.com/jqueryui/1.11.0/jquery-ui.min.css" rel="stylesheet">
     <link rel="stylesheet" href="http://jqueryui.com/resources/demos/style.css">
-    <link href="{{ url_for('static',filename='DataTables-1.10.15/media/css/jquery.dataTables.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ url_for('static',filename='DataTables-1.10.15/fixedcolumns/css/fixedColumns.dataTables.css') }}" rel="stylesheet" type="text/css">
-<!--链接本地文件的写法，css和js的写法不一样 ps:还有一个js文件在上面-->
 
-   <link href="{{ url_for('static',filename='css/bootstrap.min.css') }}" rel="stylesheet" media="screen">
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
 
+    <script src="https://cdn.bootcss.com/iCheck/1.0.2/icheck.min.js"></script>
+    <link href="https://cdn.bootcss.com/iCheck/1.0.2/skins/minimal/blue.css" rel="stylesheet">
+
+    <script src="https://cdn.bootcss.com/echarts/3.7.2/echarts.min.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.16/fc-3.2.3/datatables.min.css"/>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.16/fc-3.2.3/datatables.min.js"></script>
+
+    <script src="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
+    <link href="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+
+    <script src="https://cdn.bootcss.com/bootstrap-select/2.0.0-beta1/js/bootstrap-select.min.js"></script>
+    <link href="https://cdn.bootcss.com/bootstrap-select/2.0.0-beta1/css/bootstrap-select.min.css" rel="stylesheet">
     <!--自动补全-->
     <script>
       $(function() {
@@ -114,7 +113,7 @@
 <nav class="navbar navbar-inverse " role="navigation">
     <div class="container-fluid">
         <div class="navbar-header">
-            <img src="../static/logo_white_test.png">
+            <img src="{{ url_for('static',filename='resources/logo_white.png') }}">
         </div><!--OK-->
         <div>
             <a class="navbar-brand" href="#">金融投资分析系统</a>

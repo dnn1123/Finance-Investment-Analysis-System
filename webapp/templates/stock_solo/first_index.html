@@ -10,7 +10,7 @@
 <body>
 <div id="container" style="margin:0 auto;width:70%;">
     <div id="first-line" style="width: 100%; height:130px;">
-        <div style="border-left:2px solid #00008b; border-top: 2px solid #00008b; width:20%; height:100%; float:left;"><img src="../static/logo.png" style="margin-top: 20px; margin-left: 20px;"></div>
+        <div style="border-left:2px solid #00008b; border-top: 2px solid #00008b; width:20%; height:100%; float:left;"><img src="{{ url_for('static',filename='resources/logo.png') }}" style="margin-top: 20px; margin-left: 20px;"></div>
         <div style="border-left:1px solid #00008b; border-top: 2px solid #00008b; border-right:2px solid #00008b; width:80%; height:100%; float:right;">
             <div style="border-top:1px;border-right: 1px;border-bottom: 2px ; background-color: orangered; width:100%; height:30%;margin-top: 90px;">
                 <div class="panel-body" style="width: 14.28%; float: left;"><font style="color: white;">证券代码</font></div>

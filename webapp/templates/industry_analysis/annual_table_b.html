@@ -168,7 +168,7 @@
                     {% if rs[x].tot_oper_rev ==None %}
                         NA
                     {% else %}
-                        <div style="width: {{ (rs[x].tot_oper_rev/max_tot_oper_rev)*100 }}%;background-image: url(../../static/jianbian2.jpg);background-repeat:no-repeat">
+                        <div style="width: {{ (rs[x].tot_oper_rev/max_tot_oper_rev)*100 }}%;background-image: url({{ url_for('static',filename='resources/jianbian2.jpg') }});background-repeat:no-repeat">
                         {{ (rs[x].tot_oper_rev/100000000)|round(2) }}
                         </div>
                     {% endif %}
@@ -178,7 +178,7 @@
                         NA
                     {% else %}
                         {% if rs[x].net_profit_is > 0 %} <!--净利润 有为负数的情况-->
-                            <div style="width: {{ (rs[x].net_profit_is/max_net_profit_is)*100 }}%;background-image: url(../../static/jianbian2.jpg);background-repeat:no-repeat">
+                            <div style="width: {{ (rs[x].net_profit_is/max_net_profit_is)*100 }}%;background-image: url({{ url_for('static',filename='resources/jianbian2.jpg') }});background-repeat:no-repeat">
                                 {{ (rs[x].net_profit_is/100000000)|round(2) }}
                             </div>
                         {% else %}
@@ -191,7 +191,7 @@
                         NA
                     {% else %}
                         {% if rs[x].wgsd_net_inc > 0 %} <!--归属股东利润总额 有为负数的情况-->
-                            <div style="width: {{ (rs[x].wgsd_net_inc/max_wgsd_net_inc)*100 }}%;background-image: url(../../static/jianbian2.jpg);background-repeat:no-repeat">
+                            <div style="width: {{ (rs[x].wgsd_net_inc/max_wgsd_net_inc)*100 }}%;background-image: url({{ url_for('static',filename='resources/jianbian2.jpg') }});background-repeat:no-repeat">
                                 {{ (rs[x].wgsd_net_inc/100000000)|round(2) }}
                             </div>
                         {% else %}
@@ -203,7 +203,7 @@
                     {% if rs[x].tot_assets ==None %}
                         NA
                     {% else %}
-                        <div style="width: {{ (rs[x].tot_assets/max_tot_assets)*100 }}%;background-image: url(../../static/jianbian2.jpg);background-repeat:no-repeat">
+                        <div style="width: {{ (rs[x].tot_assets/max_tot_assets)*100 }}%;background-image: url({{ url_for('static',filename='resources/jianbian2.jpg') }});background-repeat:no-repeat">
                         {{ (rs[x].tot_assets/100000000)|round(2) }}
                         </div>
                     {% endif %}
@@ -212,7 +212,7 @@
                     {% if rs[x].tot_liab ==None %}
                         NA
                     {% else %}
-                        <div style="width: {{ (rs[x].tot_liab/max_tot_liab)*100 }}%;background-image: url(../../static/jianbian2.jpg);background-repeat:no-repeat">
+                        <div style="width: {{ (rs[x].tot_liab/max_tot_liab)*100 }}%;background-image: url({{ url_for('static',filename='resources/jianbian2.jpg') }});background-repeat:no-repeat">
                         {{ (rs[x].tot_liab/100000000)|round(2) }}
                         </div>
                     {% endif %}
@@ -221,7 +221,7 @@
                     {% if rs[x].net_assets ==None %}
                         NA
                     {% else %} <!--问题？净资产能为负数吗，破产了吗-->
-                        <div style="width: {{ (rs[x].net_assets/max_net_assets)*100 }}%;background-image: url(../../static/jianbian2.jpg);background-repeat:no-repeat">
+                        <div style="width: {{ (rs[x].net_assets/max_net_assets)*100 }}%;background-image: url({{ url_for('static',filename='resources/jianbian2.jpg') }});background-repeat:no-repeat">
                         {{ (rs[x].net_assets/100000000)|round(2) }}
                         </div>
                     {% endif %}
@@ -230,7 +230,7 @@
                     {% if rs[x].wgsd_com_eq ==None %}
                         NA
                     {% else %}
-                        <div style="width: {{ (rs[x].wgsd_com_eq/max_wgsd_com_eq)*100 }}%;background-image: url(../../static/jianbian2.jpg);background-repeat:no-repeat">
+                        <div style="width: {{ (rs[x].wgsd_com_eq/max_wgsd_com_eq)*100 }}%;background-image: url({{ url_for('static',filename='resources/jianbian2.jpg') }});background-repeat:no-repeat">
                             {{ (rs[x].wgsd_com_eq/100000000)|round(2) }}
                         </div>
                     {% endif %}

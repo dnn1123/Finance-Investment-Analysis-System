@@ -48,7 +48,7 @@
                             <tr>
                                 <td>{{ department_industry_count[x][4] }}</td>
                                 <td>
-                                    <img src="../../../static/jianbian.jpg" style="width: {{ (department_industry_count[x][0]/department_industry_count_max_value)*100 }}%;height: 15px;">
+                                    <img src="{{ url_for('static',filename='resources/jianbian.jpg') }}" style="width: {{ (department_industry_count[x][0]/department_industry_count_max_value)*100 }}%;height: 15px;">
                                 </td>
                                 <td>{{ department_industry_count[x][0] }}</td>
                             </tr>
@@ -72,7 +72,7 @@
                                 <td>{{ group_industry_count[x][4] }}</td>
                                 <td>{{ group_industry_count[x][3] }}</td>
                                 <td>
-                                    <img src="../../../static/jianbian.jpg" style="width: {{ (group_industry_count[x][0]/group_industry_count_max_value)*100 }}%;height: 15px;">
+                                    <img src="{{ url_for('static',filename='resources/jianbian.jpg') }}" style="width: {{ (group_industry_count[x][0]/group_industry_count_max_value)*100 }}%;height: 15px;">
                                 </td>
                                 <td>{{ group_industry_count[x][0] }}</td>
                             </tr>
@@ -98,7 +98,7 @@
                                 <td>{{ industry_count[x][3] }}</td>
                                 <td>{{ industry_count[x][2] }}</td>
                                 <td>
-                                    <img src="../../../static/jianbian.jpg" style="width: {{ (industry_count[x][0]/industry_count_max_value)*100 }}%;height: 15px;">
+                                    <img src="{{ url_for('static',filename='resources/jianbian.jpg') }}" style="width: {{ (industry_count[x][0]/industry_count_max_value)*100 }}%;height: 15px;">
                                 </td>
                                 <td>{{ industry_count[x][0] }}</td>
                             </tr>
@@ -126,7 +126,7 @@
             <td>{{ sub_industry_count[x][2] }}</td>
             <td>{{ sub_industry_count[x][1] }}</td>
             <td>
-                <img src="../../../static/jianbian.jpg" style="width: {{ (sub_industry_count[x][0]/sub_industry_count_max_value)*100 }}%;height: 15px;">
+                <img src="{{ url_for('static',filename='resources/jianbian.jpg') }}" style="width: {{ (sub_industry_count[x][0]/sub_industry_count_max_value)*100 }}%;height: 15px;">
             </td>
             <td style="text-align: right;">
                 {{ sub_industry_count[x][0] }}
@@ -150,7 +150,7 @@
                             <tr>
                                 <td>{{ province_count[x][0] }}</td>
                                 <td>
-                                    <img src="../../../static/jianbian.jpg" style="width: {{ (province_count[x][1]/province_count_max_value)*100 }}%;height: 15px;">
+                                    <img src="{{ url_for('static',filename='resources/jianbian.jpg') }}" style="width: {{ (province_count[x][1]/province_count_max_value)*100 }}%;height: 15px;">
                                 </td>
                                 <td>{{ province_count[x][1] }}</td>
                             </tr>

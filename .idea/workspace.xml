@@ -2,9 +2,957 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="64cee1a6-6dc2-43ac-8557-6a1bfe29d5ef" name="默认的" comment="2017-10-25">
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/123.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/24.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/Contributing.md" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/ISSUE_TEMPLATE.md" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/Readme.md" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/advanced_init/column_render.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/advanced_init/complex_header.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/advanced_init/defaults.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/advanced_init/dom_multiple_elements.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/advanced_init/dom_toolbar.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/advanced_init/dt_events.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/advanced_init/events_live.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/advanced_init/footer_callback.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/advanced_init/html5-data-attributes.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/advanced_init/html5-data-options.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/advanced_init/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/advanced_init/language_file.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/advanced_init/length_menu.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/advanced_init/object_dom_read.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/advanced_init/row_callback.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/advanced_init/row_grouping.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/advanced_init/sort_direction_control.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/ajax/custom_data_flat.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/ajax/custom_data_property.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/ajax/data/arrays.txt" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/ajax/data/arrays_custom_prop.txt" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/ajax/data/arrays_subobjects.txt" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/ajax/data/objects.txt" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/ajax/data/objects_deep.txt" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/ajax/data/objects_root_array.txt" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/ajax/data/objects_subarrays.txt" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/ajax/data/orthogonal.txt" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/ajax/deep.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/ajax/defer_render.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/ajax/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/ajax/null_data_source.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/ajax/objects.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/ajax/objects_subarrays.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/ajax/orthogonal-data.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/ajax/simple.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/api/add_row.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/api/api_in_init.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/api/counter_columns.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/api/form.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/api/highlight.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/api/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/api/multi_filter.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/api/multi_filter_select.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/api/regex.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/api/row_details.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/api/select_row.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/api/select_single_row.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/api/show_hide.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/api/tabs_and_scrolling.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/basic_init/alt_pagination.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/basic_init/comma-decimal.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/basic_init/complex_header.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/basic_init/dom.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/basic_init/filter_only.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/basic_init/flexible_width.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/basic_init/hidden_columns.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/basic_init/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/basic_init/language.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/basic_init/multi_col_sort.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/basic_init/multiple_tables.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/basic_init/scroll_x.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/basic_init/scroll_xy.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/basic_init/scroll_y.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/basic_init/scroll_y_dynamic.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/basic_init/state_save.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/basic_init/table_sorting.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/basic_init/zero_configuration.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/data_sources/ajax.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/data_sources/dom.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/data_sources/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/data_sources/js_array.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/data_sources/server_side.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/plug-ins/api.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/plug-ins/dom_sort.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/plug-ins/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/plug-ins/range_filtering.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/plug-ins/sorting_auto.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/plug-ins/sorting_manual.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/resources/demo.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/resources/demo.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/resources/details_close.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/resources/details_open.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/resources/examples.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/resources/syntax/Syntax Highlighter license" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/resources/syntax/shCore.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/resources/syntax/shCore.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/server_side/custom_vars.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/server_side/defer_loading.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/server_side/ids.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/server_side/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/server_side/jsonp.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/server_side/object_data.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/server_side/pipeline.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/server_side/post.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/server_side/row_details.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/server_side/scripts/ids-arrays.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/server_side/scripts/ids-objects.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/server_side/scripts/jsonp.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/server_side/scripts/mysql.sql" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/server_side/scripts/objects.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/server_side/scripts/oracle.sql" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/server_side/scripts/post.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/server_side/scripts/postgres.sql" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/server_side/scripts/server_processing.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/server_side/scripts/sqlite.sql" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/server_side/scripts/sqlserver.sql" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/server_side/scripts/ssp.class.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/server_side/select_rows.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/server_side/simple.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/styling/bootstrap.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/styling/bootstrap4.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/styling/cell-border.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/styling/compact.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/styling/display.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/styling/foundation.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/styling/hover.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/styling/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/styling/jqueryUI.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/styling/material.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/styling/no-classes.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/styling/order-column.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/styling/row-border.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/styling/semanticui.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/styling/stripe.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/examples/styling/uikit.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/AutoFill/License.txt" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/AutoFill/Readme.md" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/AutoFill/css/autoFill.bootstrap.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/AutoFill/css/autoFill.bootstrap.min.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/AutoFill/css/autoFill.bootstrap4.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/AutoFill/css/autoFill.bootstrap4.min.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/AutoFill/css/autoFill.dataTables.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/AutoFill/css/autoFill.dataTables.min.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/AutoFill/css/autoFill.foundation.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/AutoFill/css/autoFill.foundation.min.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/AutoFill/css/autoFill.jqueryui.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/AutoFill/css/autoFill.jqueryui.min.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/AutoFill/css/autoFill.semanticui.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/AutoFill/css/autoFill.semanticui.min.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/AutoFill/examples/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/AutoFill/examples/initialisation/alwaysAsk.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/AutoFill/examples/initialisation/columns.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/AutoFill/examples/initialisation/enableDisable.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/AutoFill/examples/initialisation/events.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/AutoFill/examples/initialisation/fills.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/AutoFill/examples/initialisation/focus.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/AutoFill/examples/initialisation/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/AutoFill/examples/initialisation/keyTable.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/AutoFill/examples/initialisation/plugins.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/AutoFill/examples/initialisation/scrolling.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/AutoFill/examples/initialisation/simple.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/AutoFill/examples/styling/bootstrap.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/AutoFill/examples/styling/bootstrap4.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/AutoFill/examples/styling/foundation.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/AutoFill/examples/styling/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/AutoFill/examples/styling/jqueryui.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/AutoFill/examples/styling/semanticui.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/AutoFill/js/autoFill.bootstrap.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/AutoFill/js/autoFill.bootstrap.min.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/AutoFill/js/autoFill.bootstrap4.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/AutoFill/js/autoFill.bootstrap4.min.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/AutoFill/js/autoFill.foundation.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/AutoFill/js/autoFill.foundation.min.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/AutoFill/js/autoFill.jqueryui.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/AutoFill/js/autoFill.jqueryui.min.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/AutoFill/js/autoFill.semanticui.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/AutoFill/js/autoFill.semanticui.min.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/AutoFill/js/dataTables.autoFill.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/AutoFill/js/dataTables.autoFill.min.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/License.txt" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/Readme.md" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/css/buttons.bootstrap.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/css/buttons.bootstrap.min.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/css/buttons.bootstrap4.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/css/buttons.bootstrap4.min.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/css/buttons.dataTables.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/css/buttons.dataTables.min.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/css/buttons.foundation.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/css/buttons.foundation.min.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/css/buttons.jqueryui.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/css/buttons.jqueryui.min.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/css/buttons.semanticui.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/css/buttons.semanticui.min.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/css/common.scss" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/css/mixins.scss" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/examples/api/addRemove.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/examples/api/enable.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/examples/api/group.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/examples/api/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/examples/api/text.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/examples/column_visibility/columnGroups.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/examples/column_visibility/columnText.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/examples/column_visibility/columns.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/examples/column_visibility/columnsToggle.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/examples/column_visibility/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/examples/column_visibility/layout.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/examples/column_visibility/restore.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/examples/column_visibility/simple.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/examples/column_visibility/stateSave.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/examples/column_visibility/text.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/examples/flash/copyi18n.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/examples/flash/filename.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/examples/flash/hidden.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/examples/flash/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/examples/flash/pdfMessage.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/examples/flash/pdfPage.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/examples/flash/simple.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/examples/flash/swfPath.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/examples/flash/tsv.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/examples/html5/columns.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/examples/html5/copyi18n.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/examples/html5/customFile.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/examples/html5/excelBorder.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/examples/html5/excelCellShading.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/examples/html5/excelTextBold.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/examples/html5/filename.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/examples/html5/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/examples/html5/outputFormat-function.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/examples/html5/outputFormat-orthogonal.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/examples/html5/pdfImage.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/examples/html5/pdfMessage.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/examples/html5/pdfOpen.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/examples/html5/pdfPage.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/examples/html5/simple.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/examples/html5/tsv.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/examples/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/examples/initialisation/className.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/examples/initialisation/collections-autoClose.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/examples/initialisation/collections-sub.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/examples/initialisation/collections.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/examples/initialisation/custom.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/examples/initialisation/export.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/examples/initialisation/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/examples/initialisation/keys.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/examples/initialisation/multiple.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/examples/initialisation/new.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/examples/initialisation/pageLength.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/examples/initialisation/plugins.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/examples/initialisation/simple.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/examples/print/autoPrint.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/examples/print/columns.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/examples/print/customisation.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/examples/print/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/examples/print/message.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/examples/print/select.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/examples/print/simple.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/examples/styling/bootstrap.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/examples/styling/bootstrap4.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/examples/styling/foundation.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/examples/styling/icons.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/examples/styling/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/examples/styling/jqueryui.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/examples/styling/semanticui.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/js/buttons.bootstrap.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/js/buttons.bootstrap.min.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/js/buttons.bootstrap4.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/js/buttons.bootstrap4.min.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/js/buttons.colVis.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/js/buttons.colVis.min.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/js/buttons.flash.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/js/buttons.flash.min.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/js/buttons.foundation.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/js/buttons.foundation.min.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/js/buttons.html5.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/js/buttons.html5.min.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/js/buttons.jqueryui.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/js/buttons.jqueryui.min.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/js/buttons.print.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/js/buttons.print.min.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/js/buttons.semanticui.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/js/buttons.semanticui.min.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/js/dataTables.buttons.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/js/dataTables.buttons.min.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Buttons/swf/flashExport.swf" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/ColReorder/License.txt" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/ColReorder/Readme.md" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/ColReorder/css/colReorder.bootstrap.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/ColReorder/css/colReorder.bootstrap.min.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/ColReorder/css/colReorder.bootstrap4.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/ColReorder/css/colReorder.bootstrap4.min.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/ColReorder/css/colReorder.dataTables.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/ColReorder/css/colReorder.dataTables.min.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/ColReorder/css/colReorder.foundation.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/ColReorder/css/colReorder.foundation.min.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/ColReorder/css/colReorder.jqueryui.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/ColReorder/css/colReorder.jqueryui.min.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/ColReorder/css/colReorder.semanticui.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/ColReorder/css/colReorder.semanticui.min.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/ColReorder/examples/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/ColReorder/examples/initialisation/col_filter.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/ColReorder/examples/initialisation/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/ColReorder/examples/initialisation/new_init.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/ColReorder/examples/initialisation/predefined.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/ColReorder/examples/initialisation/realtime.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/ColReorder/examples/initialisation/reset.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/ColReorder/examples/initialisation/scrolling.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/ColReorder/examples/initialisation/simple.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/ColReorder/examples/integration/colvis.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/ColReorder/examples/integration/fixedcolumns.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/ColReorder/examples/integration/fixedheader.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/ColReorder/examples/integration/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/ColReorder/examples/integration/responsive.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/ColReorder/examples/integration/server_side.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/ColReorder/examples/integration/state_save.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/ColReorder/examples/styling/alt_insert.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/ColReorder/examples/styling/bootstrap.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/ColReorder/examples/styling/bootstrap4.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/ColReorder/examples/styling/foundation.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/ColReorder/examples/styling/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/ColReorder/examples/styling/jqueryui.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/ColReorder/examples/styling/semanticui.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/ColReorder/js/dataTables.colReorder.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/ColReorder/js/dataTables.colReorder.min.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/FixedColumns/License.txt" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/FixedColumns/Readme.md" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/FixedColumns/css/fixedColumns.bootstrap.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/FixedColumns/css/fixedColumns.bootstrap.min.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/FixedColumns/css/fixedColumns.bootstrap4.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/FixedColumns/css/fixedColumns.bootstrap4.min.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/FixedColumns/css/fixedColumns.dataTables.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/FixedColumns/css/fixedColumns.dataTables.min.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/FixedColumns/css/fixedColumns.foundation.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/FixedColumns/css/fixedColumns.foundation.min.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/FixedColumns/css/fixedColumns.jqueryui.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/FixedColumns/css/fixedColumns.jqueryui.min.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/FixedColumns/css/fixedColumns.semanticui.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/FixedColumns/css/fixedColumns.semanticui.min.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/FixedColumns/examples/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/FixedColumns/examples/initialisation/colvis.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/FixedColumns/examples/initialisation/css_size.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/FixedColumns/examples/initialisation/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/FixedColumns/examples/initialisation/index_column.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/FixedColumns/examples/initialisation/left_right_columns.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/FixedColumns/examples/initialisation/right_column.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/FixedColumns/examples/initialisation/server-side-processing.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/FixedColumns/examples/initialisation/simple.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/FixedColumns/examples/initialisation/size_fixed.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/FixedColumns/examples/initialisation/size_fluid.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/FixedColumns/examples/initialisation/two_columns.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/FixedColumns/examples/integration/api.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/FixedColumns/examples/integration/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/FixedColumns/examples/integration/select-checkbox.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/FixedColumns/examples/integration/select.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/FixedColumns/examples/styling/bootstrap.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/FixedColumns/examples/styling/bootstrap4.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/FixedColumns/examples/styling/col_filter.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/FixedColumns/examples/styling/colvis.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/FixedColumns/examples/styling/foundation.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/FixedColumns/examples/styling/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/FixedColumns/examples/styling/jqueryui.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/FixedColumns/examples/styling/rowspan.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/FixedColumns/examples/styling/rtl.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/FixedColumns/examples/styling/semanticui.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/FixedColumns/examples/styling/server-side-processing.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/FixedColumns/js/dataTables.fixedColumns.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/FixedColumns/js/dataTables.fixedColumns.min.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/FixedHeader/License.txt" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/FixedHeader/Readme.md" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/FixedHeader/css/fixedHeader.bootstrap.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/FixedHeader/css/fixedHeader.bootstrap.min.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/FixedHeader/css/fixedHeader.bootstrap4.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/FixedHeader/css/fixedHeader.bootstrap4.min.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/FixedHeader/css/fixedHeader.dataTables.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/FixedHeader/css/fixedHeader.dataTables.min.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/FixedHeader/css/fixedHeader.foundation.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/FixedHeader/css/fixedHeader.foundation.min.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/FixedHeader/css/fixedHeader.jqueryui.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/FixedHeader/css/fixedHeader.jqueryui.min.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/FixedHeader/css/fixedHeader.semanticui.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/FixedHeader/css/fixedHeader.semanticui.min.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/FixedHeader/examples/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/FixedHeader/examples/integration/buttons.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/FixedHeader/examples/integration/colreorder.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/FixedHeader/examples/integration/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/FixedHeader/examples/integration/responsive-bootstrap.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/FixedHeader/examples/integration/responsive.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/FixedHeader/examples/options/enable-disable.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/FixedHeader/examples/options/header_footer.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/FixedHeader/examples/options/horizontal-scroll.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/FixedHeader/examples/options/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/FixedHeader/examples/options/new.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/FixedHeader/examples/options/offset-automatic.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/FixedHeader/examples/options/offset.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/FixedHeader/examples/options/show-hide.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/FixedHeader/examples/options/simple.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/FixedHeader/examples/options/two_tables.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/FixedHeader/examples/styling/bootstrap.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/FixedHeader/examples/styling/bootstrap4.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/FixedHeader/examples/styling/foundation.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/FixedHeader/examples/styling/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/FixedHeader/examples/styling/jqueryui.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/FixedHeader/examples/styling/semanticui.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/FixedHeader/js/dataTables.fixedHeader.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/FixedHeader/js/dataTables.fixedHeader.min.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/KeyTable/License.txt" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/KeyTable/Readme.md" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/KeyTable/css/keyTable.bootstrap.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/KeyTable/css/keyTable.bootstrap.min.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/KeyTable/css/keyTable.bootstrap4.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/KeyTable/css/keyTable.bootstrap4.min.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/KeyTable/css/keyTable.dataTables.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/KeyTable/css/keyTable.dataTables.min.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/KeyTable/css/keyTable.foundation.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/KeyTable/css/keyTable.foundation.min.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/KeyTable/css/keyTable.jqueryui.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/KeyTable/css/keyTable.jqueryui.min.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/KeyTable/css/keyTable.semanticui.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/KeyTable/css/keyTable.semanticui.min.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/KeyTable/examples/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/KeyTable/examples/initialisation/blurable.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/KeyTable/examples/initialisation/events.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/KeyTable/examples/initialisation/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/KeyTable/examples/initialisation/scroller.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/KeyTable/examples/initialisation/scrolling.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/KeyTable/examples/initialisation/server-side.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/KeyTable/examples/initialisation/simple.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/KeyTable/examples/initialisation/stateSave.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/KeyTable/examples/styling/bootstrap.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/KeyTable/examples/styling/bootstrap4.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/KeyTable/examples/styling/focusStyle.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/KeyTable/examples/styling/foundation.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/KeyTable/examples/styling/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/KeyTable/examples/styling/jqueryui.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/KeyTable/examples/styling/semanticui.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/KeyTable/js/dataTables.keyTable.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/KeyTable/js/dataTables.keyTable.min.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Responsive/License.txt" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Responsive/Readme.md" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Responsive/css/responsive.bootstrap.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Responsive/css/responsive.bootstrap.min.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Responsive/css/responsive.bootstrap4.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Responsive/css/responsive.bootstrap4.min.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Responsive/css/responsive.dataTables.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Responsive/css/responsive.dataTables.min.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Responsive/css/responsive.foundation.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Responsive/css/responsive.foundation.min.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Responsive/css/responsive.jqueryui.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Responsive/css/responsive.jqueryui.min.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Responsive/css/responsive.semanticui.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Responsive/css/responsive.semanticui.min.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Responsive/examples/child-rows/column-control.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Responsive/examples/child-rows/custom-renderer.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Responsive/examples/child-rows/disable-child-rows.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Responsive/examples/child-rows/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Responsive/examples/child-rows/right-column.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Responsive/examples/child-rows/whole-row-control.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Responsive/examples/column-control/auto.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Responsive/examples/column-control/classes.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Responsive/examples/column-control/colreorder.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Responsive/examples/column-control/column-visibility.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Responsive/examples/column-control/columnPriority.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Responsive/examples/column-control/fixedHeader.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Responsive/examples/column-control/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Responsive/examples/column-control/init-classes.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Responsive/examples/display-types/bootstrap-modal.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Responsive/examples/display-types/bootstrap4-modal.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Responsive/examples/display-types/foundation-modal.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Responsive/examples/display-types/immediateShow.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Responsive/examples/display-types/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Responsive/examples/display-types/jqueryui-modal.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Responsive/examples/display-types/modal.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Responsive/examples/display-types/semanticui-modal.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Responsive/examples/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Responsive/examples/initialisation/ajax.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Responsive/examples/initialisation/className.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Responsive/examples/initialisation/default.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Responsive/examples/initialisation/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Responsive/examples/initialisation/new.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Responsive/examples/initialisation/option.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Responsive/examples/styling/bootstrap.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Responsive/examples/styling/bootstrap4.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Responsive/examples/styling/compact.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Responsive/examples/styling/foundation.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Responsive/examples/styling/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Responsive/examples/styling/jqueryui.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Responsive/examples/styling/scrolling.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Responsive/examples/styling/semanticui.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Responsive/js/dataTables.responsive.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Responsive/js/dataTables.responsive.min.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Responsive/js/responsive.bootstrap.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Responsive/js/responsive.bootstrap.min.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Responsive/js/responsive.bootstrap4.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Responsive/js/responsive.bootstrap4.min.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Responsive/js/responsive.foundation.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Responsive/js/responsive.foundation.min.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Responsive/js/responsive.jqueryui.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Responsive/js/responsive.jqueryui.min.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Responsive/js/responsive.semanticui.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Responsive/js/responsive.semanticui.min.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/RowGroup/License.txt" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/RowGroup/Readme.md" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/RowGroup/css/rowGroup.bootstrap.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/RowGroup/css/rowGroup.bootstrap.min.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/RowGroup/css/rowGroup.bootstrap4.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/RowGroup/css/rowGroup.bootstrap4.min.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/RowGroup/css/rowGroup.dataTables.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/RowGroup/css/rowGroup.dataTables.min.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/RowGroup/css/rowGroup.foundation.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/RowGroup/css/rowGroup.foundation.min.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/RowGroup/css/rowGroup.jqueryui.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/RowGroup/css/rowGroup.jqueryui.min.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/RowGroup/css/rowGroup.semanticui.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/RowGroup/css/rowGroup.semanticui.min.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/RowGroup/examples/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/RowGroup/examples/initialisation/ajaxObjects.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/RowGroup/examples/initialisation/customRow.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/RowGroup/examples/initialisation/endRender.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/RowGroup/examples/initialisation/event.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/RowGroup/examples/initialisation/fixedOrdering.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/RowGroup/examples/initialisation/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/RowGroup/examples/initialisation/simple.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/RowGroup/examples/initialisation/startAndEndRender.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/RowGroup/examples/styling/bootstrap.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/RowGroup/examples/styling/bootstrap4.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/RowGroup/examples/styling/foundation.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/RowGroup/examples/styling/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/RowGroup/examples/styling/jqueryui.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/RowGroup/examples/styling/semanticui.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/RowGroup/js/dataTables.rowGroup.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/RowGroup/js/dataTables.rowGroup.min.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/RowReorder/License.txt" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/RowReorder/Readme.md" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/RowReorder/css/rowReorder.bootstrap.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/RowReorder/css/rowReorder.bootstrap.min.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/RowReorder/css/rowReorder.bootstrap4.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/RowReorder/css/rowReorder.bootstrap4.min.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/RowReorder/css/rowReorder.dataTables.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/RowReorder/css/rowReorder.dataTables.min.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/RowReorder/css/rowReorder.foundation.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/RowReorder/css/rowReorder.foundation.min.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/RowReorder/css/rowReorder.jqueryui.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/RowReorder/css/rowReorder.jqueryui.min.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/RowReorder/css/rowReorder.semanticui.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/RowReorder/css/rowReorder.semanticui.min.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/RowReorder/css/semanticui.scss" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/RowReorder/examples/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/RowReorder/examples/initialisation/defaults.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/RowReorder/examples/initialisation/events.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/RowReorder/examples/initialisation/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/RowReorder/examples/initialisation/responsive.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/RowReorder/examples/initialisation/restrictedOrdering.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/RowReorder/examples/initialisation/scroll.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/RowReorder/examples/initialisation/selector.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/RowReorder/examples/initialisation/simple.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/RowReorder/examples/styling/bootstrap.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/RowReorder/examples/styling/bootstrap4.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/RowReorder/examples/styling/foundation.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/RowReorder/examples/styling/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/RowReorder/examples/styling/jqueryui.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/RowReorder/examples/styling/reorderClass.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/RowReorder/examples/styling/semanticui.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/RowReorder/examples/styling/snapX.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/RowReorder/js/dataTables.rowReorder.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/RowReorder/js/dataTables.rowReorder.min.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Scroller/License.txt" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Scroller/Readme.md" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Scroller/css/scroller.bootstrap.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Scroller/css/scroller.bootstrap.min.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Scroller/css/scroller.bootstrap4.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Scroller/css/scroller.bootstrap4.min.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Scroller/css/scroller.dataTables.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Scroller/css/scroller.dataTables.min.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Scroller/css/scroller.foundation.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Scroller/css/scroller.foundation.min.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Scroller/css/scroller.jqueryui.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Scroller/css/scroller.jqueryui.min.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Scroller/css/scroller.semanticui.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Scroller/css/scroller.semanticui.min.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Scroller/examples/data/2500.txt" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Scroller/examples/data/ssp.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Scroller/examples/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Scroller/examples/initialisation/api_scrolling.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Scroller/examples/initialisation/fixedColumns.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Scroller/examples/initialisation/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Scroller/examples/initialisation/large_js_source.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Scroller/examples/initialisation/select.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Scroller/examples/initialisation/server-side_processing.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Scroller/examples/initialisation/simple.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Scroller/examples/initialisation/state_saving.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Scroller/examples/styling/bootstrap.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Scroller/examples/styling/bootstrap4.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Scroller/examples/styling/foundation.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Scroller/examples/styling/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Scroller/examples/styling/jqueryui.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Scroller/examples/styling/semanticui.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Scroller/js/dataTables.scroller.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Scroller/js/dataTables.scroller.min.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Select/License.txt" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Select/Readme.md" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Select/css/select.bootstrap.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Select/css/select.bootstrap.min.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Select/css/select.bootstrap4.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Select/css/select.bootstrap4.min.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Select/css/select.dataTables.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Select/css/select.dataTables.min.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Select/css/select.foundation.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Select/css/select.foundation.min.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Select/css/select.jqueryui.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Select/css/select.jqueryui.min.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Select/css/select.semanticui.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Select/css/select.semanticui.min.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Select/examples/api/cancellableEvents.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Select/examples/api/events.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Select/examples/api/get.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Select/examples/api/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Select/examples/api/select.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Select/examples/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Select/examples/initialisation/blurable.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Select/examples/initialisation/buttons.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Select/examples/initialisation/cells.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Select/examples/initialisation/checkbox.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Select/examples/initialisation/deferRender.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Select/examples/initialisation/i18n.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Select/examples/initialisation/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Select/examples/initialisation/multi.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Select/examples/initialisation/reload.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Select/examples/initialisation/simple.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Select/examples/initialisation/single.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Select/examples/styling/bootstrap.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Select/examples/styling/bootstrap4.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Select/examples/styling/foundation.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Select/examples/styling/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Select/examples/styling/jqueryui.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Select/examples/styling/semanticui.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Select/js/dataTables.select.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/extensions/Select/js/dataTables.select.min.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/fixedcolumns/css/fixedColumns.dataTables.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/fixedcolumns/js/dataTables.fixedColumns.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/license.txt" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/media/css/dataTables.bootstrap.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/media/css/dataTables.bootstrap.min.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/media/css/dataTables.bootstrap4.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/media/css/dataTables.bootstrap4.min.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/media/css/dataTables.foundation.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/media/css/dataTables.foundation.min.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/media/css/dataTables.jqueryui.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/media/css/dataTables.jqueryui.min.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/media/css/dataTables.material.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/media/css/dataTables.material.min.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/media/css/dataTables.semanticui.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/media/css/dataTables.semanticui.min.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/media/css/dataTables.uikit.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/media/css/dataTables.uikit.min.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/media/css/jquery.dataTables.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/media/css/jquery.dataTables.min.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/media/css/jquery.dataTables_themeroller.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/media/images/Sorting icons.psd" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/media/images/favicon.ico" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/media/images/sort_asc.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/media/images/sort_asc_disabled.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/media/images/sort_both.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/media/images/sort_desc.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/media/images/sort_desc_disabled.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/media/js/dataTables.bootstrap.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/media/js/dataTables.bootstrap.min.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/media/js/dataTables.bootstrap4.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/media/js/dataTables.bootstrap4.min.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/media/js/dataTables.foundation.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/media/js/dataTables.foundation.min.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/media/js/dataTables.jqueryui.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/media/js/dataTables.jqueryui.min.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/media/js/dataTables.material.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/media/js/dataTables.material.min.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/media/js/dataTables.semanticui.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/media/js/dataTables.semanticui.min.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/media/js/dataTables.uikit.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/media/js/dataTables.uikit.min.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/media/js/jquery.dataTables.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/media/js/jquery.dataTables.min.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/DataTables-1.10.15/media/js/jquery.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/Merit.白字透明底.B - 副本.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap-3.3.7-dist.zip" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_datetimepicker/css/bootstrap-datetimepicker.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_datetimepicker/css/bootstrap-datetimepicker.min.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_datetimepicker/js/bootstrap-datetimepicker.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_datetimepicker/js/bootstrap-datetimepicker.min.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_datetimepicker/js/locales/bootstrap-datetimepicker.ar.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_datetimepicker/js/locales/bootstrap-datetimepicker.az.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_datetimepicker/js/locales/bootstrap-datetimepicker.bg.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_datetimepicker/js/locales/bootstrap-datetimepicker.bn.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_datetimepicker/js/locales/bootstrap-datetimepicker.ca.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_datetimepicker/js/locales/bootstrap-datetimepicker.cs.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_datetimepicker/js/locales/bootstrap-datetimepicker.da.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_datetimepicker/js/locales/bootstrap-datetimepicker.de.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_datetimepicker/js/locales/bootstrap-datetimepicker.ee.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_datetimepicker/js/locales/bootstrap-datetimepicker.el.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_datetimepicker/js/locales/bootstrap-datetimepicker.es.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_datetimepicker/js/locales/bootstrap-datetimepicker.fi.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_datetimepicker/js/locales/bootstrap-datetimepicker.fr.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_datetimepicker/js/locales/bootstrap-datetimepicker.he.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_datetimepicker/js/locales/bootstrap-datetimepicker.hr.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_datetimepicker/js/locales/bootstrap-datetimepicker.hu.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_datetimepicker/js/locales/bootstrap-datetimepicker.hy.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_datetimepicker/js/locales/bootstrap-datetimepicker.id.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_datetimepicker/js/locales/bootstrap-datetimepicker.is.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_datetimepicker/js/locales/bootstrap-datetimepicker.it.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_datetimepicker/js/locales/bootstrap-datetimepicker.ja.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_datetimepicker/js/locales/bootstrap-datetimepicker.ka.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_datetimepicker/js/locales/bootstrap-datetimepicker.ko.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_datetimepicker/js/locales/bootstrap-datetimepicker.lt.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_datetimepicker/js/locales/bootstrap-datetimepicker.lv.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_datetimepicker/js/locales/bootstrap-datetimepicker.ms.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_datetimepicker/js/locales/bootstrap-datetimepicker.nb.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_datetimepicker/js/locales/bootstrap-datetimepicker.nl.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_datetimepicker/js/locales/bootstrap-datetimepicker.no.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_datetimepicker/js/locales/bootstrap-datetimepicker.pl.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_datetimepicker/js/locales/bootstrap-datetimepicker.pt-BR.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_datetimepicker/js/locales/bootstrap-datetimepicker.pt.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_datetimepicker/js/locales/bootstrap-datetimepicker.ro.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_datetimepicker/js/locales/bootstrap-datetimepicker.rs-latin.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_datetimepicker/js/locales/bootstrap-datetimepicker.rs.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_datetimepicker/js/locales/bootstrap-datetimepicker.ru.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_datetimepicker/js/locales/bootstrap-datetimepicker.sk.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_datetimepicker/js/locales/bootstrap-datetimepicker.sl.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_datetimepicker/js/locales/bootstrap-datetimepicker.sv.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_datetimepicker/js/locales/bootstrap-datetimepicker.sw.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_datetimepicker/js/locales/bootstrap-datetimepicker.th.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_datetimepicker/js/locales/bootstrap-datetimepicker.tr.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_datetimepicker/js/locales/bootstrap-datetimepicker.ua.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_datetimepicker/js/locales/bootstrap-datetimepicker.uk.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_datetimepicker/js/locales/bootstrap-datetimepicker.zh-TW.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_select/css/bootstrap-select.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_select/css/bootstrap-select.css.map" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_select/css/bootstrap-select.min.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_select/js/bootstrap-select.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_select/js/bootstrap-select.js.map" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_select/js/bootstrap-select.min.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_select/js/i18n/defaults-ar_AR.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_select/js/i18n/defaults-ar_AR.min.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_select/js/i18n/defaults-bg_BG.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_select/js/i18n/defaults-bg_BG.min.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_select/js/i18n/defaults-cro_CRO.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_select/js/i18n/defaults-cro_CRO.min.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_select/js/i18n/defaults-cs_CZ.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_select/js/i18n/defaults-cs_CZ.min.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_select/js/i18n/defaults-da_DK.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_select/js/i18n/defaults-da_DK.min.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_select/js/i18n/defaults-de_DE.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_select/js/i18n/defaults-de_DE.min.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_select/js/i18n/defaults-en_US.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_select/js/i18n/defaults-en_US.min.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_select/js/i18n/defaults-es_CL.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_select/js/i18n/defaults-es_CL.min.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_select/js/i18n/defaults-es_ES.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_select/js/i18n/defaults-es_ES.min.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_select/js/i18n/defaults-et_EE.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_select/js/i18n/defaults-et_EE.min.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_select/js/i18n/defaults-eu.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_select/js/i18n/defaults-eu.min.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_select/js/i18n/defaults-fa_IR.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_select/js/i18n/defaults-fa_IR.min.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_select/js/i18n/defaults-fi_FI.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_select/js/i18n/defaults-fi_FI.min.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_select/js/i18n/defaults-fr_FR.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_select/js/i18n/defaults-fr_FR.min.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_select/js/i18n/defaults-hu_HU.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_select/js/i18n/defaults-hu_HU.min.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_select/js/i18n/defaults-id_ID.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_select/js/i18n/defaults-id_ID.min.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_select/js/i18n/defaults-it_IT.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_select/js/i18n/defaults-it_IT.min.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_select/js/i18n/defaults-ja_JP.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_select/js/i18n/defaults-ja_JP.min.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_select/js/i18n/defaults-kh_KM.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_select/js/i18n/defaults-kh_KM.min.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_select/js/i18n/defaults-ko_KR.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_select/js/i18n/defaults-ko_KR.min.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_select/js/i18n/defaults-lt_LT.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_select/js/i18n/defaults-lt_LT.min.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_select/js/i18n/defaults-nb_NO.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_select/js/i18n/defaults-nb_NO.min.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_select/js/i18n/defaults-nl_NL.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_select/js/i18n/defaults-nl_NL.min.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_select/js/i18n/defaults-pl_PL.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_select/js/i18n/defaults-pl_PL.min.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_select/js/i18n/defaults-pt_BR.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_select/js/i18n/defaults-pt_BR.min.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_select/js/i18n/defaults-pt_PT.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_select/js/i18n/defaults-pt_PT.min.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_select/js/i18n/defaults-ro_RO.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_select/js/i18n/defaults-ro_RO.min.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_select/js/i18n/defaults-ru_RU.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_select/js/i18n/defaults-ru_RU.min.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_select/js/i18n/defaults-sk_SK.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_select/js/i18n/defaults-sk_SK.min.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_select/js/i18n/defaults-sl_SI.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_select/js/i18n/defaults-sl_SI.min.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_select/js/i18n/defaults-sv_SE.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_select/js/i18n/defaults-sv_SE.min.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_select/js/i18n/defaults-tr_TR.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_select/js/i18n/defaults-tr_TR.min.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_select/js/i18n/defaults-ua_UA.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_select/js/i18n/defaults-ua_UA.min.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_select/js/i18n/defaults-vi_VN.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_select/js/i18n/defaults-vi_VN.min.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_select/js/i18n/defaults-zh_CN.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_select/js/i18n/defaults-zh_CN.min.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_select/js/i18n/defaults-zh_TW.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/bootstrap_select/js/i18n/defaults-zh_TW.min.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/graph/000895-cashflow-10year.svg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/graph/000895-cashflow-15year.svg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/graph/000895-employee-10year.svg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/graph/000895-employee-15year.svg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/graph/000895-income_profit_rate-15year.svg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/graph/000895-net_assets_and_roe-15year.svg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/graph/000895-profit_rate-15year.svg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/graph/000895-revenue_and_netprofitrate-10year.svg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/graph/000895-revenue_and_netprofitrate-15year.svg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/graph/000895-roe_tot_and_ev-15year.svg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/graph/000895-roic_roa-15year.svg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/icheck.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/all.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/flat/_all.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/flat/aero.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/flat/aero.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/flat/aero@2x.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/flat/blue.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/flat/blue.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/flat/blue@2x.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/flat/flat.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/flat/flat.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/flat/flat@2x.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/flat/green.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/flat/green.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/flat/green@2x.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/flat/grey.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/flat/grey.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/flat/grey@2x.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/flat/orange.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/flat/orange.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/flat/orange@2x.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/flat/pink.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/flat/pink.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/flat/pink@2x.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/flat/purple.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/flat/purple.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/flat/purple@2x.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/flat/red.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/flat/red.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/flat/red@2x.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/flat/yellow.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/flat/yellow.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/flat/yellow@2x.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/futurico/futurico.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/futurico/futurico.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/futurico/futurico@2x.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/line/_all.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/line/aero.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/line/blue.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/line/green.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/line/grey.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/line/line.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/line/line.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/line/line@2x.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/line/orange.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/line/pink.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/line/purple.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/line/red.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/line/yellow.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/minimal/_all.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/minimal/aero.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/minimal/aero.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/minimal/aero@2x.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/minimal/blue.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/minimal/blue.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/minimal/blue@2x.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/minimal/green.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/minimal/green.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/minimal/green@2x.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/minimal/grey.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/minimal/grey.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/minimal/grey@2x.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/minimal/minimal.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/minimal/minimal.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/minimal/minimal@2x.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/minimal/orange.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/minimal/orange.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/minimal/orange@2x.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/minimal/pink.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/minimal/pink.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/minimal/pink@2x.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/minimal/purple.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/minimal/purple.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/minimal/purple@2x.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/minimal/red.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/minimal/red.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/minimal/red@2x.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/minimal/yellow.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/minimal/yellow.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/minimal/yellow@2x.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/polaris/polaris.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/polaris/polaris.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/polaris/polaris@2x.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/square/_all.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/square/aero.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/square/aero.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/square/aero@2x.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/square/blue.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/square/blue.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/square/blue@2x.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/square/green.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/square/green.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/square/green@2x.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/square/grey.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/square/grey.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/square/grey@2x.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/square/orange.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/square/orange.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/square/orange@2x.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/square/pink.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/square/pink.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/square/pink@2x.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/square/purple.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/square/purple.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/square/purple@2x.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/square/red.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/square/red.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/square/red@2x.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/square/square.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/square/square.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/square/square@2x.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/square/yellow.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/square/yellow.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/webapp/static/icheck/skins/square/yellow@2x.png" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/webapp/templates/industry_analysis/annual_table_b.html" afterPath="$PROJECT_DIR$/webapp/templates/industry_analysis/annual_table_b.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/webapp/templates/main/homepage_base.html" afterPath="$PROJECT_DIR$/webapp/templates/main/homepage_base.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/webapp/templates/stock_base.html" afterPath="$PROJECT_DIR$/webapp/templates/stock_base.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/webapp/templates/stock_group/cns/cns_industry_count.html" afterPath="$PROJECT_DIR$/webapp/templates/stock_group/cns/cns_industry_count.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/webapp/templates/stock_group/navigation.html" afterPath="$PROJECT_DIR$/webapp/templates/stock_group/navigation.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/webapp/templates/stock_solo/finance_data.html" afterPath="$PROJECT_DIR$/webapp/templates/stock_solo/finance_data.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/webapp/templates/stock_solo/first_index.html" afterPath="$PROJECT_DIR$/webapp/templates/stock_solo/first_index.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/webapp/templates/stock_solo/stock_solo_finance_data.html" afterPath="$PROJECT_DIR$/webapp/templates/stock_solo/stock_solo_finance_data.html" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/webapp/static/Merit.白字透明底.B.png" afterPath="$PROJECT_DIR$/webapp/static/resources/Merit.白字透明底.B.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/webapp/static/cns_home.png" afterPath="$PROJECT_DIR$/webapp/static/resources/cns_home.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/webapp/static/hks_home.png" afterPath="$PROJECT_DIR$/webapp/static/resources/hks_home.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/webapp/static/jianbian.jpg" afterPath="$PROJECT_DIR$/webapp/static/resources/jianbian.jpg" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/webapp/static/jianbian2.jpg" afterPath="$PROJECT_DIR$/webapp/static/resources/jianbian2.jpg" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/webapp/static/logo.png" afterPath="$PROJECT_DIR$/webapp/static/resources/logo.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/webapp/static/logo_white.png" afterPath="$PROJECT_DIR$/webapp/static/resources/logo_white.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/webapp/static/niuyue.jpg" afterPath="$PROJECT_DIR$/webapp/static/resources/niuyue.jpg" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/webapp/static/shanghai.jpg" afterPath="$PROJECT_DIR$/webapp/static/resources/shanghai.jpg" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/webapp/static/shenzhen.jpg" afterPath="$PROJECT_DIR$/webapp/static/resources/shenzhen.jpg" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/webapp/static/usa_home.png" afterPath="$PROJECT_DIR$/webapp/static/resources/usa_home.png" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -14,7 +962,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/Finance_Investment_Analysis_System$manage.coverage" NAME="manage Coverage Results" MODIFIED="1509433622299" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Finance_Investment_Analysis_System$manage.coverage" NAME="manage Coverage Results" MODIFIED="1509542562893" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/MasteringFlask$manage.coverage" NAME="manage Coverage Results" MODIFIED="1507719014754" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="DatabaseView">
@@ -36,18 +984,7 @@
     <favorites_list name="MasteringFlask" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="finance_data.html" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/webapp/templates/stock_solo/finance_data.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="361">
-              <caret line="28" column="31" lean-forward="true" selection-start-line="28" selection-start-column="31" selection-end-line="28" selection-end-column="31" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300" />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -78,12 +1015,19 @@
       <find>url_for</find>
       <find>_fnReDraw</find>
       <find>_fnSortListener</find>
+      <find>../../../static/jianbian.jpg</find>
+      <find>../../static/jianbian2.jpg</find>
+      <find>Merit.白字透明底.B</find>
     </findStrings>
     <replaceStrings>
       <replace>$PROJECT_DIR$/webapp/static</replace>
+      <replace>{{ url_for('static',filename='resources/jianbian.jpg') }}</replace>
+      <replace>{{ url_for('static',filename='resources/jianbian2.jpg') }}</replace>
     </replaceStrings>
     <dirStrings>
       <dir>D:\fzjie\Documents\PyCharmProject\MasteringFlask</dir>
+      <dir>D:\fzjie\Documents\PyCharmProject\</dir>
+      <dir>D:\fzjie\Documents\PyCharmProject\Finance-Investment-Analysis-System</dir>
     </dirStrings>
   </component>
   <component name="Git.Settings">
@@ -95,11 +1039,9 @@
         <option value="$PROJECT_DIR$/webapp/templates/stock_solo/stock_solo_graph.html" />
         <option value="$PROJECT_DIR$/webapp/templates/stock_solo/stock_solo_invest_value.html" />
         <option value="$PROJECT_DIR$/webapp/templates/base.html" />
-        <option value="$PROJECT_DIR$/webapp/templates/stock_group/navigation.html" />
         <option value="$PROJECT_DIR$/webapp/templates/global_industry/global_industry_base.html" />
         <option value="$PROJECT_DIR$/webapp/templates/global_industry/global_industry_basic.html" />
         <option value="$PROJECT_DIR$/webapp/templates/stock/home.html" />
-        <option value="$PROJECT_DIR$/webapp/templates/industry_analysis/annual_table_b.html" />
         <option value="$PROJECT_DIR$/webapp/templates/stock_group/cns/cns_base.html" />
         <option value="$PROJECT_DIR$/webapp/templates/stock_group/hks/hks_base.html" />
         <option value="$PROJECT_DIR$/webapp/templates/stock_group/usa/usa_base.html" />
@@ -120,7 +1062,6 @@
         <option value="$PROJECT_DIR$/webapp/controllers/stock.py" />
         <option value="$PROJECT_DIR$/webapp/controllers/stock_group.py" />
         <option value="$PROJECT_DIR$/webapp/forms.py" />
-        <option value="$PROJECT_DIR$/webapp/templates/stock_solo/stock_solo_finance_data.html" />
         <option value="$PROJECT_DIR$/webapp/templates/main/login.html" />
         <option value="$PROJECT_DIR$/webapp/templates/main/register.html" />
         <option value="$PROJECT_DIR$/webapp/templates/stock_solo/stock_solo_basic.html" />
@@ -128,7 +1069,13 @@
         <option value="$PROJECT_DIR$/webapp/controllers/restfulapi.py" />
         <option value="$PROJECT_DIR$/flask.wsgi" />
         <option value="$PROJECT_DIR$/webapp/templates/stock_solo/stock_solo_base.html" />
+        <option value="$PROJECT_DIR$/webapp/templates/stock_group/navigation.html" />
+        <option value="$PROJECT_DIR$/webapp/templates/stock_solo/first_index.html" />
+        <option value="$PROJECT_DIR$/webapp/templates/stock_group/cns/cns_industry_count.html" />
+        <option value="$PROJECT_DIR$/webapp/templates/industry_analysis/annual_table_b.html" />
         <option value="$PROJECT_DIR$/webapp/templates/stock_base.html" />
+        <option value="$PROJECT_DIR$/webapp/templates/main/homepage_base.html" />
+        <option value="$PROJECT_DIR$/webapp/templates/stock_solo/stock_solo_finance_data.html" />
         <option value="$PROJECT_DIR$/webapp/templates/stock_solo/finance_data.html" />
       </list>
     </option>
@@ -180,20 +1127,6 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Finance-Investment-Analysis-System" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Finance-Investment-Analysis-System" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="webapp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
         </subPane>
       </pane>
       <pane id="Scratches" />
@@ -208,6 +1141,8 @@
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\fzjie\Documents\PyCharmProject\Finance-Investment-Analysis-System\webapp\static\resources" />
+      <recent name="D:\fzjie\Documents\PyCharmProject\Finance-Investment-Analysis-System\webapp\static" />
       <recent name="D:\fzjie\Documents\PyCharmProject\Finance-Investment-Analysis-System\webapp\templates\main" />
     </key>
   </component>
@@ -497,19 +1432,19 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="784" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2375189" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="调试" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32923076" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="12" side_tool="true" content_ui="tabs" />
-      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.30461538" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="运行" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33384615" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.19364598" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="找到" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3276923" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -520,7 +1455,6 @@
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="找到" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3276923" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -566,114 +1500,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/webapp/templates/industry_analysis/annual_table.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/webapp/templates/industry_analysis/annual_table_b.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1596">
-          <caret line="84" column="0" lean-forward="false" selection-start-line="84" selection-start-column="0" selection-end-line="84" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/webapp/static/js/tableHeadFixer.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="57">
-          <caret line="3" column="0" lean-forward="true" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/webapp/static/js/bootstrap.min.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4389">
-          <caret line="0" column="34496" lean-forward="false" selection-start-line="0" selection-start-column="34496" selection-end-line="0" selection-end-column="34496" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/webapp/templates/stock_solo/stock_solo_home.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/webapp/templates/stock_solo/stock_solo_graph.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="22">
-          <caret line="26" column="30" lean-forward="false" selection-start-line="26" selection-start-column="30" selection-end-line="26" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/webapp/static/DataTables-1.10.15/media/js/jquery.dataTables.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1114">
-          <caret line="6167" column="30" lean-forward="true" selection-start-line="6167" selection-start-column="30" selection-end-line="6167" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/webapp/templates/industry_analysis/market_status.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="555">
-          <caret line="36" column="52" lean-forward="false" selection-start-line="36" selection-start-column="52" selection-end-line="36" selection-end-column="52" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/webapp/templates/industry_analysis/industry_analysis_base.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="722">
-          <caret line="38" column="14" lean-forward="false" selection-start-line="38" selection-start-column="14" selection-end-line="38" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/webapp/templates/stock_solo/test.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/requirements.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-348">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web.config">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/wfastcgi.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-912">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/说明-170807.txt" />
-    <entry file="file://$PROJECT_DIR$/mytest5-4.html" />
-    <entry file="file://$PROJECT_DIR$/README.md">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/webapp/plt.py" />
-    <entry file="file://$PROJECT_DIR$/webapp/controllers/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/webapp/controllers/invest_env.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="38">
@@ -699,13 +1525,6 @@
     <entry file="file://$PROJECT_DIR$/webapp/templates/test.html" />
     <entry file="file://$PROJECT_DIR$/webapp/templates/base.html" />
     <entry file="file://$PROJECT_DIR$/webapp/templates/main/base.html" />
-    <entry file="file://$PROJECT_DIR$/webapp/templates/main/homepage_base.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2052">
-          <caret line="108" column="39" lean-forward="false" selection-start-line="108" selection-start-column="39" selection-end-line="108" selection-end-column="39" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/webapp/templates/main/register.html" />
     <entry file="file://$PROJECT_DIR$/webapp/controllers/main.py">
       <provider selected="true" editor-type-id="text-editor">
@@ -714,38 +1533,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/webapp/templates/main/login.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="665">
-          <caret line="35" column="25" lean-forward="true" selection-start-line="35" selection-start-column="25" selection-end-line="35" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/webapp/templates/_macros.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-114">
-          <caret line="11" column="41" lean-forward="true" selection-start-line="11" selection-start-column="41" selection-end-line="11" selection-end-column="41" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/webapp/templates/404.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/webapp/templates/stock/maintanance.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/webapp/templates/stock/home.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1349">
-          <caret line="71" column="30" lean-forward="true" selection-start-line="71" selection-start-column="30" selection-end-line="71" selection-end-column="30" />
         </state>
       </provider>
     </entry>
@@ -820,32 +1611,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/webapp/templates/stock_solo/stock_solo_base.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="171">
-          <caret line="9" column="36" lean-forward="false" selection-start-line="9" selection-start-column="36" selection-end-line="9" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/webapp/templates/stock_solo/stock_solo_basic.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="304">
-          <caret line="16" column="82" lean-forward="false" selection-start-line="16" selection-start-column="82" selection-end-line="16" selection-end-column="82" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/webapp/controllers/restfulapi.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="19">
           <caret line="12" column="0" lean-forward="false" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/webapp/templates/stock_solo/stock_solo_finance_data.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-247">
-          <caret line="70" column="42" lean-forward="false" selection-start-line="70" selection-start-column="42" selection-end-line="70" selection-end-column="42" />
         </state>
       </provider>
     </entry>
@@ -862,27 +1632,229 @@
           <caret line="300" column="100" lean-forward="true" selection-start-line="300" selection-start-column="23" selection-end-line="300" selection-end-column="100" />
           <folding>
             <element signature="e#14#82#0" expanded="false" />
-            <marker date="1508772980102" expanded="true" signature="4148:4203" ph="select disti... finance_basics" />
-            <marker date="1508772980102" expanded="true" signature="14273:14328" ph="select disti... finance_basics" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/webapp/static/js/jquery-ui">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/webapp/static/js/echarts.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/webapp/static/js/bootstrap.min.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/webapp/static/graph/000895-cashflow-10year.svg">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1539">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/webapp/templates/_macros.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="209">
+          <caret line="11" column="41" lean-forward="true" selection-start-line="11" selection-start-column="41" selection-end-line="11" selection-end-column="41" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/webapp/templates/404.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/webapp/static/resources/shenzhen.jpg">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/webapp/static/resources/niuyue.jpg">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/webapp/static/123.jpg">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/webapp/static/resources/shanghai.jpg">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/webapp/static/24.jpg">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/webapp/static/resources/jianbian2.jpg">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/webapp/templates/stock_group/navigation.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="342">
+          <caret line="18" column="10" lean-forward="true" selection-start-line="18" selection-start-column="10" selection-end-line="18" selection-end-column="10" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/webapp/static/resources/logo.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/webapp/static/resources/jianbian.jpg">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/webapp/templates/stock_solo/first_index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="266">
+          <caret line="14" column="149" lean-forward="true" selection-start-line="14" selection-start-column="149" selection-end-line="14" selection-end-column="149" />
+          <folding>
+            <element signature="n#style#0;n#img#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/webapp/templates/stock/home.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="95">
+          <caret line="5" column="31" lean-forward="true" selection-start-line="5" selection-start-column="31" selection-end-line="5" selection-end-column="31" />
+          <folding>
+            <element signature="e#150#240#0#HTML" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/webapp/templates/stock_group/cns/cns_industry_count.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="898">
+          <caret line="197" column="62" lean-forward="false" selection-start-line="197" selection-start-column="34" selection-end-line="197" selection-end-column="62" />
+          <folding>
+            <element signature="n#style#0;n#img#0;n#td#1;n#tr#0;n#tbody#0;n#table#0;n#div#0;n#div#0;n#div#1;n#div#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/webapp/templates/industry_analysis/annual_table_b.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="107">
+          <caret line="232" column="150" lean-forward="true" selection-start-line="232" selection-start-column="150" selection-end-line="232" selection-end-column="150" />
+          <folding>
+            <element signature="n#style#0;n#div#0;n#td#2;n#tr#0;n#tbody#0;n#table#0;n#div#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/webapp/static/Merit.白字透明底.B - 副本.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/webapp/static/resources/Merit.白字透明底.B.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/webapp/templates/stock_base.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="247">
-          <caret line="16" column="83" lean-forward="false" selection-start-line="16" selection-start-column="83" selection-end-line="16" selection-end-column="83" />
+        <state relative-caret-position="380">
+          <caret line="20" column="0" lean-forward="true" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/webapp/templates/main/homepage_base.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1196">
+          <caret line="71" column="18" lean-forward="true" selection-start-line="71" selection-start-column="18" selection-end-line="71" selection-end-column="18" />
+          <folding>
+            <element signature="n#style#0;n#div#0;n#div#1;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#div#2;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/webapp/templates/stock_solo/finance_data.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="361">
-          <caret line="28" column="31" lean-forward="true" selection-start-line="28" selection-start-column="31" selection-end-line="28" selection-end-column="31" />
+        <state relative-caret-position="-893">
+          <caret line="43" column="14" lean-forward="true" selection-start-line="43" selection-start-column="14" selection-end-line="43" selection-end-column="14" />
           <folding />
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/webapp/templates/stock_solo/stock_solo_base.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-57">
+          <caret line="9" column="36" lean-forward="false" selection-start-line="9" selection-start-column="36" selection-end-line="9" selection-end-column="36" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/webapp/templates/stock_solo/stock_solo_basic.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="133">
+          <caret line="16" column="82" lean-forward="false" selection-start-line="16" selection-start-column="82" selection-end-line="16" selection-end-column="82" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/webapp/templates/stock_solo/stock_solo_finance_data.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="209">
+          <caret line="38" column="82" lean-forward="false" selection-start-line="38" selection-start-column="82" selection-end-line="38" selection-end-column="82" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/webapp/templates/main/login.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-95">
+          <caret line="4" column="35" lean-forward="true" selection-start-line="4" selection-start-column="35" selection-end-line="4" selection-end-column="35" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+  </component>
+  <component name="masterDetails">
+    <states>
+      <state key="ScopeChooserConfigurable.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+    </states>
   </component>
 </project>
