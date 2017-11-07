@@ -10,29 +10,46 @@
 
 {% block search %}
     <div class="container-fluid">
-      <form class="navbar-form navbar-left" role="search" method="post" action="{{ url_for('stock_solo.invest_value') }}">
+      <form class="navbar-form navbar-left" id="searchform" role="search" method="post" action="{{ url_for('stock_solo.invest_value') }}">
         <div class="input-group">
          <input type="text" class="form-control" placeholder="Search" name="stockcode">
-            {#<select  class="selectpicker form-control"  data-live-search="true"  name="stockcode">
-                        <option>cow</option>
-                        <option>bull</option>
-                        <option class="get-class" disabled>ox</option>
-
-            </select>#}
           <div class="input-group-btn">
-            <button class="btn btn-default" type="submit" onclick="search()" style="padding: 8.5px 12px"><span class="glyphicon glyphicon-search"></span></button>
+            <button class="btn btn-default dropdown-toggle" type="submit" id="submitbtn" style="padding: 8.5px 12px" ><span class="glyphicon glyphicon-search"></span></button>
+            <ul class="dropdown-menu dropdown-menu-right" role="menu">
+            </ul>
           </div>
         </div>
       </form>
     </div>
     <script>
-$(document).ready(function () {
+var stocksuggest=$("input[name='stockcode']").bsSuggest({
+    indexKey: 1,
+    allowNoKeyword: false,
+    getDataMethod: "url",
+    multiWord: false,
+    url:'{{url_for("restfulapi.stock_code",q="")}}',
+    processData: function(json){     // url 获取数据时，对数据的处理，作为 getData 的回调函数
+        var i, len, data = {value: []};
 
-    $('.selectpicker').selectpicker({
-    });
+            if(!json || !json.stockcode || json.stockcode.length == 0) {
+                return false;
+            }
+            len = json.stockcode.length;
 
-    // $('.selectpicker').selectpicker('hide');
+            for (i = 0; i < len; i++) {
+                data.value.push({
+                    "Id": (i + 1),
+                    "stockcode": json.stockcode[i],
+                    "stockname": json.stockname[i],
+                });
+            }
+            return data;
+        }
 })
+    $("#submitbtn").click(function () {
+        $("#searchform").submit();
+    })
+
     </script>
 {% endblock %}
 
