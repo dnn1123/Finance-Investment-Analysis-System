@@ -78,3 +78,48 @@ def invest_data():
     for index in indexes:
         exec ("data['" + index + "']=" + index + "_list")
     return jsonify(data)
+
+
+@api_blueprint.route("/market_value/", methods=('GET', 'POST'))
+def market_value():
+    data = {}
+
+    x = 0
+
+    starttime = request.args.get('starttime')
+    endtime = request.args.get('endtime')
+    indexes = request.args.getlist('indexes[]')
+
+    Filters = {
+        finance_basics_add.trade_code == '000002',
+        finance_basics_add.the_year >= starttime,
+        finance_basics_add.the_year <= endtime,
+    }
+    years = finance_basics_add.query.filter(*Filters).all()
+
+    filters = {
+        finance_basics_add.the_year >= starttime,
+        finance_basics_add.the_year <= endtime,
+    }
+    results = finance_basics_add.query.filter(*filters).all()
+
+    year_list = []
+    for year in years:
+        year_list.append(year.the_year)
+
+    for index in indexes:
+        exec (index + "_list=[]")
+    for index in indexes:
+        for y in year_list:
+            for result in results:
+                if result.the_year == y:
+                    if eval("result." + index) is not None:
+                        exec ("x += float((result." + index + ")/100000000)")
+            exec (index + "_list.append(x)")
+
+    data['the_year'] = year_list
+    data['indexes'] = indexes
+
+    for index in indexes:
+        exec ("data['" + index + "']=" + index + "_list")
+    return jsonify(data)

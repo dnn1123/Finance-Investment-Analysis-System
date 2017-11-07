@@ -15,9 +15,10 @@
 {% block tab %}
     <ul class="nav nav-pills">
         <li><a href="{{ url_for('.market_status') }}">A.市场概况</a></li>
+        <li><a href="{{ url_for('.market_value') }}">B.图表分析</a></li>
         <li class="dropdown"> <!--tip 可以同时写两个属性-->
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                B.行业状况 <span class="caret"></span>
+                C.行业状况 <span class="caret"></span>
             </a>
             <ul class="dropdown-menu">
                 <li><a href="{{ url_for('.industry_status',parameter=1) }}">部门</a></li>
@@ -26,13 +27,11 @@
                 <li><a href="{{ url_for('.industry_status',parameter=4) }}">子行业</a></li>
             </ul>
         </li>
-        <li><a>C.图表分析</a></li>
-        <li><a href="{{ url_for('.cns_home') }}">1.上市公司名单</a></li>
-        <li><a>2.制图数据</a></li>
-        <li class="active"><a href="{{ url_for('.annual_table') }}">年度表.A</a></li>
+        <li><a href="{{ url_for('.cns_home') }}">上市公司名单</a></li>
+        <li class="active"><a href="{{ url_for('.annual_table') }}">年度表A</a></li>
         <li class="dropdown"> <!--tip 可以同时写两个属性-->
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                年度表.B <span class="caret"></span>
+                年度表B <span class="caret"></span>
             </a>
             <ul class="dropdown-menu">
                 <li><a href="{{ url_for('.annual_table_b',parameter=1) }}">部门</a></li>
