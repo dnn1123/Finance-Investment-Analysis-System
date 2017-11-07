@@ -833,7 +833,6 @@ var stocksuggest=$("input[name='stockcode']").bsSuggest({
     <script>
         var finance_results_t;
         var invest_results_t;
-
         function RequestTable() {
 
             var opt = myChart.getOption();
@@ -913,8 +912,6 @@ var stocksuggest=$("input[name='stockcode']").bsSuggest({
                     "infoEmpty": "没有数据",
                     "infoFiltered": "(过滤总件数 _MAX_ 条)"
                 }
-
-
             });
             setTimeout("$(\"#subject\").trigger(\"click\")", 100);
             for (var i = 0; i < finance_results_t.indexes.length; i++) {

@@ -541,3 +541,8 @@ def market_status():
                            finance_basics_add.the_year).filter(finance_basics_add.the_year == year).first()
         rs_list.append(rs)
     return render_template('industry_analysis/market_status.html', rs_list=rs_list)
+
+@industryanalysis_blueprint.route('/market_value', methods=('GET', 'POST'))  # 太慢了！！！
+@login_required
+def market_value():
+    return render_template('industry_analysis/market_value.html')
