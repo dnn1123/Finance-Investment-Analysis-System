@@ -1,5 +1,5 @@
 #coding=utf-8
-from flask import Blueprint,redirect,render_template,url_for,request
+from flask import Blueprint,redirect,render_template,url_for,request, jsonify,session
 from os import path
 from webapp.models import *
 from webapp.forms import CodeForm
@@ -22,11 +22,16 @@ stocksolo_blueprint = Blueprint(
 @stocksolo_blueprint.route('/',methods=('GET','POST'))
 @stocksolo_blueprint.route('/<string:data>',methods=('GET','POST'))
 @login_required
-def basic(data='000895'):
-    data = data
+def basic():
+
     form = CodeForm()
+    if session.has_key('stockcode'):
+        data = session['stockcode']
+    else:
+        data = '000001'
     if form.validate_on_submit():
         data = form.code.data
+        session['stockcode'] = data
         return redirect(url_for('stock_solo.basic', current_user=current_user, data=data))
     match = zhPattern.search(data)
     if match:
@@ -113,13 +118,72 @@ def finance_data(data='000895'):
 
     return render_template("stock_solo/stock_solo_finance_data.html",stock_list=stock_list, value=value, data_len=data_len, current_user=current_user,form=form, results=results, ratio_RG=ratio_RG, ratio_CG=ratio_CG)
 
+@stocksolo_blueprint.route('/finance_data_yc', methods=('GET', 'POST'))
+@stocksolo_blueprint.route('/finance_data_yc/<string:data>', methods=('GET', 'POST'))
+@login_required
+def finance_data_yc():
+    if session.has_key('stockcode'):
+        data = session['stockcode']
+    else:
+        data = '000001'
+    if (request.method == 'POST'):
+        stockcode=request.form.get("stockcode")
+        session['stockcode'] = stockcode
+        return redirect(url_for('stock_solo.finance_data_yc', current_user=current_user, stockcode=stockcode))
+    return render_template("stock_solo/stock_solo_finance_data_yc.html",current_user=current_user,stockcode="\""+data+"\"")
+
+
+@stocksolo_blueprint.route('/get_ajax', methods=('GET', 'POST'))
+def get_ajax():
+    code = request.form.get('code')
+    date = request.form.getlist('date[]')
+    indexes = request.form.getlist('selected[]')
+    the_year_start = int(date[0][0:4] + '1231')
+    the_year_end = int(date[1][0:4] + '1231')
+    data = {}
+    year_list = []
+    year_list1 = []
+    the_year = the_year_end
+    while the_year >= the_year_start:
+        year_list.append(the_year)
+        year_list1.append(the_year / 10000)
+        the_year = the_year - 10000
+    result1 = finance_basics.query.filter_by(trade_code=code).first_or_404()
+    data['the_name'] = result1.sec_name
+    for index in indexes:
+        results = []
+        for year in year_list:
+            if index == 'ebit_rate':
+                result = finance_basics_add.query.filter_by(trade_code=code, the_year=year).first_or_404()
+                if eval('result.' + index) is None:
+                    results.append('..')
+                else:
+                    results.append(str(eval('result.' + index)))
+            else:
+                result = finance_basics.query.filter_by(trade_code=code, the_year=year).first_or_404()
+                if eval('result.' + index) is None:
+                    results.append('..')
+                else:
+                    results.append(str(eval('result.' + index)))
+
+        data[index] = results
+    data['indexs'] = indexes
+    data['the_code'] = code
+    data['the_year_list'] = year_list1
+    return jsonify(data)
+
 @stocksolo_blueprint.route('/invest_value',methods=('GET','POST'))
 @stocksolo_blueprint.route('/invest_value/<string:data>',methods=('GET','POST'))
 # @login_required
 
 def invest_value(data='000001'):
+    if session.has_key('stockcode'):
+        data = session['stockcode']
+    else:
+        data = '000001'
     if (request.method == 'POST'):
         stockcode=request.form.get("stockcode","000001")
+        session['stockcode'] = stockcode
         return redirect(url_for('stock_solo.invest_value', current_user=current_user, data=stockcode))
     # data = data
     # form = CodeForm()
