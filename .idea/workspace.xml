@@ -2,14 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="64cee1a6-6dc2-43ac-8557-6a1bfe29d5ef" name="默认的" comment="2017-10-25">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/webapp/controllers/restfulapi.py" afterPath="$PROJECT_DIR$/webapp/controllers/restfulapi.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/webapp/controllers/stock_solo.py" afterPath="$PROJECT_DIR$/webapp/controllers/stock_solo.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/webapp/templates/main/homepage_base.html" afterPath="$PROJECT_DIR$/webapp/templates/main/homepage_base.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/webapp/templates/stock_base.html" afterPath="$PROJECT_DIR$/webapp/templates/stock_base.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/webapp/templates/stock_solo/finance_data.html" afterPath="$PROJECT_DIR$/webapp/templates/stock_solo/finance_data.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/webapp/templates/stock_solo/stock_solo_basic.html" afterPath="$PROJECT_DIR$/webapp/templates/stock_solo/stock_solo_basic.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/webapp/templates/stock_solo/stock_solo_finance_data.html" afterPath="$PROJECT_DIR$/webapp/templates/stock_solo/stock_solo_finance_data.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/webapp/templates/stock_solo/stock_solo_finance_data_yc.html" afterPath="$PROJECT_DIR$/webapp/templates/stock_solo/stock_solo_finance_data_yc.html" />
     </list>
     <ignored path=".idea/dataSources.local.xml" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -22,7 +21,7 @@
   <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
   <component name="CoverageDataManager">
     <SUITE FILE_PATH="coverage/Finance_Investment_Analysis_System$manage.coverage" NAME="manage Coverage Results" MODIFIED="1509433622299" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/Finance-Investment-Analysis-System$manage.coverage" NAME="manage Coverage Results" MODIFIED="1509959625382" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Finance-Investment-Analysis-System$manage.coverage" NAME="manage Coverage Results" MODIFIED="1510056281941" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/MasteringFlask$manage.coverage" NAME="manage Coverage Results" MODIFIED="1507719014754" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="CreatePatchCommitExecutor">
@@ -51,45 +50,45 @@
       <file leaf-file-name="finance_data.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/webapp/templates/stock_solo/finance_data.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.099378884">
-              <caret line="248" column="26" selection-start-line="248" selection-start-column="26" selection-end-line="248" selection-end-column="26" />
+            <state vertical-scroll-proportion="0.3550864">
+              <caret line="167" column="10" selection-start-line="167" selection-start-column="10" selection-end-line="167" selection-end-column="10" />
               <folding>
-                <element signature="e#1705#1742#0#HTML" expanded="true" />
-                <element signature="e#1689#6751#0#HTML" expanded="false" />
-                <element signature="e#6756#6959#0#HTML" expanded="false" />
-                <element signature="e#7036#8082#0#HTML" expanded="false" />
-                <element signature="e#9029#9245#0#HTML" expanded="false" />
-                <element signature="e#9292#9994#0#HTML" expanded="false" />
-                <element signature="e#10042#10166#0#HTML" expanded="false" />
-                <element signature="e#10216#10342#0#HTML" expanded="false" />
-                <element signature="e#11240#11287#0#HTML" expanded="true" />
-                <element signature="e#11350#11397#0#HTML" expanded="true" />
-                <element signature="e#11511#11543#0#HTML" expanded="true" />
-                <element signature="e#11840#11872#0#HTML" expanded="true" />
-                <element signature="e#11893#11943#0#HTML" expanded="true" />
-                <element signature="e#12084#12116#0#HTML" expanded="true" />
-                <element signature="e#12340#14455#0#HTML" expanded="false" />
-                <element signature="e#12485#12813#0#HTML" expanded="false" />
-                <element signature="e#12859#12998#0#HTML" expanded="false" />
-                <element signature="e#13107#13326#0#HTML" expanded="false" />
-                <element signature="e#13433#13649#0#HTML" expanded="false" />
-                <element signature="e#13699#14441#0#HTML" expanded="false" />
-                <element signature="e#14542#15435#0#HTML" expanded="false" />
-                <element signature="e#15476#16152#0#HTML" expanded="false" />
-                <element signature="e#16329#17375#0#HTML" expanded="false" />
-                <element signature="e#17393#18844#0#HTML" expanded="false" />
-                <element signature="e#19011#35847#0#HTML" expanded="false" />
-                <element signature="e#36074#37549#0#HTML" expanded="false" />
-                <element signature="e#37592#50614#0#HTML" expanded="false" />
-                <element signature="e#38146#38253#0#HTML" expanded="false" />
-                <element signature="e#38424#39355#0#HTML" expanded="false" />
-                <element signature="e#39496#39979#0#HTML" expanded="false" />
-                <element signature="e#40050#40530#0#HTML" expanded="false" />
-                <element signature="e#40596#41154#0#HTML" expanded="false" />
-                <element signature="e#41223#41788#0#HTML" expanded="false" />
-                <element signature="e#41859#42427#0#HTML" expanded="false" />
-                <element signature="e#42492#43049#0#HTML" expanded="false" />
-                <element signature="e#43118#43724#0#HTML" expanded="false" />
+                <element signature="e#195#810#0#HTML" expanded="false" />
+                <element signature="e#815#995#0#HTML" expanded="false" />
+                <element signature="e#1421#1445#0#HTML" expanded="true" />
+                <element signature="e#1488#1525#0#HTML" expanded="true" />
+                <element signature="e#1472#6534#0#HTML" expanded="false" />
+                <element signature="e#6819#7865#0#HTML" expanded="false" />
+                <element signature="e#8812#9028#0#HTML" expanded="false" />
+                <element signature="e#9075#9777#0#HTML" expanded="false" />
+                <element signature="e#9825#9949#0#HTML" expanded="false" />
+                <element signature="e#9999#10125#0#HTML" expanded="false" />
+                <element signature="e#10179#10567#0#HTML" expanded="false" />
+                <element signature="e#10624#10948#0#HTML" expanded="false" />
+                <element signature="e#14325#15218#0#HTML" expanded="false" />
+                <element signature="e#15259#15935#0#HTML" expanded="false" />
+                <element signature="e#16112#17158#0#HTML" expanded="false" />
+                <element signature="e#35754#37343#0#HTML" expanded="false" />
+                <element signature="e#37375#50397#0#HTML" expanded="false" />
+                <element signature="e#39279#39762#0#HTML" expanded="false" />
+                <element signature="e#39833#40313#0#HTML" expanded="false" />
+                <element signature="e#40379#40937#0#HTML" expanded="false" />
+                <element signature="e#41006#41571#0#HTML" expanded="false" />
+                <element signature="e#41642#42210#0#HTML" expanded="false" />
+                <element signature="e#42275#42832#0#HTML" expanded="false" />
+                <element signature="e#42901#43507#0#HTML" expanded="false" />
+                <element signature="e#43576#44237#0#HTML" expanded="false" />
+                <element signature="e#44305#44892#0#HTML" expanded="false" />
+                <element signature="e#44961#45688#0#HTML" expanded="false" />
+                <element signature="e#45761#46533#0#HTML" expanded="false" />
+                <element signature="e#46602#47181#0#HTML" expanded="false" />
+                <element signature="e#47244#47787#0#HTML" expanded="false" />
+                <element signature="e#47846#48380#0#HTML" expanded="false" />
+                <element signature="e#48440#48977#0#HTML" expanded="false" />
+                <element signature="e#49037#49582#0#HTML" expanded="false" />
+                <element signature="e#49652#50262#0#HTML" expanded="false" />
+                <element signature="e#50426#50739#0#HTML" expanded="false" />
+                <element signature="e#50775#51016#0#HTML" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -98,62 +97,82 @@
       <file leaf-file-name="stock_solo_finance_data_yc.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/webapp/templates/stock_solo/stock_solo_finance_data_yc.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-4.428571">
-              <caret line="179" column="28" selection-start-line="179" selection-start-column="28" selection-end-line="179" selection-end-column="28" />
+            <state vertical-scroll-proportion="-37.67857">
+              <caret line="798" column="0" selection-start-line="798" selection-start-column="0" selection-end-line="798" selection-end-column="0" />
               <folding>
-                <element signature="n#style#0;n#div#2;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#fieldset#0;n#div#1;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#div#3;n#!!top" expanded="true" />
-                <element signature="n#script#2;n#!!top" expanded="false" />
-                <element signature="e#17105#20488#0#HTML" expanded="false" />
-                <element signature="e#20535#21775#0#HTML" expanded="false" />
-                <element signature="e#21850#27060#0#HTML" expanded="false" />
-                <element signature="e#27106#27230#0#HTML" expanded="false" />
-                <element signature="e#28046#28328#0#HTML" expanded="false" />
-                <element signature="e#28404#30319#0#HTML" expanded="false" />
-                <element signature="e#30949#31507#0#HTML" expanded="false" />
-                <element signature="e#31609#32386#0#HTML" expanded="false" />
-                <element signature="e#32439#36001#0#HTML" expanded="false" />
+                <element signature="n#div#4;n#!!top" expanded="false" />
+                <element signature="n#div#0;n#div#5;n#!!top" expanded="false" />
+                <element signature="e#4775#5757#0#HTML" expanded="false" />
+                <element signature="e#5802#7930#0#HTML" expanded="false" />
+                <element signature="e#7976#10104#0#HTML" expanded="false" />
+                <element signature="e#10467#10682#0#HTML" expanded="false" />
+                <element signature="e#10719#11067#0#HTML" expanded="false" />
+                <element signature="e#11134#14731#0#HTML" expanded="false" />
+                <element signature="e#14805#16045#0#HTML" expanded="false" />
+                <element signature="e#16116#21411#0#HTML" expanded="false" />
+                <element signature="e#16931#17924#0#HTML" expanded="false" />
+                <element signature="e#21457#21581#0#HTML" expanded="false" />
+                <element signature="e#21639#21940#0#HTML" expanded="false" />
+                <element signature="e#22397#22679#0#HTML" expanded="false" />
+                <element signature="e#22755#24670#0#HTML" expanded="false" />
+                <element signature="e#24705#26069#0#HTML" expanded="false" />
+                <element signature="e#24906#26055#0#HTML" expanded="false" />
+                <element signature="e#26105#27468#0#HTML" expanded="false" />
+                <element signature="e#27519#28295#0#HTML" expanded="false" />
+                <element signature="e#28400#31962#0#HTML" expanded="false" />
+                <element signature="e#30251#31948#0#HTML" expanded="false" />
+                <element signature="e#32026#32342#0#HTML" expanded="false" />
+                <element signature="e#32407#32597#0#HTML" expanded="false" />
+                <element signature="e#33250#34178#0#HTML" expanded="false" />
+                <element signature="e#34729#35657#0#HTML" expanded="false" />
+                <element signature="e#35766#37820#0#HTML" expanded="false" />
+                <element signature="e#37868#40816#0#HTML" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="stock_solo_home.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/webapp/templates/stock_solo/stock_solo_home.html">
+      <file leaf-file-name="stock_solo_finance_data.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/webapp/templates/stock_solo/stock_solo_finance_data.html">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <caret line="316" column="35" selection-start-line="316" selection-start-column="35" selection-end-line="316" selection-end-column="35" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="stock_base.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/webapp/templates/stock_base.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="62.107143">
-              <caret line="58" column="9" selection-start-line="58" selection-start-column="9" selection-end-line="58" selection-end-column="9" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="homepage_base.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/webapp/templates/main/homepage_base.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-46.142857">
-              <caret line="140" column="14" selection-start-line="140" selection-start-column="14" selection-end-line="140" selection-end-column="14" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="stock_solo_base.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/webapp/templates/stock_solo/stock_solo_base.html">
+      <file leaf-file-name="stock_solo_basic.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/webapp/templates/stock_solo/stock_solo_basic.html">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="28" column="55" selection-start-line="28" selection-start-column="55" selection-end-line="28" selection-end-column="55" />
+              <caret line="15" column="15" selection-start-line="15" selection-start-column="15" selection-end-line="15" selection-end-column="15" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="stock_solo_compare.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/webapp/templates/stock_solo/stock_solo_compare.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="7" column="39" selection-start-line="7" selection-start-column="39" selection-end-line="7" selection-end-column="39" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="restfulapi.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/webapp/controllers/restfulapi.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="82" column="24" selection-start-line="82" selection-start-column="24" selection-end-line="82" selection-end-column="24" />
+              <folding>
+                <element signature="e#393#1521#0" expanded="false" />
+                <element signature="e#4718#5721#0" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -162,14 +181,12 @@
         <entry file="file://$PROJECT_DIR$/webapp/controllers/stock_solo.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="134" column="0" selection-start-line="134" selection-start-column="0" selection-end-line="134" selection-end-column="0" />
+              <caret line="143" column="36" selection-start-line="143" selection-start-column="36" selection-end-line="143" selection-end-column="36" />
               <folding>
                 <element signature="e#14#99#0" expanded="true" />
                 <element signature="e#819#1637#0" expanded="false" />
                 <element signature="e#1841#4617#0" expanded="false" />
-                <element signature="e#5369#6791#0" expanded="false" />
-                <element signature="e#6997#7893#0" expanded="false" />
-                <marker date="1509769057104" expanded="true" signature="4280:4335" placeholder="select disti... finance_basics" />
+                <marker date="1510024670469" expanded="true" signature="4280:4335" placeholder="select disti... finance_basics" />
               </folding>
             </state>
           </provider>
@@ -248,18 +265,19 @@
         <option value="$PROJECT_DIR$/webapp/controllers/stock.py" />
         <option value="$PROJECT_DIR$/webapp/controllers/stock_group.py" />
         <option value="$PROJECT_DIR$/webapp/forms.py" />
-        <option value="$PROJECT_DIR$/webapp/templates/stock_solo/stock_solo_finance_data.html" />
         <option value="$PROJECT_DIR$/webapp/templates/main/login.html" />
         <option value="$PROJECT_DIR$/webapp/templates/main/register.html" />
         <option value="$PROJECT_DIR$/flask.wsgi" />
         <option value="$PROJECT_DIR$/webapp/templates/stock_solo/stock_solo_base.html" />
-        <option value="$PROJECT_DIR$/webapp/templates/stock_solo/stock_solo_basic.html" />
         <option value="$PROJECT_DIR$/webapp/templates/stock_base.html" />
-        <option value="$PROJECT_DIR$/webapp/controllers/stock_solo.py" />
-        <option value="$PROJECT_DIR$/webapp/controllers/restfulapi.py" />
-        <option value="$PROJECT_DIR$/webapp/templates/stock_solo/stock_solo_finance_data_yc.html" />
         <option value="$PROJECT_DIR$/webapp/templates/main/homepage_base.html" />
+        <option value="$PROJECT_DIR$/webapp/controllers/stock_solo.py" />
+        <option value="$PROJECT_DIR$/webapp/templates/stock_solo/stock_solo_compare.html" />
+        <option value="$PROJECT_DIR$/webapp/controllers/restfulapi.py" />
+        <option value="$PROJECT_DIR$/webapp/templates/stock_solo/stock_solo_basic.html" />
+        <option value="$PROJECT_DIR$/webapp/templates/stock_solo/stock_solo_finance_data.html" />
         <option value="$PROJECT_DIR$/webapp/templates/stock_solo/finance_data.html" />
+        <option value="$PROJECT_DIR$/webapp/templates/stock_solo/stock_solo_finance_data_yc.html" />
       </list>
     </option>
   </component>
@@ -288,7 +306,7 @@
     <OptionsSetting value="true" id="更新" />
     <OptionsSetting value="true" id="状态" />
     <OptionsSetting value="true" id="编辑" />
-    <ConfirmationsSetting value="0" id="添加" />
+    <ConfirmationsSetting value="1" id="添加" />
     <ConfirmationsSetting value="0" id="移除" />
   </component>
   <component name="ProjectView">
@@ -306,8 +324,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scratches" />
       <pane id="Scope" />
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -355,6 +373,28 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="templates" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Finance-Investment-Analysis-System" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Finance-Investment-Analysis-System" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="webapp" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="templates" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="stock_solo" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -721,7 +761,7 @@
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25642964" sideWeight="0.49369085" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.26399395" sideWeight="0.49369085" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="版本控制" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="调试" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32923076" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
@@ -730,7 +770,7 @@
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3289689" sideWeight="0.4969743" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.30461538" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="运行" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33060557" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="运行" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.05400982" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.23718888" sideWeight="0.50630915" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -792,19 +832,11 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="7" />
+      <option name="time" value="11" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/webapp/templates/stock_solo/stock_solo_base.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="19" selection-start-line="0" selection-start-column="19" selection-end-line="0" selection-end-column="19" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/webapp/templates/stock_base.html">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -818,18 +850,35 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="639" column="53" selection-start-line="639" selection-start-column="32" selection-end-line="639" selection-end-column="53" />
           <folding>
-            <element signature="n#style#0;n#div#2;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#fieldset#0;n#div#1;n#!!top" expanded="true" />
             <element signature="n#style#0;n#div#3;n#!!top" expanded="true" />
-            <element signature="n#script#2;n#!!top" expanded="false" />
-            <element signature="e#17105#20488#0#HTML" expanded="false" />
-            <element signature="e#20535#21775#0#HTML" expanded="false" />
-            <element signature="e#21850#27060#0#HTML" expanded="false" />
-            <element signature="e#27106#27230#0#HTML" expanded="false" />
-            <element signature="e#28046#28328#0#HTML" expanded="false" />
-            <element signature="e#28404#30319#0#HTML" expanded="false" />
-            <element signature="e#30949#31507#0#HTML" expanded="false" />
-            <element signature="e#31609#32386#0#HTML" expanded="false" />
-            <element signature="e#32439#36001#0#HTML" expanded="false" />
+            <element signature="n#div#4;n#!!top" expanded="false" />
+            <element signature="n#div#0;n#div#5;n#!!top" expanded="false" />
+            <element signature="e#4775#5757#0#HTML" expanded="false" />
+            <element signature="e#5802#7930#0#HTML" expanded="false" />
+            <element signature="e#7976#10104#0#HTML" expanded="false" />
+            <element signature="e#10467#10682#0#HTML" expanded="false" />
+            <element signature="e#10719#11067#0#HTML" expanded="false" />
+            <element signature="e#11134#14731#0#HTML" expanded="false" />
+            <element signature="e#14805#16045#0#HTML" expanded="false" />
+            <element signature="e#16116#21411#0#HTML" expanded="false" />
+            <element signature="e#16931#17924#0#HTML" expanded="false" />
+            <element signature="e#21457#21581#0#HTML" expanded="false" />
+            <element signature="e#21639#21940#0#HTML" expanded="false" />
+            <element signature="e#22397#22679#0#HTML" expanded="false" />
+            <element signature="e#22755#24670#0#HTML" expanded="false" />
+            <element signature="e#24705#26069#0#HTML" expanded="false" />
+            <element signature="e#24906#26055#0#HTML" expanded="false" />
+            <element signature="e#26105#27468#0#HTML" expanded="false" />
+            <element signature="e#27519#28295#0#HTML" expanded="false" />
+            <element signature="e#28400#31962#0#HTML" expanded="false" />
+            <element signature="e#30251#31948#0#HTML" expanded="false" />
+            <element signature="e#32026#32342#0#HTML" expanded="false" />
+            <element signature="e#32407#32597#0#HTML" expanded="false" />
+            <element signature="e#33250#34178#0#HTML" expanded="false" />
+            <element signature="e#34729#35657#0#HTML" expanded="false" />
+            <element signature="e#35766#37820#0#HTML" expanded="false" />
+            <element signature="e#37868#40816#0#HTML" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -842,9 +891,7 @@
             <element signature="e#14#99#0" expanded="true" />
             <element signature="e#819#1637#0" expanded="false" />
             <element signature="e#1841#4617#0" expanded="false" />
-            <element signature="e#5369#6791#0" expanded="false" />
-            <element signature="e#6997#7893#0" expanded="false" />
-            <marker date="1509769057104" expanded="true" signature="4280:4335" placeholder="select disti... finance_basics" />
+            <marker date="1510024670469" expanded="true" signature="4280:4335" placeholder="select disti... finance_basics" />
           </folding>
         </state>
       </provider>
@@ -854,42 +901,42 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#1705#1742#0#HTML" expanded="true" />
-            <element signature="e#1689#6751#0#HTML" expanded="false" />
-            <element signature="e#6756#6959#0#HTML" expanded="false" />
-            <element signature="e#7036#8082#0#HTML" expanded="false" />
-            <element signature="e#9029#9245#0#HTML" expanded="false" />
-            <element signature="e#9292#9994#0#HTML" expanded="false" />
-            <element signature="e#10042#10166#0#HTML" expanded="false" />
-            <element signature="e#10216#10342#0#HTML" expanded="false" />
-            <element signature="e#11240#11287#0#HTML" expanded="true" />
-            <element signature="e#11350#11397#0#HTML" expanded="true" />
-            <element signature="e#11511#11543#0#HTML" expanded="true" />
-            <element signature="e#11840#11872#0#HTML" expanded="true" />
-            <element signature="e#11893#11943#0#HTML" expanded="true" />
-            <element signature="e#12084#12116#0#HTML" expanded="true" />
-            <element signature="e#12340#14455#0#HTML" expanded="false" />
-            <element signature="e#12485#12813#0#HTML" expanded="false" />
-            <element signature="e#12859#12998#0#HTML" expanded="false" />
-            <element signature="e#13107#13326#0#HTML" expanded="false" />
-            <element signature="e#13433#13649#0#HTML" expanded="false" />
-            <element signature="e#13699#14441#0#HTML" expanded="false" />
-            <element signature="e#14542#15435#0#HTML" expanded="false" />
-            <element signature="e#15476#16152#0#HTML" expanded="false" />
-            <element signature="e#16329#17375#0#HTML" expanded="false" />
-            <element signature="e#17393#18844#0#HTML" expanded="false" />
-            <element signature="e#19011#35847#0#HTML" expanded="false" />
-            <element signature="e#36074#37549#0#HTML" expanded="false" />
-            <element signature="e#37592#50614#0#HTML" expanded="false" />
-            <element signature="e#38146#38253#0#HTML" expanded="false" />
-            <element signature="e#38424#39355#0#HTML" expanded="false" />
-            <element signature="e#39496#39979#0#HTML" expanded="false" />
-            <element signature="e#40050#40530#0#HTML" expanded="false" />
-            <element signature="e#40596#41154#0#HTML" expanded="false" />
-            <element signature="e#41223#41788#0#HTML" expanded="false" />
-            <element signature="e#41859#42427#0#HTML" expanded="false" />
-            <element signature="e#42492#43049#0#HTML" expanded="false" />
-            <element signature="e#43118#43724#0#HTML" expanded="false" />
+            <element signature="e#195#810#0#HTML" expanded="false" />
+            <element signature="e#815#995#0#HTML" expanded="false" />
+            <element signature="e#1421#1445#0#HTML" expanded="true" />
+            <element signature="e#1488#1525#0#HTML" expanded="true" />
+            <element signature="e#1472#6534#0#HTML" expanded="false" />
+            <element signature="e#6819#7865#0#HTML" expanded="false" />
+            <element signature="e#8812#9028#0#HTML" expanded="false" />
+            <element signature="e#9075#9777#0#HTML" expanded="false" />
+            <element signature="e#9825#9949#0#HTML" expanded="false" />
+            <element signature="e#9999#10125#0#HTML" expanded="false" />
+            <element signature="e#10179#10567#0#HTML" expanded="false" />
+            <element signature="e#10624#10948#0#HTML" expanded="false" />
+            <element signature="e#14325#15218#0#HTML" expanded="false" />
+            <element signature="e#15259#15935#0#HTML" expanded="false" />
+            <element signature="e#16112#17158#0#HTML" expanded="false" />
+            <element signature="e#35754#37343#0#HTML" expanded="false" />
+            <element signature="e#37375#50397#0#HTML" expanded="false" />
+            <element signature="e#39279#39762#0#HTML" expanded="false" />
+            <element signature="e#39833#40313#0#HTML" expanded="false" />
+            <element signature="e#40379#40937#0#HTML" expanded="false" />
+            <element signature="e#41006#41571#0#HTML" expanded="false" />
+            <element signature="e#41642#42210#0#HTML" expanded="false" />
+            <element signature="e#42275#42832#0#HTML" expanded="false" />
+            <element signature="e#42901#43507#0#HTML" expanded="false" />
+            <element signature="e#43576#44237#0#HTML" expanded="false" />
+            <element signature="e#44305#44892#0#HTML" expanded="false" />
+            <element signature="e#44961#45688#0#HTML" expanded="false" />
+            <element signature="e#45761#46533#0#HTML" expanded="false" />
+            <element signature="e#46602#47181#0#HTML" expanded="false" />
+            <element signature="e#47244#47787#0#HTML" expanded="false" />
+            <element signature="e#47846#48380#0#HTML" expanded="false" />
+            <element signature="e#48440#48977#0#HTML" expanded="false" />
+            <element signature="e#49037#49582#0#HTML" expanded="false" />
+            <element signature="e#49652#50262#0#HTML" expanded="false" />
+            <element signature="e#50426#50739#0#HTML" expanded="false" />
+            <element signature="e#50775#51016#0#HTML" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -899,42 +946,42 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#1705#1742#0#HTML" expanded="true" />
-            <element signature="e#1689#6751#0#HTML" expanded="false" />
-            <element signature="e#6756#6959#0#HTML" expanded="false" />
-            <element signature="e#7036#8082#0#HTML" expanded="false" />
-            <element signature="e#9029#9245#0#HTML" expanded="false" />
-            <element signature="e#9292#9994#0#HTML" expanded="false" />
-            <element signature="e#10042#10166#0#HTML" expanded="false" />
-            <element signature="e#10216#10342#0#HTML" expanded="false" />
-            <element signature="e#11240#11287#0#HTML" expanded="true" />
-            <element signature="e#11350#11397#0#HTML" expanded="true" />
-            <element signature="e#11511#11543#0#HTML" expanded="true" />
-            <element signature="e#11840#11872#0#HTML" expanded="true" />
-            <element signature="e#11893#11943#0#HTML" expanded="true" />
-            <element signature="e#12084#12116#0#HTML" expanded="true" />
-            <element signature="e#12340#14455#0#HTML" expanded="false" />
-            <element signature="e#12485#12813#0#HTML" expanded="false" />
-            <element signature="e#12859#12998#0#HTML" expanded="false" />
-            <element signature="e#13107#13326#0#HTML" expanded="false" />
-            <element signature="e#13433#13649#0#HTML" expanded="false" />
-            <element signature="e#13699#14441#0#HTML" expanded="false" />
-            <element signature="e#14542#15435#0#HTML" expanded="false" />
-            <element signature="e#15476#16152#0#HTML" expanded="false" />
-            <element signature="e#16329#17375#0#HTML" expanded="false" />
-            <element signature="e#17393#18844#0#HTML" expanded="false" />
-            <element signature="e#19011#35847#0#HTML" expanded="false" />
-            <element signature="e#36074#37549#0#HTML" expanded="false" />
-            <element signature="e#37592#50614#0#HTML" expanded="false" />
-            <element signature="e#38146#38253#0#HTML" expanded="false" />
-            <element signature="e#38424#39355#0#HTML" expanded="false" />
-            <element signature="e#39496#39979#0#HTML" expanded="false" />
-            <element signature="e#40050#40530#0#HTML" expanded="false" />
-            <element signature="e#40596#41154#0#HTML" expanded="false" />
-            <element signature="e#41223#41788#0#HTML" expanded="false" />
-            <element signature="e#41859#42427#0#HTML" expanded="false" />
-            <element signature="e#42492#43049#0#HTML" expanded="false" />
-            <element signature="e#43118#43724#0#HTML" expanded="false" />
+            <element signature="e#195#810#0#HTML" expanded="false" />
+            <element signature="e#815#995#0#HTML" expanded="false" />
+            <element signature="e#1421#1445#0#HTML" expanded="true" />
+            <element signature="e#1488#1525#0#HTML" expanded="true" />
+            <element signature="e#1472#6534#0#HTML" expanded="false" />
+            <element signature="e#6819#7865#0#HTML" expanded="false" />
+            <element signature="e#8812#9028#0#HTML" expanded="false" />
+            <element signature="e#9075#9777#0#HTML" expanded="false" />
+            <element signature="e#9825#9949#0#HTML" expanded="false" />
+            <element signature="e#9999#10125#0#HTML" expanded="false" />
+            <element signature="e#10179#10567#0#HTML" expanded="false" />
+            <element signature="e#10624#10948#0#HTML" expanded="false" />
+            <element signature="e#14325#15218#0#HTML" expanded="false" />
+            <element signature="e#15259#15935#0#HTML" expanded="false" />
+            <element signature="e#16112#17158#0#HTML" expanded="false" />
+            <element signature="e#35754#37343#0#HTML" expanded="false" />
+            <element signature="e#37375#50397#0#HTML" expanded="false" />
+            <element signature="e#39279#39762#0#HTML" expanded="false" />
+            <element signature="e#39833#40313#0#HTML" expanded="false" />
+            <element signature="e#40379#40937#0#HTML" expanded="false" />
+            <element signature="e#41006#41571#0#HTML" expanded="false" />
+            <element signature="e#41642#42210#0#HTML" expanded="false" />
+            <element signature="e#42275#42832#0#HTML" expanded="false" />
+            <element signature="e#42901#43507#0#HTML" expanded="false" />
+            <element signature="e#43576#44237#0#HTML" expanded="false" />
+            <element signature="e#44305#44892#0#HTML" expanded="false" />
+            <element signature="e#44961#45688#0#HTML" expanded="false" />
+            <element signature="e#45761#46533#0#HTML" expanded="false" />
+            <element signature="e#46602#47181#0#HTML" expanded="false" />
+            <element signature="e#47244#47787#0#HTML" expanded="false" />
+            <element signature="e#47846#48380#0#HTML" expanded="false" />
+            <element signature="e#48440#48977#0#HTML" expanded="false" />
+            <element signature="e#49037#49582#0#HTML" expanded="false" />
+            <element signature="e#49652#50262#0#HTML" expanded="false" />
+            <element signature="e#50426#50739#0#HTML" expanded="false" />
+            <element signature="e#50775#51016#0#HTML" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1149,13 +1196,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/webapp/templates/stock_solo/stock_solo_finance_data.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="70" column="42" selection-start-line="70" selection-start-column="42" selection-end-line="70" selection-end-column="42" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/webapp/templates/stock_solo/stock_solo_invest_value.html">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1163,25 +1203,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/webapp/templates/stock_solo/first_index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/webapp/templates/stock_solo/stock_solo_graph.html">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.05191257">
           <caret line="26" column="30" selection-start-line="26" selection-start-column="30" selection-end-line="26" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/webapp/templates/stock_solo/stock_solo_home.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1199,126 +1224,170 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/webapp/controllers/stock_solo.py">
+    <entry file="file://$PROJECT_DIR$/webapp/templates/stock_solo/first_index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="134" column="0" selection-start-line="134" selection-start-column="0" selection-end-line="134" selection-end-column="0" />
-          <folding>
-            <element signature="e#14#99#0" expanded="true" />
-            <element signature="e#819#1637#0" expanded="false" />
-            <element signature="e#1841#4617#0" expanded="false" />
-            <element signature="e#5369#6791#0" expanded="false" />
-            <element signature="e#6997#7893#0" expanded="false" />
-            <marker date="1509769057104" expanded="true" signature="4280:4335" placeholder="select disti... finance_basics" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/webapp/templates/stock_solo/stock_solo_base.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="28" column="55" selection-start-line="28" selection-start-column="55" selection-end-line="28" selection-end-column="55" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/webapp/controllers/restfulapi.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-10.178572">
-          <caret line="85" column="24" selection-start-line="85" selection-start-column="24" selection-end-line="85" selection-end-column="24" />
-          <folding>
-            <element signature="e#381#1509#0" expanded="false" />
-            <element signature="e#1590#3012#0" expanded="false" />
-            <element signature="e#3101#4104#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/webapp/templates/stock_solo/stock_solo_basic.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-1.96875">
-          <caret line="15" column="63" selection-start-line="15" selection-start-column="63" selection-end-line="15" selection-end-column="63" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/webapp/templates/stock_base.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="62.107143">
-          <caret line="58" column="9" selection-start-line="58" selection-start-column="9" selection-end-line="58" selection-end-column="9" />
-          <folding />
+        <state vertical-scroll-proportion="-2.184659">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/webapp/templates/main/homepage_base.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-46.142857">
+        <state vertical-scroll-proportion="7.2613635">
           <caret line="140" column="14" selection-start-line="140" selection-start-column="14" selection-end-line="140" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/webapp/templates/stock_solo/stock_solo_home.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/webapp/controllers/restfulapi.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="82" column="24" selection-start-line="82" selection-start-column="24" selection-end-line="82" selection-end-column="24" />
+          <folding>
+            <element signature="e#393#1521#0" expanded="false" />
+            <element signature="e#4718#5721#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/webapp/controllers/stock_solo.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="143" column="36" selection-start-line="143" selection-start-column="36" selection-end-line="143" selection-end-column="36" />
+          <folding>
+            <element signature="e#14#99#0" expanded="true" />
+            <element signature="e#819#1637#0" expanded="false" />
+            <element signature="e#1841#4617#0" expanded="false" />
+            <marker date="1510024670469" expanded="true" signature="4280:4335" placeholder="select disti... finance_basics" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/webapp/templates/stock_solo/stock_solo_compare.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="7" column="39" selection-start-line="7" selection-start-column="39" selection-end-line="7" selection-end-column="39" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/webapp/templates/stock_solo/stock_solo_basic.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="15" column="15" selection-start-line="15" selection-start-column="15" selection-end-line="15" selection-end-column="15" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/webapp/templates/stock_solo/stock_solo_finance_data.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="316" column="35" selection-start-line="316" selection-start-column="35" selection-end-line="316" selection-end-column="35" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/webapp/templates/stock_solo/stock_solo_base.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-19.0">
+          <caret line="28" column="55" selection-start-line="28" selection-start-column="55" selection-end-line="28" selection-end-column="55" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/webapp/templates/stock_base.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.36398467">
+          <caret line="10" column="100" selection-start-line="10" selection-start-column="100" selection-end-line="10" selection-end-column="100" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/webapp/templates/stock_solo/stock_solo_finance_data_yc.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-4.428571">
-          <caret line="179" column="28" selection-start-line="179" selection-start-column="28" selection-end-line="179" selection-end-column="28" />
+        <state vertical-scroll-proportion="-37.67857">
+          <caret line="798" column="0" selection-start-line="798" selection-start-column="0" selection-end-line="798" selection-end-column="0" />
           <folding>
-            <element signature="n#style#0;n#div#2;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#fieldset#0;n#div#1;n#!!top" expanded="true" />
             <element signature="n#style#0;n#div#3;n#!!top" expanded="true" />
-            <element signature="n#script#2;n#!!top" expanded="false" />
-            <element signature="e#17105#20488#0#HTML" expanded="false" />
-            <element signature="e#20535#21775#0#HTML" expanded="false" />
-            <element signature="e#21850#27060#0#HTML" expanded="false" />
-            <element signature="e#27106#27230#0#HTML" expanded="false" />
-            <element signature="e#28046#28328#0#HTML" expanded="false" />
-            <element signature="e#28404#30319#0#HTML" expanded="false" />
-            <element signature="e#30949#31507#0#HTML" expanded="false" />
-            <element signature="e#31609#32386#0#HTML" expanded="false" />
-            <element signature="e#32439#36001#0#HTML" expanded="false" />
+            <element signature="n#div#4;n#!!top" expanded="false" />
+            <element signature="n#div#0;n#div#5;n#!!top" expanded="false" />
+            <element signature="e#4775#5757#0#HTML" expanded="false" />
+            <element signature="e#5802#7930#0#HTML" expanded="false" />
+            <element signature="e#7976#10104#0#HTML" expanded="false" />
+            <element signature="e#10467#10682#0#HTML" expanded="false" />
+            <element signature="e#10719#11067#0#HTML" expanded="false" />
+            <element signature="e#11134#14731#0#HTML" expanded="false" />
+            <element signature="e#14805#16045#0#HTML" expanded="false" />
+            <element signature="e#16116#21411#0#HTML" expanded="false" />
+            <element signature="e#16931#17924#0#HTML" expanded="false" />
+            <element signature="e#21457#21581#0#HTML" expanded="false" />
+            <element signature="e#21639#21940#0#HTML" expanded="false" />
+            <element signature="e#22397#22679#0#HTML" expanded="false" />
+            <element signature="e#22755#24670#0#HTML" expanded="false" />
+            <element signature="e#24705#26069#0#HTML" expanded="false" />
+            <element signature="e#24906#26055#0#HTML" expanded="false" />
+            <element signature="e#26105#27468#0#HTML" expanded="false" />
+            <element signature="e#27519#28295#0#HTML" expanded="false" />
+            <element signature="e#28400#31962#0#HTML" expanded="false" />
+            <element signature="e#30251#31948#0#HTML" expanded="false" />
+            <element signature="e#32026#32342#0#HTML" expanded="false" />
+            <element signature="e#32407#32597#0#HTML" expanded="false" />
+            <element signature="e#33250#34178#0#HTML" expanded="false" />
+            <element signature="e#34729#35657#0#HTML" expanded="false" />
+            <element signature="e#35766#37820#0#HTML" expanded="false" />
+            <element signature="e#37868#40816#0#HTML" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/webapp/templates/stock_solo/finance_data.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.099378884">
-          <caret line="248" column="26" selection-start-line="248" selection-start-column="26" selection-end-line="248" selection-end-column="26" />
+        <state vertical-scroll-proportion="0.3550864">
+          <caret line="167" column="10" selection-start-line="167" selection-start-column="10" selection-end-line="167" selection-end-column="10" />
           <folding>
-            <element signature="e#1705#1742#0#HTML" expanded="true" />
-            <element signature="e#1689#6751#0#HTML" expanded="false" />
-            <element signature="e#6756#6959#0#HTML" expanded="false" />
-            <element signature="e#7036#8082#0#HTML" expanded="false" />
-            <element signature="e#9029#9245#0#HTML" expanded="false" />
-            <element signature="e#9292#9994#0#HTML" expanded="false" />
-            <element signature="e#10042#10166#0#HTML" expanded="false" />
-            <element signature="e#10216#10342#0#HTML" expanded="false" />
-            <element signature="e#11240#11287#0#HTML" expanded="true" />
-            <element signature="e#11350#11397#0#HTML" expanded="true" />
-            <element signature="e#11511#11543#0#HTML" expanded="true" />
-            <element signature="e#11840#11872#0#HTML" expanded="true" />
-            <element signature="e#11893#11943#0#HTML" expanded="true" />
-            <element signature="e#12084#12116#0#HTML" expanded="true" />
-            <element signature="e#12340#14455#0#HTML" expanded="false" />
-            <element signature="e#12485#12813#0#HTML" expanded="false" />
-            <element signature="e#12859#12998#0#HTML" expanded="false" />
-            <element signature="e#13107#13326#0#HTML" expanded="false" />
-            <element signature="e#13433#13649#0#HTML" expanded="false" />
-            <element signature="e#13699#14441#0#HTML" expanded="false" />
-            <element signature="e#14542#15435#0#HTML" expanded="false" />
-            <element signature="e#15476#16152#0#HTML" expanded="false" />
-            <element signature="e#16329#17375#0#HTML" expanded="false" />
-            <element signature="e#17393#18844#0#HTML" expanded="false" />
-            <element signature="e#19011#35847#0#HTML" expanded="false" />
-            <element signature="e#36074#37549#0#HTML" expanded="false" />
-            <element signature="e#37592#50614#0#HTML" expanded="false" />
-            <element signature="e#38146#38253#0#HTML" expanded="false" />
-            <element signature="e#38424#39355#0#HTML" expanded="false" />
-            <element signature="e#39496#39979#0#HTML" expanded="false" />
-            <element signature="e#40050#40530#0#HTML" expanded="false" />
-            <element signature="e#40596#41154#0#HTML" expanded="false" />
-            <element signature="e#41223#41788#0#HTML" expanded="false" />
-            <element signature="e#41859#42427#0#HTML" expanded="false" />
-            <element signature="e#42492#43049#0#HTML" expanded="false" />
-            <element signature="e#43118#43724#0#HTML" expanded="false" />
+            <element signature="e#195#810#0#HTML" expanded="false" />
+            <element signature="e#815#995#0#HTML" expanded="false" />
+            <element signature="e#1421#1445#0#HTML" expanded="true" />
+            <element signature="e#1488#1525#0#HTML" expanded="true" />
+            <element signature="e#1472#6534#0#HTML" expanded="false" />
+            <element signature="e#6819#7865#0#HTML" expanded="false" />
+            <element signature="e#8812#9028#0#HTML" expanded="false" />
+            <element signature="e#9075#9777#0#HTML" expanded="false" />
+            <element signature="e#9825#9949#0#HTML" expanded="false" />
+            <element signature="e#9999#10125#0#HTML" expanded="false" />
+            <element signature="e#10179#10567#0#HTML" expanded="false" />
+            <element signature="e#10624#10948#0#HTML" expanded="false" />
+            <element signature="e#14325#15218#0#HTML" expanded="false" />
+            <element signature="e#15259#15935#0#HTML" expanded="false" />
+            <element signature="e#16112#17158#0#HTML" expanded="false" />
+            <element signature="e#35754#37343#0#HTML" expanded="false" />
+            <element signature="e#37375#50397#0#HTML" expanded="false" />
+            <element signature="e#39279#39762#0#HTML" expanded="false" />
+            <element signature="e#39833#40313#0#HTML" expanded="false" />
+            <element signature="e#40379#40937#0#HTML" expanded="false" />
+            <element signature="e#41006#41571#0#HTML" expanded="false" />
+            <element signature="e#41642#42210#0#HTML" expanded="false" />
+            <element signature="e#42275#42832#0#HTML" expanded="false" />
+            <element signature="e#42901#43507#0#HTML" expanded="false" />
+            <element signature="e#43576#44237#0#HTML" expanded="false" />
+            <element signature="e#44305#44892#0#HTML" expanded="false" />
+            <element signature="e#44961#45688#0#HTML" expanded="false" />
+            <element signature="e#45761#46533#0#HTML" expanded="false" />
+            <element signature="e#46602#47181#0#HTML" expanded="false" />
+            <element signature="e#47244#47787#0#HTML" expanded="false" />
+            <element signature="e#47846#48380#0#HTML" expanded="false" />
+            <element signature="e#48440#48977#0#HTML" expanded="false" />
+            <element signature="e#49037#49582#0#HTML" expanded="false" />
+            <element signature="e#49652#50262#0#HTML" expanded="false" />
+            <element signature="e#50426#50739#0#HTML" expanded="false" />
+            <element signature="e#50775#51016#0#HTML" expanded="false" />
           </folding>
         </state>
       </provider>
