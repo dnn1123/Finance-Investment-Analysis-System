@@ -152,7 +152,7 @@ def update_gics_4(trade_code='000001'):  # 疑问：这一行是什么意思？
         session.query(cns_stock_industry).filter(cns_stock_industry.trade_code == trade_code).update(
             {'belong': gics_4})  # 改为belong
         session.commit()  # 少写了这一行，所以修改没成功
-        return redirect(url_for('.home'))
+        return redirect(url_for('.cns_home'))
     return render_template('stock_group/cns/update_gics_4.html', form=form, information=information)
 
 
