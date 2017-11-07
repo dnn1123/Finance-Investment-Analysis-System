@@ -1,0 +1,936 @@
+{% extends "stock_solo/stock_solo_base.html" %}
+{% block styles %}
+    <style>
+        .divcheckbox {
+        {#            float: left;#} border: 1px solid;
+            margin-left: 3px;
+            margin-top: 3px;
+        {#            display: block;#}
+        }
+
+        .checkbox {
+            float: left;
+
+        }
+
+        .options {
+            border: 1px solid #5e5e5e;
+            background-color: #f9f9f9;
+            margin-top: 3px;
+            display: block
+        }
+
+        .selected {
+            border: 1px solid #5e5e5e;
+            background-color: #f9f9f9;
+            margin-top: 3px;
+            display: block;
+
+        }
+    </style>
+{% endblock %}
+
+{% block tab %}
+    <ul class="nav nav-pills">
+        <li><a href="{{ url_for('stock_solo.basic') }}">基本情况</a></li>
+        <li><a href="{{ url_for('stock_solo.finance_data_yc') }}">财务数据及分析</a></li>
+        <li><a href="{{ url_for('stock_solo.invest_value') }}">投资价值分析</a></li>
+    </ul>
+    <script>
+        $('#menu li').click(function () {
+            var f = this;
+            $('#menu li').each(function () {
+                this.className = this == f ? 'actived' : 'noactive'
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block search %}
+    <form role="search" method="post"
+          action="{{ url_for('stock_solo.finance_data_yc') }}">
+        <div style="height:50px;border:#D3D3D3 1px solid;background:#D3D3D3;color:#333;
+   box-shadow:2px 2px 10px #909090;">
+            <input id="stockcode" name="stockcode" type="text" style="margin-top:10px;margin-left:10px;height: 30px">
+            <button id="submit" type="submit"
+                    style="margin-top:10px;margin-left: 10px;border:black 1px solid;border-radius: 4px;width: 60px;height: 30px"
+                    data-toggle="tooltip" title="查看当前股票近5年主要指标"
+                    data-placement="right">搜索
+            </button>
+            <button style="margin-top:10px;border:black 1px solid;border-radius: 4px;width: 120px;height: 30px"
+                    data-toggle="modal"
+                    data-target="#myModal">
+                自定义搜索内容
+            </button>
+        </div>
+    </form>
+    <script>
+        $(function () {
+            $("[data-toggle='tooltip']").tooltip();
+        });
+    </script> <!--用于实现“右侧提示框”-->
+    <!-- 模态框（Modal） -->
+    <div class="modal fade" style="height:800px" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content" style="height:400px;width: 500px">
+                <div class="modal-header" style="height: 10%">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        请选择搜索内容
+                    </h4>
+                </div>
+                <div class="modal-body" style="height: 300px">
+                    <div style="height: 25px;">
+                        <a type="text" style="margin-left: 10px">请输入股票代码:</a>
+                        <input type="text" id="code" style="margin-left: 10px" value=""/>
+                    </div>
+                    {#                    <div style="height:25px;">#}
+                    {#                        <a style="width:50px;margin-left:10px;">起始时间:</a><input type="text" id="ui1"#}
+                    {#                                                                                style="background-color:white;width: 100px;margin-left: 10px"/>#}
+                    {#                        <a style="width:50px;margin-left:10px;">结束时间:</a><input type="text" id="ui2"#}
+                    {#                                                                                style="background-color:white;width: 100px;margin-left: 10px"/>#}
+                    {#                    </div>#}
+
+                    <div>
+                        <div>
+                            <a style="width:50px;margin-left:10px;">待选项目:</a>
+                            <button id="checkall"
+                                    style="border:black 1px solid;border-radius: 4px;width: 60px;height: 30px">全选
+                            </button>
+                            <a style="width:50px;margin-left:20px;">已选项目:</a>
+                            <button id="revokeall" class="revokeall"
+                                    style="border:black 1px solid;border-radius: 4px;width: 60px;height: 30px">全部取消
+                            </button>
+                        </div>
+                        <div id="options"
+                             style="height: 200px;;width:100px;border:1px solid #5e5e5e;margin-top: 5px;float: left;margin-left:10px;OVERFLOW-Y: auto;">
+
+                            <span class="options">营业总收入</span>
+                            <span class="options">营业总成本</span>
+                            <span class="options">财务费用</span>
+                            <span class="options">息税前利润</span>
+                            <span class="options">利润总额</span>
+                            <span class="options">净利润（总额）</span>
+                            <span class="options">净利润（股东）</span>
+                            <span class="options">资产总计</span>
+                            <span class="options">流动资产</span>
+                            <span class="options">非流动资产</span>
+                            <span class="options">负债合计</span>
+                            <span class="options">流动负债</span>
+                            <span class="options">非流动负债</span>
+                            <span class="options">净资产</span>
+                            <span class="options">归属股东权益</span>
+                            <span class="options">经营活动现金流</span>
+                            <span class="options">投资活动现金流</span>
+                            <span class="options">筹资活动现金流</span>
+                            <span class="options">现金流合计</span>
+                            <span class="options">货币资金</span>
+                            <span class="options">净流动资产</span>
+                            <span class="options">自由现金流估计</span>
+                            <span class="options">收入增长率</span>
+                            <span class="options">利润增长率</span>
+                            <span class="options">毛利润率</span>
+                            <span class="options">息税前利润率</span>
+                            <span class="options">净利润率</span>
+                            <span class="options">总资产周转率</span>
+                            <span class="options">资产负债率</span>
+                            <span class="options">权益乘数</span>
+                            <span class="options">投入资本回报率</span>
+                            <span class="options">总资产收益率</span>
+                            <span class="options">净资产收益率（总额）</span>
+                            <span class="options">净资产收益率（股东）</span>
+                            <span class="options">流动比率</span>
+                            <span class="options">营业周期</span>
+                            <span class="options">存货周转天数</span>
+                            <span class="options">应收账款周转天数</span>
+                            <span class="options">应付账款周转天数</span>
+                        </div>
+                        <div id="selected"
+                             style="height: 200px;width:100px;border:1px solid #5e5e5e;margin-left:50px;margin-top: 5px;float: left;OVERFLOW-Y: auto;">
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer" style="height: 20%">
+                    <form id="form1" runat="server">
+                        <input type="button" value="搜索" id="post_ajax"
+                               style="border:black 1px solid;border-radius: 4px;width: 60px;height: 30px"/>
+                    </form>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+{% endblock %}
+
+{% block choice %}
+    <div id="checkbox" style="float: left;height:300px;overflow-y :auto;margin-top: 20%;border:#D3D3D3 1px solid;background:#D3D3D3;color:#333;
+   box-shadow:2px 2px 10px #909090;">
+        <fieldset style='padding:5px;' id="index">
+            <legend>指标选择</legend>
+
+
+        </fieldset>
+    </div>
+{% endblock %}
+{% block chart %}
+    <div id="echart" style="width: auto;height:60%;margin-left:20px;margin-top: 10px;border:#D3D3D3 1px solid;background:#D3D3D3;color:#333;
+   box-shadow:2px 2px 10px #909090;"></div>
+{% endblock %}
+{% block table %}
+    <div id="table" style="height: 60%;width: 100%;margin-top:10px;border:#D3D3D3 1px solid;background:#D3D3D3;color:#333;
+   box-shadow:2px 2px 10px #909090;overflow-y:scroll;overflow-x:scroll;">
+        <table id="fixTable" class="display" border="1" width="100" style="border-color:#000; white-space:nowrap;">
+            <thead id="table_head">
+
+            </thead>
+            <tbody id="table_body">
+
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
+{% block toolbox %}
+    <div id="echartindex"
+         style="height: 50px;border:#D3D3D3 1px solid;background:#D3D3D3;color:#333;
+   box-shadow:2px 2px 10px #909090;">
+        <div style="height:25px;margin-top: 10px">
+            <a style="width:50px;margin-left:10px;color: #0c0c0c">起始时间:</a><input type="text" id="ui3"
+                                                                                  style="background-color:white;width: 100px;margin-left: 10px"/>
+            <a style="width:50px;margin-left:10px;color: #0c0c0c">结束时间:</a><input type="text" id="ui4"
+                                                                                  style="background-color:white;width: 100px;margin-left: 10px"/>
+            <a style="width:50px;margin-left:10px;color: #0c0c0c">单位:</a>
+            <select id="unit">
+                <option value="100000000">亿</option>
+                <option value="1000000000">十亿</option>
+                <option value="10000000">千万</option>
+                {#                <option value="audi">Audi</option>#}
+            </select>
+            <button id="datazoomtest"
+                    style="margin-left: 30px;border:black 1px solid;border-radius: 4px;width: 60px;height: 30px">确定
+            </button>
+        </div>
+
+    </div>
+{% endblock %}
+
+
+
+{% block scripts %}
+    <script>
+
+        var availableTags =
+                [{% for x in list_len %} <!--这里直接写range(list_len)不行，会在返回功能主页时出错"list_len is undefined"-->
+                    {% for i in (0,1) %}
+                        "{{ rs[x][i] }}",
+                    {% endfor %}
+                {% endfor %}];
+        $("#tags").autocomplete({
+            source: availableTags
+        });
+
+        var indexdictionary = {
+            '营业总收入': 'tot_oper_rev',
+            '营业总成本': 'tot_oper_cost',
+            '息税前利润': 'ebit_rate',
+            '财务费用': 'fin_exp_is',
+            '利润总额': 'tot_profit',
+            '净利润（总额）': 'net_profit_is',
+            '净利润（股东）': 'wgsd_net_inc',
+            '资产总计': 'tot_assets',
+            '流动资产合计': 'tot_cur_assets',
+            '非流动资产合计': 'tot_non_cur_assets',
+            '负债合计': 'tot_liab',
+            '流动负债合计': 'tot_cur_liab',
+            '非流动负债合计': 'tot_non_cur_liab',
+            '归属母公司股东权益': 'wgsd_com_eq',
+            '经营活动现金净流量': 'operatecashflow_ttm2',
+            '投资活动现金净流量': 'investcashflow_ttm2',
+            '筹资活动现金净流量': 'financecashflow_ttm2',
+            '现金净流量(TTM)': 'cashflow_ttm2',
+            '货币资金': 'monetary_cap',
+            '销售毛利率': 'grossprofitmargin',
+            '投入资本回报率': 'roic',
+            '营业周期': 'turndays',
+            '存货周转天数': 'invturndays',
+            '应收账款周转天数': 'arturndays',
+            '应付账款周转天数': 'apturndays'
+        }
+
+        function get_selected(selected_cn) {
+            if (selected_cn == '营业总收入')
+                return 'tot_oper_rev'
+            else if (selected_cn == '营业总成本')
+                return 'tot_oper_cost'
+            else if (selected_cn == '息税前利润')
+                return 'ebit_rate'
+            else if (selected_cn == '财务费用')
+                return 'fin_exp_is'
+            else if (selected_cn == '利润总额')
+                return 'tot_profit'
+            else if (selected_cn == '净利润（总额）')
+                return 'net_profit_is'
+            else if (selected_cn == '净利润（股东）')
+                return 'wgsd_net_inc'
+            else if (selected_cn == '资产总计')
+                return 'tot_assets'
+            else if (selected_cn == '流动资产合计')
+                return 'tot_cur_assets'
+            else if (selected_cn == '非流动资产合计')
+                return 'tot_non_cur_assets'
+            else if (selected_cn == '负债合计')
+                return 'tot_liab'
+            else if (selected_cn == '流动负债合计')
+                return 'tot_cur_liab'
+            else if (selected_cn == '非流动负债合计')
+                return 'tot_non_cur_liab'
+            else if (selected_cn == '归属母公司股东权益')
+                return 'wgsd_com_eq'
+            else if (selected_cn == '经营活动现金净流量')
+                return 'operatecashflow_ttm2'
+            else if (selected_cn == '投资活动现金净流量')
+                return 'investcashflow_ttm2'
+            else if (selected_cn == '筹资活动现金净流量')
+                return 'financecashflow_ttm2'
+            else if (selected_cn == '现金净流量(TTM)')
+                return 'cashflow_ttm2'
+            else if (selected_cn == '货币资金')
+                return 'monetary_cap'
+            else if (selected_cn == '销售毛利率')
+                return 'grossprofitmargin'
+            else if (selected_cn == '投入资本回报率')
+                return 'roic'
+            else if (selected_cn == '营业周期')
+                return 'turndays'
+            else if (selected_cn == '存货周转天数')
+                return 'invturndays'
+            else if (selected_cn == '应收账款周转天数')
+                return 'arturndays'
+            else if (selected_cn == '应付账款周转天数')
+                return 'apturndays'
+        }
+
+        function post_selected(selected_cn) {
+            if (selected_cn == 'tot_oper_rev')
+                return '营业总收入'
+            else if (selected_cn == 'tot_oper_cost')
+                return '营业总成本'
+            else if (selected_cn == 'fin_exp_is')
+                return '财务费用'
+            else if (selected_cn == 'ebit_rate')
+                return '息税前利润'
+            else if (selected_cn == 'tot_profit')
+                return '利润总额'
+            else if (selected_cn == 'net_profit_is')
+                return '净利润（总额）'
+            else if (selected_cn == 'wgsd_net_inc')
+                return '净利润（股东）'
+            else if (selected_cn == 'tot_assets')
+                return '资产总计'
+            else if (selected_cn == 'tot_cur_assets')
+                return '流动资产合计'
+            else if (selected_cn == 'tot_non_cur_assets')
+                return '非流动资产合计'
+            else if (selected_cn == 'tot_liab')
+                return '负债合计'
+            else if (selected_cn == 'tot_cur_liab')
+                return '流动负债合计'
+            else if (selected_cn == 'tot_non_cur_liab')
+                return '非流动负债合计'
+            else if (selected_cn == 'wgsd_com_eq')
+                return '归属母公司股东权益'
+            else if (selected_cn == 'operatecashflow_ttm2')
+                return '经营活动现金净流量'
+            else if (selected_cn == 'investcashflow_ttm2')
+                return '投资活动现金净流量'
+            else if (selected_cn == 'financecashflow_ttm2')
+                return '筹资活动现金净流量'
+            else if (selected_cn == 'cashflow_ttm2')
+                return '现金净流量(TTM)'
+            else if (selected_cn == 'monetary_cap')
+                return '货币资金'
+            else if (selected_cn == 'grossprofitmargin')
+                return '销售毛利率'
+            else if (selected_cn == 'roic')
+                return '投入资本回报率'
+            else if (selected_cn == 'turndays')
+                return '营业周期'
+            else if (selected_cn == 'invturndays')
+                return '存货周转天数'
+            else if (selected_cn == 'arturndays')
+                return '应收账款周转天数'
+            else if (selected_cn == 'apturndays')
+                return '应付账款周转天数'
+        }
+
+
+        var color = new Array();
+        var Data = new Array();
+        var selectedindex
+        var Uint = 1
+        {#        $.cookie('stockcode', '000001', {expires: 7});#}
+        var stockcode = '';
+        var startyear = ''
+        var endyear = ''
+        var myChart1 = echarts.init(document.getElementById('echart'));
+        function set_color() {
+            return (function (m, s, c) {
+                return (c ? arguments.callee(m, s, c - 1) : '#') +
+                        s[m.floor(m.random() * 16)]
+            })(Math, '0123456789abcdef', 5)
+        }
+
+        function getunitname(uint) {
+            if (uint / 10000000 == 1) {
+                return '千万'
+            }
+            else if (uint / 10000000 == 10) {
+                return '亿'
+            }
+            else if (uint / 10000000 == 100) {
+                return '十亿'
+            }
+        }
+
+        function creattable(stock_code, color, unit, start, end) {
+            $.ajax({
+                type: 'POST',
+                url: '{{url_for("restfulapi.get_ajax")}}',
+                data: {
+                    'code': stock_code,
+                    'date': [start, end],
+                    'selected': selectedindex
+                },
+                dataType: 'json',
+                success: function (data) {
+                    console.log(data)
+                    Data = ''
+                    Data = data
+                    startyear = data.the_year_list[data.the_year_list.length - 1]
+                    endyear = data.the_year_list[0]
+                    $(".checkbox").each(function () {
+                        $(this).attr("checked", false)
+                    })
+                    for (i = 0; i < data.indexs.length; i++) {
+                        var checked = document.getElementById(data.indexs[i]);//获取div下的input
+                        checked.checked = true
+                        {#                                    color[data.indexs[i]] = set_color()#}
+                    }
+                    $("#table_head").empty();
+                    $("#table_body").empty();
+                    head = "<th  >" + data.the_name + "(单位:" + getunitname(unit) + ")</th>"
+                    for (i = 0; i < data.the_year_list.length; i++) {
+                        head += "<th >"
+                                + data.the_year_list[i] + "</th>"
+                    }
+                    $("#table_head").append("<tr >" + head + "</tr>")
+                    for (i = 0; i < data.indexs.length; i++) {
+                        line = "<td style='color:" + color[data.indexs[i]] + "'>" + post_selected(data.indexs[i]) + "</td>"
+                        str = "data." + data.indexs[i]
+                        results = eval(str)
+                        for (var j = 0; j < results.length; j++) {
+                            line += "<td >" + (results[j] / unit).toFixed(2) + "</td>"
+                        }
+                        $("#table_body").append("<tr>" + line + "</tr>")
+                    }
+                    $('#fixTable').DataTable({
+                        "info": false,
+                        "processing": true,
+                        {#                        "scrollX": true,#}
+                        "searching": true,
+                        "fixedColumns": { //固定列的配置项
+                            "leftColumns": 1//固定左边第一列
+                        },
+                        "language": {
+                            "emptyTable": "没有数据",
+                            "loadingRecords": "加载中…",
+                            "processing": "查询中…",
+                            "search": "检索:",
+                            "lengthMenu": "每页 _MENU_ 条",
+                            "zeroRecords": "没有数据",
+                            "paginate": {
+                                "first": "第一页",
+                                "last": "最后一页",
+                                "next": "",
+                                "previous": ""
+                            },
+                            "info": "第 _PAGE_ 页 / 总 _PAGES_ 页",
+                            "infoEmpty": "没有数据",
+                            "infoFiltered": "(过滤总件数 _MAX_ 条)"
+                        }
+                    })
+                    {#                        console.log(hidelist)#}
+                }
+
+
+            });
+        }
+
+        function tablehide(dzstart1, dzend1) {
+            var dzstart = dzstart1
+            var dzend = dzend1
+            var dzstartpc = (endyear - dzend) / (endyear - startyear) * 100
+            var dzendpc = 100 - (dzstart - startyear) / (endyear - startyear) * 100
+            var hidelist = []
+            createchart(Data, color, dzstart, dzend)
+            {#                            var nendyear = endyear - Math.ceil(params.start / 100 * (endyear - startyear))#}
+            for (i = 1; i < Math.ceil(dzstartpc / 100 * (endyear - startyear)) + 1; i++) {
+                hidelist.push(i);
+            }
+            if (Math.ceil((1 - dzendpc / 100))) {
+                var nstartyear = startyear + Math.ceil((1 - dzendpc / 100) * (endyear - startyear)) - 1
+                for (i = 26 - Math.ceil((1 - dzendpc / 100) * (endyear - startyear)) + 1; i <= 26; i++) {
+                    hidelist.push(i);
+                }
+            }
+            else {
+                var nstartyear = '1991'
+            }
+            var mychart = $('#fixTable').DataTable({})
+            mychart.columns([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26]).visible(true)
+            mychart.columns(hidelist).visible(false, false);
+        }//无用
+
+        function createchart(stock_code, color, unit, dzstart, dend) {
+            $.ajax({
+                type: 'POST',
+                url: '{{url_for("restfulapi.get_ajax")}}',
+                data: {
+                    'code': stock_code,
+                    'date': ['1991', '2016'],
+                    'selected': selectedindex
+                },
+                dataType: 'json',
+                success: function (data) {
+                    var legenddata1 = new Array();
+                    var aAxisdata1 = new Array();
+                    var seriesdata1 = [];
+                    var result = {};
+                    for (i = 0; i <= data.indexs.length; i++) {
+                        legenddata1.push(post_selected(data.indexs[i]))
+                    }
+                    aAxisdata1 = data.the_year_list
+                    for (i = 0; i < data.indexs.length; i++) {
+                        str = "data." + data.indexs[i]
+                        value = eval(str)
+                        var value2 = [];
+                        for (var j = 0; j < value.length; j++) {
+                            value2.push((value[j] / unit).toFixed(2))
+                        }
+                        result = {
+                            name: post_selected(data.indexs[i]),
+                            type: 'line',
+                            smooth: true,
+                            itemStyle: {
+                                normal: {
+                                    color: color[data.indexs[i]],
+                                    lineStyle: {
+                                        color: color[data.indexs[i]]
+                                    }
+                                }
+                            },
+                            data: value2
+                        }
+                        seriesdata1.push(result)
+
+                    }
+                    console.log(seriesdata1)
+                    // 指定图表的配置项和数据
+                    option = {
+                        title: {
+                            text: data.the_name + "（单位：" + getunitname(unit) + "）"
+                        },
+                        tooltip: {
+                            trigger: 'axis'
+                        },
+                        legend: {
+                            data: legenddata1
+                        },
+                        grid: {
+                            left: '3%',
+                            right: '4%',
+                            bottom: '3%',
+                            containLabel: true
+                        },
+                        toolbox: {
+
+                            feature: {
+                                saveAsImage: {},
+                                magicType: {
+                                    type: ['line', 'bar', 'stack', 'tiled']
+                                }
+                            }
+                        },
+                        xAxis: {
+                            type: 'category',
+                            boundaryGap: false,
+                            axisTick: {
+                                show: false
+                            },
+                            data: aAxisdata1,
+                        },
+                        yAxis: {
+                            type: 'value',
+                            axisTick: {
+                                show: false
+                            },
+                        },
+                        dataZoom: [
+                            {
+{#                                id: 'dataZoomX',#}
+                                type: 'slider',
+                                xAxisIndex: [0],
+                                                                height: 8,
+                                filterMode: 'filter',
+                                {#                                show : true,#}
+                                startValue: dzstart,
+                                endValue: dend,
+                            },
+
+                            {#                            {#}
+                            {#                                id: 'dataZoomY',#}
+                            {#                                type: 'slider',#}
+                            {#                                yAxisIndex: [0],#}
+                            {#                                filterMode: 'empty'#}
+                            {#                            }#}
+                        ],
+
+                        series: seriesdata1
+                    };
+                    myChart1.setOption(option, true);
+                    myChart1.on('dataZoom', function (params) {
+                        var nendyear = 2016 - Math.ceil(params.start / 100 * 25)
+                        if (Math.ceil(1 - params.end / 100)) {
+                            var nstartyear = 1991 + Math.ceil((1 - params.end / 100) * 25) - 1
+                        }
+                        else {
+                            var nstartyear = '1991'
+                        }
+                        set_timepicker(nstartyear, nendyear)
+                        {#                            creattable(stockcode, color, unit, nstartyear, nendyear)#}
+                    });
+                }
+            })
+        }
+
+        function set_timepicker(start, end) {
+            document.getElementById('ui3').value = start
+            document.getElementById('ui4').value = end
+
+        }
+
+        function setcheckboxcolor(selectedindex, color) {
+            for (var key in color) {
+                $("#div_" + key).css("background-color", 'transparent')
+            }
+            for (i = 0; i <= selectedindex.length; i++) {
+                $("#div_" + selectedindex[i]).css("background-color", color[selectedindex[i]])
+            }
+        }
+
+        function creatindex() {
+            for (var key in indexdictionary) {
+                $("#index").append("<div class='divcheckbox'><input type='checkbox' class='checkbox' value='" + indexdictionary[key] + "' id='" + indexdictionary[key] + "' >" + key + " <div id='div_" + indexdictionary[key] + "' style='height: 10px;width: 10px;float: right;margin: 5px'></div> </div>"
+                )
+            }
+        }
+
+        function RequestTable() {
+
+            var myChart = echarts.init(document.getElementById('echart'));
+            var opt = myChart.getOption();
+            var dz = opt.dataZoom[0];
+            creattable(stockcode, color, Uint, opt.xAxis[0].data[dz.endValue], opt.xAxis[0].data[dz.startValue])
+
+        }
+
+        $(document).ready(function () {
+            function firstvisit() {
+                {#                if ($.cookie("stockcode") != null) {#}
+                {#                    stockcode = $.cookie('stockcode');#}
+                {#                }#}
+                {#                else {#}
+                {#                    stockcode = '000001';#}
+                {#                }#}
+                stockcode = {{ stockcode|safe }};
+
+                Uint = 100000000
+                selectedindex = ['tot_oper_rev', 'tot_oper_cost', 'fin_exp_is', 'tot_profit', 'tot_assets']
+                $.ajax({
+                    type: 'POST',
+                    url: '{{url_for("restfulapi.get_ajax")}}',
+                    data: {
+                        'code': stockcode,
+                        'date': ['1991', '2016'],
+                        'selected': selectedindex
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        Data = ''
+                        Data = data
+                        startyear = data.the_year_list[data.the_year_list.length - 1]
+                        endyear = data.the_year_list[0]
+                        $(".checkbox").each(function () {
+                            $(this).attr("checked", false)
+                        })
+                        for (i = 0; i < data.indexs.length; i++) {
+                            var checked = document.getElementById(data.indexs[i]);//获取div下的input
+                            checked.checked = true
+                            color[data.indexs[i]] = set_color()
+                        }
+                        setcheckboxcolor(selectedindex, color)
+                        set_timepicker('2010-q4', '2016-q4')
+                        creattable(stockcode, color, Uint, '2010', '2016')
+                        createchart(stockcode, color, Uint, '2010', '2016')
+                    }
+
+                })
+            }
+
+            $("#ui3").datepicker({
+                changeYear: true,
+                dateFormat: 'yy',
+                showButtonPanel: true,
+                yearRange: "1991:2016",
+
+                onClose: function (dateText, inst) {
+                    {#                            var month = $("#ui-datepicker-div .ui-datepicker-month option:selected").val();//得到选中的月份值#}
+                    var year = $("#ui-datepicker-div .ui-datepicker-year option:selected").val();//得到选中的年份值
+                    $('#ui3').val(year + '-q4');//给input赋值，其中要对月值加1才是实际的月份
+                }
+            });
+            $("#ui4").datepicker({
+                changeYear: true,
+                dateFormat: 'yy',
+                showButtonPanel: true,
+                yearRange: "1991:2016",
+                onClose: function (dateText, inst) {
+                    {#                            var month = $("#ui-datepicker-div .ui-datepicker-month option:selected").val();//得到选中的月份值#}
+                    var year = $("#ui-datepicker-div .ui-datepicker-year option:selected").val();//得到选中的年份值
+                    $('#ui4').val(year + '-q4');//给input赋值，其中要对月值加1才是实际的月份
+                }
+            });
+            creatindex()
+            firstvisit()
+            $("#datazoomtest").click(function () {
+                var unit = document.getElementById("unit").value;
+                var dzstartyear = $('#ui3').val().substring(0, 4)
+                var dzendyear = $('#ui4').val().substring(0, 4)
+                {#                var myChart = echarts.init(document.getElementById('echart'));#}
+                {#                var opt = myChart1.getOption();#}
+                Uint = unit
+                {#                option.dataZoom[0].startValue = dzstartyear#}
+                {#                option.dataZoom[0].endValue = dzendyear#}
+                {#                myChart1.setOption(option)#}
+                creattable(stockcode, color, Uint, dzstartyear, dzendyear)
+                createchart(stockcode, color, Uint, dzstartyear, dzendyear)
+
+            })
+            $('.checkbox').on('click', function () {
+                if (!$(this).is(':checked')) {// 取消
+                    {#                                var myChart = echarts.getInstanceByDom(document.getElementById("echart"))#}
+                    var selected = new Array()
+                    var unit = document.getElementById("unit").value;
+                    var dzstartyear = $('#ui3').val().substring(0, 4)
+                    var dzendyear = $('#ui4').val().substring(0, 4)
+                    {#                                color[$(this).attr('value')] = 'transparent'#}
+                    $(".checkbox").each(function () {
+                        if ($(this).is(':checked')) {
+                            selected.push($(this).attr('value'))
+                        }
+                    })
+                    selectedindex = selected
+                    $.ajax({
+                        type: 'POST',
+                        url: '{{url_for("restfulapi.get_ajax")}}',
+                        data: {
+                            'code': stockcode,
+                            'date': ['1991', '2016'],
+                            'selected': selectedindex
+                        },
+                        dataType: 'json',
+                        success: function (data) {
+                            Data = ''
+                            Data = data
+                            Uint = unit
+                            setcheckboxcolor(selectedindex, color)
+                            console.log(color)
+                            creattable(stockcode, color, Uint, dzstartyear, dzendyear)
+                            {#                                        tablehide(dzstartyear, dzendyear)#}
+                            createchart(stockcode, color, Uint, dzstartyear, dzendyear)
+                        }
+                    })
+
+
+                }
+                else {
+                    {#                                var myChart = echarts.getInstanceByDom(document.getElementById("echart"))#}
+                    var selected = new Array()
+                    var unit = document.getElementById("unit").value;
+                    var dzstartyear = $('#ui3').val().substring(0, 4)
+                    var dzendyear = $('#ui4').val().substring(0, 4)
+                    color[$(this).attr('value')] = set_color()
+                    $(".checkbox").each(function () {
+                        if ($(this).is(':checked')) {
+                            selected.push($(this).attr('value'))
+                        }
+                    })
+                    selectedindex = selected
+
+                    $.ajax({
+                        type: 'POST',
+                        url: '{{url_for("restfulapi.get_ajax")}}',
+                        data: {
+                            'code': stockcode,
+                            'date': ['1991', '2016'],
+                            'selected': selectedindex
+                        },
+                        dataType: 'json',
+                        success: function (data) {
+                            Data = ''
+                            Data = data
+                            Uint = unit
+
+                            setcheckboxcolor(selectedindex, color)
+                            creattable(stockcode, color, Uint, dzstartyear, dzendyear)
+
+                            {#                                        tablehide(dzstartyear, dzendyear)#}
+                            createchart(stockcode, color, Uint, dzstartyear, dzendyear)
+
+
+                        }
+                    })
+
+
+                }
+            });
+            $(document).on('click', '.options', function (e) {
+                color[get_selected($(this).text())] = set_color()
+                $('#selected').append("<span class='selected' onclick='spanclick();' style='color:" + color[get_selected($(this).text())] + "'>"
+                        + $(this).text() + "</span>");
+                $(this).remove();
+
+            });
+            $(document).on('click', '.selected', function (e) {
+                $('#options').append("<span class='options' onclick='spanclick();'>"
+                        + $(this).text() + "</span>");
+                $(this).remove();
+
+            });
+            $("#checkall").click(function () {
+                $("span").each(function () {
+                    if ($(this).parent().attr('id') == 'options') {
+                        color[get_selected($(this).text())] = set_color()
+                        $('#selected').append("<span class='selected' onclick='spanclick();' style='color:" + color[get_selected($(this).text())] + "'>"
+                                + $(this).text() + "</span>");
+                        $(this).remove();
+                    }
+                })
+            })
+            $("#revokeall").click(function () {
+                $("span").each(function () {
+                    if ($(this).parent().attr('id') == 'selected') {
+                        $('#options').append("<span class='options' >"
+                                + $(this).text() + "</span>");
+                        $(this).remove();
+                    }
+                })
+            })
+            $.fn.dataTable.ext.errMode = 'none';
+            $("#submit").click(function () {
+
+                {#                            creatindex()#}
+                var stock_code = $("#stockcode").val();
+                stockcode = $("#stockcode").val()
+                $.cookie('stockcode', stockcode, {expires: 7});
+                Uint = 100000000
+                selectedindex = ['tot_oper_rev', 'tot_oper_cost', 'fin_exp_is', 'tot_profit', 'tot_assets']
+                $.ajax({
+                    type: 'POST',
+                    url: '{{url_for("restfulapi.get_ajax")}}',
+                    data: {
+                        'code': stock_code,
+                        'date': ['1991', '2016'],
+                        'selected': selectedindex
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        Data = ''
+                        Data = data
+                        startyear = data.the_year_list[data.the_year_list.length - 1]
+                        endyear = data.the_year_list[0]
+                        $(".checkbox").each(function () {
+                            $(this).attr("checked", false)
+                        })
+                        for (i = 0; i < data.indexs.length; i++) {
+                            var checked = document.getElementById(data.indexs[i]);//获取div下的input
+                            checked.checked = true
+                            color[data.indexs[i]] = set_color()
+                        }
+                        setcheckboxcolor(selectedindex, color)
+                        set_timepicker('2010-q4', '2016-q4')
+                        creattable(stockcode, color, Uint, '2010', '2016')
+                        createchart(stockcode, color, Uint, '2010', '2016')
+                        {#                                    var mychart = $('#fixTable').DataTable()#}
+                        {#                                    mychart.columns([8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26]).visible(false, false)#}
+                    }
+
+
+                });
+
+            })
+            $("#post_ajax").click(function () {
+
+                {#                var selected = new Array()#}
+                {#                Uint = 100000000#}
+                {#                $("span").each(function () {#}
+                {#                    if ($(this).parent().attr('id') == 'selected') {#}
+                {#                        selected.push(get_selected($(this).text()))#}
+                {#                    }#}
+                {#                })#}
+                {#                var stock_code = $("#code").val();#}
+                {#                stockcode = $("#code").val()#}
+                {#                startyear = '1991'#}
+                {#                endyear = '2016'#}
+                {#                $("tr").remove()#}
+                {#                var data = new Array()#}
+                {#                data.push(startyear)#}
+                {#                data.push(endyear)#}
+                {#                $.ajax({#}
+                {#                    type: 'POST',#}
+                {#                    url: '{{url_for("stock_solo.get_ajax")}}',#}
+                {#                    data: {#}
+                {#                        'code': stock_code,#}
+                {#                        'date': data,#}
+                {#                        'selected': selected,#}
+                {#                    },#}
+                {#                    dataType: 'json',#}
+                {#                    success: function (data) {#}
+                {#                        Data = data#}
+                {#                        $(".checkbox").each(function () {#}
+                {#                            $(this).attr("checked", false)#}
+                {#                        })#}
+                {#                        for (i = 0; i < data.indexs.length; i++) {#}
+                {#                            var checked = document.getElementById(data.indexs[i]);//获取div下的input#}
+                {#                            checked.checked = true#}
+                {#                        }#}
+                {#                        setcheckboxcolor(color)#}
+                {#                        set_timepicker('2010-q4', '2016-q4')#}
+                {#                        creattable(Data, color, Uint)#}
+                {#                        tablehide('2010', '2016')#}
+                {#                        createchart(Data, color, Uint, '2010', '2016')#}
+                {#                        console.log(Data)#}
+                {#                                                            var mychart = $('#fixTable').DataTable()#}
+                {#                                                            mychart.columns([10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26]).visible(false, false)#}
+                {##}
+                {#                    }#}
+                {#                });#}
+            })
+        });
+
+
+    </script>
+{% endblock %}

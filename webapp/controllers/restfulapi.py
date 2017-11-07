@@ -23,10 +23,11 @@ def finance_data():
         finance_basics.the_year <= endtime,
     }
     results = finance_basics.query.filter(*filters).all()
+    result1 = finance_basics.query.filter_by(trade_code=stockcode).first_or_404()
 
     data = {}
     year_list = []
-
+    data['the_name'] = result1.sec_name
     for index in indexes:
         exec (index + "_list=[]")
 
@@ -37,11 +38,51 @@ def finance_data():
                 exec (index + "_list.append(result." + index + ")")
             else:
                 exec (index + "_list.append(float(result." + index + "))")
+
     data['stock_code'] = stockcode
     data['the_year'] = year_list
     data['indexes'] = indexes
     for index in indexes:
         exec ("data['" + index + "']=" + index + "_list")
+    return jsonify(data)
+
+@api_blueprint.route('/get_ajax', methods=('GET', 'POST'))
+def get_ajax():
+    code = request.form.get('code')
+    date = request.form.getlist('date[]')
+    indexes = request.form.getlist('selected[]')
+    the_year_start = int(date[0][0:4] + '1231')
+    the_year_end = int(date[1][0:4] + '1231')
+    data = {}
+    year_list = []
+    year_list1 = []
+    the_year = the_year_end
+    while the_year >= the_year_start:
+        year_list.append(the_year)
+        year_list1.append(the_year / 10000)
+        the_year = the_year - 10000
+    result1 = finance_basics.query.filter_by(trade_code=code).first_or_404()
+    data['the_name'] = result1.sec_name
+    for index in indexes:
+        results = []
+        for year in year_list:
+            if index == 'ebit_rate':
+                result = finance_basics_add.query.filter_by(trade_code=code, the_year=year).first_or_404()
+                if eval('result.' + index) is None:
+                    results.append('..')
+                else:
+                    results.append(str(eval('result.' + index)))
+            else:
+                result = finance_basics.query.filter_by(trade_code=code, the_year=year).first_or_404()
+                if eval('result.' + index) is None:
+                    results.append('..')
+                else:
+                    results.append(str(eval('result.' + index)))
+
+        data[index] = results
+    data['indexs'] = indexes
+    data['the_code'] = code
+    data['the_year_list'] = year_list1
     return jsonify(data)
 
 
