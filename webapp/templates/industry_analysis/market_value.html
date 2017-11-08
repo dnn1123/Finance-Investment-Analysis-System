@@ -165,14 +165,14 @@
 
     <!--复选框操作-->
     <script>
+        var Chosenindexes = new Array();
+        Chosenindexes = ['tot_oper_rev'];
+        Chosenindexes['tot_oper_rev'] = "#000000";
+
         $(document).ready(function () {
-            $('input').iCheck({
-                checkboxClass: 'icheckbox_minimal-blue',
-                radioClass: 'iradio_minimal-blue',
-                increaseArea: '20%' // optional
-            });
+
         });
-        $('input').on('ifChanged', function (event) {
+        $(":checkbox").change(function () {
             Chosenindexes = [];
             $("div#unselected").empty();
             $("div#selected").empty();
@@ -189,18 +189,51 @@
                     tempspan.appendTo($("div#unselected"));
                     $("div#unselected").append(" ");
                 }
+                else {
+                    indexname = $(this).val();
+                    delete Chosenindexes[indexname]
+                    $("#i_" + indexname).css("background-color", "white");
+                    console.log(Chosenindexes);
+                }
             })
             CreateChart();
             CreateTable();
         });
-        $('input').on('ifUnchecked', function (event) {
-            indexname = $(this).val();
-            delete Chosenindexes[indexname]
-            $("#i_" + indexname).css("background-color", "white");
-            console.log(Chosenindexes);
-            CreateChart();
-            CreateTable();
-        });
+    </script>
+
+    <!--搜索事件-->
+    <script>
+        function selectline(linename) {
+            for (var line in option.series) {
+                l = parseInt(line);
+                if (option.series[l].name == linename) {
+                    tempcolor = NewColor();
+                    option.series[l].lineStyle.normal.color = tempcolor;
+                    option.series[l].itemStyle.normal.color = tempcolor;
+                    $("span#" + linename).css('color', tempcolor);
+                    selectedindexes.push(l);
+                    selectedindexname.push(option.series[l].name);
+                    option.legend.data = selectedindexname;
+                    myChart.setOption(option);
+                }
+            }
+        }
+        function unselectline(linename) {
+            for (var line in option.series) {
+                l = parseInt(line);
+                if (option.series[l].name == linename) {
+                    option.series[l].lineStyle.normal.color = '#C4D2DB';
+                    option.series[l].itemStyle.normal.color = '#C4D2DB';
+                    $("span#" + linename).css('color', 'white');
+                    selectedindexes.splice(selectedindexes.indexOf(l), 1);
+                    selectedindexname.splice(selectedindexname.indexOf(option.series[l].name), 1);
+                    option.legend.data = selectedindexname;
+                    myChart.setOption(option);
+
+                }
+            }
+
+        }
     </script>
 
     <!--随机生成颜色-->
@@ -304,12 +337,7 @@
 
     <!--建图-->
     <script>
-        var Chosenindexes = new Array();
-        Chosenindexes = ['tot_oper_rev'];
-        Chosenindexes['tot_oper_rev'] = "#000000";
-
         var myChart = echarts.init(document.getElementById('mychart'));
-        var invest_results;
         var market_results;
         var dict = {
             'tot_oper_rev': '总营业收入',
@@ -336,7 +364,6 @@
             dataType: 'json',
             success: function (data) {
                 market_results = data;
-                invest_results = data;
                 CreateChart();
             }
         });
@@ -417,9 +444,9 @@
             myChart.setOption(option, true);
             myChart.on('datazoom', function (params) {
                 option.xAxis.interval = 10 * (params.end - params.start) / 100;
-                var ends = (2016 - Math.ceil(params.start / 100 * 9))+'-12-31'
+                var ends = (2016 - Math.ceil(params.start / 100 * 9)) + '-12-31'
                 if (Math.ceil(1 - params.end / 100)) {
-                    var starts = (2007 + Math.ceil((1 - params.end / 100) * 9) - 1)+'-12-31'
+                    var starts = (2007 + Math.ceil((1 - params.end / 100) * 9) - 1) + '-12-31'
                 }
                 else {
                     var starts = '2007-12-31'

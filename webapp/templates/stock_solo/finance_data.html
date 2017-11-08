@@ -87,6 +87,7 @@
         </div>
         <div class="checkbox">
             <label style="font-size: 20px"><input type="checkbox" value="equal_earning_rate">均衡市盈率</label>
+<<<<<<< HEAD
 
         </div>
         <div class="checkbox">
@@ -132,6 +133,53 @@
             <label style="font-size: 20px"><input type="checkbox" value="employee">雇员数量</label>
         </div>
 
+=======
+
+        </div>
+        <div class="checkbox">
+            <label style="font-size: 20px"><input type="checkbox" value="equal_market_rate">均衡市净率</label>
+        </div>
+        <div class="checkbox">
+            <label style="font-size: 20px"><input type="checkbox" value="com_value_evaluate">公司价值估计</label>
+        </div>
+        <div class="checkbox">
+            <label style="font-size: 20px"><input type="checkbox" value="per_com_value_evaluate">每股价值估计</label>
+        </div>
+        <div class="checkbox">
+            <label style="font-size: 20px"><input type="checkbox" value="fre_cash_evaluate">自由现金流估计</label>
+        </div>
+        <div class="checkbox">
+            <label style="font-size: 20px"><input type="checkbox" value="ev">市值</label>
+        </div>
+        <div class="checkbox">
+            <label style="font-size: 20px"><input type="checkbox" value="earning_rate">市盈率</label>
+        </div>
+        <div class="checkbox">
+            <label style="font-size: 20px"><input type="checkbox" value="net_rate">市净率</label>
+        </div>
+        <div class="checkbox">
+            <label style="font-size: 20px"><input type="checkbox" value="sale_rate">市销率</label>
+        </div>
+        <div class="checkbox">
+            <label style="font-size: 20px"><input type="checkbox" value="cash_rate">市现率</label>
+        </div>
+        <div class="checkbox">
+            <label style="font-size: 20px"><input type="checkbox" value="dividendyield2">股息收益率</label>
+        </div>
+        <div class="checkbox">
+            <label style="font-size: 20px"><input type="checkbox" value="cash_yield_evaluate">现金收益率估计</label>
+        </div>
+        <div class="checkbox">
+            <label style="font-size: 20px"><input type="checkbox" value="ev1">整体价值估计（含货币）</label>
+        </div>
+        <div class="checkbox">
+            <label style="font-size: 20px"><input type="checkbox" value="ev2">整体价值估计（不含货币）</label>
+        </div>
+        <div class="checkbox">
+            <label style="font-size: 20px"><input type="checkbox" value="employee">雇员数量</label>
+        </div>
+
+>>>>>>> 6bbd7a456bfe746aea0c62c57511a592b9ee1721
     </div>
     <div style="position:absolute;bottom: 10px;right:1px">
         <input type="button" value="全选" id="CheckAll"/>
@@ -219,6 +267,11 @@
             </div>
         </div>
     </div>
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 6bbd7a456bfe746aea0c62c57511a592b9ee1721
 
     <script>
         denominator = 1
@@ -291,6 +344,13 @@
                     selectedindexname.push(option.series[l].name);
                     option.legend.data = selectedindexname;
                     myChart.setOption(option);
+<<<<<<< HEAD
+=======
+                    {#if($('tr#'+option.series[l].name).length>0) {  列头不变色 将查询的data存储 分割函数 代码冗余度高
+                        $('tr#' + option.series[l].name).css('color', option.series[l].lineStyle.normal.color)
+                    }#}
+
+>>>>>>> 6bbd7a456bfe746aea0c62c57511a592b9ee1721
                 }
             }
 
@@ -725,6 +785,12 @@
                         type: 'slider', // 这个 dataZoom 组件是 slider 型 dataZoom 组件
                         xAxisIndex: [0],
                         startValue: "2016年Q4",
+<<<<<<< HEAD
+=======
+                        {#   start: 0,      // 左边在 10% 的位置。
+                            end: 100,         // 右边在 60% 的位置。
+                            top: '93%'#}
+>>>>>>> 6bbd7a456bfe746aea0c62c57511a592b9ee1721
                         endValue: "2006年Q4",
                         filterMode: 'filter',
                     },
