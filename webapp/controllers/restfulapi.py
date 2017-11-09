@@ -4,9 +4,9 @@ from webapp.models import *
 import MySQLdb, time, re
 
 api_blueprint = Blueprint(
-    'restfulapi',
-    __name__,
-    url_prefix='/api'
+        'restfulapi',
+        __name__,
+        url_prefix='/api'
 )
 
 
@@ -45,6 +45,49 @@ def finance_data():
     for index in indexes:
         exec ("data['" + index + "']=" + index + "_list")
     return jsonify(data)
+
+
+@api_blueprint.route('/get_ajax_compare', methods=('GET', 'POST'))
+def get_ajax_compare():
+    code = request.form.get('code')
+    date = request.form.getlist('date[]')
+    indexes = request.form.getlist('index[]')
+    the_year_start = int(date[0][0:4] + '1231')
+    the_year_end = int(date[1][0:4] + '1231')
+    data = {}
+    test = {}
+    year_list = []
+    year_list1 = []
+    the_name_list = []
+    the_year = the_year_end
+    while the_year >= the_year_start:
+        year_list.append(the_year)
+        year_list1.append(the_year / 10000)
+        the_year = the_year - 10000
+    result1 = finance_basics.query.filter_by(trade_code=code).first_or_404()
+    data['the_name'] = result1.sec_name
+    for index in indexes:
+        results = []
+        for year in year_list:
+            if index == 'ebit_rate':
+                result = finance_basics_add.query.filter_by(trade_code=code, the_year=year).first_or_404()
+                if eval('result.' + index) is None:
+                    results.append('..')
+                else:
+                    results.append(str(eval('result.' + index)))
+            else:
+                result = finance_basics.query.filter_by(trade_code=code, the_year=year).first_or_404()
+                if eval('result.' + index) is None:
+                    results.append('..')
+                else:
+                    results.append(str(eval('result.' + index)))
+        data[index] = results
+    data['the_code'] = code
+    data['indexs'] = indexes
+    data['the_year_list'] = year_list1
+
+    return jsonify(data)
+
 
 @api_blueprint.route('/get_ajax', methods=('GET', 'POST'))
 def get_ajax():
