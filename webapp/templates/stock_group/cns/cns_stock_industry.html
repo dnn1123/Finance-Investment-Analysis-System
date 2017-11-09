@@ -204,7 +204,8 @@
                 <td style="border: none;">{{ result[x].industry_gics_3 }}</td>
                 <td style="border: none;">
                     {{ result[x].industry_gics_4 }}
-                    <a href="{{ url_for('stock_group.update_gics_4',trade_code=result[x][0].trade_code) }}">修改</a>
+{#                    <a href="{{ url_for('stock_group.update_gics_4',trade_code=result[x][0].trade_code) }}">修改</a>#}
+                    <a href="javascript:void(0)" class="small-box-footer" data-toggle="modal" data-target="#myModal">修改</a>
                 </td>
                 <td style="border: none;">
                     {{ result[x][0].business[:40] }}
@@ -228,6 +229,127 @@
         {% endfor %}
     </tbody>
 </table>
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        修改
+                    </h4>
+                </div>
+
+                <div class="modal-body" style="height: 80px;width:auto">
+                    <form class="navbar-form navbar-left" id="Myform" role="form" method="post" action="#">
+                        <select class="form-control" id="gics_1">
+                        </select>
+                        <select class="form-control" id="gics_2">
+                        </select>
+                        <select class="form-control" id="gics_3">
+                        </select>
+                        <select class="form-control" id="gics_4">
+                        </select>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                    </button>
+                    <button type="button" class="btn btn-primary">
+                        提交更改
+                    </button>
+                </div>
+
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+    <script>
+    $(document).ready(function () {
+        showgics1()
+    })
+    function showgics1() {
+            $.ajax({
+                url :  '{{url_for("restfulapi.gics_1")}}', //所需要的列表接口地址
+                type : "get",
+                dataType : "json",
+                success : function(result) {
+                        var h = "";
+                        $.each(result, function(key, value) {
+                            h += "<option value='" + value.gicscode1 + "'>" + value.gics1 //下拉框序言的循环数据
+                            + "</option>";
+                        });
+                        $("#gics_1").append(h);//append 添加进去并展示
+                        $("#gics_1").on(
+                                "change",
+                                function(a, b, c) {
+                                    showgics2($("#gics_1").val())
+                                })
+                }
+            });
+        }
+            function showgics2(data) {
+            $.ajax({
+                url :  '{{url_for("restfulapi.gics_2")}}', //所需要的列表接口地址
+                type : "get",
+                dataType : "json",
+                data:{"code":data},
+                success : function(result) {
+                        var h = "";
+                        $.each(result, function(key, value) {
+                            h += "<option value='" + value.gicscode2 + "'>" + value.gics2 //下拉框序言的循环数据
+                            + "</option>";
+                        });
+                        $("#gics_2").append(h);//append 添加进去并展示
+                        $("#gics_2").on(
+                                "change",
+                                function(a, b, c) {
+                                    showgics3($("#gics_2").val())
+                                })
+                }
+            });
+        }
+                    function showgics3(data) {
+            $.ajax({
+                url :  '{{url_for("restfulapi.gics_3")}}', //所需要的列表接口地址
+                type : "get",
+                dataType : "json",
+                data:{"code":data},
+                success : function(result) {
+                        var h = "";
+                        $.each(result, function(key, value) {
+                            h += "<option value='" + value.gicscode3 + "'>" + value.gics3 //下拉框序言的循环数据
+                            + "</option>";
+                        });
+                        $("#gics_3").append(h);//append 添加进去并展示
+                        $("#gics_3").on(
+                                "change",
+                                function(a, b, c) {
+                                    showgics4($("#gics_3").val())
+                                })
+                }
+            });
+        }
+                    function showgics4(data) {
+            $.ajax({
+                url :  '{{url_for("restfulapi.gics_4")}}', //所需要的列表接口地址
+                type : "get",
+                dataType : "json",
+                data:{"code":data},
+                success : function(result) {
+                        var h = "";
+                        $.each(result, function(key, value) {
+                            h += "<option value='" + value.gicscode4 + "'>" + value.gics4 //下拉框序言的循环数据
+                            + "</option>";
+                        });
+                        $("#gics_4").append(h);//append 添加进去并展示
+                        $("#gics_4").on(
+                                "change",
+                                function(a, b, c) {
+                                    alert($("#gics_4").val())
+                                })
+                }
+            });
+        }
+    </script>
 {% endblock %}
 
 {% block navigation%}

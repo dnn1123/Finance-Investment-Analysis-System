@@ -1,0 +1,575 @@
+{% extends "industry_analysis/industry_analysis_base.html" %}
+
+{% block tab %}
+    <div style="width: 95%;margin:auto">
+        <ul class="nav nav-pills">
+            <li><a href="{{ url_for('.market_status') }}">A.市场概况</a></li>
+            <li class="active"><a href="{{ url_for('.market_value') }}">B.图表分析</a></li>
+            <li class="dropdown"> <!--tip 可以同时写两个属性-->
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                    C.行业状况 <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a href="{{ url_for('.industry_status',parameter=1) }}">部门</a></li>
+                    <li><a href="{{ url_for('.industry_status',parameter=2) }}">行业组</a></li>
+                    <li><a href="{{ url_for('.industry_status',parameter=3) }}">行业</a></li>
+                    <li><a href="{{ url_for('.industry_status',parameter=4) }}">子行业</a></li>
+                </ul>
+            </li>
+            <li><a href="{{ url_for('.cns_home') }}">上市公司名单</a></li>
+            <li><a href="{{ url_for('.annual_table') }}">年度表A</a></li>
+            <li class="dropdown"> <!--tip 可以同时写两个属性-->
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                    年度表B <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a href="{{ url_for('.annual_table_b',parameter=1) }}">部门</a></li>
+                    <li><a href="{{ url_for('.annual_table_b',parameter=2) }}">行业组</a></li>
+                    <li><a href="{{ url_for('.annual_table_b',parameter=3) }}">行业</a></li>
+                    <li><a href="{{ url_for('.annual_table_b',parameter=4) }}">子行业</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+{% endblock %}
+
+{% block container %}
+    <div id="myTabChoice" style="width: 95%;height:600px;margin:auto">
+        <ul id="myTab" class="nav nav-tabs">
+            <li class="disabled">
+                <a href="javascript:return false;" data-toggle="tab" disabled='true'>视图：</a>
+            </li>
+            <li class="active"><a href="#chart" data-toggle="tab">图表</a></li>
+            <li><a href="#table" data-toggle="tab" onclick="CreateTable()">数据</a></li>
+        </ul>
+        <div id="choice" class="tab-content">
+            <div class="tab-pane fade in active" id="chart">
+                <div id="mychart" style="width:85%;height:100%;float:left"></div>
+                <div id="mychoice" style="width:15%;height:80%;float:right">
+                    <div style="width:100%;height:30px;margin-top:10px;background-color:lightgray">
+                        <div class="checkbox" style="width:80%;height:20px;float:left;margin-left:5px">
+                            <label><input type="checkbox" value="tot_oper_rev" checked="checked">总营业收入</label>
+                        </div>
+                        <div style="width:10px;height:10px;margin-right:5px;float:right;margin-top:15px;background-color:black"
+                             id="i_tot_oper_rev"></div>
+                    </div>
+                    <div style="width:100%;height:30px;margin-top:10px;background-color:lightgray">
+                        <div class="checkbox" style="width:80%;height:20px;float:left;margin-left:5px">
+                            <label><input type="checkbox" value="net_profit_is">净利润总和</label>
+                        </div>
+                        <div style="width:10px;height:10px;margin-right:5px;float:right;margin-top:15px;background-color:white"
+                             id="i_net_profit_is"></div>
+                    </div>
+                    <div style="width:100%;height:30px;margin-top:10px;background-color:lightgray">
+                        <div class="checkbox" style="width:80%;height:20px;float:left;margin-left:5px">
+                            <label><input type="checkbox" value="wgsd_net_inc">归属股东利润总和</label>
+                        </div>
+                        <div style="width:10px;height:10px;margin-right:5px;float:right;margin-top:15px;background-color:white"
+                             id="i_wgsd_net_inc"></div>
+                    </div>
+                    <div style="width:100%;height:30px;margin-top:10px;background-color:lightgray">
+                        <div class="checkbox" style="width:80%;height:20px;float:left;margin-left:5px">
+                            <label><input type="checkbox" value="tot_assets">总资产总和</label>
+                        </div>
+                        <div style="width:10px;height:10px;margin-right:5px;float:right;margin-top:15px;background-color:white"
+                             id="i_tot_assets"></div>
+                    </div>
+                    <div style="width:100%;height:30px;margin-top:10px;background-color:lightgray">
+                        <div class="checkbox" style="width:80%;height:20px;float:left;margin-left:5px">
+                            <label><input type="checkbox" value="tot_liab">总负债总和</label>
+                        </div>
+                        <div style="width:10px;height:10px;margin-right:5px;float:right;margin-top:15px;background-color:white"
+                             id="i_tot_liab"></div>
+                    </div>
+                    <div style="width:100%;height:30px;margin-top:10px;background-color:lightgray">
+                        <div class="checkbox" style="width:80%;height:20px;float:left;margin-left:5px">
+                            <label><input type="checkbox" value="net_assets">净资产总和</label>
+                        </div>
+                        <div style="width:10px;height:10px;margin-right:5px;float:right;margin-top:15px;background-color:white"
+                             id="i_net_assets"></div>
+                    </div>
+                    <div style="width:100%;height:30px;margin-top:10px;background-color:lightgray">
+                        <div class="checkbox" style="width:80%;height:20px;float:left;margin-left:5px">
+                            <label><input type="checkbox" value="wgsd_com_eq">股东权益总和</label>
+                        </div>
+                        <div style="width:10px;height:10px;margin-right:5px;float:right;margin-top:15px;background-color:white"
+                             id="i_wgsd_com_eq"></div>
+                    </div>
+                    <div style="width:100%;height:30px;margin-top:10px;background-color:lightgray">
+                        <div class="checkbox" style="width:80%;height:20px;float:left;margin-left:5px">
+                            <label><input type="checkbox" value="operatecashflow_ttm2">经营性现金流总和</label>
+                        </div>
+                        <div style="width:10px;height:10px;margin-right:5px;float:right;margin-top:15px;background-color:white"
+                             id="i_operatecashflow_ttm2"></div>
+                    </div>
+                    <div style="width:100%;height:30px;margin-top:10px;background-color:lightgray">
+                        <div class="checkbox" style="width:80%;height:20px;float:left;margin-left:5px">
+                            <label><input type="checkbox" value="investcashflow_ttm2">投资性现金流总和</label>
+                        </div>
+                        <div style="width:10px;height:10px;margin-right:5px;float:right;margin-top:15px;background-color:white"
+                             id="i_investcashflow_ttm2"></div>
+                    </div>
+                    <div style="width:100%;height:30px;margin-top:10px;background-color:lightgray">
+                        <div class="checkbox" style="width:80%;height:20px;float:left;margin-left:5px">
+                            <label><input type="checkbox" value="financecashflow_ttm2">融资性现金流总和</label>
+                        </div>
+                        <div style="width:10px;height:10px;margin-right:5px;float:right;margin-top:15px;background-color:white"
+                             id="i_financecashflow_ttm2"></div>
+                    </div>
+                    <div style="width:100%;height:30px;margin-top:10px;background-color:lightgray">
+                        <div class="checkbox" style="width:80%;height:20px;float:left;margin-left:5px">
+                            <label><input type="checkbox" value="cashflow_ttm2">总现金流总和</label>
+                        </div>
+                        <div style="width:10px;height:10px;margin-right:5px;float:right;margin-top:15px;background-color:white"
+                             id="i_cashflow_ttm2"></div>
+                    </div>
+                    <div style="width:100%;height:30px;margin-top:10px;background-color:lightgray">
+                        <div class="checkbox" style="width:80%;height:20px;float:left;margin-left:5px">
+                            <label><input type="checkbox" value="free_cash_flow">自由现金流估计</label>
+                        </div>
+                        <div style="width:10px;height:10px;margin-right:5px;float:right;margin-top:15px;background-color:white"
+                             id="i_free_cash_flow"></div>
+                    </div>
+                </div>
+                <div style="float:right">
+                <div style="float: left;margin: 20px">
+                    <lable>起始时间<input size="20" type="text" value="2007-12-31" id="starttime" readonly
+                                      class="form_datetime"></lable>
+                </div>
+                <div style="float: right;margin: 20px">
+                    <label>结束时间<input size="20" type="text" value="2016-12-31" id="endtime" readonly
+                                      class="form_datetime"></label>
+                </div>
+            </div>
+            </div>
+            <div class="tab-pane fade" id="table">
+                <div id="mytable" style="width:85%;height:100%;float:left"></div>
+            </div>
+        </div>
+        <div class="container" style="width: 100%">
+        </div>
+    </div>
+
+    <!--面板切换-->
+    <script>
+        $("#mydropdown").on("click", "[data-stopPropagation]", function (e) {
+            e.stopPropagation();
+        })
+    </script>
+
+    <!--复选框操作-->
+    <script>
+        $(document).ready(function () {
+            $('input').iCheck({
+                checkboxClass: 'icheckbox_minimal-blue',
+                radioClass: 'iradio_minimal-blue',
+                increaseArea: '20%' // optional
+            });
+        });
+        $('input').on('ifChanged', function (event) {
+            Chosenindexes = [];
+            $("div#unselected").empty();
+            $("div#selected").empty();
+            $("input[type=checkbox]").each(function () {//each()方法遍历所有的复选框
+                if ($(this).is(':checked') == true) {//这里就可以判断当前是否被选择了
+                    indexname = $(this).val();
+                    colorname = NewColor();
+                    console.log(this);
+                    Chosenindexes.push(indexname);
+                    Chosenindexes[indexname] = colorname;
+                    $("#i_" + indexname).css("background-color", colorname);
+                    console.log(Chosenindexes);
+                    var tempspan = $("<span class=\"label label-default\" data-stopPropagation=\"true\"id =\"" + indexname + "\">" + dict[indexname] + "</span>")
+                    tempspan.appendTo($("div#unselected"));
+                    $("div#unselected").append(" ");
+                }
+            })
+            CreateChart();
+            CreateTable();
+        });
+        $('input').on('ifUnchecked', function (event) {
+            indexname = $(this).val();
+            delete Chosenindexes[indexname]
+            $("#i_" + indexname).css("background-color", "white");
+            console.log(Chosenindexes);
+            CreateChart();
+            CreateTable();
+        });
+    </script>
+
+    <!--随机生成颜色-->
+    <script>
+        function NewColor() {
+            var colorElements = "0,1,2,3,4,5,6,7,8,9,a,b,c,d,e,f";
+            var colorArray = colorElements.split(",");
+            var color = "#";
+            for (var i = 0; i < 6; i++) {
+                color += colorArray[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+    </script>
+
+    <!--时间控制框-->
+    <script>
+        var startvalue = "20071231";
+        var endvalue = "20161231";
+        $(".form_datetime").datetimepicker({
+            format: 'yyyy-mm-dd ',
+            startView: 4,
+            minView: 4,
+            maxView: 4,
+            autoclose: true,
+            pickerPosition: 'top-right'
+        });
+        $('#starttime').datetimepicker('setStartDate', '2007-12-31');
+        $('#starttime').datetimepicker('setEndDate', '2016-12-31');
+        $('#endtime').datetimepicker('setStartDate', '2007-12-31');
+        $('#endtime').datetimepicker('setEndDate', '2016-12-31');
+        $('#starttime')
+            .datetimepicker()
+            .on('changeDate', function (ev) {
+                startvalue = ev.date.Format("yyyymmdd");
+                option.dataZoom[0].startValue = startvalue;
+                CreateChart();
+                CreateTable();
+            });
+        $('#endtime')
+            .datetimepicker()
+            .on('changeDate', function (ev) {
+                endvalue = ev.date.Format("yyyymmdd");
+                option.dataZoom[0].endValue = endvalue;
+                CreateChart();
+                CreateTable();
+            });
+        Date.prototype.Format = function (fmt) { //author: meizz
+            var o = {
+                "M+": this.getMonth() + 1, //月份
+                "d+": this.getDate(), //日
+                "h+": this.getHours(), //小时
+                "m+": this.getMinutes(), //分
+                "s+": this.getSeconds(), //秒
+                "q+": Math.floor((this.getMonth() + 3) / 3), //季度
+                "S": this.getMilliseconds() //毫秒
+            };
+            if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+            for (var k in o)
+                if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+            return fmt;
+        }
+    </script>
+
+    <!--建图-->
+    <script>
+        var Chosenindexes = new Array();
+        Chosenindexes = ['tot_oper_rev'];
+        var myChart = echarts.init(document.getElementById('mychart'));
+        var dict = {
+            'tot_oper_rev': '总营业收入',
+            'net_profit_is': '净利润总和',
+            'wgsd_net_inc': '归属股东利润总和',
+            'tot_assets': '总资产总和',
+            'tot_liab': '总负债总和',
+            'net_assets': '净资产总和',
+            'wgsd_com_eq': '股东权益总和',
+            'operatecashflow_ttm2': '经营性现金流总和',
+            'investcashflow_ttm2': '投资性现金流总和',
+            'financecashflow_ttm2': '融资性现金流总和',
+            'cashflow_ttm2': '总现金流总和',
+            'free_cash_flow': '自由现金流估计',
+        };
+        $.ajax({
+            type: 'GET',
+            url: '{{ url_for("restfulapi.market_value") }}',
+            data: {
+                starttime: '20071231',
+                endtime: '20161231',
+                indexes: ['tot_oper_rev']
+            },
+            dataType: 'json',//希望服务器返回json格式的数据
+            success: function (data) {
+                dataSeries = [];
+                for (var i = 0; i < data.indexes.length; i++) {
+                    temp = {
+                        name: data.indexes[i],
+                        type: 'line',
+                        lineStyle: {normal: {width: 2}},
+                        itemStyle: {normal: {color: "#000000"}},
+                        symbolSize: 8,
+                        smooth: true,
+                        stack: 'sum',
+                        data: eval("data." + data.indexes[i])
+                    };
+                    dataSeries.push(temp)
+                }
+                option = {
+                    title: {
+                        text: '财务指标分析图',
+                        left: '45%'
+                    },
+
+                    tooltip: {
+                        trigger: 'item',
+                        formatter: function (params) {
+                            return dict[params.seriesName] + "<br/> 时间：" + params.name + "<br/> 数据：" + params.data;
+                        }
+                    },
+                    legend: {
+                        data: [],
+                        orient: 'vertical',
+                        left: '85%',
+                        top: '10%',
+                        formatter: function (name) {
+                            return dict[name];
+                        }
+                    },
+                    grid: {
+                        left: 0,
+                        top: '10%',
+                        containLabel: true
+                    },
+                    toolbox: {
+                        feature: {
+                            magicType: {
+                                type: ['line', 'bar', 'tiled']
+                            }
+                        }
+                    },
+                    xAxis: {
+                        type: 'category',
+                        boundaryGap: false,
+                        axisTick: {
+                            show: false
+                        },
+                        data: data.the_year,
+                        Interval: 5
+                    },
+                    yAxis: {
+                        type: 'value',
+                        axisTick: {
+                            show: false
+                        },
+                    },
+                    dataZoom: [
+                        {   // 这个dataZoom组件，默认控制x轴。
+                            type: 'slider', // 这个 dataZoom 组件是 slider 型 dataZoom 组件
+                            xAxisIndex: [0],
+                            filterMode: 'filter',
+                        }
+                    ],
+                    series: dataSeries
+                };
+                myChart.setOption(option);
+                myChart.on('datazoom', function (params) {
+                    option.xAxis.interval = 10 * (params.end - params.start) / 100
+                })
+                myChart.on('mouseover', function (params) {
+                    oldwidth = option.series[params.seriesIndex].lineStyle.normal.width;
+                    if (oldwidth == 2) {
+                        option.series[params.seriesIndex].lineStyle.normal.width = 4;
+                        myChart.setOption(option);
+                    }
+                })
+                myChart.on('mouseout', function (params) {
+                    oldwidth = option.series[params.seriesIndex].lineStyle.normal.width;
+                    if (oldwidth == 4) {
+                        option.series[params.seriesIndex].lineStyle.normal.width = 2;
+                        myChart.setOption(option);
+                    }
+                })
+            }
+        });
+        function CreateChart() {
+            var data = {
+                starttime: startvalue,
+                endtime: endvalue,
+                indexes: Chosenindexes
+            };
+            $.ajax({
+                type: 'GET',
+                url: '{{ url_for("restfulapi.market_value") }}',
+                data: data,
+                dataType: 'json',//希望服务器返回json格式的数据
+
+                success: function (data) {
+                    dataSeries = [];
+                    for (var i = 0; i < data.indexes.length; i++) {
+                        temp = {
+                            name: data.indexes[i],
+                            type: 'line',
+                            lineStyle: {normal: {width: 2}},
+                            itemStyle: {normal: {color: Chosenindexes[data.indexes[i]]}},
+                            symbolSize: 8,
+                            smooth: true,
+                            stack: 'sum',
+                            data: eval("data." + data.indexes[i])
+                        };
+                        dataSeries.push(temp)
+                    }
+
+                    option = {
+                        title: {
+                            text: '财务指标分析图',
+                            left: '45%'
+                        },
+                        tooltip: {
+                            trigger: 'item',
+                            formatter: function (params) {
+                                return dict[params.seriesName] + "<br/> 时间：" + params.name + "<br/> 数据：" + params.data;
+                            }
+                        },
+                        legend: {
+                            data: [],
+                            orient: 'vertical',
+                            left: '85%',
+                            top: '10%',
+                            formatter: function (name) {
+                                return dict[name];
+                            }
+                        },
+                        grid: {
+                            left: 0,
+                            top: '10%',
+                            containLabel: true
+                        },
+                        toolbox: {
+                            feature: {
+                                magicType: {
+                                    type: ['line', 'bar', 'tiled']
+                                }
+                            }
+                        },
+                        xAxis: {
+                            type: 'category',
+                            boundaryGap: false,
+                            axisTick: {
+                                show: false
+                            },
+                            data: data.the_year,
+                            Interval: 5
+                        },
+                        yAxis: {
+                            type: 'value',
+                            axisTick: {
+                                show: false
+                            },
+                        },
+                        dataZoom: [
+                            {
+                                type: 'slider',
+                                xAxisIndex: [0],
+                                start: 0,
+                                end: 100,
+                                filterMode: 'filter',
+                            }
+                        ],
+                        series: dataSeries
+                    };
+                    myChart.setOption(option, true);
+                    myChart.on('datazoom', function (params) {
+                        option.xAxis.interval = 10 * (params.end - params.start) / 100
+                    })
+                    myChart.on('mouseover', function (params) {
+                        oldwidth = option.series[params.seriesIndex].lineStyle.normal.width;
+                        if (oldwidth == 2) {
+                            option.series[params.seriesIndex].lineStyle.normal.width = 4;
+                            myChart.setOption(option);
+                        }
+                    })
+                    myChart.on('mouseout', function (params) {
+                        oldwidth = option.series[params.seriesIndex].lineStyle.normal.width;
+                        if (oldwidth == 4) {
+                            option.series[params.seriesIndex].lineStyle.normal.width = 2;
+                            myChart.setOption(option);
+                        }
+                    })
+                }
+            })
+        }
+    </script>
+
+    <!--建表-->
+    <script>
+        function CreateTable() {
+            var opt = myChart.getOption();
+            var dz = opt.dataZoom[0];
+            data1 = {
+                starttime: opt.xAxis[0].data[dz.endValue],
+                endtime: opt.xAxis[0].data[dz.startValue],
+                indexes: Chosenindexes
+            };
+            $.ajax({
+                type: 'GET',
+                url: '{{url_for("restfulapi.market_value")}}',
+                data: data1,
+                dataType: 'json',//希望服务器返回json格式的数据
+                success: function (data) {
+                    $("#mytable").empty();
+                    var table = $("<table id=\"temptable\" class=\"row-border hover order-column\" cellspacing=\"0\" width=\"100%%\"  >");
+                    table.appendTo($("#mytable"));
+                    th = $("<thead></thead>");
+                    th.appendTo(table);
+                    var tr = $("<tr></tr>");
+                    tr.appendTo(th);
+                    var td = $("<td>" + "项目" + "</td>");
+                    td.appendTo(tr);
+                    for (var j = 0; j < data.the_year.length; j++) {
+                        var td = $("<td>" + data.the_year[j] + "</td>");
+                        td.appendTo(tr);
+                    }
+                    tb = $("<tbody></tbody>");
+                    tb.appendTo(table);
+                    $("#mytable").append("</table>");
+                    var mydatatb = $('#temptable').DataTable({
+                        "info": false,
+                        "processing": true,
+                        "scrollX": true,
+                        "searching": true,
+                        "fixedColumns": { //固定列的配置项
+                            "leftColumns": 1//固定左边第一列
+                        },
+                    });
+                    setTimeout("$(\"#subject\").trigger(\"click\")", 100);
+                    for (var i = 0; i < data.indexes.length; i++) {
+                        var rowNode = mydatatb
+                            .row.add([dict[data.indexes[i]]].concat(eval("data." + data.indexes[i])))
+                            .draw()
+                            .node();
+                        $(rowNode)
+                            .attr('id', data.indexes[i]);
+                    }
+                    for (var key in Chosenindexes) {
+                        $('tr#' + key).css('color', Chosenindexes[key])
+                    }
+                }
+            })
+        }
+    </script>
+
+    <script>
+        denominator = 1
+        $("select#unit").change(function () {
+            flag = $(this).val()
+            if (flag == "0") {
+                denominator = 1
+                CreateChart();
+                CreateTable();
+            }
+            if (flag == "1") {
+                denominator = 1000000
+                CreateChart();
+                CreateTable();
+            }
+        });
+        function numfilter(oldnum) {
+            newnum = []
+            for (i = 0; i < oldnum.length; i++) {
+                temp = oldnum[i] / denominator;
+                temp.toFixed(2);
+                newnum.push(temp)
+            }
+            return newnum;
+        }
+    </script>
+
+{% endblock %}
