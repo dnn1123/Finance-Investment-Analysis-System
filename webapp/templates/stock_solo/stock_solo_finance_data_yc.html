@@ -82,7 +82,7 @@
 {% endblock %}
 
 {% block choice %}
-    <div id="checkbox" style="float: left;height:300px;overflow-y :auto;margin-top: 20%;">
+    <div id="checkbox" style="height:60%;overflow-y :auto;margin-top: 20%;">
         <fieldset style='padding:5px;' id="index">
             <legend>指标选择</legend>
 
@@ -572,7 +572,7 @@
                 stockcode = {{ stockcode|safe }};
 
                 Uint = 100000000
-                selectedindex = ['tot_oper_rev', 'tot_oper_cost', 'fin_exp_is', 'tot_profit', 'tot_assets']
+                selectedindex = ['tot_oper_rev']
                 $.ajax({
                     type: 'POST',
                     url: '{{url_for("restfulapi.get_ajax")}}',

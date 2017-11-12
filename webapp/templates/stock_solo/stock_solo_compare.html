@@ -288,8 +288,8 @@
                 },
                 dataType: 'json',
                 success: function (data) {
-                    $('#div_compare').append("<span class='options' id='" + data.the_code + "' style='display:block;color:" + color[code] + "'>"
-                            + data.the_code + "-" + data.the_name + "</span>");
+                    $('#div_compare').append("<div style='width:auto'><span class='options' id='" + data.the_code + "'>"
+                            + data.the_code + "-" + data.the_name + "</span><div style='height: 10px;width: 10px;float: right;background-color:"+ color[code]+"'></div></div>")
                 }
             })
 
@@ -529,6 +529,23 @@
         }
 
         $(document).ready(function () {
+             function firstvisit() {
+                code_list = ['000001','000002'];
+                Uint = 100000000
+                selectedindex = ['tot_oper_rev']
+                 for (i = 0; i < code_list.length; i++) {
+                    creat_compare_option(code_list[i])
+                    {#                    color[data.indexs[i]] = set_color()#}
+                }
+                for (i = 0; i < selectedindex.length; i++) {
+                    var checked = document.getElementById(selectedindex[i]);//获取div下的input
+                    checked.checked = true
+                    {#                    color[data.indexs[i]] = set_color()#}
+                }
+                set_timepicker('2010-q4', '2016-q4')
+                creattable(code_list, color, Uint, '2010', '2016')
+                createchart(code_list, color, Uint, '2010', '2016')
+            }
             $("#ui3").datepicker({
                 changeYear: true,
                 dateFormat: 'yy',
@@ -572,6 +589,7 @@
                 createchart(code_list, color, Uint, dzstartyear, dzendyear)
             });
             creatindex()
+            firstvisit()
             $('.checkbox').on('click', function () {
                 if (!$(this).is(':checked')) {// 取消
                     var unit = document.getElementById("unit").value;
