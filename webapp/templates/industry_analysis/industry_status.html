@@ -4,46 +4,47 @@
     <!--通过parameter判断显示哪种表单-->
     {% if parameter==1 %}
         <form class="form-search" method="POST" action="{{ url_for('industry_analysis.industry_status',parameter=1) }}">
-        {{ cns_filterform1.hidden_tag() }}
-        {{ cns_filterform1.gics_code(class_='input-sm') }}
-        <input class="btn btn-success btn-xs" type="submit" value="搜索" >
-    </form>
+            {{ cns_filterform1.hidden_tag() }}
+            {{ cns_filterform1.gics_code(class_='input-sm') }}
+            <input class="btn btn-success btn-xs" type="submit" value="搜索">
+        </form>
     {% elif parameter==2 %}
         <form class="form-search" method="POST" action="{{ url_for('industry_analysis.industry_status',parameter=2) }}">
-        {{ cns_filterform2.hidden_tag() }}
-        {{ cns_filterform2.gics_code(class_='input-sm') }}
-        <input class="btn btn-success btn-xs" type="submit" value="搜索" >
-    </form>
+            {{ cns_filterform2.hidden_tag() }}
+            {{ cns_filterform2.gics_code(class_='input-sm') }}
+            <input class="btn btn-success btn-xs" type="submit" value="搜索">
+        </form>
     {% elif parameter==3 %}
         <form class="form-search" method="POST" action="{{ url_for('industry_analysis.industry_status',parameter=3) }}">
-        {{ cns_filterform3.hidden_tag() }}
-        {{ cns_filterform3.gics_code(class_='input-sm') }}
-        <input class="btn btn-success btn-xs" type="submit" value="搜索" >
-    </form>
+            {{ cns_filterform3.hidden_tag() }}
+            {{ cns_filterform3.gics_code(class_='input-sm') }}
+            <input class="btn btn-success btn-xs" type="submit" value="搜索">
+        </form>
     {% elif parameter==4 %}
         <form class="form-search" method="POST" action="{{ url_for('industry_analysis.industry_status',parameter=4) }}">
-        {{ cns_filterform4.hidden_tag() }}
-        {{ cns_filterform4.gics_code(class_='input-sm') }}
-        <input class="btn btn-success btn-xs" type="submit" value="搜索" >
-    </form>
+            {{ cns_filterform4.hidden_tag() }}
+            {{ cns_filterform4.gics_code(class_='input-sm') }}
+            <input class="btn btn-success btn-xs" type="submit" value="搜索">
+        </form>
     {% endif %}
 
 {% endblock %}
 
 {% block fixTable %}
     <script>
-			$(document).ready(function() {
-				$("#fixTable").tableHeadFixer({"left" : 1});
-			});
+        $(document).ready(function () {
+            $("#fixTable").tableHeadFixer({"left": 1});
+        });
     </script>
 {% endblock %}
 
 {% block tab %}
     <ul class="nav nav-pills">
         <li><a href="{{ url_for('.market_status') }}">A.市场概况</a></li>
+        <li><a href="{{ url_for('.market_value') }}">B.图表分析</a></li>
         <li class="dropdown active"> <!--tip 可以同时写两个属性-->
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                B.行业状况 <span class="caret"></span>
+                C.行业状况 <span class="caret"></span>
             </a>
             <ul class="dropdown-menu">
                 <li><a href="{{ url_for('.industry_status',parameter=1) }}">部门</a></li>
@@ -52,13 +53,11 @@
                 <li><a href="{{ url_for('.industry_status',parameter=4) }}">子行业</a></li>
             </ul>
         </li>
-        <li><a>C.图表分析</a></li>
-        <li><a href="{{ url_for('.cns_home') }}">1.上市公司名单</a></li>
-        <li><a>2.制图数据</a></li>
-        <li><a href="{{ url_for('.annual_table') }}">年度表.A</a></li>
+        <li><a href="{{ url_for('.cns_home') }}">上市公司名单</a></li>
+        <li><a href="{{ url_for('.annual_table') }}">年度表A</a></li>
         <li class="dropdown"> <!--tip 可以同时写两个属性-->
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                年度表.B <span class="caret"></span>
+                年度表B <span class="caret"></span>
             </a>
             <ul class="dropdown-menu">
                 <li><a href="{{ url_for('.annual_table_b',parameter=1) }}">部门</a></li>
@@ -71,933 +70,933 @@
 {% endblock %}
 
 {% block container %}
-<div id="basics" style="height:auto;overflow-y:auto;border: 1px inset">
-    {% if parameter==1 %}
-        <table id="fixTable" style="width: 100%;white-space:nowrap;">
-            <thead>
-            <tr bgcolor="#FFCC33"> <!--table样式不对-->
-                <th style="width: 9%;">{{ rs[0].industry_gics_1 }}</th>
-                {% for x in range(year_list|length()) %}
-                    <th style="width: 3.5%;">
-                        {{ year_list[x][0][:4] }}年度 &nbsp;&nbsp;&nbsp;<!--笨方法-->
-                    </th>
-                {% endfor %}
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td style="width: 9%;">营业收入总和</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].tot_oper_rev==None or rs[x].tot_oper_rev==0%}
-                            NA
-                        {% else %}
-                            {{ (rs[x].tot_oper_rev/100000000)|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>净利润总和</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].net_profit_is==None or rs[x].net_profit_is==0%}
-                            NA
-                        {% else %}
-                            {{ (rs[x].net_profit_is/100000000)|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>归属股东利润总和</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].wgsd_com_eq==None or rs[x].wgsd_com_eq==0%}
-                            NA
-                        {% else %}
-                            {{ (rs[x].wgsd_com_eq/100000000)|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>总资产总和</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].tot_assets==None or rs[x].tot_assets== 0 %}
-                            NA
-                        {% else %}
-                            {{ (rs[x].tot_assets/100000000)|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>总负债总和</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].tot_liab==None or rs[x].tot_liab == 0 %}
-                            NA
-                        {% else %}
-                            {{ (rs[x].tot_liab/100000000)|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>净资产总和</td>
-                {% for x in rs_list %}
-                    <td> <!--要判断得太多了-->
-                        {% if rs[x].tot_assets==None or rs[x].tot_assets==0 or rs[x].tot_liab==None or rs[x].tot_liab==0 or (rs[x].tot_assets-rs[x].tot_liab) == None or (rs[x].tot_assets-rs[x].tot_liab) == 0 %}
-                            NA
-                        {% else %}
-                            {{ ((rs[x].tot_assets-rs[x].tot_liab)/100000000)|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>股东权益总和</td> <!--这个指标对吗？？？-->
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].wgsd_com_eq==None or rs[x].wgsd_com_eq == 0 %}
-                            NA
-                        {% else %}
-                            {{ (rs[x].wgsd_com_eq/100000000)|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>经营性现金流总和</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].operatecashflow_ttm2==None or rs[x].operatecashflow_ttm2 == 0 %}
-                            NA
-                        {% else %}
-                            {{ (rs[x].operatecashflow_ttm2/100000000)|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>投资性现金流总和</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].investcashflow_ttm2==None or rs[x].investcashflow_ttm2 == 0 %}
-                            NA
-                        {% else %}
-                            {{ (rs[x].investcashflow_ttm2/100000000)|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>融资性现金流总和</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].financecashflow_ttm2==None or rs[x].financecashflow_ttm2 == 0 %}
-                            NA
-                        {% else %}
-                            {{ (rs[x].financecashflow_ttm2/100000000)|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>总现金流总和</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].cashflow_ttm2==None or rs[x].cashflow_ttm2 == 0 %}
-                            NA
-                        {% else %}
-                            {{ (rs[x].cashflow_ttm2/100000000)|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>自由现金流估计</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].operatecashflow_ttm2==None or rs[x].investcashflow_ttm2==None or (rs[x].operatecashflow_ttm2-rs[x].investcashflow_ttm2)==None or (rs[x].operatecashflow_ttm2-rs[x].investcashflow_ttm2)== 0 %}
-                            NA
-                        {% else %}
-                            {{ ((rs[x].operatecashflow_ttm2-rs[x].investcashflow_ttm2)/100000000)|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>平均净利润率</td> <!--平均是什么意思？-->
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].net_profit_rate == None or rs[x].net_profit_rate==0%}
-                            NA
-                        {% else %}
-                            {{ rs[x].net_profit_rate|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>平均总资产周转率</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].tot_assets_turnover == None or rs[x].tot_assets_turnover==0%}
-                            NA
-                        {% else %}
-                            {{ rs[x].tot_assets_turnover|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>平均权益乘数</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].equ_multi == None or rs[x].equ_multi==0%}
-                            NA
-                        {% else %}
-                            {{ rs[x].equ_multi|round(2)}}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>平均净资产收益率（总额）</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].roe_tot == None or rs[x].roe_tot==0%}
-                            NA
-                        {% else %}
-                            {{ rs[x].roe_tot|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>平均净资产收益率（股东）</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].roe_holder == None or rs[x].roe_holder==0%}
-                            NA
-                        {% else %}
-                            {{ rs[x].roe_holder|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>上市公司数量</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].company_num == None %}
-                            NA
-                        {% else %}
-                            {{ rs[x].company_num }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            </tbody>
-        </table>
-    {% elif parameter==2 %}
-        <table id="fixTable" style="width: 100%;white-space:nowrap;">
-            <thead>
-            <tr bgcolor="#FFCC33"> <!--table样式不对-->
-                <th style="width: 9%;">{{ rs[0].industry_gics_2 }}</th>
-                {% for x in range(year_list|length()) %}
-                    <th style="width: 3.5%;">
-                        {{ year_list[x][0][:4] }}年度 &nbsp;&nbsp;&nbsp;<!--笨方法-->
-                    </th>
-                {% endfor %}
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td style="width: 9%;">营业收入总和</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].tot_oper_rev==None or rs[x].tot_oper_rev==0%}
-                            NA
-                        {% else %}
-                            {{ (rs[x].tot_oper_rev/100000000)|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>净利润总和</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].net_profit_is==None or rs[x].net_profit_is==0%}
-                            NA
-                        {% else %}
-                            {{ (rs[x].net_profit_is/100000000)|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>归属股东利润总和</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].wgsd_com_eq==None or rs[x].wgsd_com_eq==0%}
-                            NA
-                        {% else %}
-                            {{ (rs[x].wgsd_com_eq/100000000)|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>总资产总和</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].tot_assets==None or rs[x].tot_assets== 0 %}
-                            NA
-                        {% else %}
-                            {{ (rs[x].tot_assets/100000000)|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>总负债总和</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].tot_liab==None or rs[x].tot_liab == 0 %}
-                            NA
-                        {% else %}
-                            {{ (rs[x].tot_liab/100000000)|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>净资产总和</td>
-                {% for x in rs_list %}
-                    <td> <!--要判断得太多了-->
-                        {% if rs[x].tot_assets==None or rs[x].tot_assets==0 or rs[x].tot_liab==None or rs[x].tot_liab==0 or (rs[x].tot_assets-rs[x].tot_liab) == None or (rs[x].tot_assets-rs[x].tot_liab) == 0 %}
-                            NA
-                        {% else %}
-                            {{ ((rs[x].tot_assets-rs[x].tot_liab)/100000000)|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>股东权益总和</td> <!--这个指标对吗？？？-->
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].wgsd_com_eq==None or rs[x].wgsd_com_eq == 0 %}
-                            NA
-                        {% else %}
-                            {{ (rs[x].wgsd_com_eq/100000000)|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>经营性现金流总和</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].operatecashflow_ttm2==None or rs[x].operatecashflow_ttm2 == 0 %}
-                            NA
-                        {% else %}
-                            {{ (rs[x].operatecashflow_ttm2/100000000)|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>投资性现金流总和</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].investcashflow_ttm2==None or rs[x].investcashflow_ttm2 == 0 %}
-                            NA
-                        {% else %}
-                            {{ (rs[x].investcashflow_ttm2/100000000)|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>融资性现金流总和</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].financecashflow_ttm2==None or rs[x].financecashflow_ttm2 == 0 %}
-                            NA
-                        {% else %}
-                            {{ (rs[x].financecashflow_ttm2/100000000)|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>总现金流总和</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].cashflow_ttm2==None or rs[x].cashflow_ttm2 == 0 %}
-                            NA
-                        {% else %}
-                            {{ (rs[x].cashflow_ttm2/100000000)|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>自由现金流估计</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].operatecashflow_ttm2==None or rs[x].investcashflow_ttm2==None or (rs[x].operatecashflow_ttm2-rs[x].investcashflow_ttm2)==None or (rs[x].operatecashflow_ttm2-rs[x].investcashflow_ttm2)== 0 %}
-                            NA
-                        {% else %}
-                            {{ ((rs[x].operatecashflow_ttm2-rs[x].investcashflow_ttm2)/100000000)|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>平均净利润率</td> <!--平均是什么意思？-->
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].net_profit_rate == None or rs[x].net_profit_rate==0%}
-                            NA
-                        {% else %}
-                            {{ rs[x].net_profit_rate|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>平均总资产周转率</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].tot_assets_turnover == None or rs[x].tot_assets_turnover==0%}
-                            NA
-                        {% else %}
-                            {{ rs[x].tot_assets_turnover|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>平均权益乘数</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].equ_multi == None or rs[x].equ_multi==0%}
-                            NA
-                        {% else %}
-                            {{ rs[x].equ_multi|round(2)}}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>平均净资产收益率（总额）</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].roe_tot == None or rs[x].roe_tot==0%}
-                            NA
-                        {% else %}
-                            {{ rs[x].roe_tot|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>平均净资产收益率（股东）</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].roe_holder == None or rs[x].roe_holder==0%}
-                            NA
-                        {% else %}
-                            {{ rs[x].roe_holder|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>上市公司数量</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].company_num == None %}
-                            NA
-                        {% else %}
-                            {{ rs[x].company_num }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            </tbody>
-        </table>
-    {% elif parameter==3 %}
-        <table id="fixTable" style="width: 100%;white-space:nowrap;">
-            <thead>
-            <tr bgcolor="#FFCC33"> <!--table样式不对-->
-                <th style="width: 9%;">{{ rs[0].industry_gics_3 }}</th>
-                {% for x in range(year_list|length()) %}
-                    <th style="width: 3.5%;">
-                        {{ year_list[x][0][:4] }}年度 &nbsp;&nbsp;&nbsp;<!--笨方法-->
-                    </th>
-                {% endfor %}
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td style="width: 9%;">营业收入总和</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].tot_oper_rev==None or rs[x].tot_oper_rev==0%}
-                            NA
-                        {% else %}
-                            {{ (rs[x].tot_oper_rev/100000000)|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>净利润总和</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].net_profit_is==None or rs[x].net_profit_is==0%}
-                            NA
-                        {% else %}
-                            {{ (rs[x].net_profit_is/100000000)|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>归属股东利润总和</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].wgsd_com_eq==None or rs[x].wgsd_com_eq==0%}
-                            NA
-                        {% else %}
-                            {{ (rs[x].wgsd_com_eq/100000000)|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>总资产总和</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].tot_assets==None or rs[x].tot_assets== 0 %}
-                            NA
-                        {% else %}
-                            {{ (rs[x].tot_assets/100000000)|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>总负债总和</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].tot_liab==None or rs[x].tot_liab == 0 %}
-                            NA
-                        {% else %}
-                            {{ (rs[x].tot_liab/100000000)|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>净资产总和</td>
-                {% for x in rs_list %}
-                    <td> <!--要判断得太多了-->
-                        {% if rs[x].tot_assets==None or rs[x].tot_assets==0 or rs[x].tot_liab==None or rs[x].tot_liab==0 or (rs[x].tot_assets-rs[x].tot_liab) == None or (rs[x].tot_assets-rs[x].tot_liab) == 0 %}
-                            NA
-                        {% else %}
-                            {{ ((rs[x].tot_assets-rs[x].tot_liab)/100000000)|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>股东权益总和</td> <!--这个指标对吗？？？-->
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].wgsd_com_eq==None or rs[x].wgsd_com_eq == 0 %}
-                            NA
-                        {% else %}
-                            {{ (rs[x].wgsd_com_eq/100000000)|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>经营性现金流总和</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].operatecashflow_ttm2==None or rs[x].operatecashflow_ttm2 == 0 %}
-                            NA
-                        {% else %}
-                            {{ (rs[x].operatecashflow_ttm2/100000000)|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>投资性现金流总和</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].investcashflow_ttm2==None or rs[x].investcashflow_ttm2 == 0 %}
-                            NA
-                        {% else %}
-                            {{ (rs[x].investcashflow_ttm2/100000000)|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>融资性现金流总和</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].financecashflow_ttm2==None or rs[x].financecashflow_ttm2 == 0 %}
-                            NA
-                        {% else %}
-                            {{ (rs[x].financecashflow_ttm2/100000000)|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>总现金流总和</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].cashflow_ttm2==None or rs[x].cashflow_ttm2 == 0 %}
-                            NA
-                        {% else %}
-                            {{ (rs[x].cashflow_ttm2/100000000)|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>自由现金流估计</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].operatecashflow_ttm2==None or rs[x].investcashflow_ttm2==None or (rs[x].operatecashflow_ttm2-rs[x].investcashflow_ttm2)==None or (rs[x].operatecashflow_ttm2-rs[x].investcashflow_ttm2)== 0 %}
-                            NA
-                        {% else %}
-                            {{ ((rs[x].operatecashflow_ttm2-rs[x].investcashflow_ttm2)/100000000)|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>平均净利润率</td> <!--平均是什么意思？-->
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].net_profit_rate == None or rs[x].net_profit_rate==0%}
-                            NA
-                        {% else %}
-                            {{ rs[x].net_profit_rate|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>平均总资产周转率</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].tot_assets_turnover == None or rs[x].tot_assets_turnover==0%}
-                            NA
-                        {% else %}
-                            {{ rs[x].tot_assets_turnover|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>平均权益乘数</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].equ_multi == None or rs[x].equ_multi==0%}
-                            NA
-                        {% else %}
-                            {{ rs[x].equ_multi|round(2)}}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>平均净资产收益率（总额）</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].roe_tot == None or rs[x].roe_tot==0%}
-                            NA
-                        {% else %}
-                            {{ rs[x].roe_tot|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>平均净资产收益率（股东）</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].roe_holder == None or rs[x].roe_holder==0%}
-                            NA
-                        {% else %}
-                            {{ rs[x].roe_holder|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>上市公司数量</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].company_num == None %}
-                            NA
-                        {% else %}
-                            {{ rs[x].company_num }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            </tbody>
-        </table>
-    {% elif parameter==4 %}
-        <table id="fixTable" style="width: 100%;white-space:nowrap;">
-            <thead>
-            <tr bgcolor="#FFCC33"> <!--table样式不对-->
-                <th style="width: 9%;">{{ rs[0].industry_gics_4 }}   </th>
-                {% for x in range(year_list|length()) %}
-                    <th style="width: 3.5%;">
-                        {{ year_list[x][0][:4] }}年度 &nbsp;&nbsp;&nbsp;<!--笨方法-->
-                    </th>
-                {% endfor %}
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td style="width: 9%;">营业收入总和</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].tot_oper_rev==None or rs[x].tot_oper_rev==0%}
-                            NA
-                        {% else %}
-                            {{ (rs[x].tot_oper_rev/100000000)|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>净利润总和</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].net_profit_is==None or rs[x].net_profit_is==0%}
-                            NA
-                        {% else %}
-                            {{ (rs[x].net_profit_is/100000000)|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>归属股东利润总和</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].wgsd_com_eq==None or rs[x].wgsd_com_eq==0%}
-                            NA
-                        {% else %}
-                            {{ (rs[x].wgsd_com_eq/100000000)|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>总资产总和</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].tot_assets==None or rs[x].tot_assets== 0 %}
-                            NA
-                        {% else %}
-                            {{ (rs[x].tot_assets/100000000)|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>总负债总和</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].tot_liab==None or rs[x].tot_liab == 0 %}
-                            NA
-                        {% else %}
-                            {{ (rs[x].tot_liab/100000000)|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>净资产总和</td>
-                {% for x in rs_list %}
-                    <td> <!--要判断得太多了-->
-                        {% if rs[x].tot_assets==None or rs[x].tot_assets==0 or rs[x].tot_liab==None or rs[x].tot_liab==0 or (rs[x].tot_assets-rs[x].tot_liab) == None or (rs[x].tot_assets-rs[x].tot_liab) == 0 %}
-                            NA
-                        {% else %}
-                            {{ ((rs[x].tot_assets-rs[x].tot_liab)/100000000)|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>股东权益总和</td> <!--这个指标对吗？？？-->
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].wgsd_com_eq==None or rs[x].wgsd_com_eq == 0 %}
-                            NA
-                        {% else %}
-                            {{ (rs[x].wgsd_com_eq/100000000)|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>经营性现金流总和</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].operatecashflow_ttm2==None or rs[x].operatecashflow_ttm2 == 0 %}
-                            NA
-                        {% else %}
-                            {{ (rs[x].operatecashflow_ttm2/100000000)|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>投资性现金流总和</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].investcashflow_ttm2==None or rs[x].investcashflow_ttm2 == 0 %}
-                            NA
-                        {% else %}
-                            {{ (rs[x].investcashflow_ttm2/100000000)|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>融资性现金流总和</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].financecashflow_ttm2==None or rs[x].financecashflow_ttm2 == 0 %}
-                            NA
-                        {% else %}
-                            {{ (rs[x].financecashflow_ttm2/100000000)|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>总现金流总和</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].cashflow_ttm2==None or rs[x].cashflow_ttm2 == 0 %}
-                            NA
-                        {% else %}
-                            {{ (rs[x].cashflow_ttm2/100000000)|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>自由现金流估计</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].operatecashflow_ttm2==None or rs[x].investcashflow_ttm2==None or (rs[x].operatecashflow_ttm2-rs[x].investcashflow_ttm2)==None or (rs[x].operatecashflow_ttm2-rs[x].investcashflow_ttm2)== 0 %}
-                            NA
-                        {% else %}
-                            {{ ((rs[x].operatecashflow_ttm2-rs[x].investcashflow_ttm2)/100000000)|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>平均净利润率</td> <!--平均是什么意思？-->
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].net_profit_rate == None or rs[x].net_profit_rate==0%}
-                            NA
-                        {% else %}
-                            {{ rs[x].net_profit_rate|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>平均总资产周转率</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].tot_assets_turnover == None or rs[x].tot_assets_turnover==0%}
-                            NA
-                        {% else %}
-                            {{ rs[x].tot_assets_turnover|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>平均权益乘数</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].equ_multi == None or rs[x].equ_multi==0%}
-                            NA
-                        {% else %}
-                            {{ rs[x].equ_multi|round(2)}}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>平均净资产收益率（总额）</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].roe_tot == None or rs[x].roe_tot==0%}
-                            NA
-                        {% else %}
-                            {{ rs[x].roe_tot|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>平均净资产收益率（股东）</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].roe_holder == None or rs[x].roe_holder==0%}
-                            NA
-                        {% else %}
-                            {{ rs[x].roe_holder|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>上市公司数量</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].company_num == None %}
-                            NA
-                        {% else %}
-                            {{ rs[x].company_num }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            </tbody>
-        </table>
-    {% endif %}
-</div>
+    <div id="basics" style="height:auto;overflow-y:auto;border: 1px inset">
+        {% if parameter==1 %}
+            <table id="fixTable" style="width: 100%;white-space:nowrap;">
+                <thead>
+                <tr bgcolor="#FFCC33"> <!--table样式不对-->
+                    <th style="width: 9%;">{{ rs[0].industry_gics_1 }}</th>
+                    {% for x in range(year_list|length()) %}
+                        <th style="width: 3.5%;">
+                            {{ year_list[x][0][:4] }}年度 &nbsp;&nbsp;&nbsp;<!--笨方法-->
+                        </th>
+                    {% endfor %}
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td style="width: 9%;">营业收入总和</td>
+                    {% for x in rs_list %}
+                        <td>
+                            {% if rs[x].tot_oper_rev==None or rs[x].tot_oper_rev==0 %}
+                                NA
+                            {% else %}
+                                {{ (rs[x].tot_oper_rev/100000000)|round(2) }}
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    <td>净利润总和</td>
+                    {% for x in rs_list %}
+                        <td>
+                            {% if rs[x].net_profit_is==None or rs[x].net_profit_is==0 %}
+                                NA
+                            {% else %}
+                                {{ (rs[x].net_profit_is/100000000)|round(2) }}
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    <td>归属股东利润总和</td>
+                    {% for x in rs_list %}
+                        <td>
+                            {% if rs[x].wgsd_com_eq==None or rs[x].wgsd_com_eq==0 %}
+                                NA
+                            {% else %}
+                                {{ (rs[x].wgsd_com_eq/100000000)|round(2) }}
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    <td>总资产总和</td>
+                    {% for x in rs_list %}
+                        <td>
+                            {% if rs[x].tot_assets==None or rs[x].tot_assets== 0 %}
+                                NA
+                            {% else %}
+                                {{ (rs[x].tot_assets/100000000)|round(2) }}
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    <td>总负债总和</td>
+                    {% for x in rs_list %}
+                        <td>
+                            {% if rs[x].tot_liab==None or rs[x].tot_liab == 0 %}
+                                NA
+                            {% else %}
+                                {{ (rs[x].tot_liab/100000000)|round(2) }}
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    <td>净资产总和</td>
+                    {% for x in rs_list %}
+                        <td> <!--要判断得太多了-->
+                            {% if rs[x].tot_assets==None or rs[x].tot_assets==0 or rs[x].tot_liab==None or rs[x].tot_liab==0 or (rs[x].tot_assets-rs[x].tot_liab) == None or (rs[x].tot_assets-rs[x].tot_liab) == 0 %}
+                                NA
+                            {% else %}
+                                {{ ((rs[x].tot_assets-rs[x].tot_liab)/100000000)|round(2) }}
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    <td>股东权益总和</td> <!--这个指标对吗？？？-->
+                    {% for x in rs_list %}
+                        <td>
+                            {% if rs[x].wgsd_com_eq==None or rs[x].wgsd_com_eq == 0 %}
+                                NA
+                            {% else %}
+                                {{ (rs[x].wgsd_com_eq/100000000)|round(2) }}
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    <td>经营性现金流总和</td>
+                    {% for x in rs_list %}
+                        <td>
+                            {% if rs[x].operatecashflow_ttm2==None or rs[x].operatecashflow_ttm2 == 0 %}
+                                NA
+                            {% else %}
+                                {{ (rs[x].operatecashflow_ttm2/100000000)|round(2) }}
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    <td>投资性现金流总和</td>
+                    {% for x in rs_list %}
+                        <td>
+                            {% if rs[x].investcashflow_ttm2==None or rs[x].investcashflow_ttm2 == 0 %}
+                                NA
+                            {% else %}
+                                {{ (rs[x].investcashflow_ttm2/100000000)|round(2) }}
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    <td>融资性现金流总和</td>
+                    {% for x in rs_list %}
+                        <td>
+                            {% if rs[x].financecashflow_ttm2==None or rs[x].financecashflow_ttm2 == 0 %}
+                                NA
+                            {% else %}
+                                {{ (rs[x].financecashflow_ttm2/100000000)|round(2) }}
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    <td>总现金流总和</td>
+                    {% for x in rs_list %}
+                        <td>
+                            {% if rs[x].cashflow_ttm2==None or rs[x].cashflow_ttm2 == 0 %}
+                                NA
+                            {% else %}
+                                {{ (rs[x].cashflow_ttm2/100000000)|round(2) }}
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    <td>自由现金流估计</td>
+                    {% for x in rs_list %}
+                        <td>
+                            {% if rs[x].operatecashflow_ttm2==None or rs[x].investcashflow_ttm2==None or (rs[x].operatecashflow_ttm2-rs[x].investcashflow_ttm2)==None or (rs[x].operatecashflow_ttm2-rs[x].investcashflow_ttm2)== 0 %}
+                                NA
+                            {% else %}
+                                {{ ((rs[x].operatecashflow_ttm2-rs[x].investcashflow_ttm2)/100000000)|round(2) }}
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    <td>平均净利润率</td> <!--平均是什么意思？-->
+                    {% for x in rs_list %}
+                        <td>
+                            {% if rs[x].net_profit_rate == None or rs[x].net_profit_rate==0 %}
+                                NA
+                            {% else %}
+                                {{ rs[x].net_profit_rate|round(2) }}
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    <td>平均总资产周转率</td>
+                    {% for x in rs_list %}
+                        <td>
+                            {% if rs[x].tot_assets_turnover == None or rs[x].tot_assets_turnover==0 %}
+                                NA
+                            {% else %}
+                                {{ rs[x].tot_assets_turnover|round(2) }}
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    <td>平均权益乘数</td>
+                    {% for x in rs_list %}
+                        <td>
+                            {% if rs[x].equ_multi == None or rs[x].equ_multi==0 %}
+                                NA
+                            {% else %}
+                                {{ rs[x].equ_multi|round(2) }}
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    <td>平均净资产收益率（总额）</td>
+                    {% for x in rs_list %}
+                        <td>
+                            {% if rs[x].roe_tot == None or rs[x].roe_tot==0 %}
+                                NA
+                            {% else %}
+                                {{ rs[x].roe_tot|round(2) }}
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    <td>平均净资产收益率（股东）</td>
+                    {% for x in rs_list %}
+                        <td>
+                            {% if rs[x].roe_holder == None or rs[x].roe_holder==0 %}
+                                NA
+                            {% else %}
+                                {{ rs[x].roe_holder|round(2) }}
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    <td>上市公司数量</td>
+                    {% for x in rs_list %}
+                        <td>
+                            {% if rs[x].company_num == None %}
+                                NA
+                            {% else %}
+                                {{ rs[x].company_num }}
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                </tr>
+                </tbody>
+            </table>
+        {% elif parameter==2 %}
+            <table id="fixTable" style="width: 100%;white-space:nowrap;">
+                <thead>
+                <tr bgcolor="#FFCC33"> <!--table样式不对-->
+                    <th style="width: 9%;">{{ rs[0].industry_gics_2 }}</th>
+                    {% for x in range(year_list|length()) %}
+                        <th style="width: 3.5%;">
+                            {{ year_list[x][0][:4] }}年度 &nbsp;&nbsp;&nbsp;<!--笨方法-->
+                        </th>
+                    {% endfor %}
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td style="width: 9%;">营业收入总和</td>
+                    {% for x in rs_list %}
+                        <td>
+                            {% if rs[x].tot_oper_rev==None or rs[x].tot_oper_rev==0 %}
+                                NA
+                            {% else %}
+                                {{ (rs[x].tot_oper_rev/100000000)|round(2) }}
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    <td>净利润总和</td>
+                    {% for x in rs_list %}
+                        <td>
+                            {% if rs[x].net_profit_is==None or rs[x].net_profit_is==0 %}
+                                NA
+                            {% else %}
+                                {{ (rs[x].net_profit_is/100000000)|round(2) }}
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    <td>归属股东利润总和</td>
+                    {% for x in rs_list %}
+                        <td>
+                            {% if rs[x].wgsd_com_eq==None or rs[x].wgsd_com_eq==0 %}
+                                NA
+                            {% else %}
+                                {{ (rs[x].wgsd_com_eq/100000000)|round(2) }}
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    <td>总资产总和</td>
+                    {% for x in rs_list %}
+                        <td>
+                            {% if rs[x].tot_assets==None or rs[x].tot_assets== 0 %}
+                                NA
+                            {% else %}
+                                {{ (rs[x].tot_assets/100000000)|round(2) }}
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    <td>总负债总和</td>
+                    {% for x in rs_list %}
+                        <td>
+                            {% if rs[x].tot_liab==None or rs[x].tot_liab == 0 %}
+                                NA
+                            {% else %}
+                                {{ (rs[x].tot_liab/100000000)|round(2) }}
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    <td>净资产总和</td>
+                    {% for x in rs_list %}
+                        <td> <!--要判断得太多了-->
+                            {% if rs[x].tot_assets==None or rs[x].tot_assets==0 or rs[x].tot_liab==None or rs[x].tot_liab==0 or (rs[x].tot_assets-rs[x].tot_liab) == None or (rs[x].tot_assets-rs[x].tot_liab) == 0 %}
+                                NA
+                            {% else %}
+                                {{ ((rs[x].tot_assets-rs[x].tot_liab)/100000000)|round(2) }}
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    <td>股东权益总和</td> <!--这个指标对吗？？？-->
+                    {% for x in rs_list %}
+                        <td>
+                            {% if rs[x].wgsd_com_eq==None or rs[x].wgsd_com_eq == 0 %}
+                                NA
+                            {% else %}
+                                {{ (rs[x].wgsd_com_eq/100000000)|round(2) }}
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    <td>经营性现金流总和</td>
+                    {% for x in rs_list %}
+                        <td>
+                            {% if rs[x].operatecashflow_ttm2==None or rs[x].operatecashflow_ttm2 == 0 %}
+                                NA
+                            {% else %}
+                                {{ (rs[x].operatecashflow_ttm2/100000000)|round(2) }}
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    <td>投资性现金流总和</td>
+                    {% for x in rs_list %}
+                        <td>
+                            {% if rs[x].investcashflow_ttm2==None or rs[x].investcashflow_ttm2 == 0 %}
+                                NA
+                            {% else %}
+                                {{ (rs[x].investcashflow_ttm2/100000000)|round(2) }}
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    <td>融资性现金流总和</td>
+                    {% for x in rs_list %}
+                        <td>
+                            {% if rs[x].financecashflow_ttm2==None or rs[x].financecashflow_ttm2 == 0 %}
+                                NA
+                            {% else %}
+                                {{ (rs[x].financecashflow_ttm2/100000000)|round(2) }}
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    <td>总现金流总和</td>
+                    {% for x in rs_list %}
+                        <td>
+                            {% if rs[x].cashflow_ttm2==None or rs[x].cashflow_ttm2 == 0 %}
+                                NA
+                            {% else %}
+                                {{ (rs[x].cashflow_ttm2/100000000)|round(2) }}
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    <td>自由现金流估计</td>
+                    {% for x in rs_list %}
+                        <td>
+                            {% if rs[x].operatecashflow_ttm2==None or rs[x].investcashflow_ttm2==None or (rs[x].operatecashflow_ttm2-rs[x].investcashflow_ttm2)==None or (rs[x].operatecashflow_ttm2-rs[x].investcashflow_ttm2)== 0 %}
+                                NA
+                            {% else %}
+                                {{ ((rs[x].operatecashflow_ttm2-rs[x].investcashflow_ttm2)/100000000)|round(2) }}
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    <td>平均净利润率</td> <!--平均是什么意思？-->
+                    {% for x in rs_list %}
+                        <td>
+                            {% if rs[x].net_profit_rate == None or rs[x].net_profit_rate==0 %}
+                                NA
+                            {% else %}
+                                {{ rs[x].net_profit_rate|round(2) }}
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    <td>平均总资产周转率</td>
+                    {% for x in rs_list %}
+                        <td>
+                            {% if rs[x].tot_assets_turnover == None or rs[x].tot_assets_turnover==0 %}
+                                NA
+                            {% else %}
+                                {{ rs[x].tot_assets_turnover|round(2) }}
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    <td>平均权益乘数</td>
+                    {% for x in rs_list %}
+                        <td>
+                            {% if rs[x].equ_multi == None or rs[x].equ_multi==0 %}
+                                NA
+                            {% else %}
+                                {{ rs[x].equ_multi|round(2) }}
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    <td>平均净资产收益率（总额）</td>
+                    {% for x in rs_list %}
+                        <td>
+                            {% if rs[x].roe_tot == None or rs[x].roe_tot==0 %}
+                                NA
+                            {% else %}
+                                {{ rs[x].roe_tot|round(2) }}
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    <td>平均净资产收益率（股东）</td>
+                    {% for x in rs_list %}
+                        <td>
+                            {% if rs[x].roe_holder == None or rs[x].roe_holder==0 %}
+                                NA
+                            {% else %}
+                                {{ rs[x].roe_holder|round(2) }}
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    <td>上市公司数量</td>
+                    {% for x in rs_list %}
+                        <td>
+                            {% if rs[x].company_num == None %}
+                                NA
+                            {% else %}
+                                {{ rs[x].company_num }}
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                </tr>
+                </tbody>
+            </table>
+        {% elif parameter==3 %}
+            <table id="fixTable" style="width: 100%;white-space:nowrap;">
+                <thead>
+                <tr bgcolor="#FFCC33"> <!--table样式不对-->
+                    <th style="width: 9%;">{{ rs[0].industry_gics_3 }}</th>
+                    {% for x in range(year_list|length()) %}
+                        <th style="width: 3.5%;">
+                            {{ year_list[x][0][:4] }}年度 &nbsp;&nbsp;&nbsp;<!--笨方法-->
+                        </th>
+                    {% endfor %}
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td style="width: 9%;">营业收入总和</td>
+                    {% for x in rs_list %}
+                        <td>
+                            {% if rs[x].tot_oper_rev==None or rs[x].tot_oper_rev==0 %}
+                                NA
+                            {% else %}
+                                {{ (rs[x].tot_oper_rev/100000000)|round(2) }}
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    <td>净利润总和</td>
+                    {% for x in rs_list %}
+                        <td>
+                            {% if rs[x].net_profit_is==None or rs[x].net_profit_is==0 %}
+                                NA
+                            {% else %}
+                                {{ (rs[x].net_profit_is/100000000)|round(2) }}
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    <td>归属股东利润总和</td>
+                    {% for x in rs_list %}
+                        <td>
+                            {% if rs[x].wgsd_com_eq==None or rs[x].wgsd_com_eq==0 %}
+                                NA
+                            {% else %}
+                                {{ (rs[x].wgsd_com_eq/100000000)|round(2) }}
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    <td>总资产总和</td>
+                    {% for x in rs_list %}
+                        <td>
+                            {% if rs[x].tot_assets==None or rs[x].tot_assets== 0 %}
+                                NA
+                            {% else %}
+                                {{ (rs[x].tot_assets/100000000)|round(2) }}
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    <td>总负债总和</td>
+                    {% for x in rs_list %}
+                        <td>
+                            {% if rs[x].tot_liab==None or rs[x].tot_liab == 0 %}
+                                NA
+                            {% else %}
+                                {{ (rs[x].tot_liab/100000000)|round(2) }}
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    <td>净资产总和</td>
+                    {% for x in rs_list %}
+                        <td> <!--要判断得太多了-->
+                            {% if rs[x].tot_assets==None or rs[x].tot_assets==0 or rs[x].tot_liab==None or rs[x].tot_liab==0 or (rs[x].tot_assets-rs[x].tot_liab) == None or (rs[x].tot_assets-rs[x].tot_liab) == 0 %}
+                                NA
+                            {% else %}
+                                {{ ((rs[x].tot_assets-rs[x].tot_liab)/100000000)|round(2) }}
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    <td>股东权益总和</td> <!--这个指标对吗？？？-->
+                    {% for x in rs_list %}
+                        <td>
+                            {% if rs[x].wgsd_com_eq==None or rs[x].wgsd_com_eq == 0 %}
+                                NA
+                            {% else %}
+                                {{ (rs[x].wgsd_com_eq/100000000)|round(2) }}
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    <td>经营性现金流总和</td>
+                    {% for x in rs_list %}
+                        <td>
+                            {% if rs[x].operatecashflow_ttm2==None or rs[x].operatecashflow_ttm2 == 0 %}
+                                NA
+                            {% else %}
+                                {{ (rs[x].operatecashflow_ttm2/100000000)|round(2) }}
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    <td>投资性现金流总和</td>
+                    {% for x in rs_list %}
+                        <td>
+                            {% if rs[x].investcashflow_ttm2==None or rs[x].investcashflow_ttm2 == 0 %}
+                                NA
+                            {% else %}
+                                {{ (rs[x].investcashflow_ttm2/100000000)|round(2) }}
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    <td>融资性现金流总和</td>
+                    {% for x in rs_list %}
+                        <td>
+                            {% if rs[x].financecashflow_ttm2==None or rs[x].financecashflow_ttm2 == 0 %}
+                                NA
+                            {% else %}
+                                {{ (rs[x].financecashflow_ttm2/100000000)|round(2) }}
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    <td>总现金流总和</td>
+                    {% for x in rs_list %}
+                        <td>
+                            {% if rs[x].cashflow_ttm2==None or rs[x].cashflow_ttm2 == 0 %}
+                                NA
+                            {% else %}
+                                {{ (rs[x].cashflow_ttm2/100000000)|round(2) }}
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    <td>自由现金流估计</td>
+                    {% for x in rs_list %}
+                        <td>
+                            {% if rs[x].operatecashflow_ttm2==None or rs[x].investcashflow_ttm2==None or (rs[x].operatecashflow_ttm2-rs[x].investcashflow_ttm2)==None or (rs[x].operatecashflow_ttm2-rs[x].investcashflow_ttm2)== 0 %}
+                                NA
+                            {% else %}
+                                {{ ((rs[x].operatecashflow_ttm2-rs[x].investcashflow_ttm2)/100000000)|round(2) }}
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    <td>平均净利润率</td> <!--平均是什么意思？-->
+                    {% for x in rs_list %}
+                        <td>
+                            {% if rs[x].net_profit_rate == None or rs[x].net_profit_rate==0 %}
+                                NA
+                            {% else %}
+                                {{ rs[x].net_profit_rate|round(2) }}
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    <td>平均总资产周转率</td>
+                    {% for x in rs_list %}
+                        <td>
+                            {% if rs[x].tot_assets_turnover == None or rs[x].tot_assets_turnover==0 %}
+                                NA
+                            {% else %}
+                                {{ rs[x].tot_assets_turnover|round(2) }}
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    <td>平均权益乘数</td>
+                    {% for x in rs_list %}
+                        <td>
+                            {% if rs[x].equ_multi == None or rs[x].equ_multi==0 %}
+                                NA
+                            {% else %}
+                                {{ rs[x].equ_multi|round(2) }}
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    <td>平均净资产收益率（总额）</td>
+                    {% for x in rs_list %}
+                        <td>
+                            {% if rs[x].roe_tot == None or rs[x].roe_tot==0 %}
+                                NA
+                            {% else %}
+                                {{ rs[x].roe_tot|round(2) }}
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    <td>平均净资产收益率（股东）</td>
+                    {% for x in rs_list %}
+                        <td>
+                            {% if rs[x].roe_holder == None or rs[x].roe_holder==0 %}
+                                NA
+                            {% else %}
+                                {{ rs[x].roe_holder|round(2) }}
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    <td>上市公司数量</td>
+                    {% for x in rs_list %}
+                        <td>
+                            {% if rs[x].company_num == None %}
+                                NA
+                            {% else %}
+                                {{ rs[x].company_num }}
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                </tr>
+                </tbody>
+            </table>
+        {% elif parameter==4 %}
+            <table id="fixTable" style="width: 100%;white-space:nowrap;">
+                <thead>
+                <tr bgcolor="#FFCC33"> <!--table样式不对-->
+                    <th style="width: 9%;">{{ rs[0].industry_gics_4 }}   </th>
+                    {% for x in range(year_list|length()) %}
+                        <th style="width: 3.5%;">
+                            {{ year_list[x][0][:4] }}年度 &nbsp;&nbsp;&nbsp;<!--笨方法-->
+                        </th>
+                    {% endfor %}
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td style="width: 9%;">营业收入总和</td>
+                    {% for x in rs_list %}
+                        <td>
+                            {% if rs[x].tot_oper_rev==None or rs[x].tot_oper_rev==0 %}
+                                NA
+                            {% else %}
+                                {{ (rs[x].tot_oper_rev/100000000)|round(2) }}
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    <td>净利润总和</td>
+                    {% for x in rs_list %}
+                        <td>
+                            {% if rs[x].net_profit_is==None or rs[x].net_profit_is==0 %}
+                                NA
+                            {% else %}
+                                {{ (rs[x].net_profit_is/100000000)|round(2) }}
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    <td>归属股东利润总和</td>
+                    {% for x in rs_list %}
+                        <td>
+                            {% if rs[x].wgsd_com_eq==None or rs[x].wgsd_com_eq==0 %}
+                                NA
+                            {% else %}
+                                {{ (rs[x].wgsd_com_eq/100000000)|round(2) }}
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    <td>总资产总和</td>
+                    {% for x in rs_list %}
+                        <td>
+                            {% if rs[x].tot_assets==None or rs[x].tot_assets== 0 %}
+                                NA
+                            {% else %}
+                                {{ (rs[x].tot_assets/100000000)|round(2) }}
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    <td>总负债总和</td>
+                    {% for x in rs_list %}
+                        <td>
+                            {% if rs[x].tot_liab==None or rs[x].tot_liab == 0 %}
+                                NA
+                            {% else %}
+                                {{ (rs[x].tot_liab/100000000)|round(2) }}
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    <td>净资产总和</td>
+                    {% for x in rs_list %}
+                        <td> <!--要判断得太多了-->
+                            {% if rs[x].tot_assets==None or rs[x].tot_assets==0 or rs[x].tot_liab==None or rs[x].tot_liab==0 or (rs[x].tot_assets-rs[x].tot_liab) == None or (rs[x].tot_assets-rs[x].tot_liab) == 0 %}
+                                NA
+                            {% else %}
+                                {{ ((rs[x].tot_assets-rs[x].tot_liab)/100000000)|round(2) }}
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    <td>股东权益总和</td> <!--这个指标对吗？？？-->
+                    {% for x in rs_list %}
+                        <td>
+                            {% if rs[x].wgsd_com_eq==None or rs[x].wgsd_com_eq == 0 %}
+                                NA
+                            {% else %}
+                                {{ (rs[x].wgsd_com_eq/100000000)|round(2) }}
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    <td>经营性现金流总和</td>
+                    {% for x in rs_list %}
+                        <td>
+                            {% if rs[x].operatecashflow_ttm2==None or rs[x].operatecashflow_ttm2 == 0 %}
+                                NA
+                            {% else %}
+                                {{ (rs[x].operatecashflow_ttm2/100000000)|round(2) }}
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    <td>投资性现金流总和</td>
+                    {% for x in rs_list %}
+                        <td>
+                            {% if rs[x].investcashflow_ttm2==None or rs[x].investcashflow_ttm2 == 0 %}
+                                NA
+                            {% else %}
+                                {{ (rs[x].investcashflow_ttm2/100000000)|round(2) }}
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    <td>融资性现金流总和</td>
+                    {% for x in rs_list %}
+                        <td>
+                            {% if rs[x].financecashflow_ttm2==None or rs[x].financecashflow_ttm2 == 0 %}
+                                NA
+                            {% else %}
+                                {{ (rs[x].financecashflow_ttm2/100000000)|round(2) }}
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    <td>总现金流总和</td>
+                    {% for x in rs_list %}
+                        <td>
+                            {% if rs[x].cashflow_ttm2==None or rs[x].cashflow_ttm2 == 0 %}
+                                NA
+                            {% else %}
+                                {{ (rs[x].cashflow_ttm2/100000000)|round(2) }}
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    <td>自由现金流估计</td>
+                    {% for x in rs_list %}
+                        <td>
+                            {% if rs[x].operatecashflow_ttm2==None or rs[x].investcashflow_ttm2==None or (rs[x].operatecashflow_ttm2-rs[x].investcashflow_ttm2)==None or (rs[x].operatecashflow_ttm2-rs[x].investcashflow_ttm2)== 0 %}
+                                NA
+                            {% else %}
+                                {{ ((rs[x].operatecashflow_ttm2-rs[x].investcashflow_ttm2)/100000000)|round(2) }}
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    <td>平均净利润率</td> <!--平均是什么意思？-->
+                    {% for x in rs_list %}
+                        <td>
+                            {% if rs[x].net_profit_rate == None or rs[x].net_profit_rate==0 %}
+                                NA
+                            {% else %}
+                                {{ rs[x].net_profit_rate|round(2) }}
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    <td>平均总资产周转率</td>
+                    {% for x in rs_list %}
+                        <td>
+                            {% if rs[x].tot_assets_turnover == None or rs[x].tot_assets_turnover==0 %}
+                                NA
+                            {% else %}
+                                {{ rs[x].tot_assets_turnover|round(2) }}
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    <td>平均权益乘数</td>
+                    {% for x in rs_list %}
+                        <td>
+                            {% if rs[x].equ_multi == None or rs[x].equ_multi==0 %}
+                                NA
+                            {% else %}
+                                {{ rs[x].equ_multi|round(2) }}
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    <td>平均净资产收益率（总额）</td>
+                    {% for x in rs_list %}
+                        <td>
+                            {% if rs[x].roe_tot == None or rs[x].roe_tot==0 %}
+                                NA
+                            {% else %}
+                                {{ rs[x].roe_tot|round(2) }}
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    <td>平均净资产收益率（股东）</td>
+                    {% for x in rs_list %}
+                        <td>
+                            {% if rs[x].roe_holder == None or rs[x].roe_holder==0 %}
+                                NA
+                            {% else %}
+                                {{ rs[x].roe_holder|round(2) }}
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    <td>上市公司数量</td>
+                    {% for x in rs_list %}
+                        <td>
+                            {% if rs[x].company_num == None %}
+                                NA
+                            {% else %}
+                                {{ rs[x].company_num }}
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                </tr>
+                </tbody>
+            </table>
+        {% endif %}
+    </div>
 {% endblock %}
 
 {#测试使用：#}
@@ -1016,4 +1015,5 @@
 
 <SCRIPT Language=VBScript><!--
 
-//--></SCRIPT>
+//-->
+</SCRIPT>

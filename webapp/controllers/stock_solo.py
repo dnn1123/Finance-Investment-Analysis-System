@@ -121,16 +121,16 @@ def finance_data(data='000895'):
 @stocksolo_blueprint.route('/finance_data_yc', methods=('GET', 'POST'))
 @stocksolo_blueprint.route('/finance_data_yc/<string:data>', methods=('GET', 'POST'))
 @login_required
-def finance_data_yc():
+def finance_data_yc(data='000001'):
     if session.has_key('stockcode'):
         data = session['stockcode']
     else:
         data = '000001'
     if (request.method == 'POST'):
-        stockcode=request.form.get("stockcode")
+        stockcode = request.form.get("stockcode","000001")
         session['stockcode'] = stockcode
-        return redirect(url_for('stock_solo.finance_data_yc', current_user=current_user, stockcode=stockcode))
-    return render_template("stock_solo/stock_solo_finance_data_yc.html",current_user=current_user,stockcode="\""+data+"\"")
+        return redirect(url_for('stock_solo.finance_data_yc', current_user=current_user, data=stockcode))
+    return render_template("stock_solo/stock_solo_finance_data_yc.html",stockcode="\""+data+"\"")
 
 
 @stocksolo_blueprint.route('/compare', methods=('GET', 'POST'))

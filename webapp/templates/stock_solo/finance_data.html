@@ -10,24 +10,47 @@
 
 {% block search %}
     <div class="container-fluid">
-        <form class="navbar-form navbar-left" role="search" method="post"
+        <form class="navbar-form navbar-left" id="searchform" role="search" method="post"
               action="{{ url_for('stock_solo.invest_value') }}">
             <div class="input-group">
                 <input type="text" class="form-control" placeholder="Search" name="stockcode">
                 <div class="input-group-btn">
-                    <button class="btn btn-default" type="submit" onclick="search()" style="padding: 8.5px 12px"><span
-                            class="glyphicon glyphicon-search"></span></button>
+                    <button class="btn btn-default dropdown-toggle" type="submit" id="submitbtn"
+                            style="padding: 8.5px 12px"><span class="glyphicon glyphicon-search"></span></button>
+                    <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                    </ul>
                 </div>
             </div>
         </form>
     </div>
     <script>
-        $(document).ready(function () {
+        var stocksuggest = $("input[name='stockcode']").bsSuggest({
+            indexKey: 1,
+            allowNoKeyword: false,
+            getDataMethod: "url",
+            url: '{{url_for("restfulapi.stock_code",q="")}}',
+            processData: function (json) {     // url 获取数据时，对数据的处理，作为 getData 的回调函数
+                var i, len, data = {value: []};
 
-            $('.selectpicker').selectpicker({});
+                if (!json || !json.stockcode || json.stockcode.length == 0) {
+                    return false;
+                }
+                len = json.stockcode.length;
 
-            // $('.selectpicker').selectpicker('hide');
+                for (i = 0; i < len; i++) {
+                    data.value.push({
+                        "Id": (i + 1),
+                        "stockcode": json.stockcode[i],
+                        "stockname": json.stockname[i],
+                    });
+                }
+                return data;
+            }
         })
+        $("#submitbtn").click(function () {
+            $("#searchform").submit();
+        })
+
     </script>
 {% endblock %}
 
@@ -215,8 +238,8 @@
             indexname = $(this).val();
             console.log(this)
             Chosenindexes[indexname] = NewColor();
-            $("#div_"+indexname).css("background-color", Chosenindexes[indexname])
-{#            $(this).parent().parent().css("color", Chosenindexes[indexname])#}
+            $("#div_" + indexname).css("background-color", Chosenindexes[indexname])
+            {#            $(this).parent().parent().css("color", Chosenindexes[indexname])#}
             console.log(Chosenindexes)
             CreateChart();
             CreateTable();
@@ -224,8 +247,8 @@
         $('input').on('ifUnchecked', function (event) {
             indexname = $(this).val();
             delete Chosenindexes[indexname]
-             $("#div_"+indexname).css("background-color", 'transparent')
-{#            $(this).parent().parent().css("color", "black")#}
+            $("#div_" + indexname).css("background-color", 'transparent')
+            {#            $(this).parent().parent().css("color", "black")#}
             console.log(Chosenindexes)
             CreateChart();
             CreateTable();
@@ -252,10 +275,14 @@
                 </select>
             </div>
             <div style="float: left;margin: 20px">
-                <a style="width:50px;margin-left:10px;color: #0c0c0c">起始时间:</a><input size="16" type="text" value="2016-12-31" id="starttime" readonly class="form_datetime">
+                <a style="width:50px;margin-left:10px;color: #0c0c0c">起始时间:</a><input size="16" type="text"
+                                                                                      value="2016-12-31" id="starttime"
+                                                                                      readonly class="form_datetime">
             </div>
             <div style="float: left;margin: 20px">
-                <a style="width:50px;margin-left:10px;color: #0c0c0c">结束时间:</a><input size="16" type="text" value="2006-01-01" id="endtime" readonly class="form_datetime">
+                <a style="width:50px;margin-left:10px;color: #0c0c0c">结束时间:</a><input size="16" type="text"
+                                                                                      value="2006-01-01" id="endtime"
+                                                                                      readonly class="form_datetime">
             </div>
         </div>
     </div>
@@ -813,7 +840,6 @@
     <script>
         var finance_results_t;
         var invest_results_t;
-
         function RequestTable() {
 
             var opt = myChart.getOption();
@@ -893,8 +919,6 @@
                     "infoEmpty": "没有数据",
                     "infoFiltered": "(过滤总件数 _MAX_ 条)"
                 }
-
-
             });
             setTimeout("$(\"#subject\").trigger(\"click\")", 100);
             for (var i = 0; i < finance_results_t.indexes.length; i++) {

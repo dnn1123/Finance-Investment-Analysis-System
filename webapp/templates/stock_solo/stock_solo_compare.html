@@ -45,31 +45,111 @@
 {% endblock %}
 
 {% block search %}
-    <div style="height:50px;">
-        <input id="stockcode" name="stockcode" type="text" style="margin-top:10px;margin-left:10px;height: 30px">
-        <button id="submit" type="submit"
-                style="margin-top:10px;margin-left: 10px;width:150px;height: 30px"
+    {#        <div class="container-fluid">#}
+    {#            <form class="navbar-form navbar-left" id="searchform" role="search" method="post"#}
+    {#                  action="">#}
+    {#                <div class="input-group">#}
+    {#                    <input type="text" class="form-control" placeholder="Search" name="stockcode">#}
+    {#                    <div class="input-group-btn">#}
+    {#                        <button class="btn btn-default dropdown-toggle" type="submit" id="submit"#}
+    {#                                style="margin-left: 10px;width:150px;height: 30px">添加比较股票#}
+    {#                        </button>#}
+    {#                        <button id="clear" type="submit" class="btn btn-default dropdown-toggle"#}
+    {#                                style="margin-left: 10px;width:150px;height: 30px">清空比较列表#}
+    {#                        </button>#}
+    {#                        <ul class="dropdown-menu dropdown-menu-right" role="menu">#}
+    {#                        </ul>#}
+    {#                    </div>#}
+    {#                </div>#}
+    {#            </form>#}
+    {#        </div>#}
+
+
+    <div style="height:50px;" class="input-group">
+        <input id="stockcode" name="stockcode" type="text"
+               style="margin-top:10px;margin-left:10px;height: 30px">
+
+        <button id="submit" type="submit" class="btn btn-default"
+                style="margin-left: 10px;width:150px;height: 30px"
                 data-toggle="tooltip" title="点击添加股票"
                 data-placement="right">添加比较股票
         </button>
-        <button id="clear" type="submit"
-                style="margin-top:10px;margin-left: 10px;width:150px;height: 30px"
+        <button id="clear" type="submit" class="btn btn-default"
+                style="margin-left: 10px;width:150px;height: 30px"
 
         >清空比较列表
         </button>
+        <div>
+            <ul class="dropdown-menu dropdown-menu-right" role="menu">
+            </ul>
+        </div>
+
     </div>
 
+
+    <script>
+        var stocksuggest = $("input[name='stockcode']").bsSuggest({
+            indexKey: 1,
+            allowNoKeyword: false,
+            getDataMethod: "url",
+            url: '{{url_for("restfulapi.stock_code",q="")}}',
+            processData: function (json) {     // url 获取数据时，对数据的处理，作为 getData 的回调函数
+                var i, len, data = {value: []};
+                if (!json || !json.stockcode || json.stockcode.length == 0) {
+                    return false;
+                }
+                len = json.stockcode.length;
+                for (i = 0; i < len; i++) {
+                    data.value.push({
+                        "Id": (i + 1),
+                        "stockcode": json.stockcode[i],
+                        "stockname": json.stockname[i],
+                    });
+                }
+                return data;
+            }
+        })
+
+    </script>
     <script>
         $(function () {
             $("[data-toggle='tooltip']").tooltip();
         });
     </script> <!--用于实现“右侧提示框”-->
+    <script>
+        var stocksuggest = $("input[name='stockcode']").bsSuggest({
+            indexKey: 1,
+            allowNoKeyword: false,
+            getDataMethod: "url",
+            multiWord: false,
+            url: '{{url_for("restfulapi.stock_code",q="")}}',
+            processData: function (json) {     // url 获取数据时，对数据的处理，作为 getData 的回调函数
+                var i, len, data = {value: []};
 
+                if (!json || !json.stockcode || json.stockcode.length == 0) {
+                    return false;
+                }
+                len = json.stockcode.length;
+
+                for (i = 0; i < len; i++) {
+                    data.value.push({
+                        "Id": (i + 1),
+                        "stockcode": json.stockcode[i],
+                        "stockname": json.stockname[i],
+                    });
+                }
+                return data;
+            }
+        })
+
+    </script>
 {% endblock %}
 
 {% block choice %}
-    <div id="div_compare" style="overflow-y: auto;">
+    <div>
         <legend>比较代码列表</legend>
+        <div id="div_compare" style="overflow-y: auto;">
+        </div>
     </div>
     <div id="checkbox" style="height:60%;overflow-y :auto;margin-top:5%">
         <legend>指标选择</legend>
@@ -289,7 +369,7 @@
                 dataType: 'json',
                 success: function (data) {
                     $('#div_compare').append("<div style='width:auto'><span class='options' id='" + data.the_code + "'>"
-                            + data.the_code + "-" + data.the_name + "</span><div style='height: 10px;width: 10px;float: right;background-color:"+ color[code]+"'></div></div>")
+                            + data.the_code + "-" + data.the_name + "</span><div  id='div_" + code + "' style='height: 10px;width: 10px;float: right;background-color:" + color[code] + "'></div></div>")
                 }
             })
 
@@ -529,11 +609,11 @@
         }
 
         $(document).ready(function () {
-             function firstvisit() {
-                code_list = ['000001','000002'];
+            function firstvisit() {
+                code_list = ['000001', '000002'];
                 Uint = 100000000
                 selectedindex = ['tot_oper_rev']
-                 for (i = 0; i < code_list.length; i++) {
+                for (i = 0; i < code_list.length; i++) {
                     creat_compare_option(code_list[i])
                     {#                    color[data.indexs[i]] = set_color()#}
                 }
@@ -546,6 +626,7 @@
                 creattable(code_list, color, Uint, '2010', '2016')
                 createchart(code_list, color, Uint, '2010', '2016')
             }
+
             $("#ui3").datepicker({
                 changeYear: true,
                 dateFormat: 'yy',
@@ -620,6 +701,7 @@
             $(document).on('click', '.options', function (e) {
                 code_list = []
                 $(this).remove();
+                $("#div_" + $(this).attr('id')).remove()
                 $('.options').each(function () {
                     code_list.push($(this).attr('id'))
                 })
@@ -638,19 +720,24 @@
                 var stock_code = $("#stockcode").val();
                 stockcode = $("#stockcode").val()
                 var a = 1
-                $("span").each(function () {
-                    if ($(this).parent().attr('id') == 'div_compare') {
-                        if ($(this).text() == stock_code) {
+                for(i=0;i<code_list.length;i++){
+                    if (stock_code == code_list[i]) {
                             alert('已添加，请勿重复添加！')
                             a = 0
                         }
-                    }
-                })
+                }
+{#                $("span").each(function () {#}
+{#                    if ($(this).parent().attr('id') == 'div_compare') {#}
+{#                        if ($(this).text() == stock_code) {#}
+{#                            alert('已添加，请勿重复添加！')#}
+{#                            a = 0#}
+{#                        }#}
+{#                    }#}
+{#                })#}
                 if (a) {
                     creat_compare_option(stock_code)
                     code_list.push(stock_code)
-                }
-                Uint = 100000000
+                     Uint = 100000000
                 selectedindex = ['tot_oper_rev']
                 $(".checkbox").each(function () {
                     $(this).attr("checked", false)
@@ -663,6 +750,8 @@
                 set_timepicker('2010-q4', '2016-q4')
                 creattable(code_list, color, Uint, '2010', '2016')
                 createchart(code_list, color, Uint, '2010', '2016')
+                }
+
             })
             $("#clear").click(function () {
                 var unit = document.getElementById("unit").value;
@@ -670,9 +759,9 @@
                 var dzendyear = $('#ui4').val().substring(0, 4)
 
                 code_list = []
-                $('.options').remove()
+                $('#div_compare').empty()
                 creattable(code_list, color, unit, dzstartyear, dzendyear)
-{#                createchart(['000002'], color, unit, dzstartyear, dzendyear)#}
+                {#                createchart(['000002'], color, unit, dzstartyear, dzendyear)#}
                 var myChart = echarts.init(document.getElementById('echart'));
                 myChart.clear()
             })
