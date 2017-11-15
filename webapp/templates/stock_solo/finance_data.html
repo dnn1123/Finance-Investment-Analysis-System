@@ -10,178 +10,148 @@
 
 {% block search %}
     <div class="container-fluid">
-        <form class="navbar-form navbar-left" role="search" method="post"
+        <form class="navbar-form navbar-left" id="searchform" role="search" method="post"
               action="{{ url_for('stock_solo.invest_value') }}">
             <div class="input-group">
                 <input type="text" class="form-control" placeholder="Search" name="stockcode">
-                {#<select  class="selectpicker form-control"  data-live-search="true"  name="stockcode">
-                        <option>cow</option>
-                        <option>bull</option>
-                        <option class="get-class" disabled>ox</option>
-
-            </select>#}
                 <div class="input-group-btn">
-                    <button class="btn btn-default" type="submit" onclick="search()" style="padding: 8.5px 12px"><span
-                            class="glyphicon glyphicon-search"></span></button>
+                    <button class="btn btn-default dropdown-toggle" type="submit" id="submitbtn"
+                            style="padding: 8.5px 12px"><span class="glyphicon glyphicon-search"></span></button>
+                    <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                    </ul>
                 </div>
             </div>
         </form>
     </div>
     <script>
-        $(document).ready(function () {
+        var stocksuggest = $("input[name='stockcode']").bsSuggest({
+            indexKey: 1,
+            allowNoKeyword: false,
+            getDataMethod: "url",
+            url: '{{url_for("restfulapi.stock_code",q="")}}',
+            processData: function (json) {     // url 获取数据时，对数据的处理，作为 getData 的回调函数
+                var i, len, data = {value: []};
 
-            $('.selectpicker').selectpicker({});
+                if (!json || !json.stockcode || json.stockcode.length == 0) {
+                    return false;
+                }
+                len = json.stockcode.length;
 
-            // $('.selectpicker').selectpicker('hide');
+                for (i = 0; i < len; i++) {
+                    data.value.push({
+                        "Id": (i + 1),
+                        "stockcode": json.stockcode[i],
+                        "stockname": json.stockname[i],
+                    });
+                }
+                return data;
+            }
         })
+        $("#submitbtn").click(function () {
+            $("#searchform").submit();
+        })
+
     </script>
 {% endblock %}
 
 {% block tab %}
     <ul class="nav nav-pills">
         <li><a href="{{ url_for('stock_solo.basic') }}">基本情况</a></li>
-        <li><a href="{{ url_for('stock_solo.finance_data') }}">财务数据及分析</a></li>
+        <li><a href="{{ url_for('stock_solo.finance_data_yc') }}">财务数据及分析</a></li>
+
         <li><a href="#">投资价值分析</a></li>
+        <li><a href="{{ url_for('stock_solo.compare') }}">股票对比分析</a></li>
         <li><a href="#">图表分析</a></li>
     </ul>
 {% endblock %}
 
 {% block choice %}
     <label style="margin-top: 20px" for="name">选项</label>
-    <div style="height: 600px; overflow-y :auto">
-        <div class="checkbox">
-            <label style="font-size: 20px;"><input type="checkbox" value="tot_oper_cost" id="first_check">总营业成本</label>
-        </div>
-        <div class="checkbox">
-            <label style="font-size: 20px"><input type="checkbox" value="tot_oper_rev">总营业收入</label>
-        </div>
-        <div class="checkbox">
-            <label style="font-size: 20px"><input type="checkbox" value="wgsd_net_inc">净利润（股东）</label>
-        </div>
-        <div class="checkbox">
-            <label style="font-size: 20px"><input type="checkbox" value="tot_assets">资产总计</label>
-        </div>
-        <div class="checkbox">
-            <label style="font-size: 20px"><input type="checkbox" value="wgsd_com_eq">归属股东权益</label>
-        </div>
-        <div class="checkbox">
-            <label style="font-size: 20px"><input type="checkbox" value="net_inc_eq_rate">净资产收益率（股东）</label>
-        </div>
-        <div class="checkbox">
-            <label style="font-size: 20px"><input type="checkbox" value="total_shares">股本</label>
-        </div>
-        <div class="checkbox">
-            <label style="font-size: 20px"><input type="checkbox" value="earnings_per_share">每股收益</label>
-        </div>
-        <div class="checkbox">
-            <label style="font-size: 20px"><input type="checkbox" value="net_assets_per_share">每股净资产</label>
-        </div>
-        <div class="checkbox">
-            <label style="font-size: 20px"><input type="checkbox" value="cash_per_share">每股账面现金</label>
-        </div>
-        <div class="checkbox">
-            <label style="font-size: 20px"><input type="checkbox" value="div_cashandstock">每股现金股息</label>
-        </div>
-        <div class="checkbox">
-            <label style="font-size: 20px"><input type="checkbox" value="payment_proportion">支付比例</label>
-        </div>
-        <div class="checkbox">
-            <label style="font-size: 20px"><input type="checkbox" value="equal_earning_rate">均衡市盈率</label>
-<<<<<<< HEAD
+    <div id="index" style="height: 60%; overflow-y :auto;">
+        {#        <div class="checkbox">#}
+        {#            <label style="font-size: 20px;"><input type="checkbox" value="tot_oper_cost" id="first_check">总营业成本</label>#}
+        {#        </div>#}
+        {#        <div class="checkbox">#}
+        {#            <label style="font-size: 20px"><input type="checkbox" value="tot_oper_rev">总营业收入</label>#}
+        {#        </div>#}
+        {#        <div class="checkbox">#}
+        {#            <label style="font-size: 20px"><input type="checkbox" value="wgsd_net_inc">净利润（股东）</label>#}
+        {#        </div>#}
+        {#        <div class="checkbox">#}
+        {#            <label style="font-size: 20px"><input type="checkbox" value="tot_assets">资产总计</label>#}
+        {#        </div>#}
+        {#        <div class="checkbox">#}
+        {#            <label style="font-size: 20px"><input type="checkbox" value="wgsd_com_eq">归属股东权益</label>#}
+        {#        </div>#}
+        {#        <div class="checkbox">#}
+        {#            <label style="font-size: 20px"><input type="checkbox" value="net_inc_eq_rate">净资产收益率（股东）</label>#}
+        {#        </div>#}
+        {#        <div class="checkbox">#}
+        {#            <label style="font-size: 20px"><input type="checkbox" value="total_shares">股本</label>#}
+        {#        </div>#}
+        {#        <div class="checkbox">#}
+        {#            <label style="font-size: 20px"><input type="checkbox" value="earnings_per_share">每股收益</label>#}
+        {#        </div>#}
+        {#        <div class="checkbox">#}
+        {#            <label style="font-size: 20px"><input type="checkbox" value="net_assets_per_share">每股净资产</label>#}
+        {#        </div>#}
+        {#        <div class="checkbox">#}
+        {#            <label style="font-size: 20px"><input type="checkbox" value="cash_per_share">每股账面现金</label>#}
+        {#        </div>#}
+        {#        <div class="checkbox">#}
+        {#            <label style="font-size: 20px"><input type="checkbox" value="div_cashandstock">每股现金股息</label>#}
+        {#        </div>#}
+        {#        <div class="checkbox">#}
+        {#            <label style="font-size: 20px"><input type="checkbox" value="payment_proportion">支付比例</label>#}
+        {#        </div>#}
+        {#        <div class="checkbox">#}
+        {#            <label style="font-size: 20px"><input type="checkbox" value="equal_earning_rate">均衡市盈率</label>#}
+        {#        </div>#}
+        {#        <div class="checkbox">#}
+        {#            <label style="font-size: 20px"><input type="checkbox" value="equal_market_rate">均衡市净率</label>#}
+        {#        </div>#}
+        {#        <div class="checkbox">#}
+        {#            <label style="font-size: 20px"><input type="checkbox" value="com_value_evaluate">公司价值估计</label>#}
+        {#        </div>#}
+        {#        <div class="checkbox">#}
+        {#            <label style="font-size: 20px"><input type="checkbox" value="per_com_value_evaluate">每股价值估计</label>#}
+        {#        </div>#}
+        {#        <div class="checkbox">#}
+        {#            <label style="font-size: 20px"><input type="checkbox" value="fre_cash_evaluate">自由现金流估计</label>#}
+        {#        </div>#}
+        {#        <div class="checkbox">#}
+        {#            <label style="font-size: 20px"><input type="checkbox" value="ev">市值</label>#}
+        {#        </div>#}
+        {#        <div class="checkbox">#}
+        {#            <label style="font-size: 20px"><input type="checkbox" value="earning_rate">市盈率</label>#}
+        {#        </div>#}
+        {#        <div class="checkbox">#}
+        {#            <label style="font-size: 20px"><input type="checkbox" value="net_rate">市净率</label>#}
+        {#        </div>#}
+        {#        <div class="checkbox">#}
+        {#            <label style="font-size: 20px"><input type="checkbox" value="sale_rate">市销率</label>#}
+        {#        </div>#}
+        {#        <div class="checkbox">#}
+        {#            <label style="font-size: 20px"><input type="checkbox" value="cash_rate">市现率</label>#}
+        {#        </div>#}
+        {#        <div class="checkbox">#}
+        {#            <label style="font-size: 20px"><input type="checkbox" value="dividendyield2">股息收益率</label>#}
+        {#        </div>#}
+        {#        <div class="checkbox">#}
+        {#            <label style="font-size: 20px"><input type="checkbox" value="cash_yield_evaluate">现金收益率估计</label>#}
+        {#        </div>#}
+        {#        <div class="checkbox">#}
+        {#            <label style="font-size: 20px"><input type="checkbox" value="ev1">整体价值估计（含货币）</label>#}
+        {#        </div>#}
+        {#        <div class="checkbox">#}
+        {#            <label style="font-size: 20px"><input type="checkbox" value="ev2">整体价值估计（不含货币）</label>#}
+        {#        </div>#}
+        {#        <div class="checkbox">#}
+        {#            <label style="font-size: 20px"><input type="checkbox" value="employee">雇员数量</label>#}
+        {#        </div>#}
 
-        </div>
-        <div class="checkbox">
-            <label style="font-size: 20px"><input type="checkbox" value="equal_market_rate">均衡市净率</label>
-        </div>
-        <div class="checkbox">
-            <label style="font-size: 20px"><input type="checkbox" value="com_value_evaluate">公司价值估计</label>
-        </div>
-        <div class="checkbox">
-            <label style="font-size: 20px"><input type="checkbox" value="per_com_value_evaluate">每股价值估计</label>
-        </div>
-        <div class="checkbox">
-            <label style="font-size: 20px"><input type="checkbox" value="fre_cash_evaluate">自由现金流估计</label>
-        </div>
-        <div class="checkbox">
-            <label style="font-size: 20px"><input type="checkbox" value="ev">市值</label>
-        </div>
-        <div class="checkbox">
-            <label style="font-size: 20px"><input type="checkbox" value="earning_rate">市盈率</label>
-        </div>
-        <div class="checkbox">
-            <label style="font-size: 20px"><input type="checkbox" value="net_rate">市净率</label>
-        </div>
-        <div class="checkbox">
-            <label style="font-size: 20px"><input type="checkbox" value="sale_rate">市销率</label>
-        </div>
-        <div class="checkbox">
-            <label style="font-size: 20px"><input type="checkbox" value="cash_rate">市现率</label>
-        </div>
-        <div class="checkbox">
-            <label style="font-size: 20px"><input type="checkbox" value="dividendyield2">股息收益率</label>
-        </div>
-        <div class="checkbox">
-            <label style="font-size: 20px"><input type="checkbox" value="cash_yield_evaluate">现金收益率估计</label>
-        </div>
-        <div class="checkbox">
-            <label style="font-size: 20px"><input type="checkbox" value="ev1">整体价值估计（含货币）</label>
-        </div>
-        <div class="checkbox">
-            <label style="font-size: 20px"><input type="checkbox" value="ev2">整体价值估计（不含货币）</label>
-        </div>
-        <div class="checkbox">
-            <label style="font-size: 20px"><input type="checkbox" value="employee">雇员数量</label>
-        </div>
-
-=======
-
-        </div>
-        <div class="checkbox">
-            <label style="font-size: 20px"><input type="checkbox" value="equal_market_rate">均衡市净率</label>
-        </div>
-        <div class="checkbox">
-            <label style="font-size: 20px"><input type="checkbox" value="com_value_evaluate">公司价值估计</label>
-        </div>
-        <div class="checkbox">
-            <label style="font-size: 20px"><input type="checkbox" value="per_com_value_evaluate">每股价值估计</label>
-        </div>
-        <div class="checkbox">
-            <label style="font-size: 20px"><input type="checkbox" value="fre_cash_evaluate">自由现金流估计</label>
-        </div>
-        <div class="checkbox">
-            <label style="font-size: 20px"><input type="checkbox" value="ev">市值</label>
-        </div>
-        <div class="checkbox">
-            <label style="font-size: 20px"><input type="checkbox" value="earning_rate">市盈率</label>
-        </div>
-        <div class="checkbox">
-            <label style="font-size: 20px"><input type="checkbox" value="net_rate">市净率</label>
-        </div>
-        <div class="checkbox">
-            <label style="font-size: 20px"><input type="checkbox" value="sale_rate">市销率</label>
-        </div>
-        <div class="checkbox">
-            <label style="font-size: 20px"><input type="checkbox" value="cash_rate">市现率</label>
-        </div>
-        <div class="checkbox">
-            <label style="font-size: 20px"><input type="checkbox" value="dividendyield2">股息收益率</label>
-        </div>
-        <div class="checkbox">
-            <label style="font-size: 20px"><input type="checkbox" value="cash_yield_evaluate">现金收益率估计</label>
-        </div>
-        <div class="checkbox">
-            <label style="font-size: 20px"><input type="checkbox" value="ev1">整体价值估计（含货币）</label>
-        </div>
-        <div class="checkbox">
-            <label style="font-size: 20px"><input type="checkbox" value="ev2">整体价值估计（不含货币）</label>
-        </div>
-        <div class="checkbox">
-            <label style="font-size: 20px"><input type="checkbox" value="employee">雇员数量</label>
-        </div>
-
->>>>>>> 6bbd7a456bfe746aea0c62c57511a592b9ee1721
     </div>
-    <div style="position:absolute;bottom: 10px;right:1px">
+    <div style="">
         <input type="button" value="全选" id="CheckAll"/>
         <input type="button" value="全不选" id="UnCheckAll"/>
         {#    <input type="button" value="提交" id="commit" />#}
@@ -190,7 +160,49 @@
 
     <script>
         var Chosenindexes = new Array();
+        var dict1 = {
+            'tot_oper_cost': '总营业成本',
+            'tot_oper_rev': '总营业收入',
+            'wgsd_net_inc': '净利润（股东）',
+            'tot_assets': '资产总计',
+            'wgsd_com_eq': '归属股东权益',
+            'net_inc_eq_rate': '净资产收益率（股东）',
+            'total_shares': '股本',
+            'earnings_per_share': '每股收益',
+            'net_assets_per_share': '每股净资产',
+            'cash_per_share': '每股账面现金',
+            'div_cashandstock': '每股现金股息',
+            'payment_proportion': '支付比例',
+            'equal_earning_rate': '均衡市盈率',
+            'equal_market_rate': '均衡市净率',
+            'com_value_evaluate': '公司价值估计',
+            'per_com_value_evaluate': '每股价值估计',
+            'fre_cash_evaluate': '自由现金流估计',
+            'ev': '市值',
+            'earning_rate': '市盈率',
+            'net_rate': '市净率',
+            'sale_rate': '市销率',
+            'cash_rate': '市现率',
+            'dividendyield2': '股息收益率',
+            'cash_yield_evaluate': '现金收益率估计',
+            'ev1': '整体价值估计（含货币）',
+            'ev2': '整体价值估计（不含货币）',
+            'employee': '雇员数量'
+        };
+        function creatindex() {
+            for (var key in dict1) {
+                {#                if( key ==  "tot_oper_cost"){#}
+                {#                   $("#index").append("<div class='checkbox'><label style='font-size: 20px;'><input type='checkbox' id='first_check' value='" + key + "'  >" + dict1[key] + " <div id='div_" + key + "' style='height: 10px;width: 10px;float: right;margin: 5px'></div></label> </div>"#}
+                {#                }#}
+                {#                else{#}
+                $("#index").append("<div class='checkbox' style=' margin-left: 3px; margin-top: 3px;'><label style='font-size: 10px;'><input id='cl_" + key + "' type='checkbox'  value='" + key + "'  >" + dict1[key] + " <div id='div_" + key + "' style='height: 10px;width: 10px;float: right;margin: 5px'></div></label> </div>")
+                {#                }#}
+            }
+
+        }
+        creatindex()
         $(document).ready(function () {
+
             $('input').iCheck({
                 checkboxClass: 'icheckbox_minimal-blue',
                 radioClass: 'iradio_minimal-blue',
@@ -226,7 +238,8 @@
             indexname = $(this).val();
             console.log(this)
             Chosenindexes[indexname] = NewColor();
-            $(this).parent().parent().css("color", Chosenindexes[indexname])
+            $("#div_" + indexname).css("background-color", Chosenindexes[indexname])
+            {#            $(this).parent().parent().css("color", Chosenindexes[indexname])#}
             console.log(Chosenindexes)
             CreateChart();
             CreateTable();
@@ -234,7 +247,8 @@
         $('input').on('ifUnchecked', function (event) {
             indexname = $(this).val();
             delete Chosenindexes[indexname]
-            $(this).parent().parent().css("color", "black")
+            $("#div_" + indexname).css("background-color", 'transparent')
+            {#            $(this).parent().parent().css("color", "black")#}
             console.log(Chosenindexes)
             CreateChart();
             CreateTable();
@@ -245,33 +259,33 @@
 {% endblock %}
 
 {% block chart %}
-    <div id="mychart" style="width: auto;height:600px;margin-left:20px"></div>
+    <div id="mychart" style="width: auto;height:60%;margin-left:20px"></div>
 {% endblock %}
 {% block table %}
-    <div id="mytable" style="width: auto;height:600px;margin-left:20px"></div>
+    <div id="mytable" style="width: auto;height:60%;margin-left:20px"></div>
 {% endblock %}
 {% block toolbox %}
     <div class="container">
         <div class="row">
             <div style="float: left;margin: 20px">
+                <a style="width:50px;margin-left:10px;color: #0c0c0c">单位:</a>
                 <select class="form-control" id="unit">
                     <option value="0">元</option>
                     <option value="1">百万</option>
                 </select>
             </div>
             <div style="float: left;margin: 20px">
-                <input size="16" type="text" value="2016-12-31" id="starttime" readonly class="form_datetime">
+                <a style="width:50px;margin-left:10px;color: #0c0c0c">起始时间:</a><input size="16" type="text"
+                                                                                      value="2016-12-31" id="starttime"
+                                                                                      readonly class="form_datetime">
             </div>
             <div style="float: left;margin: 20px">
-                <input size="16" type="text" value="2006-01-01" id="endtime" readonly class="form_datetime">
+                <a style="width:50px;margin-left:10px;color: #0c0c0c">结束时间:</a><input size="16" type="text"
+                                                                                      value="2006-01-01" id="endtime"
+                                                                                      readonly class="form_datetime">
             </div>
         </div>
     </div>
-<<<<<<< HEAD
-=======
-
-
->>>>>>> 6bbd7a456bfe746aea0c62c57511a592b9ee1721
 
     <script>
         denominator = 1
@@ -297,22 +311,22 @@
             pickerPosition: 'top-right'
         });
         $('#starttime')
-            .datetimepicker()
-            .on('changeDate', function (ev) {
-                startime = ev.date.Format("yyyy年Q4")
-                option.dataZoom[0].startValue = startime
-                myChart.setOption(option)
-                RequestTable();
-            });
+                .datetimepicker()
+                .on('changeDate', function (ev) {
+                    startime = ev.date.Format("yyyy年Q4")
+                    option.dataZoom[0].startValue = startime
+                    myChart.setOption(option)
+                    RequestTable();
+                });
         $('#endtime')
-            .datetimepicker()
-            .on('changeDate', function (ev) {
-                endtime = ev.date.Format("yyyy年Q4")
-                option.dataZoom[0].endValue = endtime
-                myChart.setOption(option)
-                RequestTable();
+                .datetimepicker()
+                .on('changeDate', function (ev) {
+                    endtime = ev.date.Format("yyyy年Q4")
+                    option.dataZoom[0].endValue = endtime
+                    myChart.setOption(option)
+                    RequestTable();
 
-            });
+                });
         Date.prototype.Format = function (fmt) { //author: meizz
             var o = {
                 "M+": this.getMonth() + 1, //月份
@@ -344,13 +358,10 @@
                     selectedindexname.push(option.series[l].name);
                     option.legend.data = selectedindexname;
                     myChart.setOption(option);
-<<<<<<< HEAD
-=======
                     {#if($('tr#'+option.series[l].name).length>0) {  列头不变色 将查询的data存储 分割函数 代码冗余度高
                         $('tr#' + option.series[l].name).css('color', option.series[l].lineStyle.normal.color)
                     }#}
 
->>>>>>> 6bbd7a456bfe746aea0c62c57511a592b9ee1721
                 }
             }
 
@@ -406,6 +417,7 @@
             'ev2': '整体价值估计（不含货币）',
             'employee': '雇员数量'
         };
+
         $.ajax({
             type: 'GET',
             url: '{{url_for("restfulapi.finance_data")}}',
@@ -433,7 +445,7 @@
                         invest_results = data;
                         invest_results_t = data;
                         CreateChart();
-                        $("input#first_check").iCheck('check')
+                        $("input#cl_tot_oper_cost").iCheck('check')
                         {#                            选中一条线#}
                     }
                 })
@@ -593,7 +605,7 @@
                 tempdata = []
                 for (i = 0; i < finance_results.the_year.length; i++) {
                     datavalue = finance_results.wgsd_net_inc[i] *
-                        (1 / (Math.pow(1 - finance_results.wgsd_net_inc[i] / finance_results.wgsd_com_eq[i], 5)) / (finance_results.wgsd_net_inc[i] / finance_results.wgsd_com_eq[i]))
+                            (1 / (Math.pow(1 - finance_results.wgsd_net_inc[i] / finance_results.wgsd_com_eq[i], 5)) / (finance_results.wgsd_net_inc[i] / finance_results.wgsd_com_eq[i]))
                     tempdata.push(datavalue)
                 }
                 temp = {
@@ -611,7 +623,7 @@
                 tempdata = []
                 for (i = 0; i < finance_results.the_year.length; i++) {
                     datavalue = (finance_results.wgsd_net_inc[i] *
-                        (1 / (Math.pow(1 - finance_results.wgsd_net_inc[i] / finance_results.wgsd_com_eq[i], 5)) / (finance_results.wgsd_net_inc[i] / finance_results.wgsd_com_eq[i]))) / invest_results.total_shares[i]
+                            (1 / (Math.pow(1 - finance_results.wgsd_net_inc[i] / finance_results.wgsd_com_eq[i], 5)) / (finance_results.wgsd_net_inc[i] / finance_results.wgsd_com_eq[i]))) / invest_results.total_shares[i]
                     tempdata.push(datavalue)
                 }
                 temp = {
@@ -730,7 +742,7 @@
             }
             option = {
                 title: {
-                    text: '财务指标及分析',
+                    text: finance_results['the_name'] + '财务指标及分析',
                     left: '49%'
                 },
 
@@ -785,23 +797,42 @@
                         type: 'slider', // 这个 dataZoom 组件是 slider 型 dataZoom 组件
                         xAxisIndex: [0],
                         startValue: "2016年Q4",
-<<<<<<< HEAD
-=======
                         {#   start: 0,      // 左边在 10% 的位置。
                             end: 100,         // 右边在 60% 的位置。
                             top: '93%'#}
->>>>>>> 6bbd7a456bfe746aea0c62c57511a592b9ee1721
                         endValue: "2006年Q4",
                         filterMode: 'filter',
                     },
                     {   // 这个dataZoom组件，默认控制x轴。
                         type: 'inside', // 这个 dataZoom 组件是 slider 型 dataZoom 组件
                         xAxisIndex: [0],
+                        {#   start: 0,      // 左边在 10% 的位置。
+                            end: 100,         // 右边在 60% 的位置。
+                            top: '93%'#}
                         filterMode: 'filter',
                     }
                 ],
                 series: dataSeries
             };
+
+            myChart.setOption(option, true);
+            myChart.on('datazoom', function (params) {
+                option.xAxis.interval = 10 * (params.end - params.start) / 100
+            })
+            myChart.on('mouseover', function (params) {
+                oldwidth = option.series[params.seriesIndex].lineStyle.normal.width;
+                if (oldwidth == 2) {
+                    option.series[params.seriesIndex].lineStyle.normal.width = 4;
+                    myChart.setOption(option);
+                }
+            })
+            myChart.on('mouseout', function (params) {
+                oldwidth = option.series[params.seriesIndex].lineStyle.normal.width;
+                if (oldwidth == 4) {
+                    option.series[params.seriesIndex].lineStyle.normal.width = 2;
+                    myChart.setOption(option);
+                }
+            })
         }
 
 
@@ -810,6 +841,7 @@
         var finance_results_t;
         var invest_results_t;
         function RequestTable() {
+
             var opt = myChart.getOption();
             var dz = opt.dataZoom[0];
             $.ajax({
@@ -865,7 +897,7 @@
             var mydatatb = $('#temptable').DataTable({
                 "info": false,
                 "processing": true,
-                "scrollX": true,
+                "scrollY": true,
                 "searching": true,
                 "fixedColumns": { //固定列的配置项
                     "leftColumns": 1//固定左边第一列
@@ -887,28 +919,26 @@
                     "infoEmpty": "没有数据",
                     "infoFiltered": "(过滤总件数 _MAX_ 条)"
                 }
-
-
             });
             setTimeout("$(\"#subject\").trigger(\"click\")", 100);
             for (var i = 0; i < finance_results_t.indexes.length; i++) {
                 if (Chosenindexes.hasOwnProperty(finance_results.indexes[i])) {
                     var rowNode = mydatatb
-                        .row.add([dict[finance_results_t.indexes[i]]].concat(numfilter(eval("finance_results_t." + finance_results_t.indexes[i]))))
-                        .draw()
-                        .node();
+                            .row.add([dict[finance_results_t.indexes[i]]].concat(numfilter(eval("finance_results_t." + finance_results_t.indexes[i]))))
+                            .draw()
+                            .node();
                     $(rowNode)
-                        .attr('id', finance_results_t.indexes[i]);
+                            .attr('id', finance_results_t.indexes[i]);
                 }
             }
             for (var i = 0; i < invest_results_t.indexes.length; i++) {
                 if (Chosenindexes.hasOwnProperty(invest_results_t.indexes[i])) {
                     var rowNode = mydatatb
-                        .row.add([dict[invest_results_t.indexes[i]]].concat(numfilter(eval("invest_results_t." + invest_results_t.indexes[i]))))
-                        .draw()
-                        .node();
+                            .row.add([dict[invest_results_t.indexes[i]]].concat(numfilter(eval("invest_results_t." + invest_results_t.indexes[i]))))
+                            .draw()
+                            .node();
                     $(rowNode)
-                        .attr('id', invest_results_t.indexes[i]);
+                            .attr('id', invest_results_t.indexes[i]);
                 }
             }
             if (Chosenindexes.hasOwnProperty("net_inc_eq_rate")) {
@@ -918,11 +948,11 @@
                     tempdata.push(datavalue)
                 }
                 var rowNode = mydatatb
-                    .row.add([dict["net_inc_eq_rate"]].concat(numfilter(tempdata)))
-                    .draw()
-                    .node();
+                        .row.add([dict["net_inc_eq_rate"]].concat(numfilter(tempdata)))
+                        .draw()
+                        .node();
                 $(rowNode)
-                    .attr('id', "net_inc_eq_rate");
+                        .attr('id', "net_inc_eq_rate");
             }
             if (Chosenindexes.hasOwnProperty("earnings_per_share")) {
                 tempdata = []
@@ -932,11 +962,11 @@
                 }
 
                 var rowNode = mydatatb
-                    .row.add([dict["earnings_per_share"]].concat(numfilter(tempdata)))
-                    .draw()
-                    .node();
+                        .row.add([dict["earnings_per_share"]].concat(numfilter(tempdata)))
+                        .draw()
+                        .node();
                 $(rowNode)
-                    .attr('id', "earnings_per_share");
+                        .attr('id', "earnings_per_share");
             }
             if (Chosenindexes.hasOwnProperty("net_assets_per_share")) {
                 tempdata = []
@@ -946,11 +976,11 @@
                 }
 
                 var rowNode = mydatatb
-                    .row.add([dict["net_assets_per_share"]].concat(numfilter(tempdata)))
-                    .draw()
-                    .node();
+                        .row.add([dict["net_assets_per_share"]].concat(numfilter(tempdata)))
+                        .draw()
+                        .node();
                 $(rowNode)
-                    .attr('id', "net_assets_per_share");
+                        .attr('id', "net_assets_per_share");
             }
             if (Chosenindexes.hasOwnProperty("cash_per_share")) {
                 tempdata = []
@@ -960,11 +990,11 @@
                 }
 
                 var rowNode = mydatatb
-                    .row.add([dict["cash_per_share"]].concat(numfilter(tempdata)))
-                    .draw()
-                    .node();
+                        .row.add([dict["cash_per_share"]].concat(numfilter(tempdata)))
+                        .draw()
+                        .node();
                 $(rowNode)
-                    .attr('id', "cash_per_share");
+                        .attr('id', "cash_per_share");
             }
             if (Chosenindexes.hasOwnProperty("payment_proportion")) {
                 tempdata = []
@@ -974,11 +1004,11 @@
                 }
 
                 var rowNode = mydatatb
-                    .row.add([dict["payment_proportion"]].concat(numfilter(tempdata)))
-                    .draw()
-                    .node();
+                        .row.add([dict["payment_proportion"]].concat(numfilter(tempdata)))
+                        .draw()
+                        .node();
                 $(rowNode)
-                    .attr('id', "payment_proportion");
+                        .attr('id', "payment_proportion");
             }
             if (Chosenindexes.hasOwnProperty("equal_earning_rate")) {
                 tempdata = []
@@ -988,11 +1018,11 @@
                 }
 
                 var rowNode = mydatatb
-                    .row.add([dict["equal_earning_rate"]].concat(numfilter(tempdata)))
-                    .draw()
-                    .node();
+                        .row.add([dict["equal_earning_rate"]].concat(numfilter(tempdata)))
+                        .draw()
+                        .node();
                 $(rowNode)
-                    .attr('id', "equal_earning_rate");
+                        .attr('id', "equal_earning_rate");
             }
             if (Chosenindexes.hasOwnProperty("equal_market_rate")) {
                 tempdata = []
@@ -1002,41 +1032,41 @@
                 }
 
                 var rowNode = mydatatb
-                    .row.add([dict["equal_market_rate"]].concat(numfilter(tempdata)))
-                    .draw()
-                    .node();
+                        .row.add([dict["equal_market_rate"]].concat(numfilter(tempdata)))
+                        .draw()
+                        .node();
                 $(rowNode)
-                    .attr('id', "equal_market_rate");
+                        .attr('id', "equal_market_rate");
             }
             if (Chosenindexes.hasOwnProperty("com_value_evaluate")) {
                 tempdata = []
                 for (i = 0; i < finance_results_t.the_year.length; i++) {
                     datavalue = finance_results_t.wgsd_net_inc[i] *
-                        (1 / (Math.pow(1 - finance_results_t.wgsd_net_inc[i] / finance_results_t.wgsd_com_eq[i], 5)) / (finance_results_t.wgsd_net_inc[i] / finance_results_t.wgsd_com_eq[i]))
+                            (1 / (Math.pow(1 - finance_results_t.wgsd_net_inc[i] / finance_results_t.wgsd_com_eq[i], 5)) / (finance_results_t.wgsd_net_inc[i] / finance_results_t.wgsd_com_eq[i]))
                     tempdata.push(datavalue)
                 }
 
                 var rowNode = mydatatb
-                    .row.add([dict["com_value_evaluate"]].concat(numfilter(tempdata)))
-                    .draw()
-                    .node();
+                        .row.add([dict["com_value_evaluate"]].concat(numfilter(tempdata)))
+                        .draw()
+                        .node();
                 $(rowNode)
-                    .attr('id', "com_value_evaluate");
+                        .attr('id', "com_value_evaluate");
             }
             if (Chosenindexes.hasOwnProperty("per_com_value_evaluate")) {
                 tempdata = []
                 for (i = 0; i < finance_results_t.the_year.length; i++) {
                     datavalue = (finance_results_t.wgsd_net_inc[i] *
-                        (1 / (Math.pow(1 - finance_results_t.wgsd_net_inc[i] / finance_results_t.wgsd_com_eq[i], 5)) / (finance_results_t.wgsd_net_inc[i] / finance_results_t.wgsd_com_eq[i]))) / invest_results_t.total_shares[i]
+                            (1 / (Math.pow(1 - finance_results_t.wgsd_net_inc[i] / finance_results_t.wgsd_com_eq[i], 5)) / (finance_results_t.wgsd_net_inc[i] / finance_results_t.wgsd_com_eq[i]))) / invest_results_t.total_shares[i]
                     tempdata.push(datavalue)
                 }
 
                 var rowNode = mydatatb
-                    .row.add([dict["per_com_value_evaluate"]].concat(numfilter(tempdata)))
-                    .draw()
-                    .node();
+                        .row.add([dict["per_com_value_evaluate"]].concat(numfilter(tempdata)))
+                        .draw()
+                        .node();
                 $(rowNode)
-                    .attr('id', "per_com_value_evaluate");
+                        .attr('id', "per_com_value_evaluate");
             }
 
             if (Chosenindexes.hasOwnProperty("fre_cash_evaluate")) {
@@ -1047,11 +1077,11 @@
                 }
 
                 var rowNode = mydatatb
-                    .row.add([dict["fre_cash_evaluate"]].concat(numfilter(tempdata)))
-                    .draw()
-                    .node();
+                        .row.add([dict["fre_cash_evaluate"]].concat(numfilter(tempdata)))
+                        .draw()
+                        .node();
                 $(rowNode)
-                    .attr('id', "fre_cash_evaluate");
+                        .attr('id', "fre_cash_evaluate");
             }
             if (Chosenindexes.hasOwnProperty("earning_rate")) {
                 tempdata = []
@@ -1061,11 +1091,11 @@
                 }
 
                 var rowNode = mydatatb
-                    .row.add([dict["earning_rate"]].concat(numfilter(tempdata)))
-                    .draw()
-                    .node();
+                        .row.add([dict["earning_rate"]].concat(numfilter(tempdata)))
+                        .draw()
+                        .node();
                 $(rowNode)
-                    .attr('id', "earning_rate");
+                        .attr('id', "earning_rate");
             }
             if (Chosenindexes.hasOwnProperty("net_rate")) {
                 tempdata = []
@@ -1075,11 +1105,11 @@
                 }
 
                 var rowNode = mydatatb
-                    .row.add([dict["net_rate"]].concat(numfilter(tempdata)))
-                    .draw()
-                    .node();
+                        .row.add([dict["net_rate"]].concat(numfilter(tempdata)))
+                        .draw()
+                        .node();
                 $(rowNode)
-                    .attr('id', "net_rate");
+                        .attr('id', "net_rate");
             }
             if (Chosenindexes.hasOwnProperty("sale_rate")) {
                 tempdata = []
@@ -1089,11 +1119,11 @@
                 }
 
                 var rowNode = mydatatb
-                    .row.add([dict["sale_rate"]].concat(numfilter(tempdata)))
-                    .draw()
-                    .node();
+                        .row.add([dict["sale_rate"]].concat(numfilter(tempdata)))
+                        .draw()
+                        .node();
                 $(rowNode)
-                    .attr('id', "sale_rate");
+                        .attr('id', "sale_rate");
             }
             if (Chosenindexes.hasOwnProperty("cash_rate")) {
                 tempdata = []
@@ -1103,11 +1133,11 @@
                 }
 
                 var rowNode = mydatatb
-                    .row.add([dict["cash_rate"]].concat(numfilter(tempdata)))
-                    .draw()
-                    .node();
+                        .row.add([dict["cash_rate"]].concat(numfilter(tempdata)))
+                        .draw()
+                        .node();
                 $(rowNode)
-                    .attr('id', "cash_rate");
+                        .attr('id', "cash_rate");
             }
             if (Chosenindexes.hasOwnProperty("cash_yield_evaluate")) {
                 tempdata = []
@@ -1117,11 +1147,11 @@
                 }
 
                 var rowNode = mydatatb
-                    .row.add([dict["cash_yield_evaluate"]].concat(numfilter(tempdata)))
-                    .draw()
-                    .node();
+                        .row.add([dict["cash_yield_evaluate"]].concat(numfilter(tempdata)))
+                        .draw()
+                        .node();
                 $(rowNode)
-                    .attr('id', "cash_yield_evaluate");
+                        .attr('id', "cash_yield_evaluate");
             }
             for (var key in Chosenindexes) {
                 $('tr#' + key).css('color', Chosenindexes[key])

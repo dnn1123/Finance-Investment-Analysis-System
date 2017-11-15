@@ -29,6 +29,28 @@ def navigation():
 @stockgroup_blueprint.route('/cns_home', methods=('GET', 'POST'))
 @stockgroup_blueprint.route('/cns_home/<string:trade_code>', methods=('GET', 'POST'))
 @login_required
+# def cns_home():
+#     cns_filterform1 = cns_filterForm1()  # 第一级 Wind 行业分类
+#     cns_filterform2 = cns_filterForm2()  # 第二级 Wind 行业分类
+#     cns_filterform3 = cns_filterForm3()  # 第三级 Wind 行业分类
+#     cns_filterform4 = cns_filterForm4()  # 第四级 Wind 行业分类
+#     results = cns_stock_industry.query.join(cns_sub_industry).add_columns(cns_sub_industry.industry_gics_4).join(
+#         cns_industry).add_columns(cns_industry.industry_gics_3).join(cns_group_industry).add_columns(
+#         cns_group_industry.industry_gics_2).join(cns_department_industry).add_columns(
+#         cns_department_industry.industry_gics_1).join(zhengjianhui_1).add_columns(
+#         zhengjianhui_1.industry_CSRC12).filter(
+#         cns_group_industry.belong == cns_department_industry.industry_gicscode_1).filter(
+#         cns_industry.belong == cns_group_industry.industry_gicscode_2).filter(
+#         cns_sub_industry.belong == cns_industry.industry_gicscode_3).filter(
+#         cns_stock_industry.belong == cns_sub_industry.industry_gicscode_4).filter(
+#         cns_stock_industry.belong_zhengjianhui == zhengjianhui_1.industry_CSRCcode12).order_by(
+#         cns_stock_industry.trade_code).all()
+#         # .paginate(page, per_page=200, error_out=False)  # 共有3197条记录 此为分页功能
+#     length=len(results)
+#     return render_template("stock_group/cns/cns_stock_industry.html", cns_filterform1=cns_filterform1,
+#                            cns_filterform2=cns_filterform2, cns_filterform3=cns_filterform3,
+#                            cns_filterform4=cns_filterform4, result=results,length=length)
+
 def cns_home():
     cns_filterform1 = cns_filterForm1()  # 第一级 Wind 行业分类
     cns_filterform2 = cns_filterForm2()  # 第二级 Wind 行业分类
@@ -51,7 +73,6 @@ def cns_home():
     return render_template("stock_group/cns/cns_stock_industry.html", cns_filterform1=cns_filterform1,
                            cns_filterform2=cns_filterform2, cns_filterform3=cns_filterform3,
                            cns_filterform4=cns_filterform4, result=result, pagination=pagination, length=length)
-
 
 # 显示“主营业务”详情
 @stockgroup_blueprint.route('/cns_business_detail/', methods=('GET', 'POST'))
@@ -152,7 +173,7 @@ def update_gics_4(trade_code='000001'):  # 疑问：这一行是什么意思？
         session.query(cns_stock_industry).filter(cns_stock_industry.trade_code == trade_code).update(
             {'belong': gics_4})  # 改为belong
         session.commit()  # 少写了这一行，所以修改没成功
-        return redirect(url_for('.home'))
+        return redirect(url_for('.cns_home'))
     return render_template('stock_group/cns/update_gics_4.html', form=form, information=information)
 
 

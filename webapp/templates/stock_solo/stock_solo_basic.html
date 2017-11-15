@@ -3,25 +3,32 @@
     <form class="form-search" method="POST" action="{{ url_for('stock_solo.basic') }}">
         {{ form.hidden_tag() }}
         {{ form.code(id='tags',class_='input-sm',placeholder='输入股票代号或名称',title="内含自动补全功能，输入关键字即可补全股票代码或名称") }}
-        <input class="btn btn-success btn-xs" type="submit" value="搜索" contenteditable="true" data-toggle="tooltip" title="内含自动补全功能，输入关键字即可补全股票代码或名称" data-placement="right">
+        <input class="btn btn-success btn-xs" type="submit" value="搜索" contenteditable="true" data-toggle="tooltip"
+               title="内含自动补全功能，输入关键字即可补全股票代码或名称" data-placement="right">
     </form>
     <script>
-	$(function () { $("[data-toggle='tooltip']").tooltip(); });
+        $(function () {
+            $("[data-toggle='tooltip']").tooltip();
+        });
     </script> <!--用于实现“右侧提示框”-->
 {% endblock %}
 
 {% block tab %}
-        <ul class="nav nav-pills">
-            <li><a href="{{ url_for('stock_solo.basic') }}">基本情况</a></li>
-            <li><a href="{{ url_for('stock_solo.finance_data') }}">财务数据及分析</a></li>
-            <li><a href="{{ url_for('stock_solo.invest_value') }}">投资价值分析</a></li>
-        </ul>
+    <ul class="nav nav-pills">
+        <li><a href="{{ url_for('stock_solo.basic') }}">基本情况</a></li>
+        <li><a href="{{ url_for('stock_solo.finance_data') }}">财务数据及分析</a></li>
+        <li><a href="{{ url_for('stock_solo.invest_value') }}">投资价值分析</a></li>
+        <li><a href="{{ url_for('stock_solo.compare') }}">股票对比分析</a></li>
+    </ul>
 {% endblock %}
 
 {% block table %}
-    <table class="auto-style1" align="center" style="width:100%;height: 100%; border-width: 2px; border-style: solid; border-color: #000000; background-color: #FFFFFF; font-family: 宋体, Arial, Helvetica, sans-serif; font-size: 10px;">
+    <table class="auto-style1" align="center"
+           style="width:100%;height: 100%; border-width: 2px; border-style: solid; border-color: #000000; background-color: #FFFFFF; font-family: 宋体, Arial, Helvetica, sans-serif; font-size: 10px;">
         <tr style="height: 15%">
-            <td rowspan="2" style="text-align:center; width:15%; border-style: solid; border-width: thin; border-color: #000000;"><img src="../static/logo.png"></td>
+            <td rowspan="2"
+                style="text-align:center; width:15%; border-style: solid; border-width: thin; border-color: #000000;">
+                <img src="../static/logo.png"></td>
             <td colspan="7">&nbsp;</td>
         </tr>
         <tr style="height: 10%">
@@ -72,11 +79,11 @@
         <tr>
             <td>{{ stock.founddate }}</td>
             <td>{{ stock.concept }}</td>
-            <td>{{ stock.boardchairmen}}</td>
-            <td>{{ stock.holder_controller}}</td>
+            <td>{{ stock.boardchairmen }}</td>
+            <td>{{ stock.holder_controller }}</td>
             <td></td><!--需要合并单元格-->
-            <td>{{ stock.website}}</td>
-            <td>{{ stock.phone}}</td>
+            <td>{{ stock.website }}</td>
+            <td>{{ stock.phone }}</td>
         </tr>
         <tr>
             <td>主营产品类型</td>
@@ -87,6 +94,8 @@
             <td class="auto-style2" colspan="6">{{ stock.majorproductname }}</td>
         </tr>
     </table>
-{% endblock %}<SCRIPT Language=VBScript><!--
+{% endblock %}
+<SCRIPT Language=VBScript><!--
 
-//--></SCRIPT>
+//-->
+</SCRIPT>

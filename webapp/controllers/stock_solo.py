@@ -1,5 +1,5 @@
 #coding=utf-8
-from flask import Blueprint,redirect,render_template,url_for,request
+from flask import Blueprint,redirect,render_template,url_for,request, jsonify,session
 from os import path
 from webapp.models import *
 from webapp.forms import CodeForm
@@ -22,11 +22,16 @@ stocksolo_blueprint = Blueprint(
 @stocksolo_blueprint.route('/',methods=('GET','POST'))
 @stocksolo_blueprint.route('/<string:data>',methods=('GET','POST'))
 @login_required
-def basic(data='000895'):
-    data = data
+def basic():
+
     form = CodeForm()
+    if session.has_key('stockcode'):
+        data = session['stockcode']
+    else:
+        data = '000001'
     if form.validate_on_submit():
         data = form.code.data
+        session['stockcode'] = data
         return redirect(url_for('stock_solo.basic', current_user=current_user, data=data))
     match = zhPattern.search(data)
     if match:
@@ -113,13 +118,47 @@ def finance_data(data='000895'):
 
     return render_template("stock_solo/stock_solo_finance_data.html",stock_list=stock_list, value=value, data_len=data_len, current_user=current_user,form=form, results=results, ratio_RG=ratio_RG, ratio_CG=ratio_CG)
 
+@stocksolo_blueprint.route('/finance_data_yc', methods=('GET', 'POST'))
+@stocksolo_blueprint.route('/finance_data_yc/<string:data>', methods=('GET', 'POST'))
+@login_required
+def finance_data_yc(data='000001'):
+    if session.has_key('stockcode'):
+        data = session['stockcode']
+    else:
+        data = '000001'
+    if (request.method == 'POST'):
+        stockcode = request.form.get("stockcode","000001")
+        session['stockcode'] = stockcode
+        return redirect(url_for('stock_solo.finance_data_yc', current_user=current_user, data=stockcode))
+    return render_template("stock_solo/stock_solo_finance_data_yc.html",stockcode="\""+data+"\"")
+
+
+@stocksolo_blueprint.route('/compare', methods=('GET', 'POST'))
+@stocksolo_blueprint.route('/compare/<string:data>', methods=('GET', 'POST'))
+@login_required
+def compare():
+    # if session.has_key('stockcode'):
+    #     data = session['stockcode']
+    # else:
+    #     data = '000001'
+    # if (request.method == 'POST'):
+    #     stockcode=request.form.get("stockcode")
+    #     session['stockcode'] = stockcode
+    #     return redirect(url_for('stock_solo.finance_data_yc', current_user=current_user, stockcode=stockcode))
+    return render_template("stock_solo/stock_solo_compare.html",current_user=current_user)
+
 @stocksolo_blueprint.route('/invest_value',methods=('GET','POST'))
 @stocksolo_blueprint.route('/invest_value/<string:data>',methods=('GET','POST'))
 # @login_required
 
 def invest_value(data='000001'):
+    if session.has_key('stockcode'):
+        data = session['stockcode']
+    else:
+        data = '000001'
     if (request.method == 'POST'):
         stockcode=request.form.get("stockcode","000001")
+        session['stockcode'] = stockcode
         return redirect(url_for('stock_solo.invest_value', current_user=current_user, data=stockcode))
     # data = data
     # form = CodeForm()
