@@ -39,13 +39,13 @@
             <li class="disabled">
                 <a href="javascript:return false;" data-toggle="tab" disabled='true'>视图：</a>
             </li>
-            <li class="active"><a href="#chart" data-toggle="tab">图表</a></li>
+            <li class="active"><a href="#chart" data-toggle="tab" onclick="CreateChart()">图表</a></li>
             <li><a href="#table" data-toggle="tab" onclick="RequestTable()">数据</a></li>
         </ul>
         <div id="choice" class="tab-content">
             <div class="tab-pane fade in active" id="chart">
                 <div id="mychart" style="width:80%;height:100%;float:right"></div>
-                <div id="mychoice" style="width:15%;height:80%;float:left">
+                <div id="mychoice" style="width:15%;height:100%;float:left">
                     <div style="width:100%;height:30px;margin-top:10px;background-color:lightgray">
                         <div class="checkbox" style="width:80%;height:20px;float:left;margin-left:5px">
                             <label><input type="checkbox" value="tot_oper_rev" checked="checked" id="first_check">总营业收入</label>
@@ -131,18 +131,19 @@
                              id="i_free_cash_flow"></div>
                     </div>
                 </div>
-                <div style="float:right">
-                    <div style="float: left;margin: 20px">
+
+                <div style="width:100%;height:25px;margin-top: 10px">
+                    <div style="float: left;margin-left: 220px">
                         <select class="form-control" id="unit">
                             <option value="0">亿</option>
                             <option value="1">百兆</option>
                         </select>
                     </div>
-                    <div style="float: left;margin: 20px">
+                    <div style="float: left;margin-left: 100px;margin-top: 5px">
                         <lable>起始时间<input size="20" type="text" value="2007-12-31" id="endtime" readonly
                                           class="form_datetime"></lable>
                     </div>
-                    <div style="float: right;margin: 20px">
+                    <div style="float: left;margin-left: 90px;margin-top: 5px">
                         <label>结束时间<input size="20" type="text" value="2016-12-31" id="starttime" readonly
                                           class="form_datetime"></label>
                     </div>
@@ -173,27 +174,27 @@
 
         });
         $(":checkbox").change(function () {
-            Chosenindexes = [];
+            indexname = $(this).val();
+            if ($(this).is(':checked') == true) {
+                colorname = NewColor();
+                console.log(this);
+                Chosenindexes.push(indexname);
+                Chosenindexes[indexname] = colorname;
+                $("#i_" + indexname).css("background-color", colorname);
+                console.log(Chosenindexes);
+            }
+            else {
+                delete Chosenindexes[indexname]
+                $("#i_" + indexname).css("background-color", "white");
+                console.log(Chosenindexes);
+            }
             $("div#unselected").empty();
             $("div#selected").empty();
             $("input[type=checkbox]").each(function () {//each()方法遍历所有的复选框
                 if ($(this).is(':checked') == true) {//这里就可以判断当前是否被选择了
-                    indexname = $(this).val();
-                    colorname = NewColor();
-                    console.log(this);
-                    Chosenindexes.push(indexname);
-                    Chosenindexes[indexname] = colorname;
-                    $("#i_" + indexname).css("background-color", colorname);
-                    console.log(Chosenindexes);
                     var tempspan = $("<span class=\"label label-default\" data-stopPropagation=\"true\"id =\"" + indexname + "\">" + dict[indexname] + "</span>")
                     tempspan.appendTo($("div#unselected"));
                     $("div#unselected").append(" ");
-                }
-                else {
-                    indexname = $(this).val();
-                    delete Chosenindexes[indexname]
-                    $("#i_" + indexname).css("background-color", "white");
-                    console.log(Chosenindexes);
                 }
             })
             CreateChart();
@@ -328,8 +329,7 @@
             newnum = []
             for (i = 0; i < oldnum.length; i++) {
                 temp = oldnum[i] / denominator;
-                temp.toFixed(2);
-                newnum.push(temp)
+                newnum.push(temp.toFixed(2))
             }
             return newnum;
         }
