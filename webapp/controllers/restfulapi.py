@@ -2,6 +2,8 @@
 from flask import Blueprint, redirect, render_template, url_for, request, session, make_response, jsonify
 from webapp.models import *
 import MySQLdb, time, re
+from sqlalchemy import create_engine, or_, func, desc, distinct  # me func用于计数,desc用于逆序找max值
+from sqlalchemy.orm import sessionmaker  # me
 
 api_blueprint = Blueprint(
         'restfulapi',
@@ -267,14 +269,28 @@ def gics_4():
     for result in results:
         list.append({"gicscode4":result.industry_gicscode_4,"gics4":result.industry_gics_4})
     return jsonify(list)
+
 @api_blueprint.route("/update_gics/", methods=('GET', 'POST'))
 def update_gics():
-    trade_code = request.form.get('trade_code')
-    gics_4 = request.form.get('gics_4')
+    trade_code = request.values.get("trade_code")
+    gics_4 = request.values.get('gics_4')
+    gics_name=request.values.get('gics_name')
     db_engine = create_engine('mysql://root:0000@localhost/test?charset=utf8')
     Session = sessionmaker(bind=db_engine)
     session = Session()
     session.query(cns_stock_industry).filter(cns_stock_industry.trade_code == trade_code).update(
-        {'belong': gics_4})  # 改为belong
+        {'belong': gics_4,'industry_gicscode_4':gics_4,'industry_gics_4':gics_name})  # 改为belong
     session.commit()  # 少写了这一行，所以修改没成功
-    return redirect(url_for('.home'))
+    return "true"
+@api_blueprint.route("/update_gicsb/", methods=('GET', 'POST'))
+def update_gicsb():
+    trade_code = request.values.get("trade_code")
+    gics_4 = request.values.get('gics_4')
+    gics_name=request.values.get('gics_name')
+    db_engine = create_engine('mysql://root:0000@localhost/test?charset=utf8')
+    Session = sessionmaker(bind=db_engine)
+    session = Session()
+    session.query(cnsb_stock_industry).filter(cnsb_stock_industry.trade_code == trade_code).update(
+        {'industry_gicscode_4':gics_4,'industry_gics_4':gics_name})  # 改为belong
+    session.commit()  # 少写了这一行，所以修改没成功
+    return "true"
