@@ -89,7 +89,23 @@
             }
         })
         $("#submitbtn").click(function () {
-            $("#searchform").submit();
+            $.ajax({
+                type: 'POST',
+                url: '{{url_for("restfulapi.iscode")}}',
+                data: {
+                    'code': $("#stockcode").val(),
+                },
+                dataType: 'json',
+                success: function (data) {
+
+                    if (data.the_name != 'false') {
+                        $("#searchform").submit();
+                    }
+                    else {
+                        alert($("#stockcode").val() + "号股票不存在！")
+                    }
+                }
+            })
         })
     </script>
     <script>
@@ -678,7 +694,6 @@
             });
             creatindex()
             firstvisit()
-
             $('.checkbox').on('click', function () {
                 if (!$(this).is(':checked')) {// 取消
                     {#                                var myChart = echarts.getInstanceByDom(document.getElementById("echart"))#}
@@ -723,6 +738,7 @@
                     var dzstartyear = $('#ui3').val().substring(0, 4)
                     var dzendyear = $('#ui4').val().substring(0, 4)
                     color[$(this).attr('value')] = set_color()
+                    index = $(this).attr('value')
                     $(".checkbox").each(function () {
                         if ($(this).is(':checked')) {
                             selected.push($(this).attr('value'))
@@ -743,11 +759,25 @@
                             Data = ''
                             Data = data
                             Uint = unit
+                            console.log(data)
+
+
+                            val = eval("data." + index)
+                            count = 0
+                            for (j = 0; j < val.length; j++) {
+                                count += val[j]
+                                if ( val[j] < 1000&&0<val[j]) {
+                                alert(post_selected(index) + "数值过小，可根据需要调整单位后查看")
+                                    break
+                            }
+                            }
+                            if (count==0) {
+                                alert(post_selected(index) + "在数据库中未存值！")
+                            }
+
 
                             setcheckboxcolor(selectedindex, color)
                             creattable(stockcode, color, Uint, dzstartyear, dzendyear)
-
-                            {#                                        tablehide(dzstartyear, dzendyear)#}
                             createchart(stockcode, color, Uint, dzstartyear, dzendyear)
 
 
@@ -837,8 +867,8 @@
             })
             $.fn.dataTable.ext.errMode = 'none';
             $("#submit1").click(function () {
+
                 $("#searchform").submit();
-                {#                            creatindex()#}
                 var stock_code = $("#stockcode").val();
                 stockcode = $("#stockcode").val()
                 $.cookie('stockcode', stockcode, {expires: 7});

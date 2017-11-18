@@ -13,7 +13,7 @@
         <form class="navbar-form navbar-left" id="searchform" role="search" method="post"
               action="{{ url_for('stock_solo.invest_value') }}">
             <div class="input-group">
-                <input type="text" class="form-control" placeholder="Search" name="stockcode">
+                <input type="text" class="form-control" placeholder="Search" name="stockcode" id="stockcode">
                 <div class="input-group-btn">
                     <button class="btn btn-default dropdown-toggle" type="submit" id="submitbtn"
                             style="padding: 8.5px 12px"><span class="glyphicon glyphicon-search"></span></button>
@@ -48,7 +48,23 @@
             }
         })
         $("#submitbtn").click(function () {
-            $("#searchform").submit();
+             $.ajax({
+                type: 'POST',
+                url: '{{url_for("restfulapi.iscode")}}',
+                data: {
+                    'code': $("#stockcode").val(),
+                },
+                dataType: 'json',
+                success: function (data) {
+
+                    if (data.the_name!='false') {
+                        $("#searchform").submit();
+                    }
+                    else {
+                        alert($("#stockcode").val() + "号股票不存在！")
+                    }
+                }
+            })
         })
 
     </script>

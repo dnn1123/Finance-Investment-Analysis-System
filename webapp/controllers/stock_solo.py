@@ -130,7 +130,7 @@ def finance_data_yc(data='000001'):
         stockcode = request.form.get("stockcode","000001")
         session['stockcode'] = stockcode
         return redirect(url_for('stock_solo.finance_data_yc', current_user=current_user, data=stockcode))
-    return render_template("stock_solo/stock_solo_finance_data_yc.html",stockcode="\""+data+"\"")
+    return render_template("stock_solo/stock_solo_finance_data_yc.html",current_user=current_user,stockcode="\""+data+"\"")
 
 
 @stocksolo_blueprint.route('/compare', methods=('GET', 'POST'))

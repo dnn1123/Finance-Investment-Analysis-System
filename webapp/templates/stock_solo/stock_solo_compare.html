@@ -719,38 +719,48 @@
             $("#submit").click(function () {
                 var stock_code = $("#stockcode").val();
                 stockcode = $("#stockcode").val()
-                var a = 1
-                for(i=0;i<code_list.length;i++){
-                    if (stock_code == code_list[i]) {
-                            alert('已添加，请勿重复添加！')
-                            a = 0
+                $.ajax({
+                    type: 'POST',
+                    url: '{{url_for("restfulapi.iscode")}}',
+                    data: {
+                        'code': $("#stockcode").val(),
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+
+                        if (data.the_name != 'false') {
+                            var a = 1
+                            for (i = 0; i < code_list.length; i++) {
+                                if (stock_code == code_list[i]) {
+                                    alert('已添加，请勿重复添加！')
+                                    a = 0
+                                }
+                            }
+
+                            if (a) {
+                                creat_compare_option(stock_code)
+                                code_list.push(stock_code)
+                                Uint = 100000000
+                                selectedindex = ['tot_oper_rev']
+                                $(".checkbox").each(function () {
+                                    $(this).attr("checked", false)
+                                })
+                                for (i = 0; i < selectedindex.length; i++) {
+                                    var checked = document.getElementById(selectedindex[i]);//获取div下的input
+                                    checked.checked = true
+                                    {#                    color[data.indexs[i]] = set_color()#}
+                                }
+
+                                set_timepicker('2010-q4', '2016-q4')
+                                creattable(code_list, color, Uint, '2010', '2016')
+                                createchart(code_list, color, Uint, '2010', '2016')
+                            }
                         }
-                }
-{#                $("span").each(function () {#}
-{#                    if ($(this).parent().attr('id') == 'div_compare') {#}
-{#                        if ($(this).text() == stock_code) {#}
-{#                            alert('已添加，请勿重复添加！')#}
-{#                            a = 0#}
-{#                        }#}
-{#                    }#}
-{#                })#}
-                if (a) {
-                    creat_compare_option(stock_code)
-                    code_list.push(stock_code)
-                     Uint = 100000000
-                selectedindex = ['tot_oper_rev']
-                $(".checkbox").each(function () {
-                    $(this).attr("checked", false)
+                        else {
+                            alert($("#stockcode").val() + "号股票不存在！")
+                        }
+                    }
                 })
-                for (i = 0; i < selectedindex.length; i++) {
-                    var checked = document.getElementById(selectedindex[i]);//获取div下的input
-                    checked.checked = true
-                    {#                    color[data.indexs[i]] = set_color()#}
-                }
-                set_timepicker('2010-q4', '2016-q4')
-                creattable(code_list, color, Uint, '2010', '2016')
-                createchart(code_list, color, Uint, '2010', '2016')
-                }
 
             })
             $("#clear").click(function () {

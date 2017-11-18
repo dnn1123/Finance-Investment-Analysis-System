@@ -120,7 +120,7 @@ def get_ajax():
             else:
                 result = finance_basics.query.filter_by(trade_code=code, the_year=year).first_or_404()
                 if eval('result.' + index) is None:
-                    results.append('..')
+                    results.append(0)
                 else:
                     results.append(str(eval('result.' + index)))
 
@@ -130,6 +130,17 @@ def get_ajax():
     data['the_year_list'] = year_list1
     return jsonify(data)
 
+@api_blueprint.route('/iscode', methods=('GET', 'POST'))
+def iscode():
+    data = {}
+    code = request.form.get('code')
+    result1 = finance_basics.query.filter_by(trade_code=code).first()
+    if(result1):
+        data['the_name'] = result1.sec_name
+    else:
+        data['the_name'] = 'false'
+    data['the_code'] = code
+    return jsonify(data)
 
 @api_blueprint.route("/invest_data/", methods=('GET', 'POST'))
 def invest_data():
