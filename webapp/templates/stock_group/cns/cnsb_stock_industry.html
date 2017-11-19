@@ -191,7 +191,9 @@
                 <td style="border: none;">{{ result[x].industry_gics_2 }}</td>
                 <td style="border: none;">{{ result[x].industry_gics_3 }}</td>
                 <td style="border: none;">{{ result[x].industry_gics_4 }}
-                    <a href="{{ url_for('stock_group.update_gics_4',trade_code=result[x][0].trade_code) }}">修改</a>
+{#                    <a href="{{ url_for('stock_group.update_gics_4',trade_code=result[x][0].trade_code) }}">修改</a>#}
+                <a href="#" class="small-box-footer updatelink" id="{{ result[x][0].trade_code }}" data-toggle="modal" data-target="#myModal" onclick="stockcode=this.id">修改</a>
+
                 </td>
                 <td style="border: none;">{{ result[x].industry_CSRC12_1 }}</td> <!--证监会分类第一级-->
                 <td style="border: none;">{{ result[x].industry_CSRC12_2 }}</td> <!--证监会分类第二级 因为字段名相同而采用[5][6]-->
@@ -199,6 +201,151 @@
         {% endfor %}
     </tbody>
 </table>
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        修改
+                    </h4>
+                </div>
+
+                <div class="modal-body" style="height: auto;">
+                    <form  id="Myform" role="form" method="post" action="#">
+                        <select class="form-control" id="gics_1" style="margin-bottom: 10px">
+                        </select>
+                        <select class="form-control" id="gics_2" style="margin-bottom: 10px">
+                        </select>
+                        <select class="form-control" id="gics_3" style="margin-bottom: 10px">
+                        </select>
+                        <select class="form-control" id="gics_4" style="margin-bottom: 10px">
+                        </select>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                    </button>
+                    <button type="button" class="btn btn-primary" id="commit" >
+                        提交更改
+                    </button>
+                </div>
+
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+    <script>
+    $('#myModal').on('show.bs.modal', function () {
+        showgics1()
+  // 执行一些动作...
+})
+    $("#commit").click(function () {
+        changegics($("#gics_4").val(),$("#gics_4").text())
+    })
+    function showgics1() {
+            $.ajax({
+                url :  '{{url_for("restfulapi.gics_1")}}', //所需要的列表接口地址
+                type : "get",
+                dataType : "json",
+                success : function(result) {
+                        var h = "";
+                        $.each(result, function(key, value) {
+                            h += "<option value='" + value.gicscode1 + "'>" + value.gics1 //下拉框序言的循环数据
+                            + "</option>";
+                        });
+                        $("#gics_1").append(h);//append 添加进去并展示
+                        $("#gics_1").on(
+                                "change",
+                                function(a, b, c) {
+                                    showgics2($("#gics_1").val())
+                                })
+                    showgics2($("#gics_1").val())
+                }
+            });
+        }
+            function showgics2(data) {
+            $.ajax({
+                url :  '{{url_for("restfulapi.gics_2")}}', //所需要的列表接口地址
+                type : "get",
+                dataType : "json",
+                data:{"code":data},
+                success : function(result) {
+                        var h = "";
+                        $.each(result, function(key, value) {
+                            h += "<option value='" + value.gicscode2 + "'>" + value.gics2 //下拉框序言的循环数据
+                            + "</option>";
+                        });
+                        var  obj=document.getElementById( 'gics_2' );
+                        obj.options.length=0;
+                        $("#gics_2").append(h);//append 添加进去并展示
+                        $("#gics_2").on(
+                                "change",
+                                function(a, b, c) {
+                                    showgics3($("#gics_2").val())
+                                })
+                        showgics3($("#gics_2").val())
+                }
+            });
+        }
+                    function showgics3(data) {
+            $.ajax({
+                url :  '{{url_for("restfulapi.gics_3")}}', //所需要的列表接口地址
+                type : "get",
+                dataType : "json",
+                data:{"code":data},
+                success : function(result) {
+                        var h = "";
+                        $.each(result, function(key, value) {
+                            h += "<option value='" + value.gicscode3 + "'>" + value.gics3 //下拉框序言的循环数据
+                            + "</option>";
+                        });
+                        var  obj=document.getElementById( 'gics_3' );
+                        obj.options.length=0;
+                        $("#gics_3").append(h);//append 添加进去并展示
+                        $("#gics_3").on(
+                                "change",
+                                function(a, b, c) {
+                                    showgics4($("#gics_3").val())
+                                })
+                    showgics4($("#gics_3").val())
+
+                }
+            });
+        }
+                    function showgics4(data) {
+            $.ajax({
+                url :  '{{url_for("restfulapi.gics_4")}}', //所需要的列表接口地址
+                type : "get",
+                dataType : "json",
+                data:{"code":data},
+                success : function(result) {
+                        var h = "";
+                        $.each(result, function(key, value) {
+                            h += "<option value='" + value.gicscode4 + "'>" + value.gics4 //下拉框序言的循环数据
+                            + "</option>";
+                        });
+                        var  obj=document.getElementById( 'gics_4' );
+                        obj.options.length=0;
+                        $("#gics_4").append(h);//append 添加进去并展示
+                }
+            });
+        }
+        function changegics(code,name) {
+        $.ajax({
+                url :  '{{url_for("restfulapi.update_gicsb")}}', //所需要的列表接口地址
+                type : "post",
+                dataType : "html",
+                data:{"trade_code":stockcode,
+                       "gics_4":code,
+                        "gics_name":name
+                },
+                success : function(result) {
+                    window.location.reload()
+                }
+            });
+
+        }
+    </script>
 {% endblock %}
 
 {% block navigation%}
