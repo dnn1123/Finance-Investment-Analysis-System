@@ -162,7 +162,11 @@
                 <option value="1">元</option>
                 {#                <option value="audi">Audi</option>#}
             </select>
-
+            <a style="width:50px;margin-left:10px;color: #0c0c0c">年份排序:</a>
+            <select id="yearorder">
+                <option value="asc">升序</option>
+                <option value="desc">降序</option>
+            </select>
         </div>
     </div>
 {% endblock %}
@@ -316,6 +320,7 @@
         var stockcode = '';
         var startyear = ''
         var endyear = ''
+        var order = ''
         var myChart1 = echarts.init(document.getElementById('echart'));
         function set_color() {
             return (function (m, s, c) {
@@ -455,113 +460,222 @@
                 },
                 dataType: 'json',
                 success: function (data) {
-                    var legenddata1 = new Array();
-                    var aAxisdata1 = new Array();
-                    var seriesdata1 = [];
-                    var result = {};
-                    for (i = 0; i <= data.indexs.length; i++) {
-                        legenddata1.push(post_selected(data.indexs[i]))
-                    }
-                    aAxisdata1 = data.the_year_list
-                    for (i = 0; i < data.indexs.length; i++) {
-                        str = "data." + data.indexs[i]
-                        value = eval(str)
-                        var value2 = [];
-                        for (var j = 0; j < value.length; j++) {
-                            value2.push((value[j] / unit).toFixed(2))
+                    if (order == 'desc') {
+                        var legenddata1 = new Array();
+                        var aAxisdata1 = new Array();
+                        var seriesdata1 = [];
+                        var result = {};
+                        for (i = 0; i < data.indexs.length; i++) {
+                            legenddata1.push(post_selected(data.indexs[i]))
                         }
-                        result = {
-                            name: post_selected(data.indexs[i]),
-                            type: 'line',
-                            smooth: true,
-                            itemStyle: {
-                                normal: {
-                                    color: color[data.indexs[i]],
-                                    lineStyle: {
-                                        color: color[data.indexs[i]]
+                        aAxisdata1 = data.the_year_list
+                        for (i = 0; i < data.indexs.length; i++) {
+                            str = "data." + data.indexs[i]
+                            value = eval(str)
+                            var value2 = [];
+                            for (var j = 0; j < value.length; j++) {
+                                value2.push((value[j] / unit).toFixed(2))
+                            }
+                            result = {
+                                name: post_selected(data.indexs[i]),
+                                type: 'line',
+                                smooth: true,
+                                itemStyle: {
+                                    normal: {
+                                        color: color[data.indexs[i]],
+                                        lineStyle: {
+                                            color: color[data.indexs[i]]
+                                        }
+                                    }
+                                },
+                                data: value2
+                            }
+                            seriesdata1.push(result)
+
+                        }
+                        console.log(seriesdata1)
+                        // 指定图表的配置项和数据
+                        option = {
+                            title: {
+                                text: data.the_name + "（单位：" + getunitname(unit) + "）"
+                            },
+                            tooltip: {
+                                trigger: 'axis'
+                            },
+                            {#                        legend: {#}
+                            {#                            data: legenddata1#}
+                            {#                        },#}
+                            grid: {
+                                left: '3%',
+                                right: '4%',
+                                bottom: '3%',
+                                containLabel: true
+                            },
+                            toolbox: {
+
+                                feature: {
+                                    saveAsImage: {},
+                                    magicType: {
+                                        type: ['line', 'bar', 'stack', 'tiled']
                                     }
                                 }
                             },
-                            data: value2
-                        }
-                        seriesdata1.push(result)
+                            xAxis: {
+                                type: 'category',
+                                boundaryGap: false,
+                                axisTick: {
+                                    show: false
+                                },
+                                data: aAxisdata1,
+                            },
+                            yAxis: {
+                                type: 'value',
+                                axisTick: {
+                                    show: false
+                                },
+                            },
+                            dataZoom: [
+                                {
+                                    {#                                id: 'dataZoomX',#}
+                                    type: 'slider',
+                                    xAxisIndex: [0],
+                                    height: 20,
+                                    filterMode: 'filter',
+                                    {#                                show : true,#}
+                                    startValue: dzstart,
+                                    endValue: dend,
+                                },
 
-                    }
-                    console.log(seriesdata1)
-                    // 指定图表的配置项和数据
-                    option = {
-                        title: {
-                            text: data.the_name + "（单位：" + getunitname(unit) + "）"
-                        },
-                        tooltip: {
-                            trigger: 'axis'
-                        },
-                        {#                        legend: {#}
-                        {#                            data: legenddata1#}
-                        {#                        },#}
-                        grid: {
-                            left: '3%',
-                            right: '4%',
-                            bottom: '3%',
-                            containLabel: true
-                        },
-                        toolbox: {
+                                {#                            {#}
+                                {#                                id: 'dataZoomY',#}
+                                {#                                type: 'slider',#}
+                                {#                                yAxisIndex: [0],#}
+                                {#                                filterMode: 'empty'#}
+                                {#                            }#}
+                            ],
 
-                            feature: {
-                                saveAsImage: {},
-                                magicType: {
-                                    type: ['line', 'bar', 'stack', 'tiled']
-                                }
+                            series: seriesdata1
+                        };
+                        myChart1.setOption(option, true);
+                        myChart1.on('dataZoom', function (params) {
+                            var nendyear = 2016 - Math.ceil(params.start / 100 * 25)
+                            if (Math.ceil(1 - params.end / 100)) {
+                                var nstartyear = 1991 + Math.ceil((1 - params.end / 100) * 25) - 1
                             }
-                        },
-                        xAxis: {
-                            type: 'category',
-                            boundaryGap: false,
-                            axisTick: {
-                                show: false
-                            },
-                            data: aAxisdata1,
-                        },
-                        yAxis: {
-                            type: 'value',
-                            axisTick: {
-                                show: false
-                            },
-                        },
-                        dataZoom: [
-                            {
-                                {#                                id: 'dataZoomX',#}
-                                type: 'slider',
-                                xAxisIndex: [0],
-                                height: 20,
-                                filterMode: 'filter',
-                                {#                                show : true,#}
-                                startValue: dzstart,
-                                endValue: dend,
-                            },
-
-                            {#                            {#}
-                            {#                                id: 'dataZoomY',#}
-                            {#                                type: 'slider',#}
-                            {#                                yAxisIndex: [0],#}
-                            {#                                filterMode: 'empty'#}
-                            {#                            }#}
-                        ],
-
-                        series: seriesdata1
-                    };
-                    myChart1.setOption(option, true);
-                    myChart1.on('dataZoom', function (params) {
-                        var nendyear = 2016 - Math.ceil(params.start / 100 * 25)
-                        if (Math.ceil(1 - params.end / 100)) {
-                            var nstartyear = 1991 + Math.ceil((1 - params.end / 100) * 25) - 1
+                            else {
+                                var nstartyear = '1991'
+                            }
+                            set_timepicker(nstartyear, nendyear)
+                            {#                            creattable(stockcode, color, unit, nstartyear, nendyear)#}
+                        });
+                    }
+                    else if (order == 'asc')
+                    {
+                        var legenddata1 = new Array();
+                        var aAxisdata1 = new Array();
+                        var seriesdata1 = [];
+                        var result = {};
+                        for (i = data.indexs.length-1; i >= 0; i--) {
+                            legenddata1.push(post_selected(data.indexs[i]))
                         }
-                        else {
-                            var nstartyear = '1991'
+                        for(i = data.the_year_list.length-1; i >= 0; i--){
+                             aAxisdata1.push( data.the_year_list[i])
                         }
-                        set_timepicker(nstartyear, nendyear)
-                        {#                            creattable(stockcode, color, unit, nstartyear, nendyear)#}
-                    });
+                        for (i = data.indexs.length-1; i >= 0; i--) {
+                            str = "data." + data.indexs[i]
+                            value = eval(str)
+                            var value2 = [];
+                            for (var j = value.length-1; j >=0; j--) {
+                                value2.push((value[j] / unit).toFixed(2))
+                            }
+                            result = {
+                                name: post_selected(data.indexs[i]),
+                                type: 'line',
+                                smooth: true,
+                                itemStyle: {
+                                    normal: {
+                                        color: color[data.indexs[i]],
+                                        lineStyle: {
+                                            color: color[data.indexs[i]]
+                                        }
+                                    }
+                                },
+                                data: value2
+                            }
+                            seriesdata1.push(result)
+
+                        }
+                        console.log(seriesdata1)
+                        // 指定图表的配置项和数据
+                        option = {
+                            title: {
+                                text: data.the_name + "（单位：" + getunitname(unit) + "）"
+                            },
+                            tooltip: {
+                                trigger: 'axis'
+                            },
+                            {#                        legend: {#}
+                            {#                            data: legenddata1#}
+                            {#                        },#}
+                            grid: {
+                                left: '3%',
+                                right: '4%',
+                                bottom: '3%',
+                                containLabel: true
+                            },
+                            toolbox: {
+
+                                feature: {
+                                    saveAsImage: {},
+                                    magicType: {
+                                        type: ['line', 'bar', 'stack', 'tiled']
+                                    }
+                                }
+                            },
+                            xAxis: {
+                                type: 'category',
+                                boundaryGap: false,
+                                axisTick: {
+                                    show: false
+                                },
+                                data: aAxisdata1,
+                            },
+                            yAxis: {
+                                type: 'value',
+                                axisTick: {
+                                    show: false
+                                },
+                            },
+                            dataZoom: [
+                                {
+                                    {#                                id: 'dataZoomX',#}
+                                    type: 'slider',
+                                    xAxisIndex: [0],
+                                    height: 20,
+                                    filterMode: 'filter',
+                                    {#                                show : true,#}
+                                    startValue: dend,
+                                    endValue: dzstart,
+                                },
+
+
+                            ],
+
+                            series: seriesdata1
+                        };
+                        myChart1.setOption(option, true);
+                        myChart1.on('dataZoom', function (params) {
+                            var nstartyear = 1991+ Math.ceil(params.start / 100 * 25)
+{#                            if (Math.ceil(1 - params.end / 100)) {#}
+                                var nendyear = 1991 + Math.ceil( params.end / 100 * 25) - 1
+{#                            }#}
+{#                            else {#}
+{#                                var nendyear = '1991'#}
+{#                            }#}
+                            set_timepicker(nstartyear, nendyear)
+                            {#                            creattable(stockcode, color, unit, nstartyear, nendyear)#}
+                        });
+                    }
                 }
             })
         }
@@ -593,14 +707,22 @@
             var myChart = echarts.init(document.getElementById('echart'));
             var opt = myChart.getOption();
             var dz = opt.dataZoom[0];
-            creattable(stockcode, color, Uint, opt.xAxis[0].data[dz.endValue], opt.xAxis[0].data[dz.startValue])
+            if(order == 'desc'){
+                creattable(stockcode, color, Uint, opt.xAxis[0].data[dz.endValue], opt.xAxis[0].data[dz.startValue])
+            }
+            else if(order == 'asc')
+            {
+                creattable(stockcode, color, Uint, opt.xAxis[0].data[dz.startValue], opt.xAxis[0].data[dz.endValue])
+            }
 
         }
 
         $(document).ready(function () {
             function firstvisit() {
                 stockcode = {{ stockcode|safe }};
-
+{#                document.getElementById("yearorder").value = 'asc';#}
+{#                order = document.getElementById("yearorder").value#}
+                order = 'asc'
                 Uint = 100000000
                 selectedindex = ['tot_oper_rev']
                 $.ajax({
@@ -633,7 +755,6 @@
 
                 })
             }
-
             $("#ui3").datepicker({
                 changeYear: true,
                 dateFormat: 'yy',
@@ -685,6 +806,18 @@
                 var dzendyear = $('#ui4').val().substring(0, 4)
                 {#                var myChart = echarts.init(document.getElementById('echart'));#}
                 {#                var opt = myChart1.getOption();#}
+                Uint = unit
+                {#                option.dataZoom[0].startValue = dzstartyear#}
+                {#                option.dataZoom[0].endValue = dzendyear#}
+                {#                myChart1.setOption(option)#}
+                creattable(stockcode, color, Uint, dzstartyear, dzendyear)
+                createchart(stockcode, color, Uint, dzstartyear, dzendyear)
+            });
+            $("select#yearorder").change(function () {
+                var unit = document.getElementById("unit").value;
+                var dzstartyear = $('#ui3').val().substring(0, 4)
+                var dzendyear = $('#ui4').val().substring(0, 4)
+                order = document.getElementById("yearorder").value;
                 Uint = unit
                 {#                option.dataZoom[0].startValue = dzstartyear#}
                 {#                option.dataZoom[0].endValue = dzendyear#}
@@ -766,12 +899,12 @@
                             count = 0
                             for (j = 0; j < val.length; j++) {
                                 count += val[j]
-                                if ( val[j] < 1000&&0<val[j]) {
-                                alert(post_selected(index) + "数值过小，可根据需要调整单位后查看")
+                                if (val[j] < 1000 && 0 < val[j]) {
+                                    alert(post_selected(index) + "数值过小，可根据需要调整单位后查看")
                                     break
+                                }
                             }
-                            }
-                            if (count==0) {
+                            if (count == 0) {
                                 alert(post_selected(index) + "在数据库中未存值！")
                             }
 

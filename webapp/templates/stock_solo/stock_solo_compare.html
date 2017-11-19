@@ -193,7 +193,11 @@
                 <option value="1">元</option>
                 {#                <option value="audi">Audi</option>#}
             </select>
-
+            <a style="width:50px;margin-left:10px;color: #0c0c0c">年份排序:</a>
+            <select id="yearorder">
+                <option value="asc">升序</option>
+                <option value="desc">降序</option>
+            </select>
         </div>
 
     </div>
@@ -355,6 +359,7 @@
         var stockcode = '';
         var startyear = ''
         var endyear = ''
+        var order = ''
         var myChart1 = echarts.init(document.getElementById('echart'));
         function creat_compare_option(code) {
             color[code] = set_color()
@@ -477,101 +482,193 @@
                     },
                     dataType: 'json',
                     success: function (data) {
-                        console.log(data)
-                        for (i = 0; i < data.indexs.length; i++) {
-                            legenddata1.push(data.the_name + "(" + post_selected(data.indexs[i]) + ")")
-                        }
-                        console.log(legenddata1)
-                        aAxisdata1 = data.the_year_list
-                        for (i = 0; i < data.indexs.length; i++) {
-                            str = "data." + data.indexs[i]
-                            value = eval(str)
-                            var value2 = [];
-                            for (var j = 0; j < value.length; j++) {
-                                value2.push((value[j] / unit).toFixed(2))
+                        if (order == 'desc') {
+                            for (i = 0; i < data.indexs.length; i++) {
+                                legenddata1.push(data.the_name + "(" + post_selected(data.indexs[i]) + ")")
                             }
-                            result = {
-                                name: data.the_name + "(" + post_selected(data.indexs[i]) + ")",
-                                type: 'line',
-                                smooth: true,
-                                itemStyle: {
-                                    normal: {
-                                        color: color[data.the_code],
-                                        lineStyle: {
-                                            color: color[data.the_code]
+                            aAxisdata1 = data.the_year_list
+                            for (i = 0; i < data.indexs.length; i++) {
+                                str = "data." + data.indexs[i]
+                                value = eval(str)
+                                var value2 = [];
+                                for (var j = 0; j < value.length; j++) {
+                                    value2.push((value[j] / unit).toFixed(2))
+                                }
+                                result = {
+                                    name: data.the_name + "(" + post_selected(data.indexs[i]) + ")",
+                                    type: 'line',
+                                    smooth: true,
+                                    itemStyle: {
+                                        normal: {
+                                            color: color[data.the_code],
+                                            lineStyle: {
+                                                color: color[data.the_code]
+                                            }
+                                        }
+                                    },
+                                    data: value2
+                                }
+                                seriesdata1.push(result)
+                            }
+                            option = {
+                                title: {
+                                    text: "对比数据（单位：" + getunitname(unit) + "）"
+                                },
+                                tooltip: {
+                                    trigger: 'axis'
+                                },
+                                legend: {
+                                    data: legenddata1
+                                },
+                                grid: {
+                                    left: '3%',
+                                    right: '4%',
+                                    bottom: '3%',
+                                    containLabel: true
+                                },
+                                toolbox: {
+
+                                    feature: {
+                                        saveAsImage: {},
+                                        magicType: {
+                                            type: ['line', 'bar', 'stack', 'tiled']
                                         }
                                     }
                                 },
-                                data: value2
-                            }
-                            seriesdata1.push(result)
-                        }
-                        option = {
-                            title: {
-                                text: "对比数据（单位：" + getunitname(unit) + "）"
-                            },
-                            tooltip: {
-                                trigger: 'axis'
-                            },
-                            legend: {
-                                data: legenddata1
-                            },
-                            grid: {
-                                left: '3%',
-                                right: '4%',
-                                bottom: '3%',
-                                containLabel: true
-                            },
-                            toolbox: {
+                                xAxis: {
+                                    type: 'category',
+                                    boundaryGap: false,
+                                    axisTick: {
+                                        show: false
+                                    },
+                                    data: aAxisdata1,
+                                },
+                                yAxis: {
+                                    type: 'value',
+                                    axisTick: {
+                                        show: false
+                                    },
+                                },
+                                dataZoom: [
+                                    {
+                                        {#                                id: 'dataZoomX',#}
+                                        type: 'slider',
+                                        xAxisIndex: [0],
+                                        height: 8,
+                                        filterMode: 'filter',
+                                        {#                                show : true,#}
+                                        startValue: dzstart,
+                                        endValue: dend,
+                                    },
 
-                                feature: {
-                                    saveAsImage: {},
-                                    magicType: {
-                                        type: ['line', 'bar', 'stack', 'tiled']
-                                    }
+                                ],
+                                series: seriesdata1
+                            };
+                            myChart1.setOption(option, true);
+                            myChart1.on('dataZoom', function (params) {
+                                var nendyear = 2016 - Math.ceil(params.start / 100 * 25)
+                                if (Math.ceil(1 - params.end / 100)) {
+                                    var nstartyear = 1991 + Math.ceil((1 - params.end / 100) * 25) - 1
                                 }
-                            },
-                            xAxis: {
-                                type: 'category',
-                                boundaryGap: false,
-                                axisTick: {
-                                    show: false
-                                },
-                                data: aAxisdata1,
-                            },
-                            yAxis: {
-                                type: 'value',
-                                axisTick: {
-                                    show: false
-                                },
-                            },
-                            dataZoom: [
-                                {
-                                    {#                                id: 'dataZoomX',#}
-                                    type: 'slider',
-                                    xAxisIndex: [0],
-                                    height: 8,
-                                    filterMode: 'filter',
-                                    {#                                show : true,#}
-                                    startValue: dzstart,
-                                    endValue: dend,
-                                },
+                                else {
+                                    var nstartyear = '1991'
+                                }
+                                set_timepicker(nstartyear, nendyear)
+                                {#                            creattable(stockcode, color, unit, nstartyear, nendyear)#}
+                            });
+                        }
+                        else if (order == 'asc') {
+                            for (i = data.indexs.length - 1; i >= 0; i--) {
+                                legenddata1.push(data.the_name + "(" + post_selected(data.indexs[i]) + ")")
+                            }
 
-                            ],
-                            series: seriesdata1
-                        };
-                        myChart1.setOption(option, true);
-                        myChart1.on('dataZoom', function (params) {
-                            var nendyear = 2016 - Math.ceil(params.start / 100 * 25)
-                            if (Math.ceil(1 - params.end / 100)) {
-                                var nstartyear = 1991 + Math.ceil((1 - params.end / 100) * 25) - 1
+                                aAxisdata1= data.the_year_list.sort()
+
+                            for (i = data.indexs.length - 1; i >= 0; i--) {
+                                str = "data." + data.indexs[i]
+                                value = eval(str)
+                                var value2 = [];
+                                for (var j = value.length - 1; j >= 0; j--) {
+                                    value2.push((value[j] / unit).toFixed(2))
+                                }
+                                result = {
+                                    name: data.the_name + "(" + post_selected(data.indexs[i]) + ")",
+                                    type: 'line',
+                                    smooth: true,
+                                    itemStyle: {
+                                        normal: {
+                                            color: color[data.the_code],
+                                            lineStyle: {
+                                                color: color[data.the_code]
+                                            }
+                                        }
+                                    },
+                                    data: value2
+                                }
+                                seriesdata1.push(result)
                             }
-                            else {
-                                var nstartyear = '1991'
-                            }
-                            set_timepicker(nstartyear, nendyear)
-                            {#                            creattable(stockcode, color, unit, nstartyear, nendyear)#}
-                        });
+                            option = {
+                                title: {
+                                    text: "对比数据（单位：" + getunitname(unit) + "）"
+                                },
+                                tooltip: {
+                                    trigger: 'axis'
+                                },
+                                legend: {
+                                    data: legenddata1
+                                },
+                                grid: {
+                                    left: '3%',
+                                    right: '4%',
+                                    bottom: '3%',
+                                    containLabel: true
+                                },
+                                toolbox: {
+
+                                    feature: {
+                                        saveAsImage: {},
+                                        magicType: {
+                                            type: ['line', 'bar', 'stack', 'tiled']
+                                        }
+                                    }
+                                },
+                                xAxis: {
+                                    type: 'category',
+                                    boundaryGap: false,
+                                    axisTick: {
+                                        show: false
+                                    },
+                                    data: aAxisdata1,
+                                },
+                                yAxis: {
+                                    type: 'value',
+                                    axisTick: {
+                                        show: false
+                                    },
+                                },
+                                dataZoom: [
+                                    {
+                                        {#                                id: 'dataZoomX',#}
+                                        type: 'slider',
+                                        xAxisIndex: [0],
+                                        height: 8,
+                                        filterMode: 'filter',
+                                        {#                                show : true,#}
+                                        startValue: dzstart,
+                                        endValue: dend,
+                                    },
+
+                                ],
+                                series: seriesdata1
+                            };
+                            myChart1.setOption(option, true);
+                            myChart1.on('dataZoom', function (params) {
+                                var nstartyear = 1991 + Math.ceil(params.start / 100 * 25)
+                                var nendyear = 1991 + Math.ceil(params.end / 100 * 25) - 1
+                                set_timepicker(nstartyear, nendyear)
+                            });
+                        }
+
                     }
                 })
 
@@ -604,7 +701,12 @@
             var myChart = echarts.init(document.getElementById('echart'));
             var opt = myChart.getOption();
             var dz = opt.dataZoom[0];
-            creattable(code_list, color, Uint, opt.xAxis[0].data[dz.endValue], opt.xAxis[0].data[dz.startValue])
+            if (order == 'desc') {
+                creattable(code_list, color, Uint, opt.xAxis[0].data[dz.endValue], opt.xAxis[0].data[dz.startValue])
+            }
+            else if (order == 'asc') {
+                creattable(code_list, color, Uint, opt.xAxis[0].data[dz.startValue], opt.xAxis[0].data[dz.endValue])
+            }
 
         }
 
@@ -612,6 +714,7 @@
             function firstvisit() {
                 code_list = ['000001', '000002'];
                 Uint = 100000000
+                order = 'asc'
                 selectedindex = ['tot_oper_rev']
                 for (i = 0; i < code_list.length; i++) {
                     creat_compare_option(code_list[i])
@@ -666,6 +769,18 @@
                 var dzstartyear = $('#ui3').val().substring(0, 4)
                 var dzendyear = $('#ui4').val().substring(0, 4)
                 Uint = unit
+                creattable(code_list, color, Uint, dzstartyear, dzendyear)
+                createchart(code_list, color, Uint, dzstartyear, dzendyear)
+            });
+            $("select#yearorder").change(function () {
+                var unit = document.getElementById("unit").value;
+                var dzstartyear = $('#ui3').val().substring(0, 4)
+                var dzendyear = $('#ui4').val().substring(0, 4)
+                order = document.getElementById("yearorder").value;
+                Uint = unit
+                {#                option.dataZoom[0].startValue = dzstartyear#}
+                {#                option.dataZoom[0].endValue = dzendyear#}
+                {#                myChart1.setOption(option)#}
                 creattable(code_list, color, Uint, dzstartyear, dzendyear)
                 createchart(code_list, color, Uint, dzstartyear, dzendyear)
             });
