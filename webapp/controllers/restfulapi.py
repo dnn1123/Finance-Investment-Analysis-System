@@ -162,6 +162,8 @@ def market_status1():
             for index in indexes:
                 if eval("result." + index) is not None:
                     exec ("my" + index + "+= float((result." + index + ")/100000000)")
+                else:
+                    exec ("my" + index + "+= 0 ")
         for index in indexes:
             exec (index + "_list.append(my" + index + ")")
 
@@ -212,6 +214,8 @@ def market_status2():
             for index in indexes:
                 if eval("result." + index) is not None:
                     exec ("my" + index + "+= float((result." + index + ")/100000000)")
+                else:
+                    exec ("my" + index + "+= 0 ")
         for index in indexes:
             exec (index + "_list.append(my" + index + ")")
 
@@ -264,6 +268,56 @@ def market_status3():
             for index in indexes:
                 if eval("result." + index) is not None:
                     exec ("my" + index + "+= float((result." + index + ")/100000000)")
+                else:
+                    exec ("my" + index + "+= 0 ")
+        for index in indexes:
+            exec (index + "_list.append(my" + index + ")")
+
+    data['the_year'] = year_list
+    data['indexes'] = indexes
+
+    for index in indexes:
+        exec ("data['" + index + "']=" + index + "_list")
+    return jsonify(data)
+
+
+@api_blueprint.route("/market_status4/", methods=('GET', 'POST'))
+def market_status4():
+    data = {}
+
+    code = request.args.get('code')
+    starttime = request.args.get('starttime')
+    endtime = request.args.get('endtime')
+    indexes = request.args.getlist('indexes[]')
+
+    Filters = {
+        finance_basics_add.trade_code == '000002',
+        finance_basics_add.the_year >= starttime,
+        finance_basics_add.the_year <= endtime,
+    }
+    years = finance_basics_add.query.filter(*Filters).all()
+
+    a = {
+        cns_stock_industry.industry_gicscode_4 == code,
+    }
+    rs = cns_stock_industry.query.filter(*a).all()
+
+    year_list = []
+    for year in years:
+        year_list.append(year.the_year)
+
+    for index in indexes:
+        exec (index + "_list=[]")
+        exec ("my" + index + "=0")
+
+    for y in year_list:
+        for r in rs:
+            result = finance_basics_add.query.filter_by(the_year=y, trade_code=r.trade_code).first_or_404()
+            for index in indexes:
+                if eval("result." + index) is not None:
+                    exec ("my" + index + "+= float((result." + index + ")/100000000)")
+                else:
+                    exec ("my" + index + "+= 0 ")
         for index in indexes:
             exec (index + "_list.append(my" + index + ")")
 

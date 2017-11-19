@@ -71,7 +71,7 @@
 {% block container %}
     <div id="basics" style="height:auto">
         {% if parameter==1 %}
-            <div id="myTabChoice1" style="width: 95%;height:600px;margin:auto">
+            <div id="myTabChoice1" style="width: 100%;height:600px;margin:auto">
                 <ul id="myTab" class="nav nav-tabs">
                     <li class="disabled">
                         <a href="javascript:return false;" data-toggle="tab" disabled='true'>视图：</a>
@@ -81,8 +81,8 @@
                 </ul>
                 <div id="choice" class="tab-content">
                     <div class="tab-pane fade in active" id="chart">
-                        <div id="mychart" style="width:80%;height:100%;float:right"></div>
-                        <div id="mychoice" style="width:15%;height:100%;float:left;overflow-y:auto">
+                        <div id="mychart" style="width:85%;height:100%;float:right"></div>
+                        <div id="mychoice" style="width:13%;height:100%;float:left;overflow-y:auto">
                             <div style="width:100%;height:30px;margin-top:10px;background-color:lightgray">
                                 <div class="checkbox" style="width:80%;height:20px;float:left;margin-left:5px">
                                     <label><input type="checkbox" value="tot_oper_rev" checked="checked"
@@ -187,7 +187,7 @@
                         </div>
                     </div>
                     <div class="tab-pane fade" id="table">
-                        <div id="mytable" style="width:85%;height:100%;float:right"></div>
+                        <div id="mytable" style="width:100%;height:100%;float:right"></div>
                     </div>
                 </div>
             </div>
@@ -272,14 +272,14 @@
                             }
                         },
                         grid: {
-                            left: 0,
+                            left: '5%',
                             top: '10%',
                             containLabel: true
                         },
                         toolbox: {
                             feature: {
                                 magicType: {
-                                    type: ['line', 'bar', 'tiled']
+                                    type: ['line', 'bar']
                                 }
                             }
                         },
@@ -321,24 +321,14 @@
                         }
                         set_timepicker(starts, ends)
                     });
-                    myChart.on('mouseover', function (params) {
-                        oldwidth = option.series[params.seriesIndex].lineStyle.normal.width;
-                        if (oldwidth == 2) {
-                            option.series[params.seriesIndex].lineStyle.normal.width = 4;
-                            myChart.setOption(option);
-                        }
-                    });
-                    myChart.on('mouseout', function (params) {
-                        oldwidth = option.series[params.seriesIndex].lineStyle.normal.width;
-                        if (oldwidth == 4) {
-                            option.series[params.seriesIndex].lineStyle.normal.width = 2;
-                            myChart.setOption(option);
-                        }
-                    });
                     function set_timepicker(start, end) {
                         document.getElementById('endtime').value = start
                         document.getElementById('starttime').value = end
                     }
+                }
+                function set_time() {
+                    document.getElementById('endtime').value = "1991-12-31"
+                    document.getElementById('starttime').value = "2016-12-31"
                 }
             </script>
             <!--建表-->
@@ -428,7 +418,7 @@
             </script>
 
         {% elif parameter==2 %}
-            <div id="myTabChoice2" style="width: 95%;height:600px;margin:auto">
+            <div id="myTabChoice2" style="width: 100%;height:600px;margin:auto">
                 <ul id="myTab" class="nav nav-tabs">
                     <li class="disabled">
                         <a href="javascript:return false;" data-toggle="tab" disabled='true'>视图：</a>
@@ -438,8 +428,8 @@
                 </ul>
                 <div id="choice" class="tab-content">
                     <div class="tab-pane fade in active" id="chart">
-                        <div id="mychart" style="width:80%;height:100%;float:right"></div>
-                        <div id="mychoice" style="width:15%;height:100%;float:left;overflow-y:auto">
+                        <div id="mychart" style="width:85%;height:100%;float:right"></div>
+                        <div id="mychoice" style="width:13%;height:100%;float:left;overflow-y:auto">
                             <div style="width:100%;height:30px;margin-top:10px;background-color:lightgray">
                                 <div class="checkbox" style="width:80%;height:20px;float:left;margin-left:5px">
                                     <label><input type="checkbox" value="tot_oper_rev" checked="checked"
@@ -544,7 +534,7 @@
                         </div>
                     </div>
                     <div class="tab-pane fade" id="table">
-                        <div id="mytable" style="width:85%;height:100%;float:right"></div>
+                        <div id="mytable" style="width:100%;height:100%;float:right"></div>
                     </div>
                 </div>
             </div>
@@ -630,14 +620,14 @@
                             }
                         },
                         grid: {
-                            left: 0,
+                            left: '5%',
                             top: '10%',
                             containLabel: true
                         },
                         toolbox: {
                             feature: {
                                 magicType: {
-                                    type: ['line', 'bar', 'tiled']
+                                    type: ['line', 'bar']
                                 }
                             }
                         },
@@ -679,24 +669,14 @@
                         }
                         set_timepicker(starts, ends)
                     });
-                    myChart.on('mouseover', function (params) {
-                        oldwidth = option.series[params.seriesIndex].lineStyle.normal.width;
-                        if (oldwidth == 2) {
-                            option.series[params.seriesIndex].lineStyle.normal.width = 4;
-                            myChart.setOption(option);
-                        }
-                    });
-                    myChart.on('mouseout', function (params) {
-                        oldwidth = option.series[params.seriesIndex].lineStyle.normal.width;
-                        if (oldwidth == 4) {
-                            option.series[params.seriesIndex].lineStyle.normal.width = 2;
-                            myChart.setOption(option);
-                        }
-                    });
                     function set_timepicker(start, end) {
                         document.getElementById('endtime').value = start
                         document.getElementById('starttime').value = end
                     }
+                }
+                function set_time() {
+                    document.getElementById('endtime').value = "1991-12-31"
+                    document.getElementById('starttime').value = "2016-12-31"
                 }
             </script>
             <!--建表-->
@@ -786,7 +766,7 @@
             </script>
 
         {% elif parameter==3 %}
-            <div id="myTabChoice3" style="width: 95%;height:600px;margin:auto">
+            <div id="myTabChoice3" style="width: 100%;height:600px;margin:auto">
                 <ul id="myTab" class="nav nav-tabs">
                     <li class="disabled">
                         <a href="javascript:return false;" data-toggle="tab" disabled='true'>视图：</a>
@@ -796,8 +776,8 @@
                 </ul>
                 <div id="choice" class="tab-content">
                     <div class="tab-pane fade in active" id="chart">
-                        <div id="mychart" style="width:80%;height:100%;float:right"></div>
-                        <div id="mychoice" style="width:15%;height:100%;float:left;overflow-y:auto">
+                        <div id="mychart" style="width:85%;height:100%;float:right"></div>
+                        <div id="mychoice" style="width:13%;height:100%;float:left;overflow-y:auto">
                             <div style="width:100%;height:30px;margin-top:10px;background-color:lightgray">
                                 <div class="checkbox" style="width:80%;height:20px;float:left;margin-left:5px">
                                     <label><input type="checkbox" value="tot_oper_rev" checked="checked"
@@ -902,7 +882,7 @@
                         </div>
                     </div>
                     <div class="tab-pane fade" id="table">
-                        <div id="mytable" style="width:85%;height:100%;float:right"></div>
+                        <div id="mytable" style="width:100%;height:100%;float:right"></div>
                     </div>
                 </div>
             </div>
@@ -988,14 +968,14 @@
                             }
                         },
                         grid: {
-                            left: 0,
+                            left: '5%',
                             top: '10%',
                             containLabel: true
                         },
                         toolbox: {
                             feature: {
                                 magicType: {
-                                    type: ['line', 'bar', 'tiled']
+                                    type: ['line', 'bar']
                                 }
                             }
                         },
@@ -1037,24 +1017,14 @@
                         }
                         set_timepicker(starts, ends)
                     });
-                    myChart.on('mouseover', function (params) {
-                        oldwidth = option.series[params.seriesIndex].lineStyle.normal.width;
-                        if (oldwidth == 2) {
-                            option.series[params.seriesIndex].lineStyle.normal.width = 4;
-                            myChart.setOption(option);
-                        }
-                    });
-                    myChart.on('mouseout', function (params) {
-                        oldwidth = option.series[params.seriesIndex].lineStyle.normal.width;
-                        if (oldwidth == 4) {
-                            option.series[params.seriesIndex].lineStyle.normal.width = 2;
-                            myChart.setOption(option);
-                        }
-                    });
                     function set_timepicker(start, end) {
                         document.getElementById('endtime').value = start
                         document.getElementById('starttime').value = end
                     }
+                }
+                function set_time() {
+                    document.getElementById('endtime').value = "1991-12-31"
+                    document.getElementById('starttime').value = "2016-12-31"
                 }
             </script>
             <!--建表-->
@@ -1144,7 +1114,7 @@
             </script>
 
         {% elif parameter==4 %}
-            <div id="myTabChoice4" style="width: 95%;height:600px;margin:auto">
+            <div id="myTabChoice4" style="width: 100%;height:600px;margin:auto">
                 <ul id="myTab" class="nav nav-tabs">
                     <li class="disabled">
                         <a href="javascript:return false;" data-toggle="tab" disabled='true'>视图：</a>
@@ -1154,8 +1124,8 @@
                 </ul>
                 <div id="choice" class="tab-content">
                     <div class="tab-pane fade in active" id="chart">
-                        <div id="mychart" style="width:80%;height:100%;float:right"></div>
-                        <div id="mychoice" style="width:15%;height:100%;float:left;overflow-y:auto">
+                        <div id="mychart" style="width:85%;height:100%;float:right;overflow-x:auto"></div>
+                        <div id="mychoice" style="width:13%;height:100%;float:left;float:bottom;overflow-y:auto">
                             <div style="width:100%;height:30px;margin-top:10px;background-color:lightgray">
                                 <div class="checkbox" style="width:80%;height:20px;float:left;margin-left:5px">
                                     <label><input type="checkbox" value="tot_oper_rev" checked="checked"
@@ -1260,7 +1230,7 @@
                         </div>
                     </div>
                     <div class="tab-pane fade" id="table">
-                        <div id="mytable" style="width:85%;height:100%;float:right"></div>
+                        <div id="mytable" style="width:100%;height:100%;float:right"></div>
                     </div>
                 </div>
             </div>
@@ -1346,14 +1316,14 @@
                             }
                         },
                         grid: {
-                            left: 0,
+                            left: '5%',
                             top: '10%',
                             containLabel: true
                         },
                         toolbox: {
                             feature: {
                                 magicType: {
-                                    type: ['line', 'bar', 'tiled']
+                                    type: ['line', 'bar']
                                 }
                             }
                         },
@@ -1395,24 +1365,14 @@
                         }
                         set_timepicker(starts, ends)
                     });
-                    myChart.on('mouseover', function (params) {
-                        oldwidth = option.series[params.seriesIndex].lineStyle.normal.width;
-                        if (oldwidth == 2) {
-                            option.series[params.seriesIndex].lineStyle.normal.width = 4;
-                            myChart.setOption(option);
-                        }
-                    });
-                    myChart.on('mouseout', function (params) {
-                        oldwidth = option.series[params.seriesIndex].lineStyle.normal.width;
-                        if (oldwidth == 4) {
-                            option.series[params.seriesIndex].lineStyle.normal.width = 2;
-                            myChart.setOption(option);
-                        }
-                    });
                     function set_timepicker(start, end) {
                         document.getElementById('endtime').value = start
                         document.getElementById('starttime').value = end
                     }
+                }
+                function set_time() {
+                    document.getElementById('endtime').value = "1991-12-31"
+                    document.getElementById('starttime').value = "2016-12-31"
                 }
             </script>
             <!--建表-->
@@ -1592,11 +1552,13 @@
                 denominator = 1;
                 CreateChart1();
                 CreateTable1();
+                set_time();
             }
             if (flag == "1") {
                 denominator = 1000;
                 CreateChart1();
                 CreateTable1();
+                set_time();
             }
         });
         function numfilter(oldnum) {
@@ -1633,6 +1595,7 @@
                 $("#i_" + indexname).css("background-color", "white");
                 console.log(Chosenindexes);
             }
+
             $("div#unselected").empty();
             $("div#selected").empty();
             $("input[type=checkbox]").each(function () {//each()方法遍历所有的复选框
@@ -1644,6 +1607,7 @@
             })
             CreateChart1();
             CreateTable1();
+            set_time();
         });
     </script>
 
@@ -1685,3 +1649,5 @@
 <SCRIPT Language=VBScript><!--
 
 //-->
+
+</SCRIPT>
