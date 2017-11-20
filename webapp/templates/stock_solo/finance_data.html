@@ -291,6 +291,14 @@
                 </select>
             </div>
             <div style="float: left;margin: 20px">
+                <a style="width:50px;margin-left:10px;color: #0c0c0c">顺序:</a>
+                <select class="form-control"  id="yearorder">
+                    <option value="desc">降序</option>
+                    <option value="asc">升序</option>
+                </select>
+            </div>
+
+            <div style="float: left;margin: 20px">
                 <a style="width:50px;margin-left:10px;color: #0c0c0c">起始时间:</a><input size="16" type="text"
                                                                                       value="2016-12-31" id="starttime"
                                                                                       readonly class="form_datetime">
@@ -305,6 +313,7 @@
 
     <script>
         denominator = 1
+        orderflag="desc"
         var starttime = "20061231"
         var endtime = "20161231"
         $("select#unit").change(function () {
@@ -316,6 +325,21 @@
             }
             if (flag == "1") {
                 denominator = 1000000
+                CreateChart();
+                CreateTable();
+            }
+        });
+        $("select#yearorder").change(function () {
+            flag = $(this).val()
+            if (flag == "asc") {
+                orderflag="asc"
+                getdata();
+                CreateChart();
+                CreateTable();
+            }
+            if (flag == "desc") {
+                orderflag="desc"
+                getdata();
                 CreateChart();
                 CreateTable();
             }
@@ -433,8 +457,11 @@
             'ev2': '整体价值估计（不含货币）',
             'employee': '雇员数量'
         };
-
-        $.ajax({
+        $(document).ready(function () {
+            getdata()
+        })
+        function getdata() {
+            $.ajax({
             type: 'GET',
             url: '{{url_for("restfulapi.finance_data")}}',
             data: {
@@ -445,8 +472,15 @@
             },
             dataType: 'json',//希望服务器返回json格式的数据
             success: function (data) {
+                if(orderflag=="asc"){
+                    for (var i = 0; i < data.indexes.length; i++) {
+                    eval("data." + data.indexes[i]).reverse();
+                    }
+                    data.the_year.reverse();
+                }
                 finance_results = data;
                 finance_results_t = data;
+
                 $.ajax({
                     type: 'GET',
                     url: '{{url_for("restfulapi.invest_data")}}',
@@ -458,6 +492,12 @@
                     },
                     dataType: 'json',//希望服务器返回json格式的数据
                     success: function (data) {
+                    if(orderflag=="asc"){
+                        for (var i = 0; i < data.indexes.length; i++) {
+                            eval("data." + data.indexes[i]).reverse();
+                        }
+                    data.the_year.reverse();
+                    }
                         invest_results = data;
                         invest_results_t = data;
                         CreateChart();
@@ -467,6 +507,8 @@
                 })
             }
         })
+        }
+
         //                dataSeries = [{name:'123',type:'line',data:[1,2,3,4,5,6,7]},{name:'345',type:'line',data:[7,6,5,4,3,2,1]}];
         function CreateChart() {
             dataSeries = [];
@@ -482,6 +524,7 @@
                         data: numfilter(eval("finance_results." + finance_results.indexes[i]))
                     };
                     dataSeries.push(temp);
+
                 }
             }
             for (var i = 0; i < invest_results.indexes.length; i++) {
