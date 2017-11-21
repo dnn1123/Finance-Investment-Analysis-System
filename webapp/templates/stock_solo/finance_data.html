@@ -77,7 +77,6 @@
 
         <li><a href="#">投资价值分析</a></li>
         <li><a href="{{ url_for('stock_solo.compare') }}">股票对比分析</a></li>
-        <li><a href="#">图表分析</a></li>
     </ul>
 {% endblock %}
 
@@ -335,13 +334,13 @@
                 orderflag="asc"
                 getdata();
                 CreateChart();
-                CreateTable();
+                RequestTable();
             }
             if (flag == "desc") {
                 orderflag="desc"
                 getdata();
                 CreateChart();
-                CreateTable();
+                RequestTable();
             }
         });
         $(".form_datetime").datetimepicker({
@@ -855,11 +854,11 @@
                     {   // 这个dataZoom组件，默认控制x轴。
                         type: 'slider', // 这个 dataZoom 组件是 slider 型 dataZoom 组件
                         xAxisIndex: [0],
-                        startValue: "2016年Q4",
-                        {#   start: 0,      // 左边在 10% 的位置。
-                            end: 100,         // 右边在 60% 的位置。
-                            top: '93%'#}
-                        endValue: "2006年Q4",
+{#                        startValue: "2016年Q4",#}
+                        start: 0,      // 左边在 10% 的位置。
+                        end: 50,         // 右边在 60% 的位置。
+{#                            top: '93%',#}
+{#                        endValue: "2006年Q4",#}
                         filterMode: 'filter',
                     },
                     {   // 这个dataZoom组件，默认控制x轴。
@@ -900,7 +899,6 @@
         var finance_results_t;
         var invest_results_t;
         function RequestTable() {
-
             var opt = myChart.getOption();
             var dz = opt.dataZoom[0];
             $.ajax({
@@ -908,13 +906,19 @@
                 url: '{{url_for("restfulapi.finance_data")}}',
                 data: {
                     stockcode:{{ stockcode|safe }},
-                    starttime: opt.xAxis[0].data[dz.endValue],
-                    endtime: opt.xAxis[0].data[dz.startValue],
+                    starttime: parseInt(opt.xAxis[0].data[dz.startValue])<=parseInt(opt.xAxis[0].data[dz.endValue])?opt.xAxis[0].data[dz.startValue]:opt.xAxis[0].data[dz.endValue],
+                    endtime: parseInt(opt.xAxis[0].data[dz.startValue])>=parseInt(opt.xAxis[0].data[dz.endValue])?opt.xAxis[0].data[dz.startValue]:opt.xAxis[0].data[dz.endValue],
                     indexes: ['tot_oper_cost', 'tot_oper_rev', 'wgsd_net_inc', 'tot_assets', 'wgsd_com_eq', 'monetary_cap', 'operatecashflow_ttm2', 'investcashflow_ttm2']
                 },
                 dataType: 'json',//希望服务器返回json格式的数据
                 success: function (data) {
                     console.log(data)
+                    if(orderflag=="asc"){
+                    for (var i = 0; i < data.indexes.length; i++) {
+                    eval("data." + data.indexes[i]).reverse();
+                    }
+                    data.the_year.reverse();
+                }
                     finance_results_t = data;
                     $.ajax({
                         type: 'GET',
@@ -927,6 +931,12 @@
                         },
                         dataType: 'json',//希望服务器返回json格式的数据
                         success: function (data) {
+                            if(orderflag=="asc"){
+                    for (var i = 0; i < data.indexes.length; i++) {
+                    eval("data." + data.indexes[i]).reverse();
+                    }
+                    data.the_year.reverse();
+                }
                             invest_results_t = data;
                             CreateTable();
 
@@ -956,7 +966,7 @@
             var mydatatb = $('#temptable').DataTable({
                 "info": false,
                 "processing": true,
-                "scrollY": true,
+                "scrollX": true,
                 "searching": true,
                 "fixedColumns": { //固定列的配置项
                     "leftColumns": 1//固定左边第一列

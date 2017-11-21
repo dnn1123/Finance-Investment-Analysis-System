@@ -71,7 +71,7 @@
 {% block container %}
     <div id="basics" style="height:auto">
         {% if parameter==1 %}
-            <div id="myTabChoice1" style="width: 95%;height:600px;margin:auto">
+            <div id="myTabChoice1" style="width: 100%;height:600px;margin:auto">
                 <ul id="myTab" class="nav nav-tabs">
                     <li class="disabled">
                         <a href="javascript:return false;" data-toggle="tab" disabled='true'>视图：</a>
@@ -81,8 +81,8 @@
                 </ul>
                 <div id="choice" class="tab-content">
                     <div class="tab-pane fade in active" id="chart">
-                        <div id="mychart" style="width:80%;height:100%;float:right"></div>
-                        <div id="mychoice" style="width:15%;height:100%;float:left;overflow-y:auto">
+                        <div id="mychart" style="width:85%;height:100%;float:right"></div>
+                        <div id="mychoice" style="width:13%;height:100%;float:left;overflow-y:auto">
                             <div style="width:100%;height:30px;margin-top:10px;background-color:lightgray">
                                 <div class="checkbox" style="width:80%;height:20px;float:left;margin-left:5px">
                                     <label><input type="checkbox" value="tot_oper_rev" checked="checked"
@@ -187,13 +187,14 @@
                         </div>
                     </div>
                     <div class="tab-pane fade" id="table">
-                        <div id="mytable" style="width:85%;height:100%;float:right"></div>
+                        <div id="mytable" style="width:100%;height:100%;float:right"></div>
                     </div>
                 </div>
             </div>
 
             <script>
                 $("input#find1").click(function () {
+                    Chosenindexes = ['tot_oper_rev'];
                     RequestChart1();
                 });
             </script>
@@ -227,29 +228,127 @@
                         code:{{ industry_gicscode_1 }},
                         starttime: '19911231',
                         endtime: '20161231',
-                        indexes: ['tot_oper_rev', 'net_profit_is', 'wgsd_net_inc', 'tot_assets', 'tot_liab', 'net_assets', 'wgsd_com_eq', 'operatecashflow_ttm2', 'investcashflow_ttm2', 'financecashflow_ttm2', 'cashflow_ttm2', 'free_cash_flow']
+                        indexes: ['tot_oper_rev'],
                     },
                     dataType: 'json',
                     success: function RequestChart1(data) {
-                        market_results1 = data;
-                        CreateChart1();
+                        dataSeries = [];
+                        temp = {
+                            name: data.indexes,
+                            type: 'line',
+                            lineStyle: {normal: {width: 2}},
+                            itemStyle: {normal: {color: '#000000'}},
+                            symbolSize: 8,
+                            smooth: true,
+                            data: numfilter(eval("data." + data.indexes))
+                        };
+                        dataSeries.push(temp);
+                        option = {
+                            title: {
+                                text: '财务指标分析图',
+                                left: '45%'
+                            },
+                            tooltip: {
+                                trigger: 'item',
+                                formatter: function (params) {
+                                    return dict[params.seriesName] + "<br/> 时间：" + params.name + "<br/> 数据：" + params.data;
+                                }
+                            },
+                            legend: {
+                                data: [],
+                                orient: 'vertical',
+                                left: '85%',
+                                top: '10%',
+                                formatter: function (name) {
+                                    return dict[name];
+                                }
+                            },
+                            grid: {
+                                left: '5%',
+                                top: '10%',
+                                containLabel: true
+                            },
+                            toolbox: {
+                                feature: {
+                                    magicType: {
+                                        type: ['line', 'bar']
+                                    }
+                                }
+                            },
+                            xAxis: {
+                                type: 'category',
+                                boundaryGap: false,
+                                axisTick: {
+                                    show: false
+                                },
+                                data: dateformat(data.the_year),
+                                Interval: 5
+                            },
+                            yAxis: {
+                                type: 'value',
+                                axisTick: {
+                                    show: false
+                                },
+                            },
+                            dataZoom: [
+                                {
+                                    type: 'slider',
+                                    xAxisIndex: [0],
+                                    startValue: "2016年Q4",
+                                    endValue: "1991年Q4",
+                                    filterMode: 'filter',
+                                }
+                            ],
+                            series: dataSeries
+                        };
+                        myChart.setOption(option, true);
+                        myChart.on('datazoom', function (params) {
+                            option.xAxis.interval = 10 * (params.end - params.start) / 100;
+                            var ends = (2016 - Math.ceil(params.start / 100 * 25)) + '-12-31'
+                            if (Math.ceil(1 - params.end / 100)) {
+                                var starts = (1991 + Math.ceil((1 - params.end / 100) * 25) - 1) + '-12-31'
+                            }
+                            else {
+                                var starts = '1991-12-31'
+                            }
+                            set_timepicker(starts, ends)
+                        });
+                        function set_timepicker(start, end) {
+                            document.getElementById('endtime').value = start
+                            document.getElementById('starttime').value = end
+                        }
                     }
                 });
+                function RequestChart1() {
+                    $.ajax({
+                        type: 'GET',
+                        url: '{{ url_for("restfulapi.market_status1") }}',
+                        data: {
+                            code:{{ industry_gicscode_1 }},
+                            starttime: '19911231',
+                            endtime: '20161231',
+                            indexes: Chosenindexes,
+                        },
+                        dataType: 'json',
+                        success: function (data) {
+                            market_results1 = data;
+                            CreateChart1();
+                        }
+                    });
+                }
                 function CreateChart1() {
                     dataSeries = [];
                     for (var i = 0; i < market_results1.indexes.length; i++) {
-                        if (Chosenindexes.hasOwnProperty(market_results1.indexes[i])) {
-                            temp = {
-                                name: market_results1.indexes[i],
-                                type: 'line',
-                                lineStyle: {normal: {width: 2}},
-                                itemStyle: {normal: {color: Chosenindexes[market_results1.indexes[i]]}},
-                                symbolSize: 8,
-                                smooth: true,
-                                data: numfilter(eval("market_results1." + market_results1.indexes[i]))
-                            };
-                            dataSeries.push(temp);
-                        }
+                        temp = {
+                            name: market_results1.indexes[i],
+                            type: 'line',
+                            lineStyle: {normal: {width: 2}},
+                            itemStyle: {normal: {color: Chosenindexes[market_results1.indexes[i]]}},
+                            symbolSize: 8,
+                            smooth: true,
+                            data: numfilter(eval("market_results1." + market_results1.indexes[i]))
+                        };
+                        dataSeries.push(temp);
                     }
                     option = {
                         title: {
@@ -272,14 +371,14 @@
                             }
                         },
                         grid: {
-                            left: 0,
+                            left: '5%',
                             top: '10%',
                             containLabel: true
                         },
                         toolbox: {
                             feature: {
                                 magicType: {
-                                    type: ['line', 'bar', 'tiled']
+                                    type: ['line', 'bar']
                                 }
                             }
                         },
@@ -321,24 +420,14 @@
                         }
                         set_timepicker(starts, ends)
                     });
-                    myChart.on('mouseover', function (params) {
-                        oldwidth = option.series[params.seriesIndex].lineStyle.normal.width;
-                        if (oldwidth == 2) {
-                            option.series[params.seriesIndex].lineStyle.normal.width = 4;
-                            myChart.setOption(option);
-                        }
-                    });
-                    myChart.on('mouseout', function (params) {
-                        oldwidth = option.series[params.seriesIndex].lineStyle.normal.width;
-                        if (oldwidth == 4) {
-                            option.series[params.seriesIndex].lineStyle.normal.width = 2;
-                            myChart.setOption(option);
-                        }
-                    });
                     function set_timepicker(start, end) {
                         document.getElementById('endtime').value = start
                         document.getElementById('starttime').value = end
                     }
+                }
+                function set_time() {
+                    document.getElementById('endtime').value = "1991-12-31"
+                    document.getElementById('starttime').value = "2016-12-31"
                 }
             </script>
             <!--建表-->
@@ -355,7 +444,7 @@
                             code:{{ industry_gicscode_1 }},
                             starttime: opt.xAxis[0].data[dz.endValue],
                             endtime: opt.xAxis[0].data[dz.startValue],
-                            indexes: ['tot_oper_rev', 'net_profit_is', 'wgsd_net_inc', 'tot_assets', 'tot_liab', 'net_assets', 'wgsd_com_eq', 'operatecashflow_ttm2', 'investcashflow_ttm2', 'financecashflow_ttm2', 'cashflow_ttm2', 'free_cash_flow']
+                            indexes: Chosenindexes
                         },
                         dataType: 'json',//希望服务器返回json格式的数据
                         success: function (data) {
@@ -412,23 +501,144 @@
                     });
                     setTimeout("$(\"#subject\").trigger(\"click\")", 100);
                     for (var i = 0; i < market_results_t1.indexes.length; i++) {
-                        if (Chosenindexes.hasOwnProperty(market_results_t1.indexes[i])) {
-                            var rowNode = mydatatb
-                                .row.add([dict[market_results_t1.indexes[i]]].concat(numfilter(eval("market_results_t1." + market_results_t1.indexes[i]))))
-                                .draw()
-                                .node();
-                            $(rowNode)
-                                .attr('id', market_results_t1.indexes[i]);
-                        }
+                        var rowNode = mydatatb
+                            .row.add([dict[market_results_t1.indexes[i]]].concat(numfilter(eval("market_results_t1." + market_results_t1.indexes[i]))))
+                            .draw()
+                            .node();
+                        $(rowNode)
+                            .attr('id', market_results_t1.indexes[i]);
                     }
                     for (var key in Chosenindexes) {
                         $('tr#' + key).css('color', Chosenindexes[key])
                     }
                 }
             </script>
+            <!--复选框操作-->
+            <script>
+                var Chosenindexes = new Array();
+                Chosenindexes = ['tot_oper_rev'];
+                Chosenindexes['tot_oper_rev'] = "#000000";
+                $(document).ready(function () {
+
+                });
+                $(":checkbox").change(function () {
+                    indexname = $(this).val();
+                    if ($(this).is(':checked') == true) {
+                        colorname = NewColor();
+                        console.log(this);
+                        Chosenindexes.push(indexname);
+                        Chosenindexes[indexname] = colorname;
+                        $("#i_" + indexname).css("background-color", colorname);
+                        console.log(Chosenindexes);
+                    }
+                    else {
+                        Chosenindexes.remove(indexname);
+                        console.log(Chosenindexes);
+                        $("#i_" + indexname).css("background-color", "white");
+                    }
+
+                    $("div#unselected").empty();
+                    $("div#selected").empty();
+                    $("input[type=checkbox]").each(function () {//each()方法遍历所有的复选框
+                        if ($(this).is(':checked') == true) {//这里就可以判断当前是否被选择了
+                            var tempspan = $("<span class=\"label label-default\" data-stopPropagation=\"true\"id =\"" + indexname + "\">" + dict[indexname] + "</span>")
+                            tempspan.appendTo($("div#unselected"));
+                            $("div#unselected").append(" ");
+                        }
+                    })
+                    RequestChart1();
+                    CreateTable1();
+                    set_time();
+                });
+            </script>
+            <!--时间控制框-->
+            <script>
+                var starttime = "19911231";
+                var endtime = "20161231";
+                $(".form_datetime").datetimepicker({
+                    format: 'yyyy-mm-dd ',
+                    startView: 4,
+                    minView: 4,
+                    maxView: 4,
+                    autoclose: true,
+                    pickerPosition: 'top-right'
+                });
+                $('#starttime').datetimepicker('setStartDate', '1991-12-31');
+                $('#starttime').datetimepicker('setEndDate', '2016-12-31');
+                $('#endtime').datetimepicker('setStartDate', '1991-12-31');
+                $('#endtime').datetimepicker('setEndDate', '2016-12-31');
+                $('#starttime')
+                    .datetimepicker()
+                    .on('changeDate', function (ev) {
+                        starts = ev.date.Format("yyyy年Q4");
+                        option.dataZoom[0].startValue = starts;
+                        myChart.setOption(option);
+                        RequestTable1();
+                    });
+                $('#endtime')
+                    .datetimepicker()
+                    .on('changeDate', function (ev) {
+                        ends = ev.date.Format("yyyy年Q4");
+                        option.dataZoom[0].endValue = ends;
+                        myChart.setOption(option);
+                        RequestTable1();
+                    });
+                Date.prototype.Format = function (fmt) { //author: meizz
+                    var o = {
+                        "M+": this.getMonth() + 1, //月份
+                        "d+": this.getDate(), //日
+                        "h+": this.getHours(), //小时
+                        "m+": this.getMinutes(), //分
+                        "s+": this.getSeconds(), //秒
+                        "q+": Math.floor((this.getMonth() + 3) / 3), //季度
+                        "S": this.getMilliseconds() //毫秒
+                    };
+                    if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+                    for (var k in o)
+                        if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+                    return fmt;
+                }
+                function dateformat(olddate) {
+                    newdate = []
+                    for (i = 0; i < olddate.length; i++) {
+                        var str = olddate[i];
+                        var reg = /1231/g;
+                        str = str.replace(reg, '年Q4');
+                        newdate.push(str)
+                    }
+                    return newdate
+                }
+            </script>
+            <!--单位转换-->
+            <script>
+                denominator = 1
+                $("select#unit").change(function () {
+                    flag = $(this).val();
+                    if (flag == "0") {
+                        denominator = 1;
+                        CreateChart1();
+                        CreateTable1();
+                        set_time();
+                    }
+                    if (flag == "1") {
+                        denominator = 1000;
+                        CreateChart1();
+                        CreateTable1();
+                        set_time();
+                    }
+                });
+                function numfilter(oldnum) {
+                    newnum = []
+                    for (i = 0; i < oldnum.length; i++) {
+                        temp = oldnum[i] / denominator;
+                        newnum.push(temp.toFixed(2))
+                    }
+                    return newnum;
+                }
+            </script>
 
         {% elif parameter==2 %}
-            <div id="myTabChoice2" style="width: 95%;height:600px;margin:auto">
+            <div id="myTabChoice2" style="width: 100%;height:600px;margin:auto">
                 <ul id="myTab" class="nav nav-tabs">
                     <li class="disabled">
                         <a href="javascript:return false;" data-toggle="tab" disabled='true'>视图：</a>
@@ -438,8 +648,8 @@
                 </ul>
                 <div id="choice" class="tab-content">
                     <div class="tab-pane fade in active" id="chart">
-                        <div id="mychart" style="width:80%;height:100%;float:right"></div>
-                        <div id="mychoice" style="width:15%;height:100%;float:left;overflow-y:auto">
+                        <div id="mychart" style="width:85%;height:100%;float:right"></div>
+                        <div id="mychoice" style="width:13%;height:100%;float:left;overflow-y:auto">
                             <div style="width:100%;height:30px;margin-top:10px;background-color:lightgray">
                                 <div class="checkbox" style="width:80%;height:20px;float:left;margin-left:5px">
                                     <label><input type="checkbox" value="tot_oper_rev" checked="checked"
@@ -544,7 +754,7 @@
                         </div>
                     </div>
                     <div class="tab-pane fade" id="table">
-                        <div id="mytable" style="width:85%;height:100%;float:right"></div>
+                        <div id="mytable" style="width:100%;height:100%;float:right"></div>
                     </div>
                 </div>
             </div>
@@ -630,14 +840,14 @@
                             }
                         },
                         grid: {
-                            left: 0,
+                            left: '5%',
                             top: '10%',
                             containLabel: true
                         },
                         toolbox: {
                             feature: {
                                 magicType: {
-                                    type: ['line', 'bar', 'tiled']
+                                    type: ['line', 'bar']
                                 }
                             }
                         },
@@ -679,24 +889,14 @@
                         }
                         set_timepicker(starts, ends)
                     });
-                    myChart.on('mouseover', function (params) {
-                        oldwidth = option.series[params.seriesIndex].lineStyle.normal.width;
-                        if (oldwidth == 2) {
-                            option.series[params.seriesIndex].lineStyle.normal.width = 4;
-                            myChart.setOption(option);
-                        }
-                    });
-                    myChart.on('mouseout', function (params) {
-                        oldwidth = option.series[params.seriesIndex].lineStyle.normal.width;
-                        if (oldwidth == 4) {
-                            option.series[params.seriesIndex].lineStyle.normal.width = 2;
-                            myChart.setOption(option);
-                        }
-                    });
                     function set_timepicker(start, end) {
                         document.getElementById('endtime').value = start
                         document.getElementById('starttime').value = end
                     }
+                }
+                function set_time() {
+                    document.getElementById('endtime').value = "1991-12-31"
+                    document.getElementById('starttime').value = "2016-12-31"
                 }
             </script>
             <!--建表-->
@@ -784,9 +984,132 @@
                     }
                 }
             </script>
+            <!--复选框操作-->
+            <script>
+                var Chosenindexes = new Array();
+                Chosenindexes = ['tot_oper_rev'];
+                Chosenindexes['tot_oper_rev'] = "#000000";
+                $(document).ready(function () {
+
+                });
+                $(":checkbox").change(function () {
+                    indexname = $(this).val();
+                    if ($(this).is(':checked') == true) {
+                        colorname = NewColor();
+                        console.log(this);
+                        Chosenindexes.push(indexname);
+                        Chosenindexes[indexname] = colorname;
+                        $("#i_" + indexname).css("background-color", colorname);
+                        console.log(Chosenindexes);
+                    }
+                    else {
+                        delete Chosenindexes[indexname];
+                        console.log(Chosenindexes);
+                        $("#i_" + indexname).css("background-color", "white");
+                    }
+
+                    $("div#unselected").empty();
+                    $("div#selected").empty();
+                    $("input[type=checkbox]").each(function () {//each()方法遍历所有的复选框
+                        if ($(this).is(':checked') == true) {//这里就可以判断当前是否被选择了
+                            var tempspan = $("<span class=\"label label-default\" data-stopPropagation=\"true\"id =\"" + indexname + "\">" + dict[indexname] + "</span>")
+                            tempspan.appendTo($("div#unselected"));
+                            $("div#unselected").append(" ");
+                        }
+                    })
+                    CreateChart1();
+                    CreateTable1();
+                    set_time();
+                });
+            </script>
+            <!--时间控制框-->
+            <script>
+                var starttime = "19911231";
+                var endtime = "20161231";
+                $(".form_datetime").datetimepicker({
+                    format: 'yyyy-mm-dd ',
+                    startView: 4,
+                    minView: 4,
+                    maxView: 4,
+                    autoclose: true,
+                    pickerPosition: 'top-right'
+                });
+                $('#starttime').datetimepicker('setStartDate', '1991-12-31');
+                $('#starttime').datetimepicker('setEndDate', '2016-12-31');
+                $('#endtime').datetimepicker('setStartDate', '1991-12-31');
+                $('#endtime').datetimepicker('setEndDate', '2016-12-31');
+                $('#starttime')
+                    .datetimepicker()
+                    .on('changeDate', function (ev) {
+                        starts = ev.date.Format("yyyy年Q4");
+                        option.dataZoom[0].startValue = starts;
+                        myChart.setOption(option);
+                        RequestTable1();
+                    });
+                $('#endtime')
+                    .datetimepicker()
+                    .on('changeDate', function (ev) {
+                        ends = ev.date.Format("yyyy年Q4");
+                        option.dataZoom[0].endValue = ends;
+                        myChart.setOption(option);
+                        RequestTable1();
+                    });
+                Date.prototype.Format = function (fmt) { //author: meizz
+                    var o = {
+                        "M+": this.getMonth() + 1, //月份
+                        "d+": this.getDate(), //日
+                        "h+": this.getHours(), //小时
+                        "m+": this.getMinutes(), //分
+                        "s+": this.getSeconds(), //秒
+                        "q+": Math.floor((this.getMonth() + 3) / 3), //季度
+                        "S": this.getMilliseconds() //毫秒
+                    };
+                    if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+                    for (var k in o)
+                        if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+                    return fmt;
+                }
+                function dateformat(olddate) {
+                    newdate = []
+                    for (i = 0; i < olddate.length; i++) {
+                        var str = olddate[i];
+                        var reg = /1231/g;
+                        str = str.replace(reg, '年Q4');
+                        newdate.push(str)
+                    }
+                    return newdate
+                }
+            </script>
+            <!--单位转换-->
+            <script>
+                denominator = 1
+                $("select#unit").change(function () {
+                    flag = $(this).val();
+                    if (flag == "0") {
+                        denominator = 1;
+                        CreateChart1();
+                        CreateTable1();
+                        set_time();
+                    }
+                    if (flag == "1") {
+                        denominator = 1000;
+                        CreateChart1();
+                        CreateTable1();
+                        set_time();
+                    }
+                });
+                function numfilter(oldnum) {
+                    newnum = []
+                    for (i = 0; i < oldnum.length; i++) {
+                        temp = oldnum[i] / denominator;
+                        newnum.push(temp.toFixed(2))
+                    }
+                    return newnum;
+                }
+            </script>
 
         {% elif parameter==3 %}
-            <div id="myTabChoice3" style="width: 95%;height:600px;margin:auto">
+            <div id="myTabChoice3" style="width: 100%;height:600px;margin:auto">
                 <ul id="myTab" class="nav nav-tabs">
                     <li class="disabled">
                         <a href="javascript:return false;" data-toggle="tab" disabled='true'>视图：</a>
@@ -796,8 +1119,8 @@
                 </ul>
                 <div id="choice" class="tab-content">
                     <div class="tab-pane fade in active" id="chart">
-                        <div id="mychart" style="width:80%;height:100%;float:right"></div>
-                        <div id="mychoice" style="width:15%;height:100%;float:left;overflow-y:auto">
+                        <div id="mychart" style="width:85%;height:100%;float:right"></div>
+                        <div id="mychoice" style="width:13%;height:100%;float:left;overflow-y:auto">
                             <div style="width:100%;height:30px;margin-top:10px;background-color:lightgray">
                                 <div class="checkbox" style="width:80%;height:20px;float:left;margin-left:5px">
                                     <label><input type="checkbox" value="tot_oper_rev" checked="checked"
@@ -902,7 +1225,7 @@
                         </div>
                     </div>
                     <div class="tab-pane fade" id="table">
-                        <div id="mytable" style="width:85%;height:100%;float:right"></div>
+                        <div id="mytable" style="width:100%;height:100%;float:right"></div>
                     </div>
                 </div>
             </div>
@@ -988,14 +1311,14 @@
                             }
                         },
                         grid: {
-                            left: 0,
+                            left: '5%',
                             top: '10%',
                             containLabel: true
                         },
                         toolbox: {
                             feature: {
                                 magicType: {
-                                    type: ['line', 'bar', 'tiled']
+                                    type: ['line', 'bar']
                                 }
                             }
                         },
@@ -1037,24 +1360,14 @@
                         }
                         set_timepicker(starts, ends)
                     });
-                    myChart.on('mouseover', function (params) {
-                        oldwidth = option.series[params.seriesIndex].lineStyle.normal.width;
-                        if (oldwidth == 2) {
-                            option.series[params.seriesIndex].lineStyle.normal.width = 4;
-                            myChart.setOption(option);
-                        }
-                    });
-                    myChart.on('mouseout', function (params) {
-                        oldwidth = option.series[params.seriesIndex].lineStyle.normal.width;
-                        if (oldwidth == 4) {
-                            option.series[params.seriesIndex].lineStyle.normal.width = 2;
-                            myChart.setOption(option);
-                        }
-                    });
                     function set_timepicker(start, end) {
                         document.getElementById('endtime').value = start
                         document.getElementById('starttime').value = end
                     }
+                }
+                function set_time() {
+                    document.getElementById('endtime').value = "1991-12-31"
+                    document.getElementById('starttime').value = "2016-12-31"
                 }
             </script>
             <!--建表-->
@@ -1142,9 +1455,132 @@
                     }
                 }
             </script>
+            <!--复选框操作-->
+            <script>
+                var Chosenindexes = new Array();
+                Chosenindexes = ['tot_oper_rev'];
+                Chosenindexes['tot_oper_rev'] = "#000000";
+                $(document).ready(function () {
+
+                });
+                $(":checkbox").change(function () {
+                    indexname = $(this).val();
+                    if ($(this).is(':checked') == true) {
+                        colorname = NewColor();
+                        console.log(this);
+                        Chosenindexes.push(indexname);
+                        Chosenindexes[indexname] = colorname;
+                        $("#i_" + indexname).css("background-color", colorname);
+                        console.log(Chosenindexes);
+                    }
+                    else {
+                        delete Chosenindexes[indexname];
+                        console.log(Chosenindexes);
+                        $("#i_" + indexname).css("background-color", "white");
+                    }
+
+                    $("div#unselected").empty();
+                    $("div#selected").empty();
+                    $("input[type=checkbox]").each(function () {//each()方法遍历所有的复选框
+                        if ($(this).is(':checked') == true) {//这里就可以判断当前是否被选择了
+                            var tempspan = $("<span class=\"label label-default\" data-stopPropagation=\"true\"id =\"" + indexname + "\">" + dict[indexname] + "</span>")
+                            tempspan.appendTo($("div#unselected"));
+                            $("div#unselected").append(" ");
+                        }
+                    })
+                    CreateChart1();
+                    CreateTable1();
+                    set_time();
+                });
+            </script>
+            <!--时间控制框-->
+            <script>
+                var starttime = "19911231";
+                var endtime = "20161231";
+                $(".form_datetime").datetimepicker({
+                    format: 'yyyy-mm-dd ',
+                    startView: 4,
+                    minView: 4,
+                    maxView: 4,
+                    autoclose: true,
+                    pickerPosition: 'top-right'
+                });
+                $('#starttime').datetimepicker('setStartDate', '1991-12-31');
+                $('#starttime').datetimepicker('setEndDate', '2016-12-31');
+                $('#endtime').datetimepicker('setStartDate', '1991-12-31');
+                $('#endtime').datetimepicker('setEndDate', '2016-12-31');
+                $('#starttime')
+                    .datetimepicker()
+                    .on('changeDate', function (ev) {
+                        starts = ev.date.Format("yyyy年Q4");
+                        option.dataZoom[0].startValue = starts;
+                        myChart.setOption(option);
+                        RequestTable1();
+                    });
+                $('#endtime')
+                    .datetimepicker()
+                    .on('changeDate', function (ev) {
+                        ends = ev.date.Format("yyyy年Q4");
+                        option.dataZoom[0].endValue = ends;
+                        myChart.setOption(option);
+                        RequestTable1();
+                    });
+                Date.prototype.Format = function (fmt) { //author: meizz
+                    var o = {
+                        "M+": this.getMonth() + 1, //月份
+                        "d+": this.getDate(), //日
+                        "h+": this.getHours(), //小时
+                        "m+": this.getMinutes(), //分
+                        "s+": this.getSeconds(), //秒
+                        "q+": Math.floor((this.getMonth() + 3) / 3), //季度
+                        "S": this.getMilliseconds() //毫秒
+                    };
+                    if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+                    for (var k in o)
+                        if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+                    return fmt;
+                }
+                function dateformat(olddate) {
+                    newdate = []
+                    for (i = 0; i < olddate.length; i++) {
+                        var str = olddate[i];
+                        var reg = /1231/g;
+                        str = str.replace(reg, '年Q4');
+                        newdate.push(str)
+                    }
+                    return newdate
+                }
+            </script>
+            <!--单位转换-->
+            <script>
+                denominator = 1
+                $("select#unit").change(function () {
+                    flag = $(this).val();
+                    if (flag == "0") {
+                        denominator = 1;
+                        CreateChart1();
+                        CreateTable1();
+                        set_time();
+                    }
+                    if (flag == "1") {
+                        denominator = 1000;
+                        CreateChart1();
+                        CreateTable1();
+                        set_time();
+                    }
+                });
+                function numfilter(oldnum) {
+                    newnum = []
+                    for (i = 0; i < oldnum.length; i++) {
+                        temp = oldnum[i] / denominator;
+                        newnum.push(temp.toFixed(2))
+                    }
+                    return newnum;
+                }
+            </script>
 
         {% elif parameter==4 %}
-            <div id="myTabChoice4" style="width: 95%;height:600px;margin:auto">
+            <div id="myTabChoice4" style="width: 100%;height:600px;margin:auto">
                 <ul id="myTab" class="nav nav-tabs">
                     <li class="disabled">
                         <a href="javascript:return false;" data-toggle="tab" disabled='true'>视图：</a>
@@ -1154,8 +1590,8 @@
                 </ul>
                 <div id="choice" class="tab-content">
                     <div class="tab-pane fade in active" id="chart">
-                        <div id="mychart" style="width:80%;height:100%;float:right"></div>
-                        <div id="mychoice" style="width:15%;height:100%;float:left;overflow-y:auto">
+                        <div id="mychart" style="width:85%;height:100%;float:right;overflow-x:auto"></div>
+                        <div id="mychoice" style="width:13%;height:100%;float:left;float:bottom;overflow-y:auto">
                             <div style="width:100%;height:30px;margin-top:10px;background-color:lightgray">
                                 <div class="checkbox" style="width:80%;height:20px;float:left;margin-left:5px">
                                     <label><input type="checkbox" value="tot_oper_rev" checked="checked"
@@ -1260,7 +1696,7 @@
                         </div>
                     </div>
                     <div class="tab-pane fade" id="table">
-                        <div id="mytable" style="width:85%;height:100%;float:right"></div>
+                        <div id="mytable" style="width:100%;height:100%;float:right"></div>
                     </div>
                 </div>
             </div>
@@ -1346,14 +1782,14 @@
                             }
                         },
                         grid: {
-                            left: 0,
+                            left: '5%',
                             top: '10%',
                             containLabel: true
                         },
                         toolbox: {
                             feature: {
                                 magicType: {
-                                    type: ['line', 'bar', 'tiled']
+                                    type: ['line', 'bar']
                                 }
                             }
                         },
@@ -1395,24 +1831,14 @@
                         }
                         set_timepicker(starts, ends)
                     });
-                    myChart.on('mouseover', function (params) {
-                        oldwidth = option.series[params.seriesIndex].lineStyle.normal.width;
-                        if (oldwidth == 2) {
-                            option.series[params.seriesIndex].lineStyle.normal.width = 4;
-                            myChart.setOption(option);
-                        }
-                    });
-                    myChart.on('mouseout', function (params) {
-                        oldwidth = option.series[params.seriesIndex].lineStyle.normal.width;
-                        if (oldwidth == 4) {
-                            option.series[params.seriesIndex].lineStyle.normal.width = 2;
-                            myChart.setOption(option);
-                        }
-                    });
                     function set_timepicker(start, end) {
                         document.getElementById('endtime').value = start
                         document.getElementById('starttime').value = end
                     }
+                }
+                function set_time() {
+                    document.getElementById('endtime').value = "1991-12-31"
+                    document.getElementById('starttime').value = "2016-12-31"
                 }
             </script>
             <!--建表-->
@@ -1500,6 +1926,129 @@
                     }
                 }
             </script>
+            <!--复选框操作-->
+            <script>
+                var Chosenindexes = new Array();
+                Chosenindexes = ['tot_oper_rev'];
+                Chosenindexes['tot_oper_rev'] = "#000000";
+                $(document).ready(function () {
+
+                });
+                $(":checkbox").change(function () {
+                    indexname = $(this).val();
+                    if ($(this).is(':checked') == true) {
+                        colorname = NewColor();
+                        console.log(this);
+                        Chosenindexes.push(indexname);
+                        Chosenindexes[indexname] = colorname;
+                        $("#i_" + indexname).css("background-color", colorname);
+                        console.log(Chosenindexes);
+                    }
+                    else {
+                        delete Chosenindexes[indexname];
+                        console.log(Chosenindexes);
+                        $("#i_" + indexname).css("background-color", "white");
+                    }
+
+                    $("div#unselected").empty();
+                    $("div#selected").empty();
+                    $("input[type=checkbox]").each(function () {//each()方法遍历所有的复选框
+                        if ($(this).is(':checked') == true) {//这里就可以判断当前是否被选择了
+                            var tempspan = $("<span class=\"label label-default\" data-stopPropagation=\"true\"id =\"" + indexname + "\">" + dict[indexname] + "</span>")
+                            tempspan.appendTo($("div#unselected"));
+                            $("div#unselected").append(" ");
+                        }
+                    })
+                    CreateChart1();
+                    CreateTable1();
+                    set_time();
+                });
+            </script>
+            <!--时间控制框-->
+            <script>
+                var starttime = "19911231";
+                var endtime = "20161231";
+                $(".form_datetime").datetimepicker({
+                    format: 'yyyy-mm-dd ',
+                    startView: 4,
+                    minView: 4,
+                    maxView: 4,
+                    autoclose: true,
+                    pickerPosition: 'top-right'
+                });
+                $('#starttime').datetimepicker('setStartDate', '1991-12-31');
+                $('#starttime').datetimepicker('setEndDate', '2016-12-31');
+                $('#endtime').datetimepicker('setStartDate', '1991-12-31');
+                $('#endtime').datetimepicker('setEndDate', '2016-12-31');
+                $('#starttime')
+                    .datetimepicker()
+                    .on('changeDate', function (ev) {
+                        starts = ev.date.Format("yyyy年Q4");
+                        option.dataZoom[0].startValue = starts;
+                        myChart.setOption(option);
+                        RequestTable1();
+                    });
+                $('#endtime')
+                    .datetimepicker()
+                    .on('changeDate', function (ev) {
+                        ends = ev.date.Format("yyyy年Q4");
+                        option.dataZoom[0].endValue = ends;
+                        myChart.setOption(option);
+                        RequestTable1();
+                    });
+                Date.prototype.Format = function (fmt) { //author: meizz
+                    var o = {
+                        "M+": this.getMonth() + 1, //月份
+                        "d+": this.getDate(), //日
+                        "h+": this.getHours(), //小时
+                        "m+": this.getMinutes(), //分
+                        "s+": this.getSeconds(), //秒
+                        "q+": Math.floor((this.getMonth() + 3) / 3), //季度
+                        "S": this.getMilliseconds() //毫秒
+                    };
+                    if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+                    for (var k in o)
+                        if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+                    return fmt;
+                }
+                function dateformat(olddate) {
+                    newdate = []
+                    for (i = 0; i < olddate.length; i++) {
+                        var str = olddate[i];
+                        var reg = /1231/g;
+                        str = str.replace(reg, '年Q4');
+                        newdate.push(str)
+                    }
+                    return newdate
+                }
+            </script>
+            <!--单位转换-->
+            <script>
+                denominator = 1
+                $("select#unit").change(function () {
+                    flag = $(this).val();
+                    if (flag == "0") {
+                        denominator = 1;
+                        CreateChart1();
+                        CreateTable1();
+                        set_time();
+                    }
+                    if (flag == "1") {
+                        denominator = 1000;
+                        CreateChart1();
+                        CreateTable1();
+                        set_time();
+                    }
+                });
+                function numfilter(oldnum) {
+                    newnum = []
+                    for (i = 0; i < oldnum.length; i++) {
+                        temp = oldnum[i] / denominator;
+                        newnum.push(temp.toFixed(2))
+                    }
+                    return newnum;
+                }
+            </script>
 
         {% endif %}
     </div>
@@ -1524,127 +2073,20 @@
         }
     </script>
 
-    <!--时间控制框-->
+    <!--删除函数-->
     <script>
-        var starttime = "19911231";
-        var endtime = "20161231";
-        $(".form_datetime").datetimepicker({
-            format: 'yyyy-mm-dd ',
-            startView: 4,
-            minView: 4,
-            maxView: 4,
-            autoclose: true,
-            pickerPosition: 'top-right'
-        });
-        $('#starttime').datetimepicker('setStartDate', '1991-12-31');
-        $('#starttime').datetimepicker('setEndDate', '2016-12-31');
-        $('#endtime').datetimepicker('setStartDate', '1991-12-31');
-        $('#endtime').datetimepicker('setEndDate', '2016-12-31');
-        $('#starttime')
-            .datetimepicker()
-            .on('changeDate', function (ev) {
-                starts = ev.date.Format("yyyy年Q4");
-                option.dataZoom[0].startValue = starts;
-                myChart.setOption(option);
-                RequestTable1();
-            });
-        $('#endtime')
-            .datetimepicker()
-            .on('changeDate', function (ev) {
-                ends = ev.date.Format("yyyy年Q4");
-                option.dataZoom[0].endValue = ends;
-                myChart.setOption(option);
-                RequestTable1();
-            });
-        Date.prototype.Format = function (fmt) { //author: meizz
-            var o = {
-                "M+": this.getMonth() + 1, //月份
-                "d+": this.getDate(), //日
-                "h+": this.getHours(), //小时
-                "m+": this.getMinutes(), //分
-                "s+": this.getSeconds(), //秒
-                "q+": Math.floor((this.getMonth() + 3) / 3), //季度
-                "S": this.getMilliseconds() //毫秒
-            };
-            if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
-            for (var k in o)
-                if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
-            return fmt;
-        }
-        function dateformat(olddate) {
-            newdate = []
-            for (i = 0; i < olddate.length; i++) {
-                var str = olddate[i];
-                var reg = /1231/g;
-                str = str.replace(reg, '年Q4');
-                newdate.push(str)
+        Array.prototype.indexOf = function (val) {
+            for (var i = 0; i < this.length; i++) {
+                if (this[i] == val) return i;
             }
-            return newdate
-        }
-    </script>
-
-    <!--单位转换-->
-    <script>
-        denominator = 1
-        $("select#unit").change(function () {
-            flag = $(this).val();
-            if (flag == "0") {
-                denominator = 1;
-                CreateChart1();
-                CreateTable1();
+            return -1;
+        };
+        Array.prototype.remove = function (val) {
+            var index = this.indexOf(val);
+            if (index > -1) {
+                this.splice(index, 1);
             }
-            if (flag == "1") {
-                denominator = 1000;
-                CreateChart1();
-                CreateTable1();
-            }
-        });
-        function numfilter(oldnum) {
-            newnum = []
-            for (i = 0; i < oldnum.length; i++) {
-                temp = oldnum[i] / denominator;
-                newnum.push(temp.toFixed(2))
-            }
-            return newnum;
-        }
-    </script>
-
-    <!--复选框操作-->
-    <script>
-        var Chosenindexes = new Array();
-        Chosenindexes = ['tot_oper_rev'];
-        Chosenindexes['tot_oper_rev'] = "#000000";
-
-        $(document).ready(function () {
-
-        });
-        $(":checkbox").change(function () {
-            indexname = $(this).val();
-            if ($(this).is(':checked') == true) {
-                colorname = NewColor();
-                console.log(this);
-                Chosenindexes.push(indexname);
-                Chosenindexes[indexname] = colorname;
-                $("#i_" + indexname).css("background-color", colorname);
-                console.log(Chosenindexes);
-            }
-            else {
-                delete Chosenindexes[indexname]
-                $("#i_" + indexname).css("background-color", "white");
-                console.log(Chosenindexes);
-            }
-            $("div#unselected").empty();
-            $("div#selected").empty();
-            $("input[type=checkbox]").each(function () {//each()方法遍历所有的复选框
-                if ($(this).is(':checked') == true) {//这里就可以判断当前是否被选择了
-                    var tempspan = $("<span class=\"label label-default\" data-stopPropagation=\"true\"id =\"" + indexname + "\">" + dict[indexname] + "</span>")
-                    tempspan.appendTo($("div#unselected"));
-                    $("div#unselected").append(" ");
-                }
-            })
-            CreateChart1();
-            CreateTable1();
-        });
+        };
     </script>
 
     <!--搜索事件-->
@@ -1685,3 +2127,5 @@
 <SCRIPT Language=VBScript><!--
 
 //-->
+
+</SCRIPT>

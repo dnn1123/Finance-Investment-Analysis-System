@@ -199,6 +199,7 @@
             })
             CreateChart();
             CreateTable();
+            set_time();
         });
     </script>
 
@@ -307,6 +308,16 @@
             }
             return newdate
         }
+        function datefor(olddate) {
+            newdate = []
+            for (i = 0; i < olddate.length; i++) {
+                var str = olddate[i];
+                var reg = /年Q4/g;
+                str = str.replace(reg, '1231');
+                newdate.push(str)
+            }
+            return newdate
+        }
     </script>
 
     <!--单位转换-->
@@ -318,11 +329,13 @@
                 denominator = 1;
                 CreateChart();
                 CreateTable();
+                set_time();
             }
             if (flag == "1") {
                 denominator = 1000000;
                 CreateChart();
                 CreateTable();
+                set_time();
             }
         });
         function numfilter(oldnum) {
@@ -404,14 +417,14 @@
                     }
                 },
                 grid: {
-                    left: 0,
+                    left: '5%',
                     top: '10%',
                     containLabel: true
                 },
                 toolbox: {
                     feature: {
                         magicType: {
-                            type: ['line', 'bar', 'tiled']
+                            type: ['line', 'bar']
                         }
                     }
                 },
@@ -446,31 +459,21 @@
                 option.xAxis.interval = 10 * (params.end - params.start) / 100;
                 var ends = (2016 - Math.ceil(params.start / 100 * 9)) + '-12-31'
                 if (Math.ceil(1 - params.end / 100)) {
-                    var starts = (2007 + Math.ceil((1 - params.end / 100) * 9) - 1) + '-12-31'
+                    var starts = (2016 - Math.ceil(params.end / 100 * 9)) + '-12-31'
                 }
                 else {
                     var starts = '2007-12-31'
                 }
                 set_timepicker(starts, ends)
             });
-            myChart.on('mouseover', function (params) {
-                oldwidth = option.series[params.seriesIndex].lineStyle.normal.width;
-                if (oldwidth == 2) {
-                    option.series[params.seriesIndex].lineStyle.normal.width = 4;
-                    myChart.setOption(option);
-                }
-            });
-            myChart.on('mouseout', function (params) {
-                oldwidth = option.series[params.seriesIndex].lineStyle.normal.width;
-                if (oldwidth == 4) {
-                    option.series[params.seriesIndex].lineStyle.normal.width = 2;
-                    myChart.setOption(option);
-                }
-            });
             function set_timepicker(start, end) {
                 document.getElementById('endtime').value = start
                 document.getElementById('starttime').value = end
             }
+        }
+        function set_time() {
+            document.getElementById('endtime').value = "2007-12-31"
+            document.getElementById('starttime').value = "2016-12-31"
         }
     </script>
 

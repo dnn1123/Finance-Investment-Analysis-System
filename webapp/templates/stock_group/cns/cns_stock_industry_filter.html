@@ -2,9 +2,58 @@
 {% extends "stock_group/cns/cns_base.html" %}
 
 {% block fixTable %}
+    <script type="text/javascript">
+    // 等待所有加载
+    $(window).load(function(){
+        $('body').addClass('loaded');
+        $('#loader-wrapper .load_title').remove();
+    });
+</script>
+
+<div id="loader-wrapper">
+    <div id="loader"></div>
+    <div class="loader-section section-left"></div>
+    <div class="loader-section section-right"></div>
+    <div class="load_title">Loading<br><span>V1.0</span></div>
+</div>
     <script>
 			$(document).ready(function() {
-				$("#fixTable").tableHeadFixer({"left" : 3});
+				$("#fixTable").DataTable({
+                    "info": false,
+                    "ordering":false,
+                "processing": true,
+                "scrollY": "95%",
+                    "scrollX": true,
+                "searching": true,
+                    "paging": false,
+                "fixedColumns": { //固定列的配置项
+                    "leftColumns": 3//固定左边第一列
+                },
+                "columnDefs": [ {
+                    "targets": 1,
+                    "render": function ( data, type, row ) {
+                        html={{ url_for('stock_solo.basic') }}
+                    return '<a href="'+html+row[0]+'">' + data + '</a>';
+                }
+                } ],
+                "language": {
+                    "emptyTable": "没有数据",
+                    "loadingRecords": "加载中…",
+                    "processing": "查询中…",
+                    "search": "检索:",
+                    "lengthMenu": "每页 _MENU_ 条",
+                    "zeroRecords": "没有数据",
+                    "paginate": {
+                        "first": "第一页",
+                        "last": "最后一页",
+                        "next": "",
+                        "previous": ""
+                    },
+                    "info": "第 _PAGE_ 页 / 总 _PAGES_ 页",
+                    "infoEmpty": "没有数据",
+                    "infoFiltered": "(过滤总件数 _MAX_ 条)"
+                },
+                })
 			});
     </script>
 {% endblock %}
@@ -31,7 +80,7 @@
 					&times;
 				</button>
 				<h4 class="modal-title" id="myModalLabel">
-					筛选：部门bumen
+					筛选：部门
 				</h4>
 			</div>
         <form class="form-search" method="POST" action="{{ url_for('.cns_filter') }}">
@@ -130,68 +179,44 @@
 
 <table id="fixTable" class="table table-striped" style="border-color:#000;white-space: nowrap;"> <!--border="1"有无会有点区别-->
     <thead>
-        <tr bgcolor="#CC0000">
-            <td><font color="white">证券代码</font></td>
-            <td><font color="white">证券名称</font></td>
-            <td><font color="white">上市时间</font></td>
+        <tr>
+            <td>证券代码</td>
+            <td>证券名称</td>
+            <td>上市时间</td>
             <td>
-                <font color="white">部门</font>
-                <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown">
+                部门
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#department_industry">
                     <span class="caret"></span>
                 </button>
-                <ul class="dropdown-menu" role="menu">
-                    <li data-toggle="modal" data-target="#department_industry"><a href="#">筛选</a></li>
-                    <li><a href="{{ url_for('.cns_home') }}">重置筛选</a></li>
-                    <li class="divider"></li>
-                    <li><a href="#">修改</a></li>
-                </ul>
             </td>
             <td>
-                <font color="white">行业组</font>
-                <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown">
+                行业组
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#group_industry">
                     <span class="caret"></span>
                 </button>
-                <ul class="dropdown-menu" role="menu">
-                    <li data-toggle="modal" data-target="#group_industry"><a href="#">筛选</a></li>
-                    <li><a href="{{ url_for('.cns_home') }}">重置筛选</a></li>
-                    <li class="divider"></li>
-                    <li><a href="#">修改</a></li>
-                </ul>
             </td>
             <td>
-                <font color="white">行业</font>
-                <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown">
+                行业
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#industry_why">
                     <span class="caret"></span>
                 </button>
-                <ul class="dropdown-menu" role="menu">
-                    <li data-toggle="modal" data-target="#industry_why"><a href="#">筛选</a></li>
-                    <li><a href="{{ url_for('.cns_home') }}">重置筛选</a></li>
-                    <li class="divider"></li>
-                    <li><a href="#">修改</a></li>
-                </ul>
             </td>
             <td>
-                <font color="white">子行业</font>
-                <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown">
+                子行业
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#sub_industry">
                     <span class="caret"></span>
                 </button>
-                <ul class="dropdown-menu" role="menu">
-                    <li data-toggle="modal" data-target="#sub_industry"><a href="#">筛选</a></li>
-                    <li><a href="{{ url_for('.cns_home') }}">重置筛选</a></li>
-                    <li class="divider"></li>
-                    <li><a href="#">修改</a></li>
-                </ul>
             </td>
-            <td><font color="white">主营业务</font></td>
-            <td><font color="white">所在区域</font></td>
-            <td><font color="white">注册城市</font></td>
-            <td><font color="white">交易所</font></td>
-            <td><font color="white">所属国家</font></td>
-            <td><font color="white">交易币种</font></td>
-            <td><font color="white">证监会一级行业分类</font></td>
-            <td><font color="white">证监会二级行业分类</font></td>
-            <td><font color="white">公司属性</font></td>
-            <td><font color="white">沪深300行业指数</font></td>
+            <td>主营业务</td>
+            <td>所在区域</td>
+            <td>注册城市</td>
+            <td>交易所</td>
+            <td>所属国家</td>
+            <td>交易币种</td>
+            <td>证监会一级行业分类</td>
+            <td>证监会二级行业分类</td>
+            <td>公司属性</td>
+            <td>沪深300行业指数</td>
         </tr>
     </thead>
     <tbody>
@@ -205,11 +230,13 @@
                 <td style="border: none;">{{ result[x].industry_gics_3 }}</td>
                 <td style="border: none;">
                     {{ result[x].industry_gics_4 }}
-                    <a href="{{ url_for('stock_group.update_gics_4',trade_code=result[x][0].trade_code) }}">修改</a>
+{#                    <a href="{{ url_for('stock_group.update_gics_4',trade_code=result[x][0].trade_code) }}">修改</a>#}
+                    <a href="#" class="small-box-footer updatelink" id="{{ result[x][0].trade_code }}" data-toggle="modal" data-target="#myModal" onclick="stockcode=this.id">修改</a>
                 </td>
                 <td style="border: none;">
                     {{ result[x][0].business[:40] }}
-                    <a href="{{ url_for('stock_group.cns_business_detail',trade_code=result[x][0].trade_code) }}">更多</a> <!--跳转显示详情-->
+{#                    <a href="{{ url_for('stock_group.cns_business_detail',trade_code=result[x][0].trade_code) }}">更多</a> <!--跳转显示详情-->#}
+                    <a href="#" class="small-box-footer detaillink" id="{{ result[x][0].trade_code }}" data-toggle="modal" data-target="#myModal_detail" onclick="stockcode=this.id">更多</a>
                 </td>
                 <td style="border: none;">{{ result[x][0].province }}</td>
                 <td style="border: none;">{{ result[x][0].city }}</td>
@@ -229,6 +256,187 @@
         {% endfor %}
     </tbody>
 </table>
+    <div class="modal fade" id="myModal_detail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        详情
+                    </h4>
+                </div>
+
+                <div class="modal-body" style="height: auto;">
+                    <div id="details"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">返回
+                    </button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        修改
+                    </h4>
+                </div>
+
+                <div class="modal-body" style="height: auto;">
+                    <form  id="Myform" role="form" method="post" action="#">
+                        <select class="form-control" id="gics_1" style="margin-bottom: 10px">
+                        </select>
+                        <select class="form-control" id="gics_2" style="margin-bottom: 10px">
+                        </select>
+                        <select class="form-control" id="gics_3" style="margin-bottom: 10px">
+                        </select>
+                        <select class="form-control" id="gics_4" style="margin-bottom: 10px">
+                        </select>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                    </button>
+                    <button type="button" class="btn btn-primary" id="commit" >
+                        提交更改
+                    </button>
+                </div>
+
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+    <script>
+    $('#myModal').on('show.bs.modal', function () {
+        showgics1()
+  // 执行一些动作...
+})
+    $("#commit").click(function () {
+        changegics($("#gics_4").val(),$("#gics_4").text())
+    })
+    function showgics1() {
+            $.ajax({
+                url :  '{{url_for("restfulapi.gics_1")}}', //所需要的列表接口地址
+                type : "get",
+                dataType : "json",
+                success : function(result) {
+                        var h = "";
+                        $.each(result, function(key, value) {
+                            h += "<option value='" + value.gicscode1 + "'>" + value.gics1 //下拉框序言的循环数据
+                            + "</option>";
+                        });
+                        $("#gics_1").append(h);//append 添加进去并展示
+                        $("#gics_1").on(
+                                "change",
+                                function(a, b, c) {
+                                    showgics2($("#gics_1").val())
+                                })
+                    showgics2($("#gics_1").val())
+                }
+            });
+        }
+            function showgics2(data) {
+            $.ajax({
+                url :  '{{url_for("restfulapi.gics_2")}}', //所需要的列表接口地址
+                type : "get",
+                dataType : "json",
+                data:{"code":data},
+                success : function(result) {
+                        var h = "";
+                        $.each(result, function(key, value) {
+                            h += "<option value='" + value.gicscode2 + "'>" + value.gics2 //下拉框序言的循环数据
+                            + "</option>";
+                        });
+                        var  obj=document.getElementById( 'gics_2' );
+                        obj.options.length=0;
+                        $("#gics_2").append(h);//append 添加进去并展示
+                        $("#gics_2").on(
+                                "change",
+                                function(a, b, c) {
+                                    showgics3($("#gics_2").val())
+                                })
+                        showgics3($("#gics_2").val())
+                }
+            });
+        }
+                    function showgics3(data) {
+            $.ajax({
+                url :  '{{url_for("restfulapi.gics_3")}}', //所需要的列表接口地址
+                type : "get",
+                dataType : "json",
+                data:{"code":data},
+                success : function(result) {
+                        var h = "";
+                        $.each(result, function(key, value) {
+                            h += "<option value='" + value.gicscode3 + "'>" + value.gics3 //下拉框序言的循环数据
+                            + "</option>";
+                        });
+                        var  obj=document.getElementById( 'gics_3' );
+                        obj.options.length=0;
+                        $("#gics_3").append(h);//append 添加进去并展示
+                        $("#gics_3").on(
+                                "change",
+                                function(a, b, c) {
+                                    showgics4($("#gics_3").val())
+                                })
+                    showgics4($("#gics_3").val())
+
+                }
+            });
+        }
+                    function showgics4(data) {
+            $.ajax({
+                url :  '{{url_for("restfulapi.gics_4")}}', //所需要的列表接口地址
+                type : "get",
+                dataType : "json",
+                data:{"code":data},
+                success : function(result) {
+                        var h = "";
+                        $.each(result, function(key, value) {
+                            h += "<option value='" + value.gicscode4 + "'>" + value.gics4 //下拉框序言的循环数据
+                            + "</option>";
+                        });
+                        var  obj=document.getElementById( 'gics_4' );
+                        obj.options.length=0;
+                        $("#gics_4").append(h);//append 添加进去并展示
+                }
+            });
+        }
+        function changegics(code,name) {
+        $.ajax({
+                url :  '{{url_for("restfulapi.update_gics")}}', //所需要的列表接口地址
+                type : "post",
+                dataType : "html",
+                data:{"trade_code":stockcode,
+                       "gics_4":code,
+                        "gics_name":name
+                },
+                success : function(result) {
+                    window.location.reload()
+                }
+            });
+
+        }
+    $('#myModal_detail').on('show.bs.modal', function () {
+        $.ajax({
+                url :  '{{url_for("restfulapi.cns_business_detail")}}', //所需要的列表接口地址
+                type : "get",
+                dataType : "html",
+                data:{"trade_code":stockcode
+                },
+                success : function(result) {
+                   var html=result;
+                   $("#details").html(html)
+                }
+            });
+
+
+  // 执行一些动作...
+})
+    </script>
 {% endblock %}
 
 

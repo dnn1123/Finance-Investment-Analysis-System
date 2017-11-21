@@ -258,6 +258,8 @@ def market_status1():
             for index in indexes:
                 if eval("result." + index) is not None:
                     exec ("my" + index + "+= float((result." + index + ")/100000000)")
+                else:
+                    exec ("my" + index + "+= 0 ")
         for index in indexes:
             exec (index + "_list.append(my" + index + ")")
 
@@ -308,6 +310,8 @@ def market_status2():
             for index in indexes:
                 if eval("result." + index) is not None:
                     exec ("my" + index + "+= float((result." + index + ")/100000000)")
+                else:
+                    exec ("my" + index + "+= 0 ")
         for index in indexes:
             exec (index + "_list.append(my" + index + ")")
 
@@ -360,6 +364,8 @@ def market_status3():
             for index in indexes:
                 if eval("result." + index) is not None:
                     exec ("my" + index + "+= float((result." + index + ")/100000000)")
+                else:
+                    exec ("my" + index + "+= 0 ")
         for index in indexes:
             exec (index + "_list.append(my" + index + ")")
 
@@ -370,13 +376,62 @@ def market_status3():
         exec ("data['" + index + "']=" + index + "_list")
     return jsonify(data)
 
+
+@api_blueprint.route("/market_status4/", methods=('GET', 'POST'))
+def market_status4():
+    data = {}
+
+    code = request.args.get('code')
+    starttime = request.args.get('starttime')
+    endtime = request.args.get('endtime')
+    indexes = request.args.getlist('indexes[]')
+
+    Filters = {
+        finance_basics_add.trade_code == '000002',
+        finance_basics_add.the_year >= starttime,
+        finance_basics_add.the_year <= endtime,
+    }
+    years = finance_basics_add.query.filter(*Filters).all()
+
+    a = {
+        cns_stock_industry.industry_gicscode_4 == code,
+    }
+    rs = cns_stock_industry.query.filter(*a).all()
+
+    year_list = []
+    for year in years:
+        year_list.append(year.the_year)
+
+    for index in indexes:
+        exec (index + "_list=[]")
+        exec ("my" + index + "=0")
+
+    for y in year_list:
+        for r in rs:
+            result = finance_basics_add.query.filter_by(the_year=y, trade_code=r.trade_code).first_or_404()
+            for index in indexes:
+                if eval("result." + index) is not None:
+                    exec ("my" + index + "+= float((result." + index + ")/100000000)")
+                else:
+                    exec ("my" + index + "+= 0 ")
+        for index in indexes:
+            exec (index + "_list.append(my" + index + ")")
+
+    data['the_year'] = year_list
+    data['indexes'] = indexes
+
+    for index in indexes:
+        exec ("data['" + index + "']=" + index + "_list")
+    return jsonify(data)
+# 用于股票代码自动补全
 @api_blueprint.route("/stock_code/", methods=('GET', 'POST'))
 def stock_code():
     stockcode = request.args.get('q')
     filters = {
-        stock_basics.trade_code.like("%"+stockcode+"%")
+        stock_basics.trade_code.like("%"+stockcode+"%"),
+        stock_basics.sec_name.like("%" + stockcode + "%")
     }
-    results = stock_basics.query.filter(*filters).all()
+    results = stock_basics.query.filter(or_(*filters)).all()
     data={}
     stockcode_list=[]
     secname_list=[]
@@ -455,3 +510,10 @@ def update_gicsb():
         {'industry_gicscode_4':gics_4,'industry_gics_4':gics_name})  # 改为belong
     session.commit()  # 少写了这一行，所以修改没成功
     return "true"
+
+# 显示“主营业务”详情
+@api_blueprint.route('/cns_business_detail/', methods=('GET', 'POST'))
+def cns_business_detail():  # 需要这个默认trade_code吗？
+    trade_code = request.args.get("trade_code")  # 哈哈，成功了！！
+    result = cns_stock_industry.query.filter_by(trade_code=trade_code).first()
+    return result.business
