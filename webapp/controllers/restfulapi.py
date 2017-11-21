@@ -423,14 +423,15 @@ def market_status4():
     for index in indexes:
         exec ("data['" + index + "']=" + index + "_list")
     return jsonify(data)
-
+# 用于股票代码自动补全
 @api_blueprint.route("/stock_code/", methods=('GET', 'POST'))
 def stock_code():
     stockcode = request.args.get('q')
     filters = {
-        stock_basics.trade_code.like("%"+stockcode+"%")
+        stock_basics.trade_code.like("%"+stockcode+"%"),
+        stock_basics.sec_name.like("%" + stockcode + "%")
     }
-    results = stock_basics.query.filter(*filters).all()
+    results = stock_basics.query.filter(or_(*filters)).all()
     data={}
     stockcode_list=[]
     secname_list=[]
@@ -509,3 +510,10 @@ def update_gicsb():
         {'industry_gicscode_4':gics_4,'industry_gics_4':gics_name})  # 改为belong
     session.commit()  # 少写了这一行，所以修改没成功
     return "true"
+
+# 显示“主营业务”详情
+@api_blueprint.route('/cns_business_detail/', methods=('GET', 'POST'))
+def cns_business_detail():  # 需要这个默认trade_code吗？
+    trade_code = request.args.get("trade_code")  # 哈哈，成功了！！
+    result = cns_stock_industry.query.filter_by(trade_code=trade_code).first()
+    return result.business
