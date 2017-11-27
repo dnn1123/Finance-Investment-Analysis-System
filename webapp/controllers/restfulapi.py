@@ -1,9 +1,10 @@
 # encoding=utf-8
-from flask import Blueprint, redirect, render_template, url_for, request, session, make_response, jsonify
+from flask import Blueprint, redirect, render_template, url_for, request, session, make_response, jsonify, flash
 from webapp.models import *
 import MySQLdb, time, re
 from sqlalchemy import create_engine, or_, func, desc, distinct  # me func用于计数,desc用于逆序找max值
 from sqlalchemy.orm import sessionmaker  # me
+from flask_login import current_user
 
 api_blueprint = Blueprint(
         'restfulapi',
@@ -130,17 +131,19 @@ def get_ajax():
     data['the_year_list'] = year_list1
     return jsonify(data)
 
+
 @api_blueprint.route('/iscode', methods=('GET', 'POST'))
 def iscode():
     data = {}
     code = request.form.get('code')
     result1 = finance_basics.query.filter_by(trade_code=code).first()
-    if(result1):
+    if (result1):
         data['the_name'] = result1.sec_name
     else:
         data['the_name'] = 'false'
     data['the_code'] = code
     return jsonify(data)
+
 
 @api_blueprint.route("/invest_data/", methods=('GET', 'POST'))
 def invest_data():
@@ -175,6 +178,7 @@ def invest_data():
     for index in indexes:
         exec ("data['" + index + "']=" + index + "_list")
     return jsonify(data)
+
 
 @api_blueprint.route("/market_value/", methods=('GET', 'POST'))
 def market_value():
@@ -423,93 +427,103 @@ def market_status4():
     for index in indexes:
         exec ("data['" + index + "']=" + index + "_list")
     return jsonify(data)
+
+
 # 用于股票代码自动补全
 @api_blueprint.route("/stock_code/", methods=('GET', 'POST'))
 def stock_code():
     stockcode = request.args.get('q')
     filters = {
-        stock_basics.trade_code.like("%"+stockcode+"%"),
+        stock_basics.trade_code.like("%" + stockcode + "%"),
         stock_basics.sec_name.like("%" + stockcode + "%")
     }
     results = stock_basics.query.filter(or_(*filters)).all()
-    data={}
-    stockcode_list=[]
-    secname_list=[]
+    data = {}
+    stockcode_list = []
+    secname_list = []
     for result in results:
         stockcode_list.append(result.trade_code)
         secname_list.append(result.sec_name)
-    data['stockcode']=stockcode_list
-    data['stockname']=secname_list
+    data['stockcode'] = stockcode_list
+    data['stockname'] = secname_list
     return jsonify(data)
 
 
 @api_blueprint.route("/gics_1/", methods=('GET', 'POST'))
 def gics_1():
     results = cnsb_department_industry.query.all()
-    list=[]
+    list = []
     for result in results:
-        list.append({"gicscode1":result.industry_gicscode_1,"gics1":result.industry_gics_1})
+        list.append({"gicscode1": result.industry_gicscode_1, "gics1": result.industry_gics_1})
     return jsonify(list)
+
+
 @api_blueprint.route("/gics_2/", methods=('GET', 'POST'))
 def gics_2():
-    code=request.args.get("code")
+    code = request.args.get("code")
     filters = {
         cnsb_group_industry.belong == code
     }
     results = cnsb_group_industry.query.filter(*filters).all()
-    list=[]
+    list = []
     for result in results:
-        list.append({"gicscode2":result.industry_gicscode_2,"gics2":result.industry_gics_2})
+        list.append({"gicscode2": result.industry_gicscode_2, "gics2": result.industry_gics_2})
     return jsonify(list)
+
 
 @api_blueprint.route("/gics_3/", methods=('GET', 'POST'))
 def gics_3():
-    code=request.args.get("code")
+    code = request.args.get("code")
     filters = {
         cnsb_industry.belong == code
     }
     results = cnsb_industry.query.filter(*filters).all()
-    list=[]
+    list = []
     for result in results:
-        list.append({"gicscode3":result.industry_gicscode_3,"gics3":result.industry_gics_3})
+        list.append({"gicscode3": result.industry_gicscode_3, "gics3": result.industry_gics_3})
     return jsonify(list)
+
 
 @api_blueprint.route("/gics_4/", methods=('GET', 'POST'))
 def gics_4():
-    code=request.args.get("code")
+    code = request.args.get("code")
     filters = {
         cnsb_sub_industry.belong == code
     }
     results = cnsb_sub_industry.query.filter(*filters).all()
-    list=[]
+    list = []
     for result in results:
-        list.append({"gicscode4":result.industry_gicscode_4,"gics4":result.industry_gics_4})
+        list.append({"gicscode4": result.industry_gicscode_4, "gics4": result.industry_gics_4})
     return jsonify(list)
+
 
 @api_blueprint.route("/update_gics/", methods=('GET', 'POST'))
 def update_gics():
     trade_code = request.values.get("trade_code")
     gics_4 = request.values.get('gics_4')
-    gics_name=request.values.get('gics_name')
+    gics_name = request.values.get('gics_name')
     db_engine = create_engine('mysql://root:0000@localhost/test?charset=utf8')
     Session = sessionmaker(bind=db_engine)
     session = Session()
     session.query(cns_stock_industry).filter(cns_stock_industry.trade_code == trade_code).update(
-        {'belong': gics_4,'industry_gicscode_4':gics_4,'industry_gics_4':gics_name})  # 改为belong
+            {'belong': gics_4, 'industry_gicscode_4': gics_4, 'industry_gics_4': gics_name})  # 改为belong
     session.commit()  # 少写了这一行，所以修改没成功
     return "true"
+
+
 @api_blueprint.route("/update_gicsb/", methods=('GET', 'POST'))
 def update_gicsb():
     trade_code = request.values.get("trade_code")
     gics_4 = request.values.get('gics_4')
-    gics_name=request.values.get('gics_name')
+    gics_name = request.values.get('gics_name')
     db_engine = create_engine('mysql://root:0000@localhost/test?charset=utf8')
     Session = sessionmaker(bind=db_engine)
     session = Session()
     session.query(cnsb_stock_industry).filter(cnsb_stock_industry.trade_code == trade_code).update(
-        {'industry_gicscode_4':gics_4,'industry_gics_4':gics_name})  # 改为belong
+            {'industry_gicscode_4': gics_4, 'industry_gics_4': gics_name})  # 改为belong
     session.commit()  # 少写了这一行，所以修改没成功
     return "true"
+
 
 # 显示“主营业务”详情
 @api_blueprint.route('/cns_business_detail/', methods=('GET', 'POST'))
@@ -517,3 +531,63 @@ def cns_business_detail():  # 需要这个默认trade_code吗？
     trade_code = request.args.get("trade_code")  # 哈哈，成功了！！
     result = cns_stock_industry.query.filter_by(trade_code=trade_code).first()
     return result.business
+
+
+@api_blueprint.route('/personal/add_code', methods=['GET', 'POST'])
+def add_code():
+    if (request.method == 'POST'):
+        stockcode = request.form.get("stockcode", "000001")
+        new_fcode = favorite_code()
+        new_fcode.user_name = current_user.username
+        new_fcode.code = stockcode
+        db.session.add(new_fcode)
+        db.session.commit()
+        flash(
+                "添加成功",
+                category="success"
+        )
+        return redirect(url_for('main.personal'))
+
+
+@api_blueprint.route('/personal/delete_code', methods=['GET', 'POST'])
+def delete_code():
+    data = {}
+    code_delete_list = request.form.getlist('selected[]')
+    for code in code_delete_list:
+        result = favorite_code.query.filter_by(user_name=current_user.username, code = code).first()
+        # new_fcode1 = favorite_code()
+        # new_fcode1.user_name = current_user.username
+        # new_fcode1.code = code
+        db.session.delete(result)
+        db.session.commit()
+    data['a'] = 1
+    return jsonify(data)
+
+
+@api_blueprint.route('/personal/search', methods=['GET', 'POST'])
+def search():
+    data = {}
+    user_name = current_user.username
+    code_list = []
+    name_list = []
+    results = favorite_code.query.filter_by(user_name=user_name).all()
+    for result in results:
+        code_list.append(result.code)
+        result1 = finance_basics.query.filter_by(trade_code=result.code).first_or_404()
+        name_list.append(result1.sec_name)
+    data['code_list'] = code_list
+    data['name_list'] = name_list
+    data['user_name'] = current_user.username
+    return jsonify(data)
+
+
+@api_blueprint.route('/personal/is_repeatcode', methods=['GET', 'POST'])
+def is_repeatcode():
+    data = {}
+    code = request.form.get('code')
+    result = favorite_code.query.filter_by(user_name=current_user.username,code=code).first()
+    if result:
+        data['exit'] = 'true'
+    else:
+        data['exit'] = 'flase'
+    return jsonify(data)

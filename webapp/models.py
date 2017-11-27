@@ -2,17 +2,85 @@
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import func
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_login import AnonymousUserMixin
+from flask_login import AnonymousUserMixin, UserMixin
 
 # ORM访问数据库
 db = SQLAlchemy()
 
 roles = db.Table(
-    'role_users',
-    db.Column('user_name', db.String(80), db.ForeignKey('users.username')),
-    db.Column('role_id', db.Integer, db.ForeignKey('role.id'))
-
+        'role_users',
+        db.Column('user_name', db.String(80), db.ForeignKey('users.username')),
+        db.Column('role_id', db.Integer, db.ForeignKey('role.id')),
+        db.Column('permissions', db.Integer),
 )
+
+
+class roles1(UserMixin, db.Model):
+    __tablename__ = 'role_users_copy'
+    id = db.Column(db.Integer, primary_key=True)
+    user_name = db.Column(db.String(80), db.ForeignKey('users.username'))
+    role_id = db.Column(db.Integer, db.ForeignKey('role.id'))
+    permissions = db.Column(db.Integer)
+
+
+# 权限常量
+class Permission:
+    administrator = 1
+    trader = 2
+    visitor = 3
+
+
+class users(UserMixin, db.Model):
+    __tablename__ = 'users'
+    username = db.Column(db.String(20), primary_key=True)
+    password = db.Column(db.String(45))
+
+    # def __init__(self, **kwargs):
+    #     super(User, self).__init__(**kwargs)
+    def can(self, permissions):
+        result = roles1.query.filter_by(user_name=self.username).first()
+        return result is not None and \
+               result.permissions <= permissions
+
+    def is_administrator(self):
+        return self.can(Permission.administrator)
+
+    roles = db.relationship(
+            'Role',
+            secondary=roles,
+            backref=db.backref('users', lazy='dynamic')
+    )
+
+    def set_password(self, password):
+        self.password = generate_password_hash(password)
+
+    def check_password(self, password):
+        return check_password_hash(self.password, password)
+
+    def is_authenticated(self):
+        if isinstance(self, AnonymousUserMixin):
+            return False
+        else:
+            return True
+
+    def is_active(self):
+        return True
+
+    def is_anonymous(self):
+        if isinstance(self, AnonymousUserMixin):
+            return True
+        else:
+            return False
+
+    def get_id(self):
+        return unicode(self.username)
+
+
+class favorite_code(db.Model):
+    __tablename__ = 'favorite_code'
+    id = db.Column(db.Integer, primary_key=True)
+    user_name = db.Column(db.String(20), db.ForeignKey('users.username'))
+    code = db.Column(db.String(10))
 
 
 class stock_basics(db.Model):
@@ -401,41 +469,6 @@ class deposit_reserve_rate(db.Model):
     __tablename__ = 'deposit_reserve_rate'
     datetime = db.Column(db.DateTime, primary_key=True)
     M0048187 = db.Column(db.Numeric(6, 3))
-
-
-class users(db.Model):
-    __tablename__ = 'users'
-    username = db.Column(db.String(20), primary_key=True)
-    password = db.Column(db.String(45))
-    roles = db.relationship(
-        'Role',
-        secondary=roles,
-        backref=db.backref('users', lazy='dynamic')
-    )
-
-    def set_password(self, password):
-        self.password = generate_password_hash(password)
-
-    def check_password(self, password):
-        return check_password_hash(self.password, password)
-
-    def is_authenticated(self):
-        if isinstance(self, AnonymousUserMixin):
-            return False
-        else:
-            return True
-
-    def is_active(self):
-        return True
-
-    def is_anonymous(self):
-        if isinstance(self, AnonymousUserMixin):
-            return True
-        else:
-            return False
-
-    def get_id(self):
-        return unicode(self.username)
 
 
 class Role(db.Model):

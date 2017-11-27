@@ -10,6 +10,7 @@ from sqlalchemy.orm import sessionmaker
 import MySQLdb,time,re #re用于判断是否含中文
 import numpy as np
 import restfulapi
+from webapp.decorators import admin_required,permission_required
 
 #用于判断是否含中文
 zhPattern = re.compile(u'[\u4e00-\u9fa5]+')
@@ -22,6 +23,7 @@ stocksolo_blueprint = Blueprint(
 @stocksolo_blueprint.route('/',methods=('GET','POST'))
 @stocksolo_blueprint.route('/<string:data>',methods=('GET','POST'))
 @login_required
+
 def basic(data=""):
     form = CodeForm()
     if data=="":
@@ -123,6 +125,7 @@ def finance_data(data='000895'):
 @stocksolo_blueprint.route('/finance_data_yc', methods=('GET', 'POST'))
 @stocksolo_blueprint.route('/finance_data_yc/<string:data>', methods=('GET', 'POST'))
 @login_required
+@permission_required(Permission.trader)
 def finance_data_yc(data='000001'):
     if session.has_key('stockcode'):
         data = session['stockcode']
