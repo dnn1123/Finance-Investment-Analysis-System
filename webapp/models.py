@@ -15,11 +15,19 @@ roles = db.Table(
 )
 
 
-class roles1(UserMixin, db.Model):
-    __tablename__ = 'role_users_copy'
+# class roles1(UserMixin, db.Model):
+#     __tablename__ = 'role_users_copy'
+#     id = db.Column(db.Integer, primary_key=True)
+#     user_name = db.Column(db.String(80), db.ForeignKey('users.username'))
+#     role_id = db.Column(db.Integer, db.ForeignKey('role.id'))
+#     permissions = db.Column(db.Integer)
+
+
+class roles1(db.Model):
+    __bind_key__ = 'users_info'
+    __tablename__ = 'users_role'
     id = db.Column(db.Integer, primary_key=True)
     user_name = db.Column(db.String(80), db.ForeignKey('users.username'))
-    role_id = db.Column(db.Integer, db.ForeignKey('role.id'))
     permissions = db.Column(db.Integer)
 
 
@@ -31,6 +39,7 @@ class Permission:
 
 
 class users(UserMixin, db.Model):
+    __bind_key__ = 'users_info'
     __tablename__ = 'users'
     username = db.Column(db.String(20), primary_key=True)
     password = db.Column(db.String(45))
@@ -77,10 +86,19 @@ class users(UserMixin, db.Model):
 
 
 class favorite_code(db.Model):
+    __bind_key__ = 'users_info'
     __tablename__ = 'favorite_code'
     id = db.Column(db.Integer, primary_key=True)
     user_name = db.Column(db.String(20), db.ForeignKey('users.username'))
     code = db.Column(db.String(10))
+
+
+class Role(db.Model):
+    __bind_key__ = 'users_info'
+    __tablename__ = 'role'
+    id = db.Column(db.Integer(), primary_key=True)
+    name = db.Column(db.String(80), unique=True)
+    description = db.Column(db.String(255))
 
 
 class stock_basics(db.Model):
@@ -471,7 +489,4 @@ class deposit_reserve_rate(db.Model):
     M0048187 = db.Column(db.Numeric(6, 3))
 
 
-class Role(db.Model):
-    id = db.Column(db.Integer(), primary_key=True)
-    name = db.Column(db.String(80), unique=True)
-    description = db.Column(db.String(255))
+
