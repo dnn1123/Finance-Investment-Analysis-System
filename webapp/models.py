@@ -4,6 +4,7 @@ from sqlalchemy import func
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import AnonymousUserMixin, UserMixin
 
+
 # ORM访问数据库
 db = SQLAlchemy()
 
@@ -41,9 +42,9 @@ class Permission:
 class users(UserMixin, db.Model):
     __bind_key__ = 'users_info'
     __tablename__ = 'users'
-    username = db.Column(db.String(20), primary_key=True)
+    # username = db.StringField(max_length=100, primary_key=True)
+    username = db.Column(db.String(45), primary_key=True)
     password = db.Column(db.String(45))
-
     # def __init__(self, **kwargs):
     #     super(User, self).__init__(**kwargs)
     def can(self, permissions):
@@ -54,11 +55,11 @@ class users(UserMixin, db.Model):
     def is_administrator(self):
         return self.can(Permission.administrator)
 
-    roles = db.relationship(
-            'Role',
-            secondary=roles,
-            backref=db.backref('users', lazy='dynamic')
-    )
+    # roles = db.relationship(
+    #         'Role',
+    #         secondary=roles,
+    #         backref=db.backref('users', lazy='dynamic')
+    # )
 
     def set_password(self, password):
         self.password = generate_password_hash(password)

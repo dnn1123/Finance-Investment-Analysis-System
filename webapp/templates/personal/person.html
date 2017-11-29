@@ -166,12 +166,15 @@
                 {% endif %}
             </div>
             <a style="display:block;color: black;float: left;margin-left: 10px;margin-top: 20px;font-size: 20px">用户名：{{ user.user_name }}</a></br>
-            <a style="display:block;float:left;color: black;margin-left: 10px;margin-top: 10px;font-size: 20px">身份：
-                {{ rolename }}
-            </a>
-            {#            <div style="float: left;width: 80%;height:200px;margin: 10px 10%;background-color:#d3d7d4">#}
-            {#                <legend>已关注股票</legend>#}
-            {#            </div>#}
+            <a style="display:block;float:left;color: black;margin-left: 10px;margin-top: 10px;font-size: 20px">身份：{{ rolename }}</a>
+            {% if user.permissions==1 %}
+                <div style="float: left;width: 100%;margin-top:10px;background-color:#d3d7d4">
+                    <legend>管理员权限</legend>
+                    <div style="margin: 10px">
+                    <a  href="{{ url_for('users.index_view') }}">管理员权限</a>
+                    </div>
+                </div>
+            {% endif %}
         </div>
     </div>
     <div id="div_favoritecode"
@@ -316,7 +319,7 @@
                                 if (data.exit == 'true') {
                                     alert('您已关注该股票，请勿重复操作！')
                                 }
-                                else if(data.exit == 'flase'){
+                                else if (data.exit == 'flase') {
                                     $("#searchform").submit();
                                 }
                             }

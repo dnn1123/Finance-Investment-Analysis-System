@@ -15,11 +15,13 @@ from extensions import login_manager, principals
 from models import db
 from flask_login import current_user
 from controllers.restfulapi import api_blueprint
+from webapp.admin import create_admin
 
 
 def create_app(object_name):
     app = Flask(__name__)
     app.config.from_object(DevConfig)
+    create_admin(app)
     login_manager.init_app(app)
     principals.init_app(app)
     db.init_app(app)
