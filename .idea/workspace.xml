@@ -2,8 +2,25 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7b9bb7a5-6daa-447a-99cc-bcc264900188" name="默认的" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/webapp/templates/industry_analysis/industry_compare.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/webapp/templates/industry_analysis/ostatus.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/webapp/controllers/industry_analysis.py" afterPath="$PROJECT_DIR$/webapp/controllers/industry_analysis.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/webapp/controllers/restfulapi.py" afterPath="$PROJECT_DIR$/webapp/controllers/restfulapi.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/webapp/controllers/stock_solo.py" afterPath="$PROJECT_DIR$/webapp/controllers/stock_solo.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/webapp/templates/industry_analysis/annual_table.html" afterPath="$PROJECT_DIR$/webapp/templates/industry_analysis/annual_table.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/webapp/templates/industry_analysis/annual_table_b.html" afterPath="$PROJECT_DIR$/webapp/templates/industry_analysis/annual_table_b.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/webapp/templates/industry_analysis/industry_analysis_base.html" afterPath="$PROJECT_DIR$/webapp/templates/industry_analysis/industry_analysis_base.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/webapp/templates/industry_analysis/industry_classify.html" afterPath="$PROJECT_DIR$/webapp/templates/industry_analysis/industry_classify.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/webapp/templates/industry_analysis/industry_classify_filter.html" afterPath="$PROJECT_DIR$/webapp/templates/industry_analysis/industry_classify_filter.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/webapp/templates/industry_analysis/industry_status.html" afterPath="$PROJECT_DIR$/webapp/templates/industry_analysis/industry_status.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/webapp/templates/industry_analysis/market_status.html" afterPath="$PROJECT_DIR$/webapp/templates/industry_analysis/market_status.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/webapp/templates/industry_analysis/market_value.html" afterPath="$PROJECT_DIR$/webapp/templates/industry_analysis/market_value.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/webapp/templates/stock_solo/finance_data.html" afterPath="$PROJECT_DIR$/webapp/templates/stock_solo/finance_data.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/webapp/templates/stock_solo/stock_solo_basic.html" afterPath="$PROJECT_DIR$/webapp/templates/stock_solo/stock_solo_basic.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/webapp/templates/stock_solo/stock_solo_compare.html" afterPath="$PROJECT_DIR$/webapp/templates/stock_solo/stock_solo_compare.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/webapp/templates/stock_solo/stock_solo_finance_data_yc.html" afterPath="$PROJECT_DIR$/webapp/templates/stock_solo/stock_solo_finance_data_yc.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/webapp/templates/stock_solo/stock_solo_invest_value.html" afterPath="$PROJECT_DIR$/webapp/templates/stock_solo/stock_solo_invest_value.html" />
     </list>
     <ignored path=".idea/dataSources.local.xml" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -15,7 +32,7 @@
   </component>
   <component name="CoverageDataManager">
     <SUITE FILE_PATH="coverage/Finance-Investment-Analysis-System$manage.coverage" NAME="manage Coverage Results" MODIFIED="1510981378474" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/Finance_Investment_Analysis_System$manage.coverage" NAME="manage Coverage Results" MODIFIED="1510750559269" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Finance_Investment_Analysis_System$manage.coverage" NAME="manage Coverage Results" MODIFIED="1512096873217" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="CreatePatchCommitExecutor">
     <option name="PATCH_PATH" value="" />
@@ -29,71 +46,52 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="market_value.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/webapp/templates/industry_analysis/market_value.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="industry_status.html" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/webapp/templates/industry_analysis/industry_status.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="615">
-              <caret line="2122" column="13" lean-forward="false" selection-start-line="2122" selection-start-column="13" selection-end-line="2122" selection-end-column="13" />
-              <folding>
-                <element signature="n#form#0;n#!!top" expanded="false" />
-                <element signature="n#form#1;n#!!top" expanded="false" />
-                <element signature="n#form#2;n#!!top" expanded="false" />
-                <element signature="n#form#3;n#!!top" expanded="false" />
-                <element signature="n#script#0;n#!!top" expanded="false" />
-                <element signature="n#ul#0;n#!!top" expanded="false" />
-                <element signature="n#div#0;n#!!top" expanded="false" />
-                <element signature="n#script#1;n#!!top" expanded="false" />
-                <element signature="n#script#2;n#!!top" expanded="false" />
-                <element signature="n#script#3;n#!!top" expanded="false" />
-                <element signature="n#script#4;n#!!top" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="restfulapi.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/webapp/controllers/restfulapi.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2527">
-              <caret line="137" column="16" lean-forward="false" selection-start-line="137" selection-start-column="16" selection-end-line="137" selection-end-column="16" />
+            <state relative-caret-position="836">
+              <caret line="473" column="24" lean-forward="false" selection-start-line="473" selection-start-column="24" selection-end-line="473" selection-end-column="24" />
               <folding>
-                <element signature="e#5154#6157#0" expanded="false" />
-                <element signature="e#6247#7383#0" expanded="false" />
-                <element signature="e#7478#8968#0" expanded="false" />
-                <element signature="e#10644#12162#0" expanded="false" />
-                <element signature="e#12257#13640#0" expanded="false" />
+                <element signature="e#532#1660#0" expanded="false" />
+                <element signature="e#1758#3214#0" expanded="false" />
+                <element signature="e#3295#4718#0" expanded="false" />
+                <element signature="e#4795#5069#0" expanded="false" />
+                <element signature="e#5157#6160#0" expanded="false" />
+                <element signature="e#6250#7386#0" expanded="false" />
+                <element signature="e#7481#10330#0" expanded="false" />
+                <element signature="e#10425#13165#0" expanded="false" />
+                <element signature="e#13260#15909#0" expanded="false" />
+                <element signature="e#16004#18645#0" expanded="false" />
+                <element signature="e#18731#19170#0" expanded="false" />
+                <element signature="e#19249#19452#0" expanded="false" />
+                <element signature="e#19529#19843#0" expanded="false" />
+                <element signature="e#19921#20223#0" expanded="false" />
+                <element signature="e#20301#20611#0" expanded="false" />
+                <element signature="e#20699#21230#0" expanded="false" />
+                <element signature="e#21319#21835#0" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="stock_solo_basic.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/webapp/templates/stock_solo/stock_solo_basic.html">
+      <file leaf-file-name="industry_analysis.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/webapp/controllers/industry_analysis.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="798">
-              <caret line="42" column="0" lean-forward="false" selection-start-line="42" selection-start-column="0" selection-end-line="42" selection-end-column="0" />
+            <state relative-caret-position="399">
+              <caret line="69" column="82" lean-forward="false" selection-start-line="69" selection-start-column="82" selection-end-line="69" selection-end-column="82" />
               <folding>
-                <marker date="1511057329646" expanded="true" signature="4262:4270" ph="..." />
+                <element signature="e#1209#2707#0" expanded="false" />
+                <element signature="e#2947#3044#0" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="stock_solo_base.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/webapp/templates/stock_solo/stock_solo_base.html">
+      <file leaf-file-name="stock_solo_compare.html" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/webapp/templates/stock_solo/stock_solo_compare.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="190">
-              <caret line="10" column="26" lean-forward="false" selection-start-line="10" selection-start-column="26" selection-end-line="10" selection-end-column="26" />
+            <state relative-caret-position="335">
+              <caret line="369" column="197" lean-forward="false" selection-start-line="369" selection-start-column="197" selection-end-line="369" selection-end-column="197" />
               <folding />
             </state>
           </provider>
@@ -125,14 +123,16 @@
         <option value="$PROJECT_DIR$/webapp/static/css/loader.min.css" />
         <option value="$PROJECT_DIR$/webapp/templates/stock_group/cns/cns_base.html" />
         <option value="$PROJECT_DIR$/webapp/templates/stock_group/cns/cns_stock_industry.html" />
-        <option value="$PROJECT_DIR$/webapp/controllers/stock_solo.py" />
-        <option value="$PROJECT_DIR$/webapp/templates/stock_solo/finance_data.html" />
-        <option value="$PROJECT_DIR$/webapp/templates/stock_solo/stock_solo_compare.html" />
-        <option value="$PROJECT_DIR$/webapp/templates/stock_solo/stock_solo_finance_data_yc.html" />
-        <option value="$PROJECT_DIR$/webapp/templates/stock_solo/stock_solo_basic.html" />
         <option value="$PROJECT_DIR$/webapp/templates/stock_base.html" />
-        <option value="$PROJECT_DIR$/webapp/controllers/restfulapi.py" />
+        <option value="$PROJECT_DIR$/webapp/templates/stock_solo/stock_solo_invest_value.html" />
+        <option value="$PROJECT_DIR$/webapp/templates/stock_solo/stock_solo_basic.html" />
+        <option value="$PROJECT_DIR$/webapp/templates/stock_solo/finance_data.html" />
+        <option value="$PROJECT_DIR$/webapp/controllers/stock_solo.py" />
+        <option value="$PROJECT_DIR$/webapp/templates/stock_solo/stock_solo_finance_data_yc.html" />
         <option value="$PROJECT_DIR$/webapp/templates/industry_analysis/industry_status.html" />
+        <option value="$PROJECT_DIR$/webapp/controllers/restfulapi.py" />
+        <option value="$PROJECT_DIR$/webapp/controllers/industry_analysis.py" />
+        <option value="$PROJECT_DIR$/webapp/templates/stock_solo/stock_solo_compare.html" />
       </list>
     </option>
   </component>
@@ -221,50 +221,6 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="templates" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="stock_solo" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Finance-Investment-Analysis-System" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Finance-Investment-Analysis-System" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="webapp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="templates" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="industry_analysis" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Finance-Investment-Analysis-System" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Finance-Investment-Analysis-System" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="webapp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
               <option name="myItemId" value="controllers" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -283,6 +239,7 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\zyqflask\Finance-Investment-Analysis-System\webapp\templates" />
       <recent name="D:\fzjie\Documents\PyCharmProject\Finance-Investment-Analysis-System\webapp\templates\stock_group\cns" />
     </key>
   </component>
@@ -338,6 +295,19 @@
       <option name="OPTIONS" value="" />
       <method />
     </configuration>
+    <configuration default="true" type="JavaScriptTestRunnerJest" factoryName="Jest">
+      <node-interpreter value="project" />
+      <working-dir value="" />
+      <envs />
+      <scope-kind value="ALL" />
+      <method />
+    </configuration>
+    <configuration default="true" type="JavaScriptTestRunnerProtractor" factoryName="Protractor">
+      <config-file value="" />
+      <node-interpreter value="project" />
+      <envs />
+      <method />
+    </configuration>
     <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug">
       <method />
     </configuration>
@@ -386,6 +356,19 @@
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
+      <method />
+    </configuration>
+    <configuration default="true" type="Tox" factoryName="Tox">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <module name="MasteringFlask" />
       <method />
     </configuration>
     <configuration default="true" type="js.build_tools.gulp" factoryName="Gulp.js">
@@ -521,18 +504,19 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.31694403" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3698941" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295082" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295082" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="调试" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -562,32 +546,11 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="2" />
+      <option name="time" value="4" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/webapp/templates/stock_group/cns/cns_stock_industry.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="25" column="30" lean-forward="false" selection-start-line="25" selection-start-column="30" selection-end-line="25" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/webapp/controllers/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/webapp/controllers/main.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="28" column="18" lean-forward="false" selection-start-line="28" selection-start-column="18" selection-end-line="28" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/manage.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -800,13 +763,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/webapp/controllers/stock_solo.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="132" column="98" lean-forward="false" selection-start-line="132" selection-start-column="98" selection-end-line="132" selection-end-column="98" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/webapp/templates/stock_solo/stock_solo_finance_data.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -818,20 +774,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="27" column="173" lean-forward="false" selection-start-line="27" selection-start-column="173" selection-end-line="27" selection-end-column="173" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/webapp/templates/stock_solo/stock_solo_compare.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="756" column="29" lean-forward="false" selection-start-line="756" selection-start-column="29" selection-end-line="756" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/webapp/templates/stock_solo/stock_solo_invest_value.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
         </state>
       </provider>
     </entry>
@@ -856,34 +798,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/webapp/templates/stock_solo/finance_data.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="66" column="14" lean-forward="false" selection-start-line="50" selection-start-column="13" selection-end-line="66" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/webapp/controllers/restfulapi.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2527">
-          <caret line="137" column="16" lean-forward="false" selection-start-line="137" selection-start-column="16" selection-end-line="137" selection-end-column="16" />
-          <folding>
-            <element signature="e#5154#6157#0" expanded="false" />
-            <element signature="e#6247#7383#0" expanded="false" />
-            <element signature="e#7478#8968#0" expanded="false" />
-            <element signature="e#10644#12162#0" expanded="false" />
-            <element signature="e#12257#13640#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/webapp/templates/stock_solo/stock_solo_finance_data_yc.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="173">
-          <caret line="117" column="14" lean-forward="true" selection-start-line="117" selection-start-column="14" selection-end-line="117" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/webapp/templates/stock_base.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="515">
@@ -895,17 +809,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/webapp/templates/stock_solo/stock_solo_basic.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="798">
-          <caret line="42" column="0" lean-forward="false" selection-start-line="42" selection-start-column="0" selection-end-line="42" selection-end-column="0" />
-          <folding>
-            <marker date="1511057329646" expanded="true" signature="4262:4270" ph="..." />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -913,27 +816,118 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="190">
           <caret line="10" column="26" lean-forward="false" selection-start-line="10" selection-start-column="26" selection-end-line="10" selection-end-column="26" />
-          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/webapp/templates/stock_solo/stock_solo_basic.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1543">
+          <caret line="17" column="26" lean-forward="false" selection-start-line="17" selection-start-column="26" selection-end-line="17" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/webapp/templates/stock_solo/stock_solo_invest_value.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-133">
+          <caret line="41" column="32" lean-forward="false" selection-start-line="41" selection-start-column="32" selection-end-line="41" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/webapp/forms.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/webapp/templates/stock_solo/finance_data.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2031">
+          <caret line="286" column="233" lean-forward="false" selection-start-line="286" selection-start-column="233" selection-end-line="286" selection-end-column="233" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/webapp/templates/stock_solo/stock_solo_finance_data_yc.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="9842">
+          <caret line="557" column="0" lean-forward="false" selection-start-line="557" selection-start-column="0" selection-end-line="557" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/webapp/controllers/stock_solo.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1197">
+          <caret line="114" column="35" lean-forward="false" selection-start-line="114" selection-start-column="35" selection-end-line="114" selection-end-column="35" />
+          <folding>
+            <element signature="e#819#1637#0" expanded="false" />
+            <element signature="e#2573#2658#0" expanded="false" />
+            <element signature="e#2743#2858#0" expanded="false" />
+            <element signature="e#2912#3389#0" expanded="false" />
+            <element signature="e#3443#3921#0" expanded="false" />
+            <element signature="e#4604#5071#0" expanded="false" />
+            <element signature="e#5543#5965#0" expanded="false" />
+            <marker date="1511697681349" expanded="true" signature="4051:4106" ph="select disti... finance_basics" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/webapp/templates/industry_analysis/industry_status.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="615">
-          <caret line="2122" column="13" lean-forward="false" selection-start-line="2122" selection-start-column="13" selection-end-line="2122" selection-end-column="13" />
+        <state relative-caret-position="6213">
+          <caret line="327" column="60" lean-forward="false" selection-start-line="327" selection-start-column="60" selection-end-line="327" selection-end-column="60" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/webapp/controllers/restfulapi.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="836">
+          <caret line="473" column="24" lean-forward="false" selection-start-line="473" selection-start-column="24" selection-end-line="473" selection-end-column="24" />
           <folding>
-            <element signature="n#form#0;n#!!top" expanded="false" />
-            <element signature="n#form#1;n#!!top" expanded="false" />
-            <element signature="n#form#2;n#!!top" expanded="false" />
-            <element signature="n#form#3;n#!!top" expanded="false" />
-            <element signature="n#script#0;n#!!top" expanded="false" />
-            <element signature="n#ul#0;n#!!top" expanded="false" />
-            <element signature="n#div#0;n#!!top" expanded="false" />
-            <element signature="n#script#1;n#!!top" expanded="false" />
-            <element signature="n#script#2;n#!!top" expanded="false" />
-            <element signature="n#script#3;n#!!top" expanded="false" />
-            <element signature="n#script#4;n#!!top" expanded="false" />
+            <element signature="e#532#1660#0" expanded="false" />
+            <element signature="e#1758#3214#0" expanded="false" />
+            <element signature="e#3295#4718#0" expanded="false" />
+            <element signature="e#4795#5069#0" expanded="false" />
+            <element signature="e#5157#6160#0" expanded="false" />
+            <element signature="e#6250#7386#0" expanded="false" />
+            <element signature="e#7481#10330#0" expanded="false" />
+            <element signature="e#10425#13165#0" expanded="false" />
+            <element signature="e#13260#15909#0" expanded="false" />
+            <element signature="e#16004#18645#0" expanded="false" />
+            <element signature="e#18731#19170#0" expanded="false" />
+            <element signature="e#19249#19452#0" expanded="false" />
+            <element signature="e#19529#19843#0" expanded="false" />
+            <element signature="e#19921#20223#0" expanded="false" />
+            <element signature="e#20301#20611#0" expanded="false" />
+            <element signature="e#20699#21230#0" expanded="false" />
+            <element signature="e#21319#21835#0" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/webapp/controllers/industry_analysis.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="399">
+          <caret line="69" column="82" lean-forward="false" selection-start-line="69" selection-start-column="82" selection-end-line="69" selection-end-column="82" />
+          <folding>
+            <element signature="e#1209#2707#0" expanded="false" />
+            <element signature="e#2947#3044#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/webapp/templates/industry_analysis/ostatus.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/webapp/templates/stock_solo/stock_solo_compare.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="335">
+          <caret line="369" column="197" lean-forward="false" selection-start-line="369" selection-start-column="197" selection-end-line="369" selection-end-column="197" />
+          <folding />
         </state>
       </provider>
     </entry>

@@ -2,14 +2,12 @@
 {% block styles %}
     <style>
         .divcheckbox {
-        {#            float: left;#} margin-left: 3px;
+            margin-left: 3px;
             margin-top: 3px;
-        {#            display: block;#}
         }
 
         .checkbox {
             float: left;
-
         }
 
         .options {
@@ -24,7 +22,6 @@
             background-color: #f9f9f9;
             margin-top: 3px;
             display: block;
-
         }
     </style>
 {% endblock %}
@@ -32,7 +29,7 @@
 {% block tab %}
     <ul class="nav nav-pills">
         <li><a href="{{ url_for('stock_solo.basic') }}">基本情况</a></li>
-        <li><a href="{{ url_for('stock_solo.finance_data_yc') }}">财务数据及分析</a></li>
+        <li class="active"><a href="{{ url_for('stock_solo.finance_data_yc') }}">财务数据及分析</a></li>
         <li><a href="{{ url_for('stock_solo.invest_value') }}">投资价值分析</a></li>
         <li><a href="{{ url_for('stock_solo.compare') }}">股票对比分析</a></li>
     </ul>
@@ -47,7 +44,6 @@
 {% endblock %}
 
 {% block search %}
-
     <div class="container-fluid">
         <form id="searchform" class="navbar-form navbar-left" role="search" method="post"
               action="{{ url_for('stock_solo.finance_data_yc') }}">
@@ -57,8 +53,7 @@
                     <button id="submitbtn" class="btn btn-default" type="submit"
                             style="padding: 8.5px 12px"><span
                             class="glyphicon glyphicon-search"></span></button>
-                    <ul class="dropdown-menu dropdown-menu-right" role="menu">
-                    </ul>
+                    <ul class="dropdown-menu dropdown-menu-right" role="menu"></ul>
                 </div>
             </div>
         </form>
@@ -72,12 +67,10 @@
             url: '{{url_for("restfulapi.stock_code",q="")}}',
             processData: function (json) {     // url 获取数据时，对数据的处理，作为 getData 的回调函数
                 var i, len, data = {value: []};
-
                 if (!json || !json.stockcode || json.stockcode.length == 0) {
                     return false;
                 }
                 len = json.stockcode.length;
-
                 for (i = 0; i < len; i++) {
                     data.value.push({
                         "Id": (i + 1),
@@ -87,7 +80,7 @@
                 }
                 return data;
             }
-        })
+        });
         $("#submitbtn").click(function () {
             $.ajax({
                 type: 'POST',
@@ -97,7 +90,6 @@
                 },
                 dataType: 'json',
                 success: function (data) {
-
                     if (data.the_name != 'false') {
                         $("#searchform").submit();
                     }
@@ -147,8 +139,7 @@
     </div>
 {% endblock %}
 {% block toolbox %}
-    <div id="echartindex"
-         style="height: 50px;">
+    <div id="echartindex" style="height: 50px;">
         <div style="height:25px;margin-top: 10px">
             <a style="width:50px;margin-left:10px;color: #0c0c0c">起始时间:</a><input type="text" id="ui3"
                                                                                   style="background-color:white;width: 100px;margin-left: 10px"/>
@@ -160,9 +151,7 @@
                 <option value="1000000000">十亿</option>
                 <option value="10000000">千万</option>
                 <option value="1">元</option>
-                {#                <option value="audi">Audi</option>#}
             </select>
-
         </div>
     </div>
 {% endblock %}
@@ -307,15 +296,13 @@
                 return '应付账款周转天数'
         }
 
-
         var color = new Array();
         var Data = new Array();
-        var selectedindex
-        var Uint = 1
-        {#        $.cookie('stockcode', '000001', {expires: 7});#}
+        var selectedindex;
+        var Uint = 1;
         var stockcode = '';
-        var startyear = ''
-        var endyear = ''
+        var startyear = '';
+        var endyear = '';
         var myChart1 = echarts.init(document.getElementById('echart'));
         function set_color() {
             return (function (m, s, c) {
@@ -408,13 +395,7 @@
                         },
 
                     })
-                    {#                    new $.fn.dataTable.FixedColumns(table, {#}
-                    {#                        "iLeftColumns": 2#}
-                    {#                    });#}
-                    {#                        console.log(hidelist)#}
                 }
-
-
             });
         }
 
@@ -474,6 +455,7 @@
                             name: post_selected(data.indexs[i]),
                             type: 'line',
                             smooth: true,
+                            symbolSize: 8,
                             itemStyle: {
                                 normal: {
                                     color: color[data.indexs[i]],
@@ -496,9 +478,6 @@
                         tooltip: {
                             trigger: 'axis'
                         },
-                        {#                        legend: {#}
-                        {#                            data: legenddata1#}
-                        {#                        },#}
                         grid: {
                             left: '3%',
                             right: '4%',
@@ -506,7 +485,6 @@
                             containLabel: true
                         },
                         toolbox: {
-
                             feature: {
                                 saveAsImage: {},
                                 magicType: {
@@ -530,22 +508,13 @@
                         },
                         dataZoom: [
                             {
-                                {#                                id: 'dataZoomX',#}
                                 type: 'slider',
                                 xAxisIndex: [0],
                                 height: 20,
                                 filterMode: 'filter',
-                                {#                                show : true,#}
                                 startValue: dzstart,
                                 endValue: dend,
                             },
-
-                            {#                            {#}
-                            {#                                id: 'dataZoomY',#}
-                            {#                                type: 'slider',#}
-                            {#                                yAxisIndex: [0],#}
-                            {#                                filterMode: 'empty'#}
-                            {#                            }#}
                         ],
 
                         series: seriesdata1
@@ -560,7 +529,6 @@
                             var nstartyear = '1991'
                         }
                         set_timepicker(nstartyear, nendyear)
-                        {#                            creattable(stockcode, color, unit, nstartyear, nendyear)#}
                     });
                 }
             })
@@ -589,18 +557,15 @@
         }
 
         function RequestTable() {
-
             var myChart = echarts.init(document.getElementById('echart'));
             var opt = myChart.getOption();
             var dz = opt.dataZoom[0];
             creattable(stockcode, color, Uint, opt.xAxis[0].data[dz.endValue], opt.xAxis[0].data[dz.startValue])
-
         }
 
         $(document).ready(function () {
             function firstvisit() {
                 stockcode = {{ stockcode|safe }};
-
                 Uint = 100000000
                 selectedindex = ['tot_oper_rev']
                 $.ajax({

@@ -75,9 +75,8 @@
         <li><a href="{{ url_for('stock_solo.basic') }}">基本情况</a></li>
         <li><a href="{{ url_for('stock_solo.finance_data_yc') }}">财务数据及分析</a></li>
 
-        <li><a href="#">投资价值分析</a></li>
+        <li class="active"><a href="#">投资价值分析</a></li>
         <li><a href="{{ url_for('stock_solo.compare') }}">股票对比分析</a></li>
-        <li><a href="#">图表分析</a></li>
     </ul>
 {% endblock %}
 
@@ -282,23 +281,15 @@
 {% endblock %}
 {% block toolbox %}
     <div class="container">
-        <div class="row">
-            <div style="float: left;margin: 20px">
+        <div style="height: 50px;">
+            <div style="height:25px;margin-top: 10px">>
+                <a style="width:50px;margin-left:10px;color: #0c0c0c">起始时间:</a><input size="16" type="text" value="2016-12-31" id="starttime" readonly class="form_datetime" style="background-color:white;width: 100px;margin-left: 10px">
+                <a style="width:50px;margin-left:10px;color: #0c0c0c">结束时间:</a><input size="16" type="text" value="2006-01-01" id="endtime" readonly class="form_datetime" style="background-color:white;width: 100px;margin-left: 10px">
                 <a style="width:50px;margin-left:10px;color: #0c0c0c">单位:</a>
-                <select class="form-control" id="unit">
+                <select style="background-color:white;width: 50px;margin-left: 10px" id="unit">
                     <option value="0">元</option>
                     <option value="1">百万</option>
                 </select>
-            </div>
-            <div style="float: left;margin: 20px">
-                <a style="width:50px;margin-left:10px;color: #0c0c0c">起始时间:</a><input size="16" type="text"
-                                                                                      value="2016-12-31" id="starttime"
-                                                                                      readonly class="form_datetime">
-            </div>
-            <div style="float: left;margin: 20px">
-                <a style="width:50px;margin-left:10px;color: #0c0c0c">结束时间:</a><input size="16" type="text"
-                                                                                      value="2006-01-01" id="endtime"
-                                                                                      readonly class="form_datetime">
             </div>
         </div>
     </div>
@@ -812,10 +803,8 @@
                     {   // 这个dataZoom组件，默认控制x轴。
                         type: 'slider', // 这个 dataZoom 组件是 slider 型 dataZoom 组件
                         xAxisIndex: [0],
+                        height: 20,
                         startValue: "2016年Q4",
-                        {#   start: 0,      // 左边在 10% 的位置。
-                            end: 100,         // 右边在 60% 的位置。
-                            top: '93%'#}
                         endValue: "2006年Q4",
                         filterMode: 'filter',
                     },
