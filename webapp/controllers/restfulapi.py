@@ -91,14 +91,15 @@ def get_ajax_compare():
 
     return jsonify(data)
 
-
 @api_blueprint.route('/get_ajax', methods=('GET', 'POST'))
 def get_ajax():
     code = request.form.get('code')
     date = request.form.getlist('date[]')
     indexes = request.form.getlist('selected[]')
+
     the_year_start = int(date[0][0:4] + '1231')
     the_year_end = int(date[1][0:4] + '1231')
+
     data = {}
     year_list = []
     year_list1 = []
@@ -107,8 +108,10 @@ def get_ajax():
         year_list.append(the_year)
         year_list1.append(the_year / 10000)
         the_year = the_year - 10000
+
     result1 = finance_basics.query.filter_by(trade_code=code).first_or_404()
     data['the_name'] = result1.sec_name
+
     for index in indexes:
         results = []
         for year in year_list:
@@ -232,8 +235,9 @@ def market_status1():
     endtime = request.args.get('endtime')
     indexes = request.args.getlist('indexes[]')
 
-    min = code + '101000'
-    max = code + '990000'
+    db_engine = create_engine('mysql://root:0000@localhost/test?charset=utf8')
+    Session = sessionmaker(bind=db_engine)
+    session = Session()
 
     Filters = {
         finance_basics_add.trade_code == '000002',
@@ -241,34 +245,46 @@ def market_status1():
         finance_basics_add.the_year <= endtime,
     }
     years = finance_basics_add.query.filter(*Filters).all()
-
-    a = {
-        cns_stock_industry.industry_gicscode_4 <= max,
-        cns_stock_industry.industry_gicscode_4 >= min,
-    }
-    rs = cns_stock_industry.query.filter(*a).all()
-
     year_list = []
     for year in years:
         year_list.append(year.the_year)
+
+    rs = session.query(func.sum(finance_basics_add.tot_oper_rev).label("tot_oper_rev"),
+                       func.sum(finance_basics_add.net_profit_is).label("net_profit_is"),
+                       func.sum(finance_basics_add.wgsd_net_inc).label("wgsd_net_inc"),
+                       func.sum(finance_basics_add.tot_assets).label("tot_assets"),
+                       func.sum(finance_basics_add.tot_liab).label("tot_liab"),
+                       func.sum(finance_basics_add.wgsd_com_eq).label("wgsd_com_eq"),
+                       func.sum(finance_basics_add.operatecashflow_ttm2).label("operatecashflow_ttm2"),
+                       func.sum(finance_basics_add.investcashflow_ttm2).label("investcashflow_ttm2"),
+                       func.sum(finance_basics_add.financecashflow_ttm2).label("financecashflow_ttm2"),
+                       func.sum(finance_basics_add.cashflow_ttm2).label("cashflow_ttm2"),
+                       cns_department_industry.industry_gics_1.label("industry_gics_1")).filter(
+        finance_basics_add.trade_code == cns_stock_industry.trade_code).filter(
+        cns_stock_industry.industry_gicscode_4 == cns_sub_industry.industry_gicscode_4).filter(
+        cns_sub_industry.belong == cns_industry.industry_gicscode_3).filter(
+        cns_industry.belong == cns_group_industry.industry_gicscode_2).filter(
+        cns_group_industry.belong == cns_department_industry.industry_gicscode_1).filter(
+        cns_department_industry.industry_gicscode_1 == code).group_by(
+        finance_basics_add.the_year).all()
+    rs_list = range(len(rs))
+    rs_list.reverse()
 
     for index in indexes:
         exec (index + "_list=[]")
         exec ("my" + index + "=0")
 
-    for y in year_list:
-        for r in rs:
-            result = finance_basics_add.query.filter_by(the_year=y, trade_code=r.trade_code).first_or_404()
-            for index in indexes:
-                if eval("result." + index) is not None:
-                    exec ("my" + index + "+= float((result." + index + ")/100000000)")
-                else:
-                    exec ("my" + index + "+= 0 ")
+    for x in rs_list:
         for index in indexes:
+            if eval("rs[x]." + index) is not None:
+                exec ("my" + index + "= float((rs[x]." + index + ")/100000000)")
+            else:
+                exec ("my" + index + "= 0 ")
             exec (index + "_list.append(my" + index + ")")
 
     data['the_year'] = year_list
     data['indexes'] = indexes
+    data['the_code'] = code
 
     for index in indexes:
         exec ("data['" + index + "']=" + index + "_list")
@@ -284,8 +300,9 @@ def market_status2():
     endtime = request.args.get('endtime')
     indexes = request.args.getlist('indexes[]')
 
-    min = code + '1000'
-    max = code + '9900'
+    db_engine = create_engine('mysql://root:0000@localhost/test?charset=utf8')
+    Session = sessionmaker(bind=db_engine)
+    session = Session()
 
     Filters = {
         finance_basics_add.trade_code == '000002',
@@ -293,13 +310,6 @@ def market_status2():
         finance_basics_add.the_year <= endtime,
     }
     years = finance_basics_add.query.filter(*Filters).all()
-
-    a = {
-        cns_stock_industry.industry_gicscode_4 <= max,
-        cns_stock_industry.industry_gicscode_4 >= min,
-    }
-    rs = cns_stock_industry.query.filter(*a).all()
-
     year_list = []
     for year in years:
         year_list.append(year.the_year)
@@ -308,19 +318,36 @@ def market_status2():
         exec (index + "_list=[]")
         exec ("my" + index + "=0")
 
-    for y in year_list:
-        for r in rs:
-            result = finance_basics_add.query.filter_by(the_year=y, trade_code=r.trade_code).first_or_404()
-            for index in indexes:
-                if eval("result." + index) is not None:
-                    exec ("my" + index + "+= float((result." + index + ")/100000000)")
-                else:
-                    exec ("my" + index + "+= 0 ")
+    rs = session.query(func.sum(finance_basics_add.tot_oper_rev).label("tot_oper_rev"),
+                       func.sum(finance_basics_add.net_profit_is).label("net_profit_is"),
+                       func.sum(finance_basics_add.wgsd_net_inc).label("wgsd_net_inc"),
+                       func.sum(finance_basics_add.tot_assets).label("tot_assets"),
+                       func.sum(finance_basics_add.tot_liab).label("tot_liab"),
+                       func.sum(finance_basics_add.wgsd_com_eq).label("wgsd_com_eq"),
+                       func.sum(finance_basics_add.operatecashflow_ttm2).label("operatecashflow_ttm2"),
+                       func.sum(finance_basics_add.investcashflow_ttm2).label("investcashflow_ttm2"),
+                       func.sum(finance_basics_add.financecashflow_ttm2).label("financecashflow_ttm2"),
+                       func.sum(finance_basics_add.cashflow_ttm2).label("cashflow_ttm2"),
+                       cns_group_industry.industry_gics_2.label("industry_gics_2")).filter(
+        finance_basics_add.trade_code == cns_stock_industry.trade_code).filter(
+        cns_stock_industry.industry_gicscode_4 == cns_sub_industry.industry_gicscode_4).filter(
+        cns_sub_industry.belong == cns_industry.industry_gicscode_3).filter(
+        cns_industry.belong == cns_group_industry.industry_gicscode_2).filter(
+        cns_group_industry.industry_gicscode_2 == code).group_by(finance_basics_add.the_year).all()
+    rs_list = range(len(rs))
+    rs_list.reverse()
+
+    for x in rs_list:
         for index in indexes:
+            if eval("rs[x]." + index) is not None:
+                exec ("my" + index + "= float((rs[x]." + index + ")/100000000)")
+            else:
+                exec ("my" + index + "= 0 ")
             exec (index + "_list.append(my" + index + ")")
 
     data['the_year'] = year_list
     data['indexes'] = indexes
+    data['the_code'] = code
 
     for index in indexes:
         exec ("data['" + index + "']=" + index + "_list")
@@ -336,8 +363,9 @@ def market_status3():
     endtime = request.args.get('endtime')
     indexes = request.args.getlist('indexes[]')
 
-    min = code + '09'
-    max = code + '90'
+    db_engine = create_engine('mysql://root:0000@localhost/test?charset=utf8')
+    Session = sessionmaker(bind=db_engine)
+    session = Session()
 
     Filters = {
         finance_basics_add.trade_code == '000002',
@@ -345,13 +373,6 @@ def market_status3():
         finance_basics_add.the_year <= endtime,
     }
     years = finance_basics_add.query.filter(*Filters).all()
-
-    a = {
-        cns_stock_industry.industry_gicscode_4 <= max,
-        cns_stock_industry.industry_gicscode_4 >= min,
-    }
-    rs = cns_stock_industry.query.filter(*a).all()
-
     year_list = []
     for year in years:
         year_list.append(year.the_year)
@@ -360,21 +381,35 @@ def market_status3():
         exec (index + "_list=[]")
         exec ("my" + index + "=0")
 
-    for y in year_list:
-        i = 0
-        for r in rs:
-            i = i + 1
-            result = finance_basics_add.query.filter_by(the_year=y, trade_code=r.trade_code).first_or_404()
-            for index in indexes:
-                if eval("result." + index) is not None:
-                    exec ("my" + index + "+= float((result." + index + ")/100000000)")
-                else:
-                    exec ("my" + index + "+= 0 ")
+    rs = session.query(func.sum(finance_basics_add.tot_oper_rev).label("tot_oper_rev"),
+                       func.sum(finance_basics_add.net_profit_is).label("net_profit_is"),
+                       func.sum(finance_basics_add.wgsd_net_inc).label("wgsd_net_inc"),
+                       func.sum(finance_basics_add.tot_assets).label("tot_assets"),
+                       func.sum(finance_basics_add.tot_liab).label("tot_liab"),
+                       func.sum(finance_basics_add.wgsd_com_eq).label("wgsd_com_eq"),
+                       func.sum(finance_basics_add.operatecashflow_ttm2).label("operatecashflow_ttm2"),
+                       func.sum(finance_basics_add.investcashflow_ttm2).label("investcashflow_ttm2"),
+                       func.sum(finance_basics_add.financecashflow_ttm2).label("financecashflow_ttm2"),
+                       func.sum(finance_basics_add.cashflow_ttm2).label("cashflow_ttm2"),
+                       cns_industry.industry_gics_3.label("industry_gics_3")).filter(
+        finance_basics_add.trade_code == cns_stock_industry.trade_code).filter(
+        cns_stock_industry.industry_gicscode_4 == cns_sub_industry.industry_gicscode_4).filter(
+        cns_sub_industry.belong == cns_industry.industry_gicscode_3).filter(
+        cns_industry.industry_gicscode_3 == code).group_by(finance_basics_add.the_year).all()
+    rs_list = range(len(rs))
+    rs_list.reverse()
+
+    for x in rs_list:
         for index in indexes:
+            if eval("rs[x]." + index) is not None:
+                exec ("my" + index + "= float((rs[x]." + index + ")/100000000)")
+            else:
+                exec ("my" + index + "= 0 ")
             exec (index + "_list.append(my" + index + ")")
 
     data['the_year'] = year_list
     data['indexes'] = indexes
+    data['the_code'] = code
 
     for index in indexes:
         exec ("data['" + index + "']=" + index + "_list")
@@ -390,18 +425,16 @@ def market_status4():
     endtime = request.args.get('endtime')
     indexes = request.args.getlist('indexes[]')
 
+    db_engine = create_engine('mysql://root:0000@localhost/test?charset=utf8')
+    Session = sessionmaker(bind=db_engine)
+    session = Session()
+
     Filters = {
         finance_basics_add.trade_code == '000002',
         finance_basics_add.the_year >= starttime,
         finance_basics_add.the_year <= endtime,
     }
     years = finance_basics_add.query.filter(*Filters).all()
-
-    a = {
-        cns_stock_industry.industry_gicscode_4 == code,
-    }
-    rs = cns_stock_industry.query.filter(*a).all()
-
     year_list = []
     for year in years:
         year_list.append(year.the_year)
@@ -410,19 +443,35 @@ def market_status4():
         exec (index + "_list=[]")
         exec ("my" + index + "=0")
 
-    for y in year_list:
-        for r in rs:
-            result = finance_basics_add.query.filter_by(the_year=y, trade_code=r.trade_code).first_or_404()
-            for index in indexes:
-                if eval("result." + index) is not None:
-                    exec ("my" + index + "+= float((result." + index + ")/100000000)")
-                else:
-                    exec ("my" + index + "+= 0 ")
+    rs = session.query(func.sum(finance_basics_add.tot_oper_rev).label("tot_oper_rev"),
+                       func.sum(finance_basics_add.net_profit_is).label("net_profit_is"),
+                       func.sum(finance_basics_add.wgsd_net_inc).label("wgsd_net_inc"),
+                       func.sum(finance_basics_add.tot_assets).label("tot_assets"),
+                       func.sum(finance_basics_add.tot_liab).label("tot_liab"),
+                       func.sum(finance_basics_add.wgsd_com_eq).label("wgsd_com_eq"),
+                       func.sum(finance_basics_add.operatecashflow_ttm2).label("operatecashflow_ttm2"),
+                       func.sum(finance_basics_add.investcashflow_ttm2).label("investcashflow_ttm2"),
+                       func.sum(finance_basics_add.financecashflow_ttm2).label("financecashflow_ttm2"),
+                       func.sum(finance_basics_add.cashflow_ttm2).label("cashflow_ttm2"),
+                       cns_sub_industry.industry_gicscode_4,
+                       cns_sub_industry.industry_gics_4.label("industry_gics_4")).filter(
+        finance_basics_add.trade_code == cns_stock_industry.trade_code).filter(
+        cns_stock_industry.industry_gicscode_4 == cns_sub_industry.industry_gicscode_4).filter(
+        cns_sub_industry.industry_gicscode_4 == code).group_by(finance_basics_add.the_year).all()
+    rs_list = range(len(rs))
+    rs_list.reverse()
+
+    for x in rs_list:
         for index in indexes:
+            if eval("rs[x]." + index) is not None:
+                exec ("my" + index + "= float((rs[x]." + index + ")/100000000)")
+            else:
+                exec ("my" + index + "= 0 ")
             exec (index + "_list.append(my" + index + ")")
 
     data['the_year'] = year_list
     data['indexes'] = indexes
+    data['the_code'] = code
 
     for index in indexes:
         exec ("data['" + index + "']=" + index + "_list")

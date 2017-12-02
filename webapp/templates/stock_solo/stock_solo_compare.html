@@ -32,7 +32,7 @@
         <li><a href="{{ url_for('stock_solo.basic') }}">基本情况</a></li>
         <li><a href="{{ url_for('stock_solo.finance_data_yc') }}">财务数据及分析</a></li>
         <li><a href="{{ url_for('stock_solo.invest_value') }}">投资价值分析</a></li>
-        <li><a href="{{ url_for('stock_solo.compare') }}">股票对比分析</a></li>
+        <li class="active"><a href="{{ url_for('stock_solo.compare') }}">股票对比分析</a></li>
     </ul>
     <script>
         $('#menu li').click(function () {
@@ -205,7 +205,6 @@
 
 {% block scripts %}
     <script>
-
         var availableTags =
                 [{% for x in list_len %} <!--这里直接写range(list_len)不行，会在返回功能主页时出错"list_len is undefined"-->
                     {% for i in (0,1) %}
@@ -350,7 +349,6 @@
                 return '应付账款周转天数'
         }
 
-
         var color = new Array();
         var Data = new Array();
         var code_list = new Array();
@@ -373,8 +371,8 @@
                 },
                 dataType: 'json',
                 success: function (data) {
-                    $('#div_compare').append("<div style='width:auto'><span class='options' id='" + data.the_code + "'>"
-                            + data.the_code + "-" + data.the_name + "</span><div  id='div_" + code + "' style='height: 10px;width: 10px;float: right;background-color:" + color[code] + "'></div></div>")
+                    $('#div_compare').append("<div style='width:100%;height:auto;margin-top:5px;background-color:lightgray'><span class='options' id='" + data.the_code + "'>"
+                            + data.the_code + "-" + data.the_name + "</span><div  id='div_" + code + "' style='height: 10px;width: 10px;float:right;margin-right:5px;margin-top:5px;background-color:" + color[code] + "'></div></div>")
                 }
             })
 
@@ -413,11 +411,7 @@
             $('#fixTable').DataTable({
                 "info": false,
                 "processing": true,
-                {#                "scrollX": true,#}
                 "searching": true,
-                {#                "fixedColumns": { //固定列的配置项#}
-                {#                    "leftColumns": 1//固定左边第一列#}
-                {#                },#}
                 "language": {
                     "emptyTable": "没有数据",
                     "loadingRecords": "加载中…",
@@ -678,7 +672,6 @@
         function set_timepicker(start, end) {
             document.getElementById('ui3').value = start
             document.getElementById('ui4').value = end
-
         }
 
         function setcheckboxcolor(selectedindex, color) {
@@ -729,7 +722,6 @@
                 creattable(code_list, color, Uint, '2010', '2016')
                 createchart(code_list, color, Uint, '2010', '2016')
             }
-
             $("#ui3").datepicker({
                 changeYear: true,
                 dateFormat: 'yy',
@@ -753,7 +745,6 @@
                 showButtonPanel: true,
                 yearRange: "1991:2016",
                 onClose: function (dateText, inst) {
-                    {#                            var month = $("#ui-datepicker-div .ui-datepicker-month option:selected").val();//得到选中的月份值#}
                     var year = $("#ui-datepicker-div .ui-datepicker-year option:selected").val();//得到选中的年份值
                     $('#ui4').val(year + '-q4');//给input赋值，其中要对月值加1才是实际的月份
                     var unit = document.getElementById("unit").value;
@@ -891,9 +882,7 @@
                 myChart.clear()
             })
 
-        })
-        ;
-
+        });
 
     </script>
 {% endblock %}

@@ -51,7 +51,6 @@ def basic(data=""):
 @stocksolo_blueprint.route('/finance_data',methods=('GET','POST'))
 @stocksolo_blueprint.route('/finance_data/<string:data>',methods=('GET','POST'))
 @login_required
-
 def finance_data(data='000895'):
     data=data
     form = CodeForm()
@@ -63,14 +62,6 @@ def finance_data(data='000895'):
         stock = stock_basics.query.filter_by(sec_name=data).first_or_404()
     else:
         stock = stock_basics.query.filter_by(trade_code=data).first_or_404()
-
-    # form = CodeForm()
-    # if form.validate_on_submit():
-    #    trade_code = form.code.data
-    #    return redirect(url_for('stock_solo.finance_data',current_user=current_user,trade_code=trade_code))
-
-
-# connect database
     stock_list = []
     stock_source = stock_basics.query.all()
     for x in stock_source:
@@ -142,14 +133,6 @@ def finance_data_yc(data='000001'):
 @stocksolo_blueprint.route('/compare/<string:data>', methods=('GET', 'POST'))
 @login_required
 def compare():
-    # if session.has_key('stockcode'):
-    #     data = session['stockcode']
-    # else:
-    #     data = '000001'
-    # if (request.method == 'POST'):
-    #     stockcode=request.form.get("stockcode")
-    #     session['stockcode'] = stockcode
-    #     return redirect(url_for('stock_solo.finance_data_yc', current_user=current_user, stockcode=stockcode))
     return render_template("stock_solo/stock_solo_compare.html",current_user=current_user)
 
 @stocksolo_blueprint.route('/invest_value',methods=('GET','POST'))
@@ -165,17 +148,6 @@ def invest_value(data='000001'):
         stockcode=request.form.get("stockcode","000001")
         session['stockcode'] = stockcode
         return redirect(url_for('stock_solo.invest_value', current_user=current_user, data=stockcode))
-    # data = data
-    # form = CodeForm()
-    # if form.validate_on_submit():
-    #     data = form.code.data
-    #     # match = zhPattern.search(data)
-    #     return redirect(url_for('stock_solo.invest_value', current_user=current_user, data=data))
-    # match = zhPattern.search(data)
-    # if match:
-    #     stock = stock_basics.query.filter_by(sec_name=data).first_or_404()
-    # else:
-    #     stock = stock_basics.query.filter_by(trade_code=data).first_or_404()
     return render_template("stock_solo/finance_data.html",stockcode="\""+data+"\"")
 # # 设定年份数据
 #     year_list = []
