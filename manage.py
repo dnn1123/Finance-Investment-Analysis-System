@@ -14,6 +14,5 @@ manager.add_command("server", Server())
 def make_shell_context():
     return dict(app=app, db=db, users=users, roles=roles, finance_basics=finance_basics, stock_basics=stock_basics)
 
-
 if __name__ == "__main__":
     manager.run()
