@@ -1,10 +1,11 @@
 # coding=utf-8
 from flask import Blueprint, redirect, url_for, flash, render_template, current_app
 from webapp.forms import LoginForm, RegisterForm
-from webapp.models import users, db
+from webapp.models import users, db,Permission
 from flask_login import login_user, login_required, logout_user, current_user
 from flask_principal import Identity, AnonymousIdentity, identity_changed
-
+from webapp.decorators import admin_required,permission_required
+from webapp.models import *
 main_blueprint = Blueprint(
     'main',
     __name__,
@@ -30,8 +31,20 @@ def login():
             identity=Identity(user.username)
         )
         flash("You have been logged in", category="success")
-        return redirect(url_for('stock.home'))
+        return redirect(url_for('stock.home',usersname=user.username))
     return render_template('main/login.html', form=form, register_form=register_form)
+
+
+@main_blueprint.route('/personal/', methods=['GET', 'POST'])
+def personal():
+    user = roles1.query.filter_by(user_name=current_user.username).first()
+    # rolename = Role.query.filter_by(id=user.permissions).first()
+    role = Role.query.filter_by(id=user.permissions).first()
+    rolename = role.description
+    return render_template('personal/person.html',user=user,rolename=rolename)
+
+
+
 
 
 @main_blueprint.route('/register', methods=['GET', 'POST'])
@@ -61,3 +74,5 @@ def logout():
         identity=AnonymousIdentity()
     )
     return redirect(url_for('main.login'))
+
+
