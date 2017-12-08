@@ -43,9 +43,10 @@ def personal():
     rolename = role.description
     return render_template('personal/person.html',user=user,rolename=rolename)
 
-
-
-
+@main_blueprint.route('/analysis/', methods=['GET', 'POST'])
+@login_required
+def analysis():
+    return render_template('personal/analysis.html', current_user=current_user)
 
 @main_blueprint.route('/register', methods=['GET', 'POST'])
 def register():

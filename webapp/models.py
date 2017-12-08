@@ -93,6 +93,30 @@ class favorite_code(db.Model):
     user_name = db.Column(db.String(20), db.ForeignKey('users.username'))
     code = db.Column(db.String(10))
 
+class history(db.Model):
+    __bind_key__ = 'users_info'
+    __tablename__ = 'history'
+    ID = db.Column(db.Integer, primary_key=True)
+    users = db.Column(db.String(20), db.ForeignKey('users.username'))
+    code = db.Column(db.String(10))
+    position=db.Column(db.String(10))
+    price=db.Column(db.Numeric)
+    amount=db.Column(db.Integer)
+    value = db.Column(db.Numeric)
+    time=db.Column(db.DateTime())
+
+class investment_portfolio(db.Model):
+    __bind_key__ = 'users_info'
+    __tablename__ = 'investment_portfolio'
+    id = db.Column(db.Integer, primary_key=True)
+    user_name = db.Column(db.String(20), db.ForeignKey('users.username'))
+    code = db.Column(db.String(10))
+    num=db.Column(db.Integer)
+class users_finance(db.Model):
+    __bind_key__ = 'users_info'
+    __tablename__ = 'users_finance'
+    users = db.Column(db.String(20),db.ForeignKey('users.username'),primary_key=True)
+    cost=db.Column(db.Numeric)
 
 class Role(db.Model):
     __bind_key__ = 'users_info'

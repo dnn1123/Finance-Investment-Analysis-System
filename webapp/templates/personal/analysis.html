@@ -1,0 +1,377 @@
+{% extends "stock_base.html" %}
+{% block current_user %}
+    当前用户：{{ current_user.username }}
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+	<div class="row clearfix">
+		<div class="col-md-6 column">
+			<div class="panel panel-info">
+				<div class="panel-heading">
+					<h3 class="panel-title">
+						添加交易
+					</h3>
+				</div>
+				<div class="panel-body">
+					<button type="button" class="btn btn-default btn-info" data-toggle="modal" data-target="#buyStock">买入</button>&nbsp;&nbsp;
+                    <button type="button" class="btn btn-default btn-info" data-toggle="modal" data-target="#sellStock">卖出</button>&nbsp;&nbsp;
+                    <a href="#history" data-toggle="modal">查看交易记录</a>&nbsp;&nbsp;
+                    <a href="#clear" data-toggle="modal">清空投资组合</a>
+				</div>
+			</div>
+
+			<div class="panel panel-info" style="height: 450px">
+				<div class="panel-heading">
+					<h3 class="panel-title">
+						当前持仓
+					</h3>
+				</div>
+				<div class="panel-body">
+					<table id="positiontable" class="row-border hover order-column" cellspacing="0" width="100%"  >
+                        <thead><tr><td>股票代码</td><td>持有数量</td><td>现价</td></tr></thead>
+                        <tbody></tbody>
+                    </table>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-6 column" >
+			<div class="panel panel-info"style="height: 575px">
+				<div class="panel-heading">
+					<h3 class="panel-title">
+						投资组合分析
+					</h3>
+				</div>
+				<div class="panel-body" >
+                    <div>
+                        <h4>当前投资组合成本</h4>
+                        <div id="costdisplay" style="text-align: center"></div>
+                    </div>
+                    <div><h4>当前盈亏</h4>
+                        <div id="profitdisplay" style="text-align: center"></div>
+                    </div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+    <div class="modal fade" id="buyStock" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title" id="myModalLabel">买入</h4>
+            </div>
+            <form role="form" id="buyform">
+            <div class="modal-body">
+            <div>
+                  <div class="form-group form-inline">
+				  <label>日期：</label>
+				  <input type="text" id="datepicker1" name="date" value="" class="date-input form-control">
+                  </div>
+                    <div class="form-group form-inline">
+				  <label>股票：</label>
+				  <input type="text" name="codeName" class="form-control" title="代码/拼音/名称" style="color: rgb(153, 153, 153);">
+                    </div>
+                    <div class="form-group form-inline">
+                        <label>价格：</label>
+				  <input type="text" name="price" class="form-control" id="buy_price">元
+                    </div>
+                    <div class="form-group form-inline" >
+				  <label>数量：</label>
+				  <input type="text" name="amount" class="form-control">股
+                    </div>
+                    <div class="form-group form-inline">
+                  <label>投入金额：</label>
+                  <input type="text" name="totalSum" class="form-control">元
+                    </div>
+{#				  <label style="vertical-align:top;">笔记：</label>
+				  <textarea name="memo"></textarea>#}
+			  </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" onclick="buystock()">确认</button>
+            </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+     <div class="modal fade" id="sellStock" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title" id="myModalLabel">卖出</h4>
+            </div>
+            <form role="form" id="sellform">
+            <div class="modal-body">
+            <div>
+                  <div class="form-group form-inline">
+				  <label>日期：</label>
+				  <input type="text" id="datepicker1" name="date" value="" class="date-input form-control">
+                  </div>
+                    <div class="form-group form-inline">
+				  <label>股票：</label>
+				  <input type="text" name="codeName" class="form-control" title="代码/拼音/名称" style="color: rgb(153, 153, 153);">
+                    </div>
+                    <div class="form-group form-inline">
+                        <label>价格：</label>
+				  <input type="text" name="price" class="form-control" id="buy_price">元
+                    </div>
+                    <div class="form-group form-inline" >
+				  <label>数量：</label>
+				  <input type="text" name="amount" class="form-control">股
+                    </div>
+                    <div class="form-group form-inline">
+                  <label>赎回金额：</label>
+                  <input type="text" name="totalSum" class="form-control">元
+                    </div>
+{#				  <label style="vertical-align:top;">笔记：</label>
+				  <textarea name="memo"></textarea>#}
+			  </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" onclick="sellstock()">确认</button>
+            </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+    <!-- 模态框（Modal） -->
+<div class="modal fade" id="history" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title" id="myModalLabel">交易记录</h4>
+            </div>
+            <div class="modal-body" style="max-height: 400px;overflow:auto;overflow-x:hidden;">
+                <table class="table table-hover table-condensed">
+	<thead>
+		<tr>
+			<th>股票代码</th>
+			<th>交易方向</th>
+			<th>单价</th>
+            <th>数量</th>
+            <th>总金额</th>
+            <th>时间</th>
+		</tr>
+	</thead>
+	<tbody id="tablecontent">
+
+	</tbody>
+</table>
+            </div>
+            <div class="modal-footer" >
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+<div class="modal fade" id="clear" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title" id="myModalLabel">清空？</h4>
+            </div>
+            <div class="modal-body" style="max-height: 400px;overflow:auto;overflow-x:hidden;">
+                你确认要清空投资组合么？ 这将删除所有的交易记录并清空持仓数据！此操作不可恢复。
+            </div>
+            <div class="modal-footer" >
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" onclick="clearall()">确认</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+
+<script>
+    var profit=0
+$(".date-input").datetimepicker({
+    format: 'yyyy-mm-dd ',
+    minView: 3,
+    autoclose: true,
+    pickerPosition: 'bottom-right'
+        });
+$(document).ready(function () {
+    getposition()
+    displaycp()
+})
+
+
+{#$.ajax({
+    type: 'GET',
+    url: '{{url_for("restfulapi.finance_data")}}',
+    data: {},
+    dataType: 'json',//希望服务器返回json格式的数据
+    success: function (data) {
+    }
+})#}
+function buystock() {
+            $.ajax({
+            //几个参数需要注意一下
+                type: "POST",//方法类型
+                dataType: "json",//预期服务器返回的数据类型
+                url: "{{ url_for("restfulapi.buystock") }}" ,//url
+                data: $('#buyform').serialize(),
+                success: function (result) {
+                    $(".modal").modal('hide');
+                    document.getElementById("buyform").reset()
+                    alert(result.result)
+                    getposition()
+                },
+                error : function() {
+                    alert("异常！");
+                }
+            });
+        }
+function sellstock() {
+            $.ajax({
+            //几个参数需要注意一下
+                type: "POST",//方法类型
+                dataType: "json",//预期服务器返回的数据类型
+                url: "{{ url_for("restfulapi.sellstock") }}" ,//url
+                data: $('#sellform').serialize(),
+                success: function (result) {
+                    $(".modal").modal('hide');
+                    document.getElementById("sellform").reset()
+                    alert(result.result)
+                    getposition()
+                },
+                error : function() {
+                    alert("异常！");
+                }
+            });
+        }
+         var mydatatb = $('#positiontable').DataTable({
+                "paging": false,
+                "info": false,
+                "processing": true,
+                "scrollY": true,
+                "searching": true,
+                "language": {
+                    "emptyTable": "没有数据",
+                    "loadingRecords": "加载中…",
+                    "processing": "查询中…",
+                    "search": "检索:",
+                    "lengthMenu": "每页 _MENU_ 条",
+                    "zeroRecords": "没有数据",
+                    "paginate": {
+                        "first": "第一页",
+                        "last": "最后一页",
+                        "next": "",
+                        "previous": ""
+                    },
+                    "info": "第 _PAGE_ 页 / 总 _PAGES_ 页",
+                    "infoEmpty": "没有数据",
+                    "infoFiltered": "(过滤总件数 _MAX_ 条)"
+                }
+            });
+function getposition() {
+    mydatatb.rows().remove().draw()
+    profit=0
+    $.ajax({
+    type: 'GET',
+    url: '{{url_for("restfulapi.position_data")}}',
+    data: {},
+    dataType: 'json',//希望服务器返回json格式的数据
+    success: function (result) {
+        if (result.length !=0){
+            for (i=0;i<result.length;i++){
+                getrtlast(result[i].code,result[i].num)
+            }
+            displaycp()
+        }
+    }
+})
+}
+function getrtlast(code_num,amount) {
+    $.ajax({
+        type: 'GET',
+        url: '{{url_for("restfulapi.realtime_quotes")}}',
+        data: {"code": code_num},
+        dataType: 'json',//希望服务器返回json格式的数据
+        success: function (result) {
+            console.log(profit)
+            profit+=amount*result.rtlast
+            console.log(profit)
+            addrow(code_num,amount,result.rtlast)
+        }
+    })
+}
+function addrow(code,num,rt) {
+    var rowNode = mydatatb
+                        .row.add([code,num,rt])
+                        .draw()
+                        .node();
+}
+
+$('#history').on('show.bs.modal', function () {
+    dict={"buy":"买入","sell":"卖出"}
+ $.ajax({
+        type: 'GET',
+        url: '{{url_for("restfulapi.history_data")}}',
+        data: {},
+        dataType: 'json',//希望服务器返回json格式的数据
+        success: function (result) {
+            if (result.length !=0){
+                html=""
+            for (i=0;i<result.length;i++){
+                html+= '<tr>'
+                html+='<td>'+result[i].code+'</td>'
+                html+='<td>'+dict[result[i].position]+'</td>'
+                html+='<td>'+result[i].price+'</td>'
+                html+='<td>'+result[i].amount+'</td>'
+                html+='<td>'+result[i].value+'</td>'
+                html+='<td>'+result[i].time+'</td>'
+                html+='</tr>'
+            }
+            $("#tablecontent").html(html)
+        }
+        else {
+                $("#tablecontent").html('<div>无历史记录</div>')
+            }
+
+        }
+    })
+})
+function displaycp() {
+    $.ajax({
+        type: 'GET',
+        url: '{{url_for("restfulapi.getcost")}}',
+        data: {},
+        dataType: 'json',//希望服务器返回json格式的数据
+        success: function (result) {
+            $("#costdisplay").html('<p class="text-primary" style="font-size: 25px">'+ result.cost+'元</p>')
+            displayprofit(result.cost)
+        }
+    })
+}
+function displayprofit(cost) {
+    $("#profitdisplay").html('<p class="text-primary" style="font-size: 25px">'+(profit-cost)+'元</p>')
+}
+function clearall() {
+    $.ajax({
+        type: 'GET',
+        url: '{{url_for("restfulapi.clearall")}}',
+        data: {},
+        dataType: 'json',//希望服务器返回json格式的数据
+        success: function (result) {
+            alert(result.result)
+            window.location.reload()
+        }
+    })
+}
+</script>
+
+{% endblock %}
