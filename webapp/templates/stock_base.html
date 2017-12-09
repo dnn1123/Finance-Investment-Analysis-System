@@ -142,12 +142,14 @@
                     </a>
                     <ul class="dropdown-menu">
                         <li><a href="#">设置</a></li>
-                        <li><a href="#">其他</a></li>
+                        <li>
+                            <a href="{{ url_for('main.personal') }}">个人信息</a>
+                        </li>
                         <li class="divider"></li>
                         <li><a href="{{ url_for('main.logout') }}">注销退出</a></li>
                     </ul>
                 </li>
-                <li><a href="/stock">返回主页</a></li>
+                <li><a href="{{ url_for('stock.home') }}">返回主页</a></li>
             </ul>
         </div>
     </div>
@@ -162,6 +164,8 @@
 <SCRIPT Language=VBScript><!--
 
 //-->
+
+
 
 
 </SCRIPT>

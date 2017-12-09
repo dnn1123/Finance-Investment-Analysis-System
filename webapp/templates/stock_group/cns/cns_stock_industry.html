@@ -22,6 +22,7 @@
 			$(document).ready(function() {
 				$("#fixTable").DataTable({
                     "info": false,
+                    "ordering":false,
                 "processing": true,
                 "scrollY": "95%",
                     "scrollX": true,
@@ -30,6 +31,13 @@
                 "fixedColumns": { //固定列的配置项
                     "leftColumns": 3//固定左边第一列
                 },
+                "columnDefs": [ {
+                    "targets": 1,
+                    "render": function ( data, type, row ) {
+                        html={{ url_for('stock_solo.basic') }}
+                    return '<a href="'+html+row[0]+'">' + data + '</a>';
+                }
+                } ],
                 "language": {
                     "emptyTable": "没有数据",
                     "loadingRecords": "加载中…",
@@ -46,7 +54,7 @@
                     "info": "第 _PAGE_ 页 / 总 _PAGES_ 页",
                     "infoEmpty": "没有数据",
                     "infoFiltered": "(过滤总件数 _MAX_ 条)"
-                }
+                },
                 })
 			});
     </script>
@@ -179,49 +187,29 @@
             <td>证券代码</td>
             <td>证券名称</td>
             <td>上市时间</td>
-            <td>
+            <td id="c1">
                 部门
-                <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown">
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#department_industry">
                     <span class="caret"></span>
                 </button>
-                <ul class="dropdown-menu" role="menu">
-                    <li data-toggle="modal" data-target="#department_industry"><a href="#">筛选</a></li>
-                    <li class="divider"></li>
-                    <li><a href="#">修改</a></li>
-                </ul>
             </td>
             <td>
                 行业组
-                <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown">
+                <button type="button" class="btn btn-primary " data-toggle="modal" data-target="#group_industry">
                     <span class="caret"></span>
                 </button>
-                <ul class="dropdown-menu" role="menu">
-                    <li data-toggle="modal" data-target="#group_industry"><a href="#">筛选</a></li>
-                    <li class="divider"></li>
-                    <li><a href="#">修改</a></li>
-                </ul>
             </td>
             <td>
                 行业
-                <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown">
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#industry_why">
                     <span class="caret"></span>
                 </button>
-                <ul class="dropdown-menu" role="menu">
-                    <li data-toggle="modal" data-target="#industry_why"><a href="#">筛选</a></li> <!--不能使用industry-->
-                    <li class="divider"></li>
-                    <li><a href="#">修改</a></li>
-                </ul>
             </td>
             <td>
                 子行业
-                <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown">
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#sub_industry">
                     <span class="caret"></span>
                 </button>
-                <ul class="dropdown-menu" role="menu">
-                    <li data-toggle="modal" data-target="#sub_industry"><a href="#">筛选</a></li>
-                    <li class="divider"></li>
-                    <li><a href="#">修改</a></li>
-                </ul>
             </td>
             <td>主营业务</td>
             <td>所在区域</td>
@@ -251,7 +239,8 @@
                 </td>
                 <td style="border: none;">
                     {{ result[x][0].business[:40] }}
-                    <a href="{{ url_for('stock_group.cns_business_detail',trade_code=result[x][0].trade_code) }}">更多</a> <!--跳转显示详情-->
+{#                    <a href="{{ url_for('stock_group.cns_business_detail',trade_code=result[x][0].trade_code) }}">更多</a> <!--跳转显示详情-->#}
+                    <a href="#" class="small-box-footer detaillink" id="{{ result[x][0].trade_code }}" data-toggle="modal" data-target="#myModal_detail" onclick="stockcode=this.id">更多</a>
                 </td>
                 <td style="border: none;">{{ result[x][0].province }}</td>
                 <td style="border: none;">{{ result[x][0].city }}</td>
@@ -271,7 +260,27 @@
         {% endfor %}
     </tbody>
 </table>
+       <div class="modal fade" id="myModal_detail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        详情
+                    </h4>
+                </div>
+
+                <div class="modal-body" style="height: auto;">
+                    <div id="details"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">返回
+                    </button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
     </div>
+
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -304,6 +313,7 @@
 
             </div><!-- /.modal-content -->
         </div><!-- /.modal -->
+    </div>
     <script>
     $('#myModal').on('show.bs.modal', function () {
         showgics1()
@@ -415,6 +425,22 @@
             });
 
         }
+        $('#myModal_detail').on('show.bs.modal', function () {
+        $.ajax({
+                url :  '{{url_for("restfulapi.cns_business_detail")}}', //所需要的列表接口地址
+                type : "get",
+                dataType : "html",
+                data:{"trade_code":stockcode
+                },
+                success : function(result) {
+                   var html=result;
+                   $("#details").html(html)
+                }
+            });
+
+
+  // 执行一些动作...
+})
     </script>
 {% endblock %}
 

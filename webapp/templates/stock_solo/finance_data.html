@@ -280,22 +280,30 @@
     <div id="mytable" style="width: auto;height:60%;margin-left:20px"></div>
 {% endblock %}
 {% block toolbox %}
-    <div class="container">
-        <div style="height: 50px;">
-            <div style="height:25px;margin-top: 10px">>
-                <a style="width:50px;margin-left:10px;color: #0c0c0c">起始时间:</a><input size="16" type="text" value="2016-12-31" id="starttime" readonly class="form_datetime" style="background-color:white;width: 100px;margin-left: 10px">
-                <a style="width:50px;margin-left:10px;color: #0c0c0c">结束时间:</a><input size="16" type="text" value="2006-01-01" id="endtime" readonly class="form_datetime" style="background-color:white;width: 100px;margin-left: 10px">
+    <div style="height: 50px;">
+        <div style="height:25px;margin-top: 10px">
+                <a style="width:50px;margin-left:10px;color: #0c0c0c">起始时间:</a><input size="16" type="text"
+                                                                                      value="2016-12-31" id="starttime"
+                                                                                      readonly class="form_datetime">
+                <a style="width:50px;margin-left:10px;color: #0c0c0c">结束时间:</a><input size="16" type="text"
+                                                                                      value="2006-01-01" id="endtime"
+                                                                                      readonly class="form_datetime">
                 <a style="width:50px;margin-left:10px;color: #0c0c0c">单位:</a>
-                <select style="background-color:white;width: 50px;margin-left: 10px" id="unit">
+                <select id="unit">
                     <option value="0">元</option>
                     <option value="1">百万</option>
                 </select>
-            </div>
+                <a style="width:50px;margin-left:10px;color: #0c0c0c">顺序:</a>
+                <select id="yearorder">
+                    <option value="desc">降序</option>
+                    <option value="asc">升序</option>
+                </select>
         </div>
     </div>
 
     <script>
         denominator = 1
+        orderflag="desc"
         var starttime = "20061231"
         var endtime = "20161231"
         $("select#unit").change(function () {
@@ -309,6 +317,21 @@
                 denominator = 1000000
                 CreateChart();
                 CreateTable();
+            }
+        });
+        $("select#yearorder").change(function () {
+            flag = $(this).val()
+            if (flag == "asc") {
+                orderflag="asc"
+                getdata();
+                CreateChart();
+                RequestTable();
+            }
+            if (flag == "desc") {
+                orderflag="desc"
+                getdata();
+                CreateChart();
+                RequestTable();
             }
         });
         $(".form_datetime").datetimepicker({
@@ -424,8 +447,11 @@
             'ev2': '整体价值估计（不含货币）',
             'employee': '雇员数量'
         };
-
-        $.ajax({
+        $(document).ready(function () {
+            getdata()
+        })
+        function getdata() {
+            $.ajax({
             type: 'GET',
             url: '{{url_for("restfulapi.finance_data")}}',
             data: {
@@ -436,8 +462,15 @@
             },
             dataType: 'json',//希望服务器返回json格式的数据
             success: function (data) {
+                if(orderflag=="asc"){
+                    for (var i = 0; i < data.indexes.length; i++) {
+                    eval("data." + data.indexes[i]).reverse();
+                    }
+                    data.the_year.reverse();
+                }
                 finance_results = data;
                 finance_results_t = data;
+
                 $.ajax({
                     type: 'GET',
                     url: '{{url_for("restfulapi.invest_data")}}',
@@ -449,6 +482,12 @@
                     },
                     dataType: 'json',//希望服务器返回json格式的数据
                     success: function (data) {
+                    if(orderflag=="asc"){
+                        for (var i = 0; i < data.indexes.length; i++) {
+                            eval("data." + data.indexes[i]).reverse();
+                        }
+                    data.the_year.reverse();
+                    }
                         invest_results = data;
                         invest_results_t = data;
                         CreateChart();
@@ -458,6 +497,8 @@
                 })
             }
         })
+        }
+
         //                dataSeries = [{name:'123',type:'line',data:[1,2,3,4,5,6,7]},{name:'345',type:'line',data:[7,6,5,4,3,2,1]}];
         function CreateChart() {
             dataSeries = [];
@@ -473,6 +514,7 @@
                         data: numfilter(eval("finance_results." + finance_results.indexes[i]))
                     };
                     dataSeries.push(temp);
+
                 }
             }
             for (var i = 0; i < invest_results.indexes.length; i++) {
@@ -803,9 +845,11 @@
                     {   // 这个dataZoom组件，默认控制x轴。
                         type: 'slider', // 这个 dataZoom 组件是 slider 型 dataZoom 组件
                         xAxisIndex: [0],
-                        height: 20,
-                        startValue: "2016年Q4",
-                        endValue: "2006年Q4",
+{#                        startValue: "2016年Q4",#}
+                        start: 0,      // 左边在 10% 的位置。
+                        end: 50,         // 右边在 60% 的位置。
+{#                            top: '93%',#}
+{#                        endValue: "2006年Q4",#}
                         filterMode: 'filter',
                     },
                     {   // 这个dataZoom组件，默认控制x轴。
@@ -846,7 +890,6 @@
         var finance_results_t;
         var invest_results_t;
         function RequestTable() {
-
             var opt = myChart.getOption();
             var dz = opt.dataZoom[0];
             $.ajax({
@@ -854,13 +897,19 @@
                 url: '{{url_for("restfulapi.finance_data")}}',
                 data: {
                     stockcode:{{ stockcode|safe }},
-                    starttime: opt.xAxis[0].data[dz.endValue],
-                    endtime: opt.xAxis[0].data[dz.startValue],
+                    starttime: parseInt(opt.xAxis[0].data[dz.startValue])<=parseInt(opt.xAxis[0].data[dz.endValue])?opt.xAxis[0].data[dz.startValue]:opt.xAxis[0].data[dz.endValue],
+                    endtime: parseInt(opt.xAxis[0].data[dz.startValue])>=parseInt(opt.xAxis[0].data[dz.endValue])?opt.xAxis[0].data[dz.startValue]:opt.xAxis[0].data[dz.endValue],
                     indexes: ['tot_oper_cost', 'tot_oper_rev', 'wgsd_net_inc', 'tot_assets', 'wgsd_com_eq', 'monetary_cap', 'operatecashflow_ttm2', 'investcashflow_ttm2']
                 },
                 dataType: 'json',//希望服务器返回json格式的数据
                 success: function (data) {
                     console.log(data)
+                    if(orderflag=="asc"){
+                    for (var i = 0; i < data.indexes.length; i++) {
+                    eval("data." + data.indexes[i]).reverse();
+                    }
+                    data.the_year.reverse();
+                }
                     finance_results_t = data;
                     $.ajax({
                         type: 'GET',
@@ -873,6 +922,12 @@
                         },
                         dataType: 'json',//希望服务器返回json格式的数据
                         success: function (data) {
+                            if(orderflag=="asc"){
+                    for (var i = 0; i < data.indexes.length; i++) {
+                    eval("data." + data.indexes[i]).reverse();
+                    }
+                    data.the_year.reverse();
+                }
                             invest_results_t = data;
                             CreateTable();
 
@@ -902,7 +957,7 @@
             var mydatatb = $('#temptable').DataTable({
                 "info": false,
                 "processing": true,
-                "scrollY": true,
+                "scrollX": true,
                 "searching": true,
                 "fixedColumns": { //固定列的配置项
                     "leftColumns": 1//固定左边第一列
