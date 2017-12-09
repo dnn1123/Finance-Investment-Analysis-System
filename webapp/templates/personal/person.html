@@ -125,58 +125,67 @@
     </style>
 {% endblock %}
 {% block body %}
-    <!--右侧固定导航-->
-    <div id="right-nav">
-        <div class="w">
-            <ul id="right-nav-list1">
-                <li><a id="test"><img src="/static/5_24.png"></a>
-                    <div>我的信息</div>
-                </li>
-            </ul>
-            {#            <ul id="right-nav-list2">#}
-            {#                <li><a><img src="img/public/5_28.png"></a>#}
-            {#                    <div>顶部</div>#}
-            {#                </li>#}
-            {#                <li><a><img src="img/public/5_30.png"></a>#}
-            {#                    <div>反馈</div>#}
-            {#                </li>#}
-            <!---->
-            <!--<li><a><img src="img/public/5_13.png"></a></li>-->
-            {#            </ul>#}
-        </div>
-    </div>
-    <!--右侧固定导航-->
-    <div id="div_personalinfo" class="divCollapse">
-        <div style="width: 100%;background-color:#d3d7d4;border-top-left-radius: 8px;">
-            <img style="margin-left: 1px;margin-bottom: 2px" src="/static/5_24.png">
-            <label style="color: white;font-size: large;margin: 1px;">个人信息</label></br>
-        </div>
-        <div>
-            <div class="img1"
-                 style="float:left;width: 100px;height: 100px;background-color: #d3d7d4;margin-top: 10px;margin-left: 10px">
-                {% if user.permissions==3 %}
-                    <img style="  width: 100%;height: 100%;margin-left: 1px;margin-bottom: 2px"
-                         src="/static/personal_img/visitor.png">
-                {% elif user.permissions==2 %}
-                    <img style="  width: 100%;height: 100%;margin-left: 1px;margin-bottom: 2px"
-                         src="/static/personal_img/trader.png">
-                {% elif user.permissions==1 %}
-                    <img style="  width: 100%;height: 100%;margin-left: 1px;margin-bottom: 2px"
-                         src="/static/personal_img/administrator.png">
-                {% endif %}
-            </div>
-            <a style="display:block;color: black;float: left;margin-left: 10px;margin-top: 20px;font-size: 20px">用户名：{{ user.user_name }}</a></br>
-            <a style="display:block;float:left;color: black;margin-left: 10px;margin-top: 10px;font-size: 20px">身份：{{ rolename }}</a>
-            {% if user.permissions==1 %}
-                <div style="float: left;width: 100%;margin-top:10px;background-color:#d3d7d4">
-                    <legend>管理员权限</legend>
-                    <div style="margin: 10px">
-                    <a  href="/admin">管理员权限</a>
+    <div class="J-global-toolbar">
+        <div class="toolbar-wrap J-wrap">
+            <div class="toolbar">
+                <div class="toolbar-panels J-panel">
+                    <div style="visibility: hidden;"
+                         class="J-content toolbar-panel tbar-panel-cart toolbar-animate-out">
+                        <div style="width: 100%;background-color:#d3d7d4;border-top-left-radius: 8px;">
+                            <img style="margin-left: 1px;margin-bottom: 2px" src="/static/5_24.png">
+                            <label style="color: white;font-size: large;margin: 1px;">个人信息</label></br>
+                        </div>
+                        <div>
+                            <div class="img1"
+                                 style="float:left;width: 100px;height: 100px;background-color: #d3d7d4;margin-top: 10px;margin-left: 10px">
+                                {% if user.permissions==3 %}
+                                    <img style="  width: 100%;height: 100%;margin-left: 1px;margin-bottom: 2px"
+                                         src="/static/personal_img/visitor.png">
+                                {% elif user.permissions==2 %}
+                                    <img style="  width: 100%;height: 100%;margin-left: 1px;margin-bottom: 2px"
+                                         src="/static/personal_img/trader.png">
+                                {% elif user.permissions==1 %}
+                                    <img style="  width: 100%;height: 100%;margin-left: 1px;margin-bottom: 2px"
+                                         src="/static/personal_img/administrator.png">
+                                {% endif %}
+                            </div>
+                            <a style="display:block;color: black;float: left;margin-left: 10px;margin-top: 20px;font-size: 20px">用户名：{{ user.user_name }}</a></br>
+                            <a style="display:block;float:left;color: black;margin-left: 10px;margin-top: 10px;font-size: 20px">身份：{{ rolename }}</a>
+                            {% if user.permissions==1 %}
+                                <div style="float: left;width: 100%;margin-top:10px;background-color:#d3d7d4">
+                                    <legend>管理员权限</legend>
+                                    <div style="margin: 10px">
+                                        <a href="/admin">管理员权限</a>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
-            {% endif %}
+
+                <div class="toolbar-header"></div>
+
+                <div class="toolbar-tabs J-tab">
+                    <div class="toolbar-tab tbar-tab-cart" >
+{#                        <i class="tab-ico"></i>#}
+                        <img src="/static/5_24.png" style="margin-top: 7px;margin-left: 2px">
+                        <em class="tab-text ">个人信息</em>
+                    </div>
+
+                </div>
+
+{#                <div class="toolbar-footer">#}
+{#                    <div class="toolbar-tab tbar-tab-top"><a href="#"> <i class="tab-ico  "></i> <em#}
+{#                            class="footer-tab-text">顶部</em> </a></div>#}
+{#                </div>#}
+
+
+            </div>
+
+
         </div>
     </div>
+
     <div id="div_favoritecode"
          style="width: 80%;height:300px;margin: 0 auto; ">
         <legend>关注股票列表</legend>
@@ -225,9 +234,9 @@
         <legend>投资组合</legend>
     </div>
     <script>
-        $("#test").click(function () {
-            $("#div_personalinfo").toggle("slide_left");
-        });
+{#        $("#test").click(function () {#}
+{#            $("#div_personalinfo").toggle("slide_left");#}
+{#        });#}
         $("#delete_code").click(function () {
             var selected = []
             $(".checkbox").each(function () {
