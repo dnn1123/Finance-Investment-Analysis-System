@@ -290,7 +290,6 @@ function getposition() {
             for (i=0;i<result.length;i++){
                 getrtlast(result[i].code,result[i].num)
             }
-            displaycp()
         }
     }
 })
@@ -302,9 +301,8 @@ function getrtlast(code_num,amount) {
         data: {"code": code_num},
         dataType: 'json',//希望服务器返回json格式的数据
         success: function (result) {
-            console.log(profit)
             profit+=amount*result.rtlast
-            console.log(profit)
+            displaycp()
             addrow(code_num,amount,result.rtlast)
         }
     })
