@@ -3,9 +3,9 @@
   <component name="ChangeListManager">
 <<<<<<< HEAD
     <list default="true" id="7b9bb7a5-6daa-447a-99cc-bcc264900188" name="默认的" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/webapp/templates/industry_analysis/industry_compare.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/webapp/templates/industry_analysis/ostatus.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+<<<<<<< HEAD
+=======
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/webapp/controllers/industry_analysis.py" afterPath="$PROJECT_DIR$/webapp/controllers/industry_analysis.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/webapp/controllers/restfulapi.py" afterPath="$PROJECT_DIR$/webapp/controllers/restfulapi.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/webapp/controllers/stock_solo.py" afterPath="$PROJECT_DIR$/webapp/controllers/stock_solo.py" />
@@ -34,6 +34,7 @@
 >>>>>>> dev
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/webapp/templates/stock_solo/finance_data.html" afterPath="$PROJECT_DIR$/webapp/templates/stock_solo/finance_data.html" />
 >>>>>>> dev
+>>>>>>> 8174d4e6de513965512335bcd85fe2ba4ae65b70
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -45,12 +46,16 @@
   <component name="CoverageDataManager">
 <<<<<<< HEAD
     <SUITE FILE_PATH="coverage/Finance-Investment-Analysis-System$manage.coverage" NAME="manage Coverage Results" MODIFIED="1510981378474" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+<<<<<<< HEAD
+    <SUITE FILE_PATH="coverage/Finance_Investment_Analysis_System$manage.coverage" NAME="manage Coverage Results" MODIFIED="1512097424663" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+=======
     <SUITE FILE_PATH="coverage/Finance_Investment_Analysis_System$manage.coverage" NAME="manage Coverage Results" MODIFIED="1512096873217" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
 =======
 <<<<<<< HEAD
     <SUITE FILE_PATH="coverage/Finance_Investment_Analysis_System$manage.coverage" NAME="manage Coverage Results" MODIFIED="1510750559269" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Finance-Investment-Analysis-System$manage.coverage" NAME="manage Coverage Results" MODIFIED="1511146842409" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
 >>>>>>> dev
+>>>>>>> 8174d4e6de513965512335bcd85fe2ba4ae65b70
   </component>
   <component name="CreatePatchCommitExecutor">
     <option name="PATCH_PATH" value="" />
@@ -65,7 +70,7 @@
       <file leaf-file-name="restfulapi.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/webapp/controllers/restfulapi.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="836">
+            <state relative-caret-position="515">
               <caret line="473" column="24" lean-forward="false" selection-start-line="473" selection-start-column="24" selection-end-line="473" selection-end-column="24" />
               <folding>
                 <element signature="e#532#1660#0" expanded="false" />
@@ -113,6 +118,9 @@
           </provider>
         </entry>
       </file>
+<<<<<<< HEAD
+      <file leaf-file-name="industry_analysis.py" pinned="false" current-in-tab="true">
+=======
       <file leaf-file-name="stock_solo.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/webapp/controllers/stock_solo.py">
           <provider selected="true" editor-type-id="text-editor">
@@ -128,9 +136,10 @@
       </file>
 <<<<<<< HEAD
       <file leaf-file-name="industry_analysis.py" pinned="false" current-in-tab="false">
+>>>>>>> 8174d4e6de513965512335bcd85fe2ba4ae65b70
         <entry file="file://$PROJECT_DIR$/webapp/controllers/industry_analysis.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="399">
+            <state relative-caret-position="-57">
               <caret line="69" column="82" lean-forward="false" selection-start-line="69" selection-start-column="82" selection-end-line="69" selection-end-column="82" />
               <folding>
                 <element signature="e#1209#2707#0" expanded="false" />
@@ -190,6 +199,9 @@
           </provider>
         </entry>
       </file>
+<<<<<<< HEAD
+      <file leaf-file-name="stock_solo_compare.html" pinned="false" current-in-tab="false">
+=======
       <file leaf-file-name="cns_business_detail.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/webapp/templates/stock_group/cns/cns_business_detail.html">
           <provider selected="true" editor-type-id="text-editor">
@@ -202,9 +214,10 @@
       </file>
 <<<<<<< HEAD
       <file leaf-file-name="stock_solo_compare.html" pinned="false" current-in-tab="true">
+>>>>>>> 8174d4e6de513965512335bcd85fe2ba4ae65b70
         <entry file="file://$PROJECT_DIR$/webapp/templates/stock_solo/stock_solo_compare.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="335">
+            <state relative-caret-position="2444">
               <caret line="369" column="197" lean-forward="false" selection-start-line="369" selection-start-column="197" selection-end-line="369" selection-end-column="197" />
 =======
       <file leaf-file-name="cns_stock_industry_filter.html" pinned="false" current-in-tab="true">
@@ -284,6 +297,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scratches" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -421,9 +436,12 @@
           </PATH>
         </subPane>
       </pane>
+<<<<<<< HEAD
+=======
       <pane id="Scratches" />
       <pane id="Scope" />
       <pane id="Scratches" />
+>>>>>>> 8174d4e6de513965512335bcd85fe2ba4ae65b70
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -648,6 +666,10 @@
 <<<<<<< HEAD
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
 <<<<<<< HEAD
+    <layout>
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.37594554" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+=======
+<<<<<<< HEAD
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3698941" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -661,16 +683,19 @@
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.26096824" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
 >>>>>>> dev
 >>>>>>> dev
+>>>>>>> 8174d4e6de513965512335bcd85fe2ba4ae65b70
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="调试" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295082" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295082" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
 <<<<<<< HEAD
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295082" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+<<<<<<< HEAD
+=======
 =======
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
 <<<<<<< HEAD
@@ -680,7 +705,9 @@
 >>>>>>> dev
 >>>>>>> dev
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+>>>>>>> 8174d4e6de513965512335bcd85fe2ba4ae65b70
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -1087,9 +1114,24 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/webapp/templates/industry_analysis/ostatus.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/webapp/templates/stock_solo/stock_solo_compare.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2444">
+          <caret line="369" column="197" lean-forward="false" selection-start-line="369" selection-start-column="197" selection-end-line="369" selection-end-column="197" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/webapp/controllers/restfulapi.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="836">
+        <state relative-caret-position="515">
           <caret line="473" column="24" lean-forward="false" selection-start-line="473" selection-start-column="24" selection-end-line="473" selection-end-column="24" />
           <folding>
             <element signature="e#532#1660#0" expanded="false" />
@@ -1154,7 +1196,11 @@
     <entry file="file://$PROJECT_DIR$/webapp/controllers/industry_analysis.py">
       <provider selected="true" editor-type-id="text-editor">
 <<<<<<< HEAD
+        <state relative-caret-position="-57">
+=======
+<<<<<<< HEAD
         <state relative-caret-position="399">
+>>>>>>> 8174d4e6de513965512335bcd85fe2ba4ae65b70
           <caret line="69" column="82" lean-forward="false" selection-start-line="69" selection-start-column="82" selection-end-line="69" selection-end-column="82" />
           <folding>
             <element signature="e#1209#2707#0" expanded="false" />
@@ -1170,6 +1216,8 @@
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
+=======
 <<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/webapp/templates/industry_analysis/ostatus.html">
       <provider selected="true" editor-type-id="text-editor">
@@ -1218,5 +1266,6 @@
         </state>
       </provider>
     </entry>
+>>>>>>> 8174d4e6de513965512335bcd85fe2ba4ae65b70
   </component>
 </project>
