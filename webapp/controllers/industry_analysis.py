@@ -20,11 +20,13 @@ industryanalysis_blueprint = Blueprint(
 
 
 @industryanalysis_blueprint.route('/industry_status', methods=('GET', 'POST'))
-@industryanalysis_blueprint.route('/industry_status/<int:parameter>', methods=('GET', 'POST'))  # string,int不一样
+@industryanalysis_blueprint.route('/industry_status/<int:parameter>', methods=('GET', 'POST'))
 @login_required
-def industry_status(industry_gicscode_1="10", industry_gicscode_2="1010", industry_gicscode_3="101010",
+def industry_status(industry_gicscode_1='10', industry_gicscode_2="1010", industry_gicscode_3="101010",
                     industry_gicscode_4="10101010", parameter=4):  # 默认显示第四级分类
+
     parameter = parameter
+
     cns_filterform1 = cns_filterForm1()
     cns_filterform2 = cns_filterForm2()
     cns_filterform3 = cns_filterForm3()
@@ -56,6 +58,16 @@ def industry_status(industry_gicscode_1="10", industry_gicscode_2="1010", indust
                            cns_filterform3=cns_filterform3, cns_filterform4=cns_filterform4,
                            industry_gicscode_1=industry_gicscode_1, industry_gicscode_2=industry_gicscode_2,
                            industry_gicscode_3=industry_gicscode_3, industry_gicscode_4=industry_gicscode_4)
+
+
+@industryanalysis_blueprint.route('/industry_compare', methods=('GET', 'POST'))
+@industryanalysis_blueprint.route('/industry_compare/<int:param>', methods=('GET', 'POST'))
+@login_required
+def industry_compare(param=4):  # 默认显示第四级分类
+
+    param = param
+
+    return render_template("industry_analysis/industry_compare.html", param=param)
 
 
 # ----cns 大陆市场----

@@ -15,6 +15,17 @@
                 <li><a href="{{ url_for('.industry_status',parameter=4) }}">子行业</a></li>
             </ul>
         </li>
+        <li class="dropdown"> <!--tip 可以同时写两个属性-->
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                D.股票对比 <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+                <li><a href="{{ url_for('.industry_compare',param=1) }}">部门</a></li>
+                <li><a href="{{ url_for('.industry_compare',param=2) }}">行业组</a></li>
+                <li><a href="{{ url_for('.industry_compare',param=3) }}">行业</a></li>
+                <li><a href="{{ url_for('.industry_compare',param=4) }}">子行业</a></li>
+            </ul>
+        </li>
         <li><a href="{{ url_for('.cns_home') }}">上市公司名单</a></li>
         <li><a href="{{ url_for('.annual_table') }}">年度表A</a></li>
         <li class="dropdown"> <!--tip 可以同时写两个属性-->
@@ -22,10 +33,10 @@
                 年度表B <span class="caret"></span>
             </a>
             <ul class="dropdown-menu">
-                <li><a href="{{ url_for('.annual_table_b',parameter=1) }}">部门</a></li>
-                <li><a href="{{ url_for('.annual_table_b',parameter=2) }}">行业组</a></li>
-                <li><a href="{{ url_for('.annual_table_b',parameter=3) }}">行业</a></li>
-                <li><a href="{{ url_for('.annual_table_b',parameter=4) }}">子行业</a></li>
+                <li><a href="{{ url_for('.annual_table_b',parammeter=1) }}">部门</a></li>
+                <li><a href="{{ url_for('.annual_table_b',parammeter=2) }}">行业组</a></li>
+                <li><a href="{{ url_for('.annual_table_b',parammeter=3) }}">行业</a></li>
+                <li><a href="{{ url_for('.annual_table_b',paramrmeter=4) }}">子行业</a></li>
             </ul>
         </li>
     </ul>
@@ -163,7 +174,5 @@
 <SCRIPT Language=VBScript><!--
 
 //-->
-
-
 
 </SCRIPT>
