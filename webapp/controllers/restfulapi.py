@@ -188,11 +188,13 @@ def invest_data():
 def market_value():
     data = {}
 
-    x = 0
-
     starttime = request.args.get('starttime')
     endtime = request.args.get('endtime')
     indexes = request.args.getlist('indexes[]')
+
+    db_engine = create_engine('mysql://root:0000@localhost/test?charset=utf8')
+    Session = sessionmaker(bind=db_engine)
+    session = Session()
 
     Filters = {
         finance_basics_add.trade_code == '000002',
@@ -205,17 +207,32 @@ def market_value():
     for year in years:
         year_list.append(year.the_year)
 
+    rs = session.query(func.sum(finance_basics_add.tot_oper_rev).label("tot_oper_rev"),
+                       func.sum(finance_basics_add.net_profit_is).label("net_profit_is"),
+                       func.sum(finance_basics_add.wgsd_net_inc).label("wgsd_net_inc"),
+                       func.sum(finance_basics_add.tot_assets).label("tot_assets"),
+                       func.sum(finance_basics_add.tot_liab).label("tot_liab"),
+                       func.sum(finance_basics_add.net_assets).label("net_assets"),
+                       func.sum(finance_basics_add.wgsd_com_eq).label("wgsd_com_eq"),
+                       func.sum(finance_basics_add.operatecashflow_ttm2).label("operatecashflow_ttm2"),
+                       func.sum(finance_basics_add.investcashflow_ttm2).label("investcashflow_ttm2"),
+                       func.sum(finance_basics_add.financecashflow_ttm2).label("financecashflow_ttm2"),
+                       func.sum(finance_basics_add.cashflow_ttm2).label("cashflow_ttm2"),
+                       func.sum(finance_basics_add.free_cash_flow).label("free_cash_flow"),
+                       finance_basics_add.the_year.label("the_year")).group_by(finance_basics_add.the_year).all()
+    rs_list = range(len(rs))
+    rs_list.reverse()
+
     for index in indexes:
         exec (index + "_list=[]")
         exec ("my" + index + "=0")
 
-    for y in year_list:
-        results = finance_basics_add.query.filter_by(the_year=y).all()
-        for result in results:
-            for index in indexes:
-                if eval("result." + index) is not None:
-                    exec ("my" + index + "+= float((result." + index + ")/100000000)")
+    for x in rs_list:
         for index in indexes:
+            if eval("rs[x]." + index) is not None:
+                exec ("my" + index + "= float((rs[x]." + index + ")/100000000)")
+            else:
+                exec ("my" + index + "= 0 ")
             exec (index + "_list.append(my" + index + ")")
 
     data['the_year'] = year_list
