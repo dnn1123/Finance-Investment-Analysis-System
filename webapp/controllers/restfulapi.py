@@ -5,7 +5,8 @@ import MySQLdb, time, re
 from sqlalchemy import create_engine, or_, func, desc, distinct  # me func用于计数,desc用于逆序找max值
 from sqlalchemy.orm import sessionmaker  # me
 from flask_login import current_user
-
+import string
+import tushare as ts
 api_blueprint = Blueprint(
         'restfulapi',
         __name__,
@@ -187,11 +188,13 @@ def invest_data():
 def market_value():
     data = {}
 
-    x = 0
-
     starttime = request.args.get('starttime')
     endtime = request.args.get('endtime')
     indexes = request.args.getlist('indexes[]')
+
+    db_engine = create_engine('mysql://root:0000@localhost/test?charset=utf8')
+    Session = sessionmaker(bind=db_engine)
+    session = Session()
 
     Filters = {
         finance_basics_add.trade_code == '000002',
@@ -204,17 +207,32 @@ def market_value():
     for year in years:
         year_list.append(year.the_year)
 
+    rs = session.query(func.sum(finance_basics_add.tot_oper_rev).label("tot_oper_rev"),
+                       func.sum(finance_basics_add.net_profit_is).label("net_profit_is"),
+                       func.sum(finance_basics_add.wgsd_net_inc).label("wgsd_net_inc"),
+                       func.sum(finance_basics_add.tot_assets).label("tot_assets"),
+                       func.sum(finance_basics_add.tot_liab).label("tot_liab"),
+                       func.sum(finance_basics_add.net_assets).label("net_assets"),
+                       func.sum(finance_basics_add.wgsd_com_eq).label("wgsd_com_eq"),
+                       func.sum(finance_basics_add.operatecashflow_ttm2).label("operatecashflow_ttm2"),
+                       func.sum(finance_basics_add.investcashflow_ttm2).label("investcashflow_ttm2"),
+                       func.sum(finance_basics_add.financecashflow_ttm2).label("financecashflow_ttm2"),
+                       func.sum(finance_basics_add.cashflow_ttm2).label("cashflow_ttm2"),
+                       func.sum(finance_basics_add.free_cash_flow).label("free_cash_flow"),
+                       finance_basics_add.the_year.label("the_year")).group_by(finance_basics_add.the_year).all()
+    rs_list = range(len(rs))
+    rs_list.reverse()
+
     for index in indexes:
         exec (index + "_list=[]")
         exec ("my" + index + "=0")
 
-    for y in year_list:
-        results = finance_basics_add.query.filter_by(the_year=y).all()
-        for result in results:
-            for index in indexes:
-                if eval("result." + index) is not None:
-                    exec ("my" + index + "+= float((result." + index + ")/100000000)")
+    for x in rs_list:
         for index in indexes:
+            if eval("rs[x]." + index) is not None:
+                exec ("my" + index + "= float((rs[x]." + index + ")/100000000)")
+            else:
+                exec ("my" + index + "= 0 ")
             exec (index + "_list.append(my" + index + ")")
 
     data['the_year'] = year_list
@@ -653,3 +671,126 @@ def is_repeatcode():
     else:
         data['exit'] = 'flase'
     return jsonify(data)
+<<<<<<< HEAD
+=======
+
+@api_blueprint.route('/analysis/buyStock', methods=['GET', 'POST'])
+def buystock():
+    username=current_user.username
+    date=request.form.get('date')
+    code=request.form.get('codeName')
+    price=request.form.get('price')
+    amount=request.form.get('amount')
+    value=request.form.get('totalSum')
+    result = investment_portfolio.query.filter_by(user_name=current_user.username, code=code).first()
+    if (result is None):
+        new_data = investment_portfolio()
+        new_data.user_name = current_user.username
+        new_data.code = code
+        new_data.num = amount
+        db.session.add(new_data)
+        db.session.commit()
+    else:
+        result.num = result.num + string.atof(amount.encode("utf-8"))
+        db.session.commit()
+    new_buy=history()
+    new_buy.users=username
+    new_buy.time=date
+    new_buy.code=code
+    new_buy.price=price
+    new_buy.amount=amount
+    new_buy.value=value
+    new_buy.position="buy"
+    db.session.add(new_buy)
+    db.session.commit()
+    data = users_finance.query.filter_by(users=current_user.username).first()
+    if (data is None):
+        new_userf=users_finance()
+        new_userf.users=current_user.username
+        new_userf.cost=value
+        db.session.add(new_userf)
+        db.session.commit()
+    else:
+        data.cost=data.cost+string.atof(value.encode("utf-8"))
+        db.session.commit()
+    return jsonify({"result":"success"})
+
+@api_blueprint.route('/analysis/sellStock', methods=['GET', 'POST'])
+def sellstock():
+    username=current_user.username
+    date=request.form.get('date')
+    code=request.form.get('codeName')
+    price=request.form.get('price')
+    amount=request.form.get('amount')
+    value=request.form.get('totalSum')
+    result = investment_portfolio.query.filter_by(user_name=current_user.username, code=code).first()
+    if (result is None):
+        return jsonify({"result":"no stock can be sold"})
+    else:
+        if(result.num < string.atof(amount.encode("utf-8"))):
+            return jsonify({"result":"not enough stock can be sold"})
+        result.num = result.num - string.atof(amount.encode("utf-8"))
+        db.session.commit()
+    new_buy=history()
+    new_buy.users=username
+    new_buy.time=date
+    new_buy.code=code
+    new_buy.price=price
+    new_buy.amount=amount
+    new_buy.value=value
+    new_buy.position="sell"
+    db.session.add(new_buy)
+    db.session.commit()
+    data = users_finance.query.filter_by(users=current_user.username).first()
+    data.cost = data.cost - string.atof(value.encode("utf-8"))
+    db.session.commit()
+    return jsonify({"result":"success"})
+
+@api_blueprint.route('/analysis/position', methods=['GET', 'POST'])
+def position_data():
+    data=investment_portfolio.query.filter_by(user_name=current_user.username).all()
+    # 用first 结果判断用is not none 用all 判断用[]
+    results=[]
+    if (data != []):
+        for result in data:
+            results.append({"code":result.code,"num":result.num})
+        # return jsonify({"status":"exist","data":results})
+        return jsonify(results)
+    else:
+        return jsonify(results)
+
+@api_blueprint.route('/analysis/realtime_quotes', methods=['GET', 'POST'])
+def realtime_quotes():
+    code=request.args.get("code")
+    df = ts.get_realtime_quotes(code)  # Single stock symbol
+    return jsonify({"rtlast":df.pre_close[0]})
+
+@api_blueprint.route('/analysis/history_data', methods=['GET', 'POST'])
+def history_data():
+    results=[]
+    data=history.query.filter_by(users=current_user.username).order_by(db.desc(history.time)).all()
+    if (data != []):
+        for result in data:
+            results.append({"code":result.code,"position":result.position,"price":result.price,"amount":result.amount,"value":result.value,"time":result.time.strftime('%Y-%m-%d')})
+        # return jsonify({"status":"exist","data":results})
+        return jsonify(results)
+    else:
+        return jsonify(results)
+
+@api_blueprint.route('/analysis/getcost', methods=['GET', 'POST'])
+def getcost():
+    data = users_finance.query.filter_by(users=current_user.username).first()
+    if (data is None):
+        return jsonify({"cost":0})
+    return jsonify({"cost":data.cost})
+
+@api_blueprint.route('/analysis/clearall', methods=['GET', 'POST'])
+def clearall():
+    data = db.session.query(users_finance).filter(users_finance.users==current_user.username).delete(synchronize_session=False)
+    db.session.commit()
+    data = db.session.query(history).filter(history.users==current_user.username).delete(synchronize_session=False)
+    db.session.commit()
+    data = db.session.query(investment_portfolio).filter(investment_portfolio.user_name==current_user.username).delete(synchronize_session=False)
+    db.session.commit()
+    return jsonify({"result": "success"})
+>>>>>>> dev

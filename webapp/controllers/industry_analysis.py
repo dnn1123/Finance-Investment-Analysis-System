@@ -419,49 +419,6 @@ def annual_table_b(year='20151231', parameter=4):  # 默认是2015年
                            max_wgsd_com_eq=max_wgsd_com_eq)
 
 
-@industryanalysis_blueprint.route('/market_status', methods=('GET', 'POST'))  # 太慢了！！！
-@login_required
-def market_status():
-    db_engine = create_engine('mysql://root:0000@localhost/test?charset=utf8')
-    Session = sessionmaker(bind=db_engine)
-    session = Session()
-    # 做一个year_list，以万科A为标准
-    year_list = []
-    wanke_latest = session.query((finance_basics_add.the_year).label("the_year")).filter(
-        finance_basics_add.sec_name == '万科A').order_by(finance_basics_add.the_year.desc()).first()
-    year = int(wanke_latest.the_year[:4])
-    n = 10  # 需要加1
-    while n > 0:
-        year_list.append(str(year) + '1231')
-        year = year - 1
-        n = n - 1
-    # 结果如下：['20161231', '20151231', '20141231', '20131231', '20121231', '20111231', '20101231', '20091231', '20081231', '20071231']
-    # 做一个结果集
-    rs_list = []
-    for year in year_list:
-        rs = session.query(func.sum(finance_basics_add.tot_oper_rev).label("tot_oper_rev"),
-                           func.sum(finance_basics_add.net_profit_is).label("net_profit_is"),
-                           func.sum(finance_basics_add.wgsd_net_inc).label("wgsd_net_inc"),
-                           func.sum(finance_basics_add.tot_assets).label("tot_assets"),
-                           func.sum(finance_basics_add.tot_liab).label("tot_liab"),
-                           func.sum(finance_basics_add.net_assets).label("net_assets"),
-                           func.sum(finance_basics_add.wgsd_com_eq).label("wgsd_com_eq"),
-                           func.sum(finance_basics_add.operatecashflow_ttm2).label("operatecashflow_ttm2"),
-                           func.sum(finance_basics_add.investcashflow_ttm2).label("investcashflow_ttm2"),
-                           func.sum(finance_basics_add.financecashflow_ttm2).label("financecashflow_ttm2"),
-                           func.sum(finance_basics_add.cashflow_ttm2).label("cashflow_ttm2"),
-                           func.sum(finance_basics_add.free_cash_flow).label("free_cash_flow"),
-                           func.avg(finance_basics_add.net_profit_rate).label("net_profit_rate"),
-                           func.avg(finance_basics_add.tot_assets_turnover).label("tot_assets_turnover"),
-                           func.avg(finance_basics_add.equ_multi).label("equ_multi"),
-                           func.avg(finance_basics_add.roe_tot).label("roe_tot"),
-                           func.avg(finance_basics_add.roe_holder).label("roe_holder"),
-                           func.count(finance_basics_add.trade_code).label("company_num"),
-                           finance_basics_add.the_year).filter(finance_basics_add.the_year == year).first()
-        rs_list.append(rs)
-    return render_template('industry_analysis/market_status.html', rs_list=rs_list)
-
-
 @industryanalysis_blueprint.route('/market_value', methods=('GET', 'POST'))  # 太慢了！！！
 @login_required
 def market_value():

@@ -116,14 +116,12 @@
 {% endblock %}
 
 {% block choice %}
-    <div id="checkbox" style="height:60%;overflow-y :auto;margin-top: 20%;">
-        <fieldset style='padding:5px;' id="index">
+    <div id="checkbox" style="height:85%;overflow-y :auto;margin-top:5%;">
+        <fieldset style='padding:0;' id="index">
             <legend>指标选择</legend>
-
-
         </fieldset>
     </div>
-    <div style="">
+    <div style="margin-top: 7px">
         <input type="button" value="全选" id="checkall"/>
         <input type="button" value="全不选" id="revokeall"/>
         {#    <input type="button" value="提交" id="commit" />#}
@@ -145,7 +143,7 @@
     </div>
 {% endblock %}
 {% block toolbox %}
-    <div id="echartindex" style="height: 50px;">
+    <div id="echartindex" style="height:10%;">
         <div style="height:25px;margin-top: 10px">
             <a style="width:50px;margin-left:10px;color: #0c0c0c">起始时间:</a><input type="text" id="ui3"
                                                                                   style="background-color:white;width: 100px;margin-left: 10px"/>
@@ -469,6 +467,7 @@
                                 name: post_selected(data.indexs[i]),
                                 type: 'line',
                                 smooth: true,
+                                symbolSize: 8,
                                 itemStyle: {
                                     normal: {
                                         color: color[data.indexs[i]],
@@ -580,6 +579,7 @@
                                 name: post_selected(data.indexs[i]),
                                 type: 'line',
                                 smooth: true,
+                                symbolSize: 8,
                                 itemStyle: {
                                     normal: {
                                         color: color[data.indexs[i]],
@@ -685,7 +685,7 @@
 
         function creatindex() {
             for (var key in indexdictionary) {
-                $("#index").append("<div class='divcheckbox'><input type='checkbox' class='checkbox' value='" + indexdictionary[key] + "' id='" + indexdictionary[key] + "' >" + key + " <div id='div_" + indexdictionary[key] + "' style='height: 10px;width: 10px;float: right;margin: 5px'></div> </div>"
+                $("#index").append("<div style='width:100%;height:30px;margin-top:10px;background-color:lightgray'><div class='checkbox' style='width:80%;height:20px;float:left;margin-left:25px'><input type='checkbox' class='checkbox' value='" + indexdictionary[key] + "' id='" + indexdictionary[key] + "' >" + key + " <div id='div_" + indexdictionary[key] + "' style='height: 10px;width: 10px;float: right;margin-top:5px;'></div></div></div>"
                 )
             }
         }
