@@ -30,6 +30,7 @@ class roles1(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_name = db.Column(db.String(80), db.ForeignKey('users.username'))
     permissions = db.Column(db.Integer)
+    permissions_name = db.Column(db.Integer)
 
 
 # 权限常量

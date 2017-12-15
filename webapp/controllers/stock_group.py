@@ -70,9 +70,10 @@ def cns_home():
         cns_stock_industry.trade_code).paginate(page, per_page=200, error_out=False)  # 共有3197条记录 此为分页功能
     result = pagination.items
     length = len(result)
+    user = roles1.query.filter_by(user_name=current_user.username).first()
     return render_template("stock_group/cns/cns_stock_industry.html", cns_filterform1=cns_filterform1,
                            cns_filterform2=cns_filterform2, cns_filterform3=cns_filterform3,
-                           cns_filterform4=cns_filterform4, result=result, pagination=pagination, length=length)
+                           cns_filterform4=cns_filterform4, result=result, pagination=pagination, length=length,user=user)
 
 # 显示“主营业务”详情
 @stockgroup_blueprint.route('/cns_business_detail/', methods=('GET', 'POST'))
@@ -159,7 +160,6 @@ def cns_filter():
 @stockgroup_blueprint.route('/update_gics_4/', methods=('GET', 'POST'))
 @stockgroup_blueprint.route('/update_gics_4/<string:trade_code>', methods=('GET', 'POST'))
 @login_required
-@finance_analyst_permission.require(http_exception=403)
 def update_gics_4(trade_code='000001'):  # 疑问：这一行是什么意思？
     form = cns_UpdateForm()
     trade_code = trade_code
@@ -181,7 +181,6 @@ def update_gics_4(trade_code='000001'):  # 疑问：这一行是什么意思？
 @stockgroup_blueprint.route('/hushen_300', methods=('GET', 'POST'))
 @stockgroup_blueprint.route('/hushen_300/<string:trade_code>', methods=('GET', 'POST'))
 @login_required
-@finance_analyst_permission.require(http_exception=403)
 def hushen_300():
     page = request.args.get('page', 1, type=int)
     pagination = cns_stock_industry.query.join(cns_sub_industry).add_columns(cns_sub_industry.industry_gics_4).join(
@@ -198,6 +197,7 @@ def hushen_300():
     length = len(result)
 
     v_stock_industry = cns_stock_industry.query.all()  # 以下是获取数据总共有多少个
+
     return render_template("stock_group/cns/cns_hushen_300.html", result=result, pagination=pagination,
                            v_stock_industry=v_stock_industry, length=length)
 
@@ -206,7 +206,6 @@ def hushen_300():
 @stockgroup_blueprint.route('/shangzheng_50', methods=('GET', 'POST'))
 @stockgroup_blueprint.route('/shangzheng_50/<string:trade_code>', methods=('GET', 'POST'))
 @login_required
-@finance_analyst_permission.require(http_exception=403)
 def shangzheng_50():
     page = request.args.get('page', 1, type=int)
     pagination = cns_stock_industry.query.join(cns_sub_industry).add_columns(cns_sub_industry.industry_gics_4).join(
@@ -232,7 +231,7 @@ def shangzheng_50():
 @stockgroup_blueprint.route('/lugutong', methods=('GET', 'POST'))
 @stockgroup_blueprint.route('/lugutong/<string:trade_code>', methods=('GET', 'POST'))
 @login_required
-@finance_analyst_permission.require(http_exception=403)
+# @finance_analyst_permission.require(http_exception=403)
 def lugutong():
     page = request.args.get('page', 1, type=int)
     pagination = cns_stock_industry.query.join(cns_sub_industry).add_columns(cns_sub_industry.industry_gics_4).join(
@@ -272,9 +271,10 @@ def cnsb_home():
                                                                                               error_out=False)  # 共有3197条记录 此为分页功能
     result = pagination.items
     length = len(result)
+    user = roles1.query.filter_by(user_name=current_user.username).first()
     return render_template("stock_group/cns/cnsb_stock_industry.html", cnsb_filterform1=cnsb_filterform1,
                            cnsb_filterform2=cnsb_filterform2, cnsb_filterform3=cnsb_filterform3,
-                           cnsb_filterform4=cnsb_filterform4, result=result, pagination=pagination, length=length)
+                           cnsb_filterform4=cnsb_filterform4, result=result, pagination=pagination, length=length,user=user)
 
 
 # usa美国市场
@@ -295,16 +295,16 @@ def usa_home():
                                                                                                   error_out=False)  # 这一段去掉了也无影响：.filter(usa_group_industry.belong==usa_department_industry.industry_gicscode_1).filter(usa_industry.belong==usa_group_industry.industry_gicscode_2).filter(usa_sub_industry.belong==usa_industry.industry_gicscode_3).filter(usa_stock_industry.industry_gicscode_4==usa_sub_industry.industry_gicscode_4)
     result = pagination.items  # per_page从300改成了200
     length = len(result)
+    user = roles1.query.filter_by(user_name=current_user.username).first()
     return render_template("stock_group/usa/usa_stock_industry.html", usa_filterform1=usa_filterform1,
                            usa_filterform2=usa_filterform2, usa_filterform3=usa_filterform3,
-                           usa_filterform4=usa_filterform4, result=result, pagination=pagination, length=length)
+                           usa_filterform4=usa_filterform4, result=result, pagination=pagination, length=length,user=user)
 
 
 # usa-显示“主营业务”详情
 @stockgroup_blueprint.route('/usa_business_detail/', methods=('GET', 'POST'))
 @stockgroup_blueprint.route('/usa_business_detail/<string:trade_code>', methods=('GET', 'POST'))
 @login_required
-@finance_analyst_permission.require(http_exception=403)
 def usa_business_detail(trade_code='000895'):  # 没写usa_就会报错，怎么回事？
     trade_code = trade_code  # 哈哈，成功了！！
     result = usa_stock_industry.query.filter_by(trade_code=trade_code).first_or_404()
@@ -315,7 +315,6 @@ def usa_business_detail(trade_code='000895'):  # 没写usa_就会报错，怎么
 @stockgroup_blueprint.route('/usa_update_gics_4/', methods=('GET', 'POST'))
 @stockgroup_blueprint.route('/usa_update_gics_4/<string:trade_code>', methods=('GET', 'POST'))
 @login_required
-@finance_analyst_permission.require(http_exception=403)
 def usa_update_gics_4(trade_code='A'):  # 疑问：这一行是什么意思？之前写的‘000001’就不对，必须改成‘A’
     form = usa_UpdateForm()
     trade_code = trade_code
@@ -337,7 +336,6 @@ def usa_update_gics_4(trade_code='A'):  # 疑问：这一行是什么意思？�
 @stockgroup_blueprint.route('/usa_update_industry/', methods=('GET', 'POST'))
 @stockgroup_blueprint.route('/usa_update_industry/<string:trade_code>', methods=('GET', 'POST'))
 @login_required
-@finance_analyst_permission.require(http_exception=403)
 def usa_update_industry(trade_code='A'):  # 疑问：这一行是什么意思？之前写的‘000001’就不对，必须改成‘A’
     form = usa_Update_department_1_Form()
     if form.validate_on_submit():
@@ -357,7 +355,6 @@ def usa_update_industry(trade_code='A'):  # 疑问：这一行是什么意思？
 # usa行业筛选
 @stockgroup_blueprint.route('/usa_filter/', methods=('GET', 'POST'))
 @login_required
-@finance_analyst_permission.require(http_exception=403)
 def usa_filter():
     usa_filterform1 = usa_filterForm1()
     usa_filterform2 = usa_filterForm2()
@@ -446,7 +443,6 @@ def usa_filter():
 @stockgroup_blueprint.route('/usa_djia', methods=('GET', 'POST'))
 @stockgroup_blueprint.route('/usa_djia/<string:trade_code>', methods=('GET', 'POST'))
 @login_required
-@finance_analyst_permission.require(http_exception=403)
 def usa_djia():
     # 获取道琼斯名单列表
     conn = MySQLdb.connect(user="root", passwd="0000", db="test", charset="utf8")
@@ -471,15 +467,15 @@ def usa_djia():
 
     v_stock_industry = usa_stock_industry.query.all()  # 以下是获取数据总共有多少个
     # stock_length = len(v_stock_industry)
+    user = roles1.query.filter_by(user_name=current_user.username).first()
     return render_template("stock_group/usa/usa_djia.html", result=result, pagination=pagination,
-                           v_stock_industry=v_stock_industry, length=length)
+                           v_stock_industry=v_stock_industry, length=length,user=user)
 
 
 # 标准普尔500成份股
 @stockgroup_blueprint.route('/usa_sp500', methods=('GET', 'POST'))
 @stockgroup_blueprint.route('/usa_sp500/<string:trade_code>', methods=('GET', 'POST'))
 @login_required
-@finance_analyst_permission.require(http_exception=403)
 def usa_sp500():
     # 获取标准普尔500名单列表
     conn = MySQLdb.connect(user="root", passwd="0000", db="test", charset="utf8")
@@ -503,15 +499,15 @@ def usa_sp500():
     length = len(result)
 
     v_stock_industry = usa_stock_industry.query.all()  # 以下是获取数据总共有多少个
+    user = roles1.query.filter_by(user_name=current_user.username).first()
     return render_template("stock_group/usa/usa_sp500.html", result=result, pagination=pagination,
-                           v_stock_industry=v_stock_industry, length=length)
+                           v_stock_industry=v_stock_industry, length=length,user=user)
 
 
 # hks 香港市场
 @stockgroup_blueprint.route('/hks_home', methods=('GET', 'POST'))
 @stockgroup_blueprint.route('/hks_home/<string:trade_code>', methods=('GET', 'POST'))
 @login_required
-@finance_analyst_permission.require(http_exception=403)
 def hks_home():
     hks_filterform1 = hks_filterForm1()
     hks_filterform2 = hks_filterForm2()
@@ -537,7 +533,6 @@ def hks_home():
 # hks行业筛选
 @stockgroup_blueprint.route('/hks_filter/', methods=('GET', 'POST'))
 @login_required
-@finance_analyst_permission.require(http_exception=403)
 def hks_filter():
     hks_filterform1 = hks_filterForm1()
     hks_filterform2 = hks_filterForm2()
@@ -606,7 +601,6 @@ def hks_filter():
 @stockgroup_blueprint.route('/hks_hengsheng_index', methods=('GET', 'POST'))
 @stockgroup_blueprint.route('/hks_hengsheng_index/<string:trade_code>', methods=('GET', 'POST'))
 @login_required
-@finance_analyst_permission.require(http_exception=403)
 def hks_hengsheng_index():
     # 获取道琼斯名单列表
     conn = MySQLdb.connect(user="root", passwd="0000", db="test", charset="utf8")
@@ -635,7 +629,6 @@ def hks_hengsheng_index():
 @stockgroup_blueprint.route('/hks_hengsheng_comindex', methods=('GET', 'POST'))
 @stockgroup_blueprint.route('/hks_hengsheng_comindex/<string:trade_code>', methods=('GET', 'POST'))
 @login_required
-@finance_analyst_permission.require(http_exception=403)
 def hks_hengsheng_comindex():
     # 获取道琼斯名单列表
     conn = MySQLdb.connect(user="root", passwd="0000", db="test", charset="utf8")
@@ -664,7 +657,6 @@ def hks_hengsheng_comindex():
 @stockgroup_blueprint.route('/hks_ganggutong', methods=('GET', 'POST'))
 @stockgroup_blueprint.route('/hks_ganggutong/<string:trade_code>', methods=('GET', 'POST'))
 @login_required
-@finance_analyst_permission.require(http_exception=403)
 def hks_ganggutong():
     # 获取名单列表
     conn = MySQLdb.connect(user="root", passwd="0000", db="test", charset="utf8")
@@ -696,7 +688,6 @@ def hks_ganggutong():
 @stockgroup_blueprint.route('/usa_alter_sub_industry/', methods=('GET', 'POST'))  # 这里也需要,methods=('GET','POST')
 @stockgroup_blueprint.route('/usa_alter_sub_industry/<string:gics_code>', methods=('GET', 'POST'))
 @login_required
-@finance_analyst_permission.require(http_exception=403)
 def usa_alter_sub_industry(gics_code=None):
     sec_name = request.args.get("sec_name")  # 超链接传过来的值获取下来了
     gics_code = gics_code
@@ -736,7 +727,6 @@ def usa_alter_sub_industry(gics_code=None):
 #
 @stockgroup_blueprint.route('/industry_count', methods=('GET', 'POST'))
 @login_required
-@finance_analyst_permission.require(http_exception=403)
 def industry_count():
     db_engine = create_engine('mysql://root:0000@localhost/test?charset=utf8')
     Session = sessionmaker(bind=db_engine)

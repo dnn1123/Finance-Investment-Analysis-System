@@ -3,6 +3,7 @@
     <style>
         .tot_oper_cost {
             color: #C4D2DB;
+            background-color: gainsboro;
         }
     </style>
 {% endblock %}
@@ -21,7 +22,13 @@
                     </ul>
                 </div>
             </div>
+
         </form>
+     <a style="color: #0c0c0c;margin: auto 0">当前股票代码：</a>
+        <input readonly="readonly" id="stockcode1" type="text"  name="stockcode"
+               style="margin:auto 0;width: 80px;height: 25px">
+        <input id="submitbtn1"  type="button"
+                style="padding: 8.5px 12px;margin-left: 2px;width: 80px;margin:auto 0" value="添加关注">
     </div>
     <script>
         var stocksuggest = $("input[name='stockcode']").bsSuggest({
@@ -66,7 +73,49 @@
                 }
             })
         })
-
+ $("#submitbtn1").click(function () {
+                $.ajax({
+                    type: 'POST',
+                    url: '{{url_for("restfulapi.iscode")}}',
+                    data: {
+                        'code': stockcode,
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.the_name != 'false') {
+                            $.ajax({
+                                type: 'POST',
+                                url: '{{url_for("restfulapi.is_repeatcode")}}',
+                                data: {
+                                    'code': stockcode,
+                                },
+                                dataType: 'json',
+                                success: function (data) {
+                                    if (data.exit == 'true') {
+                                        alert('您已关注该股票，请勿重复操作！')
+                                    }
+                                    else if (data.exit == 'flase') {
+                                        $.ajax({
+                                            type: 'POST',
+                                            url: '{{url_for("restfulapi.add_code_fd_yc")}}',
+                                            data: {
+                                                'code': stockcode
+                                            },
+                                            dataType: 'json',
+                                            success: function (data) {
+                                                alert('添加成功！')
+                                            }
+                                        })
+                                    }
+                                }
+                            })
+                        }
+                        else {
+                            alert($("#stockcode").val() + "号股票不存在！")
+                        }
+                    }
+                })
+            })
     </script>
 {% endblock %}
 
@@ -81,94 +130,15 @@
 {% endblock %}
 
 {% block choice %}
-    <label style="margin-top: 20px" for="name">选项</label>
-    <div id="index" style="height: 60%; overflow-y :auto;">
-        {#        <div class="checkbox">#}
-        {#            <label style="font-size: 20px;"><input type="checkbox" value="tot_oper_cost" id="first_check">总营业成本</label>#}
-        {#        </div>#}
-        {#        <div class="checkbox">#}
-        {#            <label style="font-size: 20px"><input type="checkbox" value="tot_oper_rev">总营业收入</label>#}
-        {#        </div>#}
-        {#        <div class="checkbox">#}
-        {#            <label style="font-size: 20px"><input type="checkbox" value="wgsd_net_inc">净利润（股东）</label>#}
-        {#        </div>#}
-        {#        <div class="checkbox">#}
-        {#            <label style="font-size: 20px"><input type="checkbox" value="tot_assets">资产总计</label>#}
-        {#        </div>#}
-        {#        <div class="checkbox">#}
-        {#            <label style="font-size: 20px"><input type="checkbox" value="wgsd_com_eq">归属股东权益</label>#}
-        {#        </div>#}
-        {#        <div class="checkbox">#}
-        {#            <label style="font-size: 20px"><input type="checkbox" value="net_inc_eq_rate">净资产收益率（股东）</label>#}
-        {#        </div>#}
-        {#        <div class="checkbox">#}
-        {#            <label style="font-size: 20px"><input type="checkbox" value="total_shares">股本</label>#}
-        {#        </div>#}
-        {#        <div class="checkbox">#}
-        {#            <label style="font-size: 20px"><input type="checkbox" value="earnings_per_share">每股收益</label>#}
-        {#        </div>#}
-        {#        <div class="checkbox">#}
-        {#            <label style="font-size: 20px"><input type="checkbox" value="net_assets_per_share">每股净资产</label>#}
-        {#        </div>#}
-        {#        <div class="checkbox">#}
-        {#            <label style="font-size: 20px"><input type="checkbox" value="cash_per_share">每股账面现金</label>#}
-        {#        </div>#}
-        {#        <div class="checkbox">#}
-        {#            <label style="font-size: 20px"><input type="checkbox" value="div_cashandstock">每股现金股息</label>#}
-        {#        </div>#}
-        {#        <div class="checkbox">#}
-        {#            <label style="font-size: 20px"><input type="checkbox" value="payment_proportion">支付比例</label>#}
-        {#        </div>#}
-        {#        <div class="checkbox">#}
-        {#            <label style="font-size: 20px"><input type="checkbox" value="equal_earning_rate">均衡市盈率</label>#}
-        {#        </div>#}
-        {#        <div class="checkbox">#}
-        {#            <label style="font-size: 20px"><input type="checkbox" value="equal_market_rate">均衡市净率</label>#}
-        {#        </div>#}
-        {#        <div class="checkbox">#}
-        {#            <label style="font-size: 20px"><input type="checkbox" value="com_value_evaluate">公司价值估计</label>#}
-        {#        </div>#}
-        {#        <div class="checkbox">#}
-        {#            <label style="font-size: 20px"><input type="checkbox" value="per_com_value_evaluate">每股价值估计</label>#}
-        {#        </div>#}
-        {#        <div class="checkbox">#}
-        {#            <label style="font-size: 20px"><input type="checkbox" value="fre_cash_evaluate">自由现金流估计</label>#}
-        {#        </div>#}
-        {#        <div class="checkbox">#}
-        {#            <label style="font-size: 20px"><input type="checkbox" value="ev">市值</label>#}
-        {#        </div>#}
-        {#        <div class="checkbox">#}
-        {#            <label style="font-size: 20px"><input type="checkbox" value="earning_rate">市盈率</label>#}
-        {#        </div>#}
-        {#        <div class="checkbox">#}
-        {#            <label style="font-size: 20px"><input type="checkbox" value="net_rate">市净率</label>#}
-        {#        </div>#}
-        {#        <div class="checkbox">#}
-        {#            <label style="font-size: 20px"><input type="checkbox" value="sale_rate">市销率</label>#}
-        {#        </div>#}
-        {#        <div class="checkbox">#}
-        {#            <label style="font-size: 20px"><input type="checkbox" value="cash_rate">市现率</label>#}
-        {#        </div>#}
-        {#        <div class="checkbox">#}
-        {#            <label style="font-size: 20px"><input type="checkbox" value="dividendyield2">股息收益率</label>#}
-        {#        </div>#}
-        {#        <div class="checkbox">#}
-        {#            <label style="font-size: 20px"><input type="checkbox" value="cash_yield_evaluate">现金收益率估计</label>#}
-        {#        </div>#}
-        {#        <div class="checkbox">#}
-        {#            <label style="font-size: 20px"><input type="checkbox" value="ev1">整体价值估计（含货币）</label>#}
-        {#        </div>#}
-        {#        <div class="checkbox">#}
-        {#            <label style="font-size: 20px"><input type="checkbox" value="ev2">整体价值估计（不含货币）</label>#}
-        {#        </div>#}
-        {#        <div class="checkbox">#}
-        {#            <label style="font-size: 20px"><input type="checkbox" value="employee">雇员数量</label>#}
-        {#        </div>#}
+    <div id="checkbox" style="height:85%;overflow-y :auto;margin-top:5%;">
+        <fieldset style='padding:0;' id="index">
+            <legend>指标选择</legend>
 
+        </fieldset>
     </div>
-    <div style="">
-        <input type="button" value="全选" id="CheckAll"/>
-        <input type="button" value="全不选" id="UnCheckAll"/>
+    <div style="margin-top: 7px">
+        <input type="button" value="全选" id="checkall"/>
+        <input type="button" value="全不选" id="revokeall"/>
         {#    <input type="button" value="提交" id="commit" />#}
     </div>
 
@@ -206,18 +176,12 @@
         };
         function creatindex() {
             for (var key in dict1) {
-                {#                if( key ==  "tot_oper_cost"){#}
-                {#                   $("#index").append("<div class='checkbox'><label style='font-size: 20px;'><input type='checkbox' id='first_check' value='" + key + "'  >" + dict1[key] + " <div id='div_" + key + "' style='height: 10px;width: 10px;float: right;margin: 5px'></div></label> </div>"#}
-                {#                }#}
-                {#                else{#}
-                $("#index").append("<div class='checkbox' style=' margin-left: 3px; margin-top: 3px;'><label style='font-size: 10px;'><input id='cl_" + key + "' type='checkbox'  value='" + key + "'  >" + dict1[key] + " <div id='div_" + key + "' style='height: 10px;width: 10px;float: right;margin: 5px'></div></label> </div>")
-                {#                }#}
+                $("#index").append("<div style='width:100%;height:30px;margin-top:10px;background-color:lightgray'><label style='font-size:12px;font-weight:normal'><input id='cl_" + key + "' type='checkbox'  value='" + key + "'  >" + dict1[key] + " <div id='div_" + key + "' style='height: 10px;width: 10px;float: right;margin: 5px'></div></label> </div>"
+                )
             }
-
         }
-        creatindex()
+        creatindex();
         $(document).ready(function () {
-
             $('input').iCheck({
                 checkboxClass: 'icheckbox_minimal-blue',
                 radioClass: 'iradio_minimal-blue',
@@ -268,7 +232,6 @@
             CreateChart();
             CreateTable();
         });
-
     </script>
 
 {% endblock %}
@@ -451,6 +414,7 @@
             getdata()
         })
         function getdata() {
+            $("#stockcode1").val({{ stockcode|safe }})
             $.ajax({
             type: 'GET',
             url: '{{url_for("restfulapi.finance_data")}}',
@@ -845,6 +809,7 @@
                     {   // 这个dataZoom组件，默认控制x轴。
                         type: 'slider', // 这个 dataZoom 组件是 slider 型 dataZoom 组件
                         xAxisIndex: [0],
+                        height:20,
 {#                        startValue: "2016年Q4",#}
                         start: 0,      // 左边在 10% 的位置。
                         end: 50,         // 右边在 60% 的位置。

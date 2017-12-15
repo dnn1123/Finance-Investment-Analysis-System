@@ -58,7 +58,13 @@
             </div>
         </form>
 
+        <a style="color: #0c0c0c;margin: auto 0">当前股票代码：</a>
+        <input readonly="readonly" id="stockcode1" type="text"  name="stockcode"
+               style="margin:auto 0;width: 80px;height: 25px">
+        <input id="submitbtn1"  type="button"
+                style="padding: 8.5px 12px;margin-left: 2px;width: 80px;margin:auto 0" value="添加关注">
     </div>
+
     <script>
         var stocksuggest = $("input[name='stockcode']").bsSuggest({
             indexKey: 1,
@@ -110,14 +116,12 @@
 {% endblock %}
 
 {% block choice %}
-    <div id="checkbox" style="height:60%;overflow-y :auto;margin-top: 20%;">
-        <fieldset style='padding:5px;' id="index">
+    <div id="checkbox" style="height:85%;overflow-y :auto;margin-top:5%;">
+        <fieldset style='padding:0;' id="index">
             <legend>指标选择</legend>
-
-
         </fieldset>
     </div>
-    <div style="">
+    <div style="margin-top: 7px">
         <input type="button" value="全选" id="checkall"/>
         <input type="button" value="全不选" id="revokeall"/>
         {#    <input type="button" value="提交" id="commit" />#}
@@ -139,7 +143,7 @@
     </div>
 {% endblock %}
 {% block toolbox %}
-    <div id="echartindex" style="height: 50px;">
+    <div id="echartindex" style="height:10%;">
         <div style="height:25px;margin-top: 10px">
             <a style="width:50px;margin-left:10px;color: #0c0c0c">起始时间:</a><input type="text" id="ui3"
                                                                                   style="background-color:white;width: 100px;margin-left: 10px"/>
@@ -157,6 +161,7 @@
                 <option value="asc">升序</option>
                 <option value="desc">降序</option>
             </select>
+
         </div>
     </div>
 {% endblock %}
@@ -462,6 +467,7 @@
                                 name: post_selected(data.indexs[i]),
                                 type: 'line',
                                 smooth: true,
+                                symbolSize: 8,
                                 itemStyle: {
                                     normal: {
                                         color: color[data.indexs[i]],
@@ -551,29 +557,29 @@
                             {#                            creattable(stockcode, color, unit, nstartyear, nendyear)#}
                         });
                     }
-                    else if (order == 'asc')
-                    {
+                    else if (order == 'asc') {
                         var legenddata1 = new Array();
                         var aAxisdata1 = new Array();
                         var seriesdata1 = [];
                         var result = {};
-                        for (i = data.indexs.length-1; i >= 0; i--) {
+                        for (i = data.indexs.length - 1; i >= 0; i--) {
                             legenddata1.push(post_selected(data.indexs[i]))
                         }
-                        for(i = data.the_year_list.length-1; i >= 0; i--){
-                             aAxisdata1.push( data.the_year_list[i])
+                        for (i = data.the_year_list.length - 1; i >= 0; i--) {
+                            aAxisdata1.push(data.the_year_list[i])
                         }
-                        for (i = data.indexs.length-1; i >= 0; i--) {
+                        for (i = data.indexs.length - 1; i >= 0; i--) {
                             str = "data." + data.indexs[i]
                             value = eval(str)
                             var value2 = [];
-                            for (var j = value.length-1; j >=0; j--) {
+                            for (var j = value.length - 1; j >= 0; j--) {
                                 value2.push((value[j] / unit).toFixed(2))
                             }
                             result = {
                                 name: post_selected(data.indexs[i]),
                                 type: 'line',
                                 smooth: true,
+                                symbolSize: 8,
                                 itemStyle: {
                                     normal: {
                                         color: color[data.indexs[i]],
@@ -647,13 +653,13 @@
                         };
                         myChart1.setOption(option, true);
                         myChart1.on('dataZoom', function (params) {
-                            var nstartyear = 1991+ Math.ceil(params.start / 100 * 25)
-{#                            if (Math.ceil(1 - params.end / 100)) {#}
-                                var nendyear = 1991 + Math.ceil( params.end / 100 * 25) - 1
-{#                            }#}
-{#                            else {#}
-{#                                var nendyear = '1991'#}
-{#                            }#}
+                            var nstartyear = 1991 + Math.ceil(params.start / 100 * 25)
+                            {#                            if (Math.ceil(1 - params.end / 100)) {#}
+                            var nendyear = 1991 + Math.ceil(params.end / 100 * 25) - 1
+                            {#                            }#}
+                            {#                            else {#}
+                            {#                                var nendyear = '1991'#}
+                            {#                            }#}
                             set_timepicker(nstartyear, nendyear)
                             {#                            creattable(stockcode, color, unit, nstartyear, nendyear)#}
                         });
@@ -679,7 +685,7 @@
 
         function creatindex() {
             for (var key in indexdictionary) {
-                $("#index").append("<div class='divcheckbox'><input type='checkbox' class='checkbox' value='" + indexdictionary[key] + "' id='" + indexdictionary[key] + "' >" + key + " <div id='div_" + indexdictionary[key] + "' style='height: 10px;width: 10px;float: right;margin: 5px'></div> </div>"
+                $("#index").append("<div style='width:100%;height:30px;margin-top:10px;background-color:lightgray'><div class='checkbox' style='width:80%;height:20px;float:left;margin-left:25px'><input type='checkbox' class='checkbox' value='" + indexdictionary[key] + "' id='" + indexdictionary[key] + "' >" + key + " <div id='div_" + indexdictionary[key] + "' style='height: 10px;width: 10px;float: right;margin-top:5px;'></div></div></div>"
                 )
             }
         }
@@ -688,11 +694,10 @@
             var myChart = echarts.init(document.getElementById('echart'));
             var opt = myChart.getOption();
             var dz = opt.dataZoom[0];
-            if(order == 'desc'){
+            if (order == 'desc') {
                 creattable(stockcode, color, Uint, opt.xAxis[0].data[dz.endValue], opt.xAxis[0].data[dz.startValue])
             }
-            else if(order == 'asc')
-            {
+            else if (order == 'asc') {
                 creattable(stockcode, color, Uint, opt.xAxis[0].data[dz.startValue], opt.xAxis[0].data[dz.endValue])
             }
 
@@ -701,8 +706,8 @@
         $(document).ready(function () {
             function firstvisit() {
                 stockcode = {{ stockcode|safe }};
-{#                document.getElementById("yearorder").value = 'asc';#}
-{#                order = document.getElementById("yearorder").value#}
+                {#                document.getElementById("yearorder").value = 'asc';#}
+                {#                order = document.getElementById("yearorder").value#}
                 order = 'asc'
                 Uint = 100000000
                 selectedindex = ['tot_oper_rev']
@@ -732,10 +737,13 @@
                         set_timepicker('2010-q4', '2016-q4')
                         creattable(stockcode, color, Uint, '2010', '2016')
                         createchart(stockcode, color, Uint, '2010', '2016')
+                        {#                        document.getElementById("stockcode").value='111'#}
+                        $("#stockcode1").val(stockcode)
                     }
 
                 })
             }
+
             $("#ui3").datepicker({
                 changeYear: true,
                 dateFormat: 'yy',
@@ -1068,6 +1076,52 @@
                 {##}
                 {#                    }#}
                 {#                });#}
+            })
+            $("#set_favorite").click(function () {
+
+            })
+            $("#submitbtn1").click(function () {
+                $.ajax({
+                    type: 'POST',
+                    url: '{{url_for("restfulapi.iscode")}}',
+                    data: {
+                        'code': stockcode,
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.the_name != 'false') {
+                            $.ajax({
+                                type: 'POST',
+                                url: '{{url_for("restfulapi.is_repeatcode")}}',
+                                data: {
+                                    'code': stockcode,
+                                },
+                                dataType: 'json',
+                                success: function (data) {
+                                    if (data.exit == 'true') {
+                                        alert('您已关注该股票，请勿重复操作！')
+                                    }
+                                    else if (data.exit == 'flase') {
+                                        $.ajax({
+                                            type: 'POST',
+                                            url: '{{url_for("restfulapi.add_code_fd_yc")}}',
+                                            data: {
+                                                'code': stockcode
+                                            },
+                                            dataType: 'json',
+                                            success: function (data) {
+                                                alert('添加成功！')
+                                            }
+                                        })
+                                    }
+                                }
+                            })
+                        }
+                        else {
+                            alert($("#stockcode").val() + "号股票不存在！")
+                        }
+                    }
+                })
             })
         });
 

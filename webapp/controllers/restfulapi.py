@@ -618,12 +618,25 @@ def add_code():
         return redirect(url_for('main.personal'))
 
 
+@api_blueprint.route('/personal/add_code_fd_yc', methods=['GET', 'POST'])
+def add_code_fd_yc():
+    data = {}
+    stockcode = request.form.get('code')
+    new_fcode = favorite_code()
+    new_fcode.user_name = current_user.username
+    new_fcode.code = stockcode
+    db.session.add(new_fcode)
+    db.session.commit()
+    data['value']='success'
+    return jsonify(data)
+
+
 @api_blueprint.route('/personal/delete_code', methods=['GET', 'POST'])
 def delete_code():
     data = {}
     code_delete_list = request.form.getlist('selected[]')
     for code in code_delete_list:
-        result = favorite_code.query.filter_by(user_name=current_user.username, code = code).first()
+        result = favorite_code.query.filter_by(user_name=current_user.username, code=code).first()
         # new_fcode1 = favorite_code()
         # new_fcode1.user_name = current_user.username
         # new_fcode1.code = code
@@ -654,12 +667,14 @@ def search():
 def is_repeatcode():
     data = {}
     code = request.form.get('code')
-    result = favorite_code.query.filter_by(user_name=current_user.username,code=code).first()
+    result = favorite_code.query.filter_by(user_name=current_user.username, code=code).first()
     if result:
         data['exit'] = 'true'
     else:
         data['exit'] = 'flase'
     return jsonify(data)
+<<<<<<< HEAD
+=======
 
 @api_blueprint.route('/analysis/buyStock', methods=['GET', 'POST'])
 def buystock():
@@ -780,6 +795,7 @@ def clearall():
     data = db.session.query(investment_portfolio).filter(investment_portfolio.user_name==current_user.username).delete(synchronize_session=False)
     db.session.commit()
     return jsonify({"result": "success"})
+<<<<<<< HEAD
 
 @api_blueprint.route('/analysis/profithistory', methods=['GET', 'POST'])
 def profithistory():
@@ -787,3 +803,6 @@ def profithistory():
     getdata=Profit_monitoring(data)
     results=getdata.start()
     return jsonify(results)
+=======
+>>>>>>> dev
+>>>>>>> dev

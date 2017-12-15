@@ -23,16 +23,23 @@
             display: block;
 
         }
+
+        .thediv:hover {
+            background-color: #a5b2cb;
+        }
+
+        .thediv {
+            background-color: #d3d3d3;
+        }
     </style>
 {% endblock %}
 
 {% block tab %}
     <ul class="nav nav-pills">
-        <li><a href="{{ url_for('.market_status') }}">A.市场概况</a></li>
-        <li><a href="{{ url_for('.market_value') }}">B.图表分析</a></li>
+        <li><a href="{{ url_for('.market_value') }}">市场分析</a></li>
         <li class="dropdown"> <!--tip 可以同时写两个属性-->
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                C.行业状况 <span class="caret"></span>
+                行业状况 <span class="caret"></span>
             </a>
             <ul class="dropdown-menu">
                 <li><a href="{{ url_for('.industry_status',parameter=1) }}">部门</a></li>
@@ -43,7 +50,7 @@
         </li>
         <li class="dropdown active"> <!--tip 可以同时写两个属性-->
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                D.股票对比 <span class="caret"></span>
+                对比分析 <span class="caret"></span>
             </a>
             <ul class="dropdown-menu">
                 <li><a href="{{ url_for('.industry_compare',param=1) }}">部门</a></li>
@@ -89,8 +96,8 @@
                 </datalist>
                 <button id="submit1" type="submit" class="btn btn-default"
                         style="margin-top:0;margin-left:20px;width:150px;height: 30px" data-toggle="tooltip"
-                        title="点击添加股票"
-                        data-placement="right">添加比较股票
+                        title="点击添加"
+                        data-placement="right">添加比较项
                 </button>
                 <button id="clear1" type="submit" class="btn btn-default"
                         style="margin-top:0;margin-left:10px;width:150px;height: 30px">清空比较列表
@@ -133,8 +140,8 @@
                 </datalist>
                 <button id="submit2" type="submit" class="btn btn-default"
                         style="margin-top:0;margin-left:20px;width:150px;height: 30px" data-toggle="tooltip"
-                        title="点击添加股票"
-                        data-placement="right">添加比较股票
+                        title="点击添加"
+                        data-placement="right">添加比较项
                 </button>
                 <button id="clear2" type="submit" class="btn btn-default"
                         style="margin-top:0;margin-left:10px;width:150px;height: 30px">清空比较列表
@@ -216,8 +223,8 @@
                 </datalist>
                 <button id="submit3" type="submit" class="btn btn-default"
                         style="margin-top:0;margin-left:20px;width:150px;height: 30px" data-toggle="tooltip"
-                        title="点击添加股票"
-                        data-placement="right">添加比较股票
+                        title="点击添加"
+                        data-placement="right">添加比较项
                 </button>
                 <button id="clear3" type="submit" class="btn btn-default"
                         style="margin-top:0;margin-left:10px;width:150px;height: 30px">清空比较列表
@@ -370,8 +377,8 @@
                 </datalist>
                 <button id="submit4" type="submit" class="btn btn-default"
                         style="margin-top:0;margin-left:20px;width:150px;height: 30px" data-toggle="tooltip"
-                        title="点击添加股票"
-                        data-placement="right">添加比较股票
+                        title="点击添加"
+                        data-placement="right">添加比较项
                 </button>
                 <button id="clear4" type="submit" class="btn btn-default"
                         style="margin-top:0;margin-left:10px;width:150px;height: 30px">清空比较列表
@@ -397,12 +404,12 @@
                 </ul>
                 <div id="choice" class="tab-content">
                     <div class="tab-pane fade in active" id="chart">
-                        <div id="mychart" style="width:85%;height:100%;float:right"></div>
-                        <div id="myspan" style="width:15%;height:30%;float:left;overflow-y:auto">
+                        <div id="mychart" style="width:85%;height:60%;;float:right"></div>
+                        <div id="myspan" style="width:15%;height:25%;float:left;overflow-y:auto">
                             <legend>比较列表</legend>
                             <div id="div_compare1" style="overflow-y: auto"></div>
                         </div>
-                        <div id="mychoice" style="width:15%;height:70%;float:left;overflow-y:auto">
+                        <div id="mychoice" style="width:15%;height:47%;float:left;overflow-y:auto">
                             <div style="width:100%;height:30px;margin-top:10px;background-color:lightgray">
                                 <div class="radio" style="width:80%;height:20px;float:left;margin-left:5px">
                                     <label><input type="radio" name="radiobutton" value="tot_oper_rev" checked="checked"
@@ -466,20 +473,25 @@
                                 </div>
                             </div>
                         </div>
-                        <div id="mybot" style="width:100%;height:25px;margin-top: 20px">
-                            <div style="float: left;margin-left: 220px">
-                                <select class="form-control" id="unit">
+                        <div style="float:right;width:81.5%;height:10%;margin-top:1%;border-radius:8px;background-color:#dcdcdc">
+                            <div style="float: left;margin-left: 20px;margin-top:20px">
+                                <a style="width:50px;margin-left:10px;color: #0c0c0c">起始时间:</a><input size="16"
+                                                                                                      type="text"
+                                                                                                      value="1991-12-31"
+                                                                                                      id="endtime"
+                                                                                                      readonly
+                                                                                                      class="form_datetime">
+                                <a style="width:50px;margin-left:10px;color: #0c0c0c">结束时间:</a><input size="16"
+                                                                                                      type="text"
+                                                                                                      value="2016-12-31"
+                                                                                                      id="starttime"
+                                                                                                      readonly
+                                                                                                      class="form_datetime">
+                                <a style="width:50px;margin-left:10px;color: #0c0c0c">单位:</a>
+                                <select id="unit">
                                     <option value="0">亿</option>
-                                    <option value="1">兆</option>
+                                    <option value="1">千亿</option>
                                 </select>
-                            </div>
-                            <div style="float: left;margin-left: 100px;margin-top: 5px">
-                                <lable>起始时间<input size="20" type="text" value="1991-12-31" id="endtime" readonly
-                                                  class="form_datetime"></lable>
-                            </div>
-                            <div style="float: left;margin-left: 90px;margin-top: 5px">
-                                <label>结束时间<input size="20" type="text" value="2016-12-31" id="starttime" readonly
-                                                  class="form_datetime"></label>
                             </div>
                         </div>
                     </div>
@@ -502,7 +514,7 @@
                         codelist.push(thiscode);
                         colorlist[thiscode] = NewColor();
                         RequestChart1(codelist);
-                        creat_compare_option(thiscode);
+                        creat_compare(thiscode);
                         RequestTable1(codelist);
                     }
                 });
@@ -530,16 +542,17 @@
                     '55': '公共事业',
                     '60': '房地产',
                 };
-                var thiscode = '10';
+
                 var colorlist = {};
-                var codelist = ['10'];
+                var codelist = ['10', '15'];
                 colorlist['10'] = '#000000';
+                colorlist['15'] = '#028600'
                 var market_results_t1;
                 var invest_results_t1;
 
                 $(document).ready(function () {
+                    creat_compare_option();
                     RequestChart1(codelist);
-                    creat_compare_option(thiscode);
                     RequestTable1(codelist);
                 });
                 function RequestChart1(codelist) {
@@ -646,7 +659,27 @@
                         })
                     }
                 }
-                function creat_compare_option(thiscode) {
+                function creat_compare_option() {
+                    $('#div_compare1').empty();
+                    for (var x = 0; x < codelist.length; x++) {
+                        $.ajax({
+                            type: 'GET',
+                            url: '{{ url_for("restfulapi.market_status1") }}',
+                            data: {
+                                code: codelist[x],
+                                starttime: '19911231',
+                                endtime: '20161231',
+                                indexes: Chosenindexes,
+                            },
+                            dataType: 'json',
+                            success: function (data) {
+                                $('#div_compare1').append("<div class='thediv' style='width:100%;height:auto;margin-top:5px'><div  id='div_" + data.the_code + "' style='height: 10px;width: 10px;float:right;margin-right:5px;margin-top:5px;background-color:" + colorlist[data.the_code] + "'></div><span class='options' id='" + data.the_code + "'>"
+                                    + data.the_code + "-" + dict[data.the_code] + "</span></div>")
+                            }
+                        });
+                    }
+                }
+                function creat_compare(thiscode) {
                     $.ajax({
                         type: 'GET',
                         url: '{{ url_for("restfulapi.market_status1") }}',
@@ -658,11 +691,10 @@
                         },
                         dataType: 'json',
                         success: function (data) {
-                            $('#div_compare1').append("<div style='width:100%;height:20px;margin-top:5px;background-color:lightgray'><span class='options' id='" + data.the_code + "'>"
-                                + data.the_code + "-" + dict[data.the_code] + "</span><div  id='div_" + data.the_code + "' style='height: 10px;width: 10px;float: right;margin-right:5px;margin-top:5px;background-color:" + colorlist[data.the_code] + "'></div></div>")
+                            $('#div_compare1').append("<div class='thediv' style='width:100%;height:auto;margin-top:5px'><div  id='div_" + data.the_code + "' style='height: 10px;width: 10px;float:right;margin-right:5px;margin-top:5px;background-color:" + colorlist[data.the_code] + "'></div><span class='options' id='" + data.the_code + "'>"
+                                + data.the_code + "-" + dict[data.the_code] + "</span></div>")
                         }
-                    })
-
+                    });
                 }
                 function set_time() {
                     document.getElementById('endtime').value = "1991-12-31"
@@ -685,7 +717,7 @@
                             console.log(data)
                             market_results_t1 = data;
                             $("#mytable").empty();
-                            var table = $("<table id=\"temptable\" class=\"row-border hover order-column\" cellspacing=\"0\" width=\"100%\"  >");
+                            var table = $("<table id=\"temptable\" style=\"text-align:center\" class=\"row-border hover order-column\" cellspacing=\"0\" width=\"100%\"  >");
                             table.appendTo($("#mytable"));
                             th = $("<thead></thead>");
                             th.appendTo(table);
@@ -890,12 +922,12 @@
                 </ul>
                 <div id="choice" class="tab-content">
                     <div class="tab-pane fade in active" id="chart">
-                        <div id="mychart" style="width:85%;height:100%;float:right"></div>
-                        <div id="myspan" style="width:15%;height:30%;float:left;overflow-y:auto">
+                        <div id="mychart" style="width:85%;height:60%;;float:right"></div>
+                        <div id="myspan" style="width:15%;height:25%;float:left;overflow-y:auto">
                             <legend>比较列表</legend>
                             <div id="div_compare1" style="overflow-y: auto"></div>
                         </div>
-                        <div id="mychoice" style="width:15%;height:70%;float:left;overflow-y:auto">
+                        <div id="mychoice" style="width:15%;height:47%;float:left;overflow-y:auto">
                             <div style="width:100%;height:30px;margin-top:10px;background-color:lightgray">
                                 <div class="radio" style="width:80%;height:20px;float:left;margin-left:5px">
                                     <label><input type="radio" name="radiobutton" value="tot_oper_rev" checked="checked"
@@ -959,20 +991,25 @@
                                 </div>
                             </div>
                         </div>
-                        <div id="mybot" style="width:100%;height:25px;margin-top: 20px">
-                            <div style="float: left;margin-left: 220px">
-                                <select class="form-control" id="unit">
+                        <div style="float:right;width:81.5%;height:10%;margin-top:1%;border-radius:8px;background-color:#dcdcdc">
+                            <div style="float: left;margin-left: 20px;margin-top:20px">
+                                <a style="width:50px;margin-left:10px;color: #0c0c0c">起始时间:</a><input size="16"
+                                                                                                      type="text"
+                                                                                                      value="1991-12-31"
+                                                                                                      id="endtime"
+                                                                                                      readonly
+                                                                                                      class="form_datetime">
+                                <a style="width:50px;margin-left:10px;color: #0c0c0c">结束时间:</a><input size="16"
+                                                                                                      type="text"
+                                                                                                      value="2016-12-31"
+                                                                                                      id="starttime"
+                                                                                                      readonly
+                                                                                                      class="form_datetime">
+                                <a style="width:50px;margin-left:10px;color: #0c0c0c">单位:</a>
+                                <select id="unit">
                                     <option value="0">亿</option>
-                                    <option value="1">兆</option>
+                                    <option value="1">千亿</option>
                                 </select>
-                            </div>
-                            <div style="float: left;margin-left: 100px;margin-top: 5px">
-                                <lable>起始时间<input size="20" type="text" value="1991-12-31" id="endtime" readonly
-                                                  class="form_datetime"></lable>
-                            </div>
-                            <div style="float: left;margin-left: 90px;margin-top: 5px">
-                                <label>结束时间<input size="20" type="text" value="2016-12-31" id="starttime" readonly
-                                                  class="form_datetime"></label>
                             </div>
                         </div>
                     </div>
@@ -994,8 +1031,8 @@
                     if (a) {
                         codelist.push(thiscode);
                         colorlist[thiscode] = NewColor();
+                        creat_compare(thiscode)
                         RequestChart1(codelist);
-                        creat_compare_option(thiscode);
                         RequestTable1(codelist);
                     }
                 });
@@ -1036,18 +1073,38 @@
                     '5510': '公用事业Ⅱ',
                     '6010': '房地产Ⅱ'
                 };
-                var thiscode = '1010';
                 var colorlist = {};
-                var codelist = ['1010'];
+                var codelist = ['1010', '1510'];
                 colorlist['1010'] = '#000000';
+                colorlist['1510'] = '#028600';
                 var market_results_t1;
                 var invest_results_t1;
 
                 $(document).ready(function () {
+                    creat_compare_option();
                     RequestChart1(codelist);
-                    creat_compare_option(thiscode);
                     RequestTable1(codelist);
                 });
+                function creat_compare_option() {
+                    $('#div_compare1').empty();
+                    for (var x = 0; x < codelist.length; x++) {
+                        $.ajax({
+                            type: 'GET',
+                            url: '{{ url_for("restfulapi.market_status2") }}',
+                            data: {
+                                code: codelist[x],
+                                starttime: '19911231',
+                                endtime: '20161231',
+                                indexes: Chosenindexes,
+                            },
+                            dataType: 'json',
+                            success: function (data) {
+                                $('#div_compare1').append("<div class='thediv' style='width:100%;height:auto;margin-top:5px'><div  id='div_" + data.the_code + "' style='height: 10px;width: 10px;float:right;margin-right:5px;margin-top:5px;background-color:" + colorlist[data.the_code] + "'></div><span class='options' id='" + data.the_code + "'>"
+                                    + data.the_code + "-" + dict[data.the_code] + "</span></div>")
+                            }
+                        });
+                    }
+                }
                 function RequestChart1(codelist) {
                     dataSeries = [];
                     for (var k = 0; k < codelist.length; k++) {
@@ -1152,7 +1209,7 @@
                         })
                     }
                 }
-                function creat_compare_option(thiscode) {
+                function creat_compare(thiscode) {
                     $.ajax({
                         type: 'GET',
                         url: '{{ url_for("restfulapi.market_status2") }}',
@@ -1164,11 +1221,10 @@
                         },
                         dataType: 'json',
                         success: function (data) {
-                            $('#div_compare1').append("<div style='width:100%;height:20px;margin-top:5px;background-color:lightgray'><span class='options' id='" + data.the_code + "'>"
-                                + data.the_code + "-" + dict[data.the_code] + "</span><div  id='div_" + data.the_code + "' style='height: 10px;width: 10px;float: right;margin-right:5px;margin-top:5px;background-color:" + colorlist[data.the_code] + "'></div></div>")
+                            $('#div_compare1').append("<div class='thediv' style='width:100%;height:auto;margin-top:5px'><div  id='div_" + data.the_code + "' style='height: 10px;width: 10px;float:right;margin-right:5px;margin-top:5px;background-color:" + colorlist[data.the_code] + "'></div><span class='options' id='" + data.the_code + "'>"
+                                + data.the_code + "-" + dict[data.the_code] + "</span></div>")
                         }
                     })
-
                 }
                 function set_time() {
                     document.getElementById('endtime').value = "1991-12-31"
@@ -1191,7 +1247,7 @@
                             console.log(data)
                             market_results_t1 = data;
                             $("#mytable").empty();
-                            var table = $("<table id=\"temptable\" class=\"row-border hover order-column\" cellspacing=\"0\" width=\"100%\"  >");
+                            var table = $("<table id=\"temptable\" style=\"text-align:center\" class=\"row-border hover order-column\" cellspacing=\"0\" width=\"100%\"  >");
                             table.appendTo($("#mytable"));
                             th = $("<thead></thead>");
                             th.appendTo(table);
@@ -1396,12 +1452,12 @@
                 </ul>
                 <div id="choice" class="tab-content">
                     <div class="tab-pane fade in active" id="chart">
-                        <div id="mychart" style="width:85%;height:100%;float:right"></div>
-                        <div id="myspan" style="width:15%;height:30%;float:left;overflow-y:auto">
+                        <div id="mychart" style="width:85%;height:60%;float:right"></div>
+                        <div id="myspan" style="width:15%;height:25%;float:left;overflow-y:auto">
                             <legend>比较列表</legend>
                             <div id="div_compare1" style="overflow-y: auto"></div>
                         </div>
-                        <div id="mychoice" style="width:15%;height:70%;float:left;overflow-y:auto">
+                        <div id="mychoice" style="width:15%;height:47%;float:left;overflow-y:auto">
                             <div style="width:100%;height:30px;margin-top:10px;background-color:lightgray">
                                 <div class="radio" style="width:80%;height:20px;float:left;margin-left:5px">
                                     <label><input type="radio" name="radiobutton" value="tot_oper_rev" checked="checked"
@@ -1465,20 +1521,25 @@
                                 </div>
                             </div>
                         </div>
-                        <div id="mybot" style="width:100%;height:25px;margin-top: 20px">
-                            <div style="float: left;margin-left: 220px">
-                                <select class="form-control" id="unit">
+                        <div style="float:right;width:81.5%;height:10%;margin-top:1%;border-radius:8px;background-color:#dcdcdc">
+                            <div style="float: left;margin-left: 20px;margin-top:20px">
+                                <a style="width:50px;margin-left:10px;color: #0c0c0c">起始时间:</a><input size="16"
+                                                                                                      type="text"
+                                                                                                      value="1991-12-31"
+                                                                                                      id="endtime"
+                                                                                                      readonly
+                                                                                                      class="form_datetime">
+                                <a style="width:50px;margin-left:10px;color: #0c0c0c">结束时间:</a><input size="16"
+                                                                                                      type="text"
+                                                                                                      value="2016-12-31"
+                                                                                                      id="starttime"
+                                                                                                      readonly
+                                                                                                      class="form_datetime">
+                                <a style="width:50px;margin-left:10px;color: #0c0c0c">单位:</a>
+                                <select id="unit">
                                     <option value="0">亿</option>
-                                    <option value="1">兆</option>
+                                    <option value="1">千亿</option>
                                 </select>
-                            </div>
-                            <div style="float: left;margin-left: 100px;margin-top: 5px">
-                                <lable>起始时间<input size="20" type="text" value="1991-12-31" id="endtime" readonly
-                                                  class="form_datetime"></lable>
-                            </div>
-                            <div style="float: left;margin-left: 90px;margin-top: 5px">
-                                <label>结束时间<input size="20" type="text" value="2016-12-31" id="starttime" readonly
-                                                  class="form_datetime"></label>
                             </div>
                         </div>
                     </div>
@@ -1501,7 +1562,7 @@
                         codelist.push(thiscode);
                         colorlist[thiscode] = NewColor();
                         RequestChart1(codelist);
-                        creat_compare_option(thiscode);
+                        creat_compare(thiscode);
                         RequestTable1(codelist);
                     }
                 });
@@ -1581,16 +1642,16 @@
                     '551050': '独立电力生产商与能源贸易商Ⅲ',
                     '601020': '房地产管理和开发',
                 };
-                var thiscode = '101010';
                 var colorlist = {};
-                var codelist = ['101010'];
+                var codelist = ['101010', '101020'];
                 colorlist['101010'] = '#000000';
+                colorlist['101020'] = '#028600';
                 var market_results_t1;
                 var invest_results_t1;
 
                 $(document).ready(function () {
+                    creat_compare_option();
                     RequestChart1(codelist);
-                    creat_compare_option(thiscode);
                     RequestTable1(codelist);
                 });
                 function RequestChart1(codelist) {
@@ -1697,7 +1758,27 @@
                         })
                     }
                 }
-                function creat_compare_option(thiscode) {
+                function creat_compare_option() {
+                    $('#div_compare1').empty();
+                    for (var x = 0; x < codelist.length; x++) {
+                        $.ajax({
+                            type: 'GET',
+                            url: '{{ url_for("restfulapi.market_status3") }}',
+                            data: {
+                                code: codelist[x],
+                                starttime: '19911231',
+                                endtime: '20161231',
+                                indexes: Chosenindexes,
+                            },
+                            dataType: 'json',
+                            success: function (data) {
+                                $('#div_compare1').append("<div class='thediv' style='width:100%;height:auto;margin-top:5px'><div  id='div_" + data.the_code + "' style='height: 10px;width: 10px;float:right;margin-right:5px;margin-top:5px;background-color:" + colorlist[data.the_code] + "'></div><span class='options' id='" + data.the_code + "'>"
+                                    + data.the_code + "-" + dict[data.the_code] + "</span></div>")
+                            }
+                        })
+                    }
+                }
+                function creat_compare(thiscode) {
                     $.ajax({
                         type: 'GET',
                         url: '{{ url_for("restfulapi.market_status3") }}',
@@ -1709,11 +1790,10 @@
                         },
                         dataType: 'json',
                         success: function (data) {
-                            $('#div_compare1').append("<div style='width:100%;height:auto;margin-top:5px;background-color:lightgray'><span class='options' id='" + data.the_code + "'>"
-                                + data.the_code + "-" + dict[data.the_code] + "</span><div  id='div_" + data.the_code + "' style='height: 10px;width: 10px;float: right;margin-right:5px;margin-top:5px;background-color:" + colorlist[data.the_code] + "'></div></div>")
+                            $('#div_compare1').append("<div class='thediv' style='width:100%;height:auto;margin-top:5px'><div  id='div_" + data.the_code + "' style='height: 10px;width: 10px;float:right;margin-right:5px;margin-top:5px;background-color:" + colorlist[data.the_code] + "'></div><span class='options' id='" + data.the_code + "'>"
+                                + data.the_code + "-" + dict[data.the_code] + "</span></div>")
                         }
                     })
-
                 }
                 function set_time() {
                     document.getElementById('endtime').value = "1991-12-31"
@@ -1736,7 +1816,7 @@
                             console.log(data)
                             market_results_t1 = data;
                             $("#mytable").empty();
-                            var table = $("<table id=\"temptable\" class=\"row-border hover order-column\" cellspacing=\"0\" width=\"100%\"  >");
+                            var table = $("<table id=\"temptable\" style=\"text-align:center\" class=\"row-border hover order-column\" cellspacing=\"0\" width=\"100%\"  >");
                             table.appendTo($("#mytable"));
                             th = $("<thead></thead>");
                             th.appendTo(table);
@@ -1941,12 +2021,12 @@
                 </ul>
                 <div id="choice" class="tab-content">
                     <div class="tab-pane fade in active" id="chart">
-                        <div id="mychart" style="width:85%;height:100%;float:right"></div>
-                        <div id="myspan" style="width:15%;height:30%;float:left;overflow-y:auto">
+                        <div id="mychart" style="width:85%;height:60%;float:right"></div>
+                        <div id="myspan" style="width:15%;height:25%;float:left;overflow-y:auto">
                             <legend>比较列表</legend>
                             <div id="div_compare1" style="overflow-y: auto"></div>
                         </div>
-                        <div id="mychoice" style="width:15%;height:70%;float:left;overflow-y:auto">
+                        <div id="mychoice" style="width:15%;height:47%;float:left;overflow-y:auto">
                             <div style="width:100%;height:30px;margin-top:10px;background-color:lightgray">
                                 <div class="radio" style="width:80%;height:20px;float:left;margin-left:5px">
                                     <label><input type="radio" name="radiobutton" value="tot_oper_rev" checked="checked"
@@ -2010,20 +2090,25 @@
                                 </div>
                             </div>
                         </div>
-                        <div id="mybot" style="width:100%;height:25px;margin-top: 20px">
-                            <div style="float: left;margin-left: 220px">
-                                <select class="form-control" id="unit">
+                        <div style="float:right;width:81.5%;height:10%;margin-top:1%;border-radius:8px;background-color:#dcdcdc">
+                            <div style="float: left;margin-left: 20px;margin-top:20px">
+                                <a style="width:50px;margin-left:10px;color: #0c0c0c">起始时间:</a><input size="16"
+                                                                                                      type="text"
+                                                                                                      value="1991-12-31"
+                                                                                                      id="endtime"
+                                                                                                      readonly
+                                                                                                      class="form_datetime">
+                                <a style="width:50px;margin-left:10px;color: #0c0c0c">结束时间:</a><input size="16"
+                                                                                                      type="text"
+                                                                                                      value="2016-12-31"
+                                                                                                      id="starttime"
+                                                                                                      readonly
+                                                                                                      class="form_datetime">
+                                <a style="width:50px;margin-left:10px;color: #0c0c0c">单位:</a>
+                                <select id="unit">
                                     <option value="0">亿</option>
-                                    <option value="1">兆</option>
+                                    <option value="1">千亿</option>
                                 </select>
-                            </div>
-                            <div style="float: left;margin-left: 100px;margin-top: 5px">
-                                <lable>起始时间<input size="20" type="text" value="1991-12-31" id="endtime" readonly
-                                                  class="form_datetime"></lable>
-                            </div>
-                            <div style="float: left;margin-left: 90px;margin-top: 5px">
-                                <label>结束时间<input size="20" type="text" value="2016-12-31" id="starttime" readonly
-                                                  class="form_datetime"></label>
                             </div>
                         </div>
                     </div>
@@ -2046,7 +2131,7 @@
                         codelist.push(thiscode);
                         colorlist[thiscode] = NewColor();
                         RequestChart1(codelist);
-                        creat_compare_option(thiscode);
+                        creat_compare(thiscode);
                         RequestTable1(codelist);
                     }
                 });
@@ -2196,14 +2281,15 @@
                 };
                 var thiscode = '10101010';
                 var colorlist = {};
-                var codelist = ['10101010'];
+                var codelist = ['10101010', '10101020'];
                 colorlist['10101010'] = '#000000';
+                colorlist['10101020'] = '#028600';
                 var market_results_t1;
                 var invest_results_t1;
 
                 $(document).ready(function () {
+                    creat_compare_option();
                     RequestChart1(codelist);
-                    creat_compare_option(thiscode);
                     RequestTable1(codelist);
                 });
                 function RequestChart1(codelist) {
@@ -2310,7 +2396,27 @@
                         })
                     }
                 }
-                function creat_compare_option(thiscode) {
+                function creat_compare_option() {
+                    $('#div_compare1').empty();
+                    for (var x = 0; x < codelist.length; x++) {
+                        $.ajax({
+                            type: 'GET',
+                            url: '{{ url_for("restfulapi.market_status4") }}',
+                            data: {
+                                code: codelist[x],
+                                starttime: '19911231',
+                                endtime: '20161231',
+                                indexes: Chosenindexes,
+                            },
+                            dataType: 'json',
+                            success: function (data) {
+                                $('#div_compare1').append("<div class='thediv' style='width:100%;height:auto;margin-top:5px'><div  id='div_" + data.the_code + "' style='height: 10px;width: 10px;float:right;margin-right:5px;margin-top:5px;background-color:" + colorlist[data.the_code] + "'></div><span class='options' id='" + data.the_code + "'>"
+                                    + data.the_code + "-" + dict[data.the_code] + "</span></div>")
+                            }
+                        })
+                    }
+                }
+                function creat_compare(thiscode) {
                     $.ajax({
                         type: 'GET',
                         url: '{{ url_for("restfulapi.market_status4") }}',
@@ -2322,11 +2428,10 @@
                         },
                         dataType: 'json',
                         success: function (data) {
-                            $('#div_compare1').append("<div style='width:100%;height:auto;margin-top:5px;background-color:lightgray'><span class='options' id='" + data.the_code + "'>"
-                                + data.the_code + "-" + dict[data.the_code] + "</span><div  id='div_" + data.the_code + "' style='height: 10px;width: 10px;float:right;margin-right:5px;margin-top:5px;background-color:" + colorlist[data.the_code] + "'></div></div>")
+                            $('#div_compare1').append("<div class='thediv' style='width:100%;height:auto;margin-top:5px'><div  id='div_" + data.the_code + "' style='height: 10px;width: 10px;float:right;margin-right:5px;margin-top:5px;background-color:" + colorlist[data.the_code] + "'></div><span class='options' id='" + data.the_code + "'>"
+                                + data.the_code + "-" + dict[data.the_code] + "</span></div>")
                         }
                     })
-
                 }
                 function set_time() {
                     document.getElementById('endtime').value = "1991-12-31"
@@ -2349,7 +2454,7 @@
                             console.log(data)
                             market_results_t1 = data;
                             $("#mytable").empty();
-                            var table = $("<table id=\"temptable\" class=\"row-border hover order-column\" cellspacing=\"0\" width=\"100%\"  >");
+                            var table = $("<table id=\"temptable\" style=\"text-align:center\" class=\"row-border hover order-column\" cellspacing=\"0\" width=\"100%\"  >");
                             table.appendTo($("#mytable"));
                             th = $("<thead></thead>");
                             th.appendTo(table);

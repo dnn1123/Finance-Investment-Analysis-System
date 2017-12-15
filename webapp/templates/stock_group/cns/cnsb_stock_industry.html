@@ -192,8 +192,10 @@
                 <td style="border: none;">{{ result[x].industry_gics_3 }}</td>
                 <td style="border: none;">{{ result[x].industry_gics_4 }}
 {#                    <a href="{{ url_for('stock_group.update_gics_4',trade_code=result[x][0].trade_code) }}">修改</a>#}
-                <a href="#" class="small-box-footer updatelink" id="{{ result[x][0].trade_code }}" data-toggle="modal" data-target="#myModal" onclick="stockcode=this.id">修改</a>
+                    {% if user.permissions==1 %}
 
+                <a href="#" class="small-box-footer updatelink" id="{{ result[x][0].trade_code }}" data-toggle="modal" data-target="#myModal" onclick="stockcode=this.id">修改</a>
+{% endif %}
                 </td>
                 <td style="border: none;">{{ result[x].industry_CSRC12_1 }}</td> <!--证监会分类第一级-->
                 <td style="border: none;">{{ result[x].industry_CSRC12_2 }}</td> <!--证监会分类第二级 因为字段名相同而采用[5][6]-->
