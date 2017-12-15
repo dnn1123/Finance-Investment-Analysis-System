@@ -7,6 +7,8 @@ from sqlalchemy.orm import sessionmaker  # me
 from flask_login import current_user
 import string
 import tushare as ts
+import gc
+from  webapp.stratlib import *
 api_blueprint = Blueprint(
         'restfulapi',
         __name__,
@@ -778,3 +780,10 @@ def clearall():
     data = db.session.query(investment_portfolio).filter(investment_portfolio.user_name==current_user.username).delete(synchronize_session=False)
     db.session.commit()
     return jsonify({"result": "success"})
+
+@api_blueprint.route('/analysis/profithistory', methods=['GET', 'POST'])
+def profithistory():
+    data = history.query.filter_by(users=current_user.username).order_by(db.desc(history.time)).all()
+    getdata=Profit_monitoring(data)
+    results=getdata.start()
+    return jsonify(results)
