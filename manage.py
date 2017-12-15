@@ -3,6 +3,8 @@ from flask_script import Manager, Server
 from flask_migrate import Migrate, MigrateCommand
 from webapp import create_app
 from webapp.models import db, roles, users, finance_basics, stock_basics, invest_values
+from flask_admin import Admin
+
 
 env = os.environ.get('WEBAPP_ENV', 'dev')
 app = create_app('webapp.config.%sConfig' % env.capitalize())

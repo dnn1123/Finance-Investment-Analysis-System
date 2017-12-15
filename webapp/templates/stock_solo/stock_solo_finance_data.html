@@ -48,12 +48,15 @@
 {% endblock %}
 
 {% block choice %}
-    <label style="margin-top: 20px" for="name">选项</label>
-    <div id="index" style="height: 60%; overflow-y :auto">
+    <div id="checkbox" style="height:85%;overflow-y :auto;margin-top:5%;">
+        <fieldset style='padding:0;' id="index">
+            <legend>指标选择</legend>
+
+        </fieldset>
     </div>
-    <div style="">
-        <input type="button" value="全选" id="CheckAll"/>
-        <input type="button" value="全不选" id="UnCheckAll"/>
+    <div style="margin-top: 7px">
+        <input type="button" value="全选" id="checkall"/>
+        <input type="button" value="全不选" id="revokeall"/>
         {#    <input type="button" value="提交" id="commit" />#}
     </div>
 

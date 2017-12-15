@@ -11,11 +11,10 @@
 
 {% block tab %}
     <ul class="nav nav-pills">
-        <li><a href="{{ url_for('.market_status') }}">A.市场概况</a></li>
-        <li><a href="{{ url_for('.market_value') }}">B.图表分析</a></li>
+        <li><a href="{{ url_for('.market_value') }}">市场分析</a></li>
         <li class="dropdown"> <!--tip 可以同时写两个属性-->
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                C.行业状况 <span class="caret"></span>
+                行业状况 <span class="caret"></span>
             </a>
             <ul class="dropdown-menu">
                 <li><a href="{{ url_for('.industry_status',parameter=1) }}">部门</a></li>
@@ -26,7 +25,7 @@
         </li>
         <li class="dropdown"> <!--tip 可以同时写两个属性-->
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                D.股票对比 <span class="caret"></span>
+                对比分析 <span class="caret"></span>
             </a>
             <ul class="dropdown-menu">
                 <li><a href="{{ url_for('.industry_compare',param=1) }}">部门</a></li>

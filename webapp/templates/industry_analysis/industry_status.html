@@ -70,11 +70,10 @@
 
 {% block tab %}
     <ul class="nav nav-pills">
-        <li><a href="{{ url_for('.market_status') }}">A.市场概况</a></li>
-        <li><a href="{{ url_for('.market_value') }}">B.图表分析</a></li>
+        <li><a href="{{ url_for('.market_value') }}">市场分析</a></li>
         <li class="dropdown active"> <!--tip 可以同时写两个属性-->
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                C.行业状况 <span class="caret"></span>
+                行业状况 <span class="caret"></span>
             </a>
             <ul class="dropdown-menu">
                 <li><a href="{{ url_for('.industry_status',parameter=1) }}">部门</a></li>
@@ -85,7 +84,7 @@
         </li>
         <li class="dropdown"> <!--tip 可以同时写两个属性-->
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                D.股票对比 <span class="caret"></span>
+                对比分析 <span class="caret"></span>
             </a>
             <ul class="dropdown-menu">
                 <li><a href="{{ url_for('.industry_compare',param=1) }}">部门</a></li>
@@ -123,8 +122,8 @@
                 </ul>
                 <div id="choice" class="tab-content">
                     <div class="tab-pane fade in active" id="chart">
-                        <div id="mychart" style="width:85%;height:100%;float:right"></div>
-                        <div id="mychoice" style="width:13%;height:100%;float:left;overflow-y:auto">
+                        <div id="mychart" style="width:85%;height:60%;;float:right"></div>
+                        <div id="mychoice" style="width:15%;height:72%;float:left;overflow-y :auto">
                             <div style="width:100%;height:30px;margin-top:10px;background-color:lightgray">
                                 <div class="checkbox" style="width:80%;height:20px;float:left;margin-left:5px">
                                     <label><input type="checkbox" value="tot_oper_rev" checked="checked"
@@ -211,20 +210,25 @@
                                      id="i_free_cash_flow"></div>
                             </div>
                         </div>
-                        <div style="width:100%;height:25px;margin-top: 20px">
-                            <div style="float: left;margin-left: 220px">
-                                <select class="form-control" id="unit">
+                        <div style="float:right;width:81.5%;height:10%;margin-top:1%;border-radius:8px;background-color:#dcdcdc">
+                            <div style="float: left;margin-left: 20px;margin-top:20px">
+                                <a style="width:50px;margin-left:10px;color: #0c0c0c">起始时间:</a><input size="16"
+                                                                                                      type="text"
+                                                                                                      value="1991-12-31"
+                                                                                                      id="endtime"
+                                                                                                      readonly
+                                                                                                      class="form_datetime">
+                                <a style="width:50px;margin-left:10px;color: #0c0c0c">结束时间:</a><input size="16"
+                                                                                                      type="text"
+                                                                                                      value="2016-12-31"
+                                                                                                      id="starttime"
+                                                                                                      readonly
+                                                                                                      class="form_datetime">
+                                <a style="width:50px;margin-left:10px;color: #0c0c0c">单位:</a>
+                                <select id="unit">
                                     <option value="0">亿</option>
-                                    <option value="1">兆</option>
+                                    <option value="1">千亿</option>
                                 </select>
-                            </div>
-                            <div style="float: left;margin-left: 100px;margin-top: 5px">
-                                <lable>起始时间<input size="20" type="text" value="1991-12-31" id="endtime" readonly
-                                                  class="form_datetime"></lable>
-                            </div>
-                            <div style="float: left;margin-left: 90px;margin-top: 5px">
-                                <label>结束时间<input size="20" type="text" value="2016-12-31" id="starttime" readonly
-                                                  class="form_datetime"></label>
                             </div>
                         </div>
                     </div>
@@ -499,7 +503,7 @@
                 }
                 function CreateTable1() {
                     $("#mytable").empty();
-                    var table = $("<table id=\"temptable\" class=\"row-border hover order-column\" cellspacing=\"0\" width=\"100%\"  >");
+                    var table = $("<table id=\"temptable\" style=\"text-align:center\" class=\"row-border hover order-column\" cellspacing=\"0\" width=\"100%\"  >");
                     table.appendTo($("#mytable"));
                     th = $("<thead></thead>");
                     th.appendTo(table);
@@ -657,13 +661,13 @@
                     flag = $(this).val();
                     if (flag == "0") {
                         denominator = 1;
-                        CreateChart1();
+                        RequestChart1();
                         CreateTable1();
                         set_time();
                     }
                     if (flag == "1") {
                         denominator = 1000;
-                        CreateChart1();
+                        RequestChart1();
                         CreateTable1();
                         set_time();
                     }
@@ -689,8 +693,8 @@
                 </ul>
                 <div id="choice" class="tab-content">
                     <div class="tab-pane fade in active" id="chart">
-                        <div id="mychart" style="width:85%;height:100%;float:right"></div>
-                        <div id="mychoice" style="width:13%;height:100%;float:left;overflow-y:auto">
+                        <div id="mychart" style="width:85%;height:60%;;float:right"></div>
+                        <div id="mychoice" style="width:15%;height:72%;float:left;overflow-y :auto">
                             <div style="width:100%;height:30px;margin-top:10px;background-color:lightgray">
                                 <div class="checkbox" style="width:80%;height:20px;float:left;margin-left:5px">
                                     <label><input type="checkbox" value="tot_oper_rev" checked="checked"
@@ -777,20 +781,25 @@
                                      id="i_free_cash_flow"></div>
                             </div>
                         </div>
-                        <div style="width:100%;height:25px;margin-top: 20px">
-                            <div style="float: left;margin-left: 220px">
-                                <select class="form-control" id="unit">
+                        <div style="float:right;width:81.5%;height:10%;margin-top:1%;border-radius:8px;background-color:#dcdcdc">
+                            <div style="float: left;margin-left: 20px;margin-top:20px">
+                                <a style="width:50px;margin-left:10px;color: #0c0c0c">起始时间:</a><input size="16"
+                                                                                                      type="text"
+                                                                                                      value="1991-12-31"
+                                                                                                      id="endtime"
+                                                                                                      readonly
+                                                                                                      class="form_datetime">
+                                <a style="width:50px;margin-left:10px;color: #0c0c0c">结束时间:</a><input size="16"
+                                                                                                      type="text"
+                                                                                                      value="2016-12-31"
+                                                                                                      id="starttime"
+                                                                                                      readonly
+                                                                                                      class="form_datetime">
+                                <a style="width:50px;margin-left:10px;color: #0c0c0c">单位:</a>
+                                <select id="unit">
                                     <option value="0">亿</option>
-                                    <option value="1">兆</option>
+                                    <option value="1">千亿</option>
                                 </select>
-                            </div>
-                            <div style="float: left;margin-left: 100px;margin-top: 5px">
-                                <lable>起始时间<input size="20" type="text" value="1991-12-31" id="endtime" readonly
-                                                  class="form_datetime"></lable>
-                            </div>
-                            <div style="float: left;margin-left: 90px;margin-top: 5px">
-                                <label>结束时间<input size="20" type="text" value="2016-12-31" id="starttime" readonly
-                                                  class="form_datetime"></label>
                             </div>
                         </div>
                     </div>
@@ -1066,7 +1075,7 @@
                 }
                 function CreateTable1() {
                     $("#mytable").empty();
-                    var table = $("<table id=\"temptable\" class=\"row-border hover order-column\" cellspacing=\"0\" width=\"100%\"  >");
+                    var table = $("<table id=\"temptable\" style=\"text-align:center\" class=\"row-border hover order-column\" cellspacing=\"0\" width=\"100%\"  >");
                     table.appendTo($("#mytable"));
                     th = $("<thead></thead>");
                     th.appendTo(table);
@@ -1224,13 +1233,13 @@
                     flag = $(this).val();
                     if (flag == "0") {
                         denominator = 1;
-                        CreateChart1();
+                        RequestChart1();
                         CreateTable1();
                         set_time();
                     }
                     if (flag == "1") {
                         denominator = 1000;
-                        CreateChart1();
+                        RequestChart1();
                         CreateTable1();
                         set_time();
                     }
@@ -1256,8 +1265,8 @@
                 </ul>
                 <div id="choice" class="tab-content">
                     <div class="tab-pane fade in active" id="chart">
-                        <div id="mychart" style="width:85%;height:100%;float:right"></div>
-                        <div id="mychoice" style="width:13%;height:100%;float:left;overflow-y:auto">
+                        <div id="mychart" style="width:85%;height:60%;;float:right"></div>
+                        <div id="mychoice" style="width:15%;height:72%;float:left;overflow-y :auto">
                             <div style="width:100%;height:30px;margin-top:10px;background-color:lightgray">
                                 <div class="checkbox" style="width:80%;height:20px;float:left;margin-left:5px">
                                     <label><input type="checkbox" value="tot_oper_rev" checked="checked"
@@ -1344,20 +1353,25 @@
                                      id="i_free_cash_flow"></div>
                             </div>
                         </div>
-                        <div style="width:100%;height:25px;margin-top: 20px">
-                            <div style="float: left;margin-left: 220px">
-                                <select class="form-control" id="unit">
+                        <div style="float:right;width:81.5%;height:10%;margin-top:1%;border-radius:8px;background-color:#dcdcdc">
+                            <div style="float: left;margin-left: 20px;margin-top:20px">
+                                <a style="width:50px;margin-left:10px;color: #0c0c0c">起始时间:</a><input size="16"
+                                                                                                      type="text"
+                                                                                                      value="1991-12-31"
+                                                                                                      id="endtime"
+                                                                                                      readonly
+                                                                                                      class="form_datetime">
+                                <a style="width:50px;margin-left:10px;color: #0c0c0c">结束时间:</a><input size="16"
+                                                                                                      type="text"
+                                                                                                      value="2016-12-31"
+                                                                                                      id="starttime"
+                                                                                                      readonly
+                                                                                                      class="form_datetime">
+                                <a style="width:50px;margin-left:10px;color: #0c0c0c">单位:</a>
+                                <select id="unit">
                                     <option value="0">亿</option>
-                                    <option value="1">兆</option>
+                                    <option value="1">百亿</option>
                                 </select>
-                            </div>
-                            <div style="float: left;margin-left: 100px;margin-top: 5px">
-                                <lable>起始时间<input size="20" type="text" value="1991-12-31" id="endtime" readonly
-                                                  class="form_datetime"></lable>
-                            </div>
-                            <div style="float: left;margin-left: 90px;margin-top: 5px">
-                                <label>结束时间<input size="20" type="text" value="2016-12-31" id="starttime" readonly
-                                                  class="form_datetime"></label>
                             </div>
                         </div>
                     </div>
@@ -1633,7 +1647,7 @@
                 }
                 function CreateTable1() {
                     $("#mytable").empty();
-                    var table = $("<table id=\"temptable\" class=\"row-border hover order-column\" cellspacing=\"0\" width=\"100%\"  >");
+                    var table = $("<table id=\"temptable\" style=\"text-align:center\" class=\"row-border hover order-column\" cellspacing=\"0\" width=\"100%\"  >");
                     table.appendTo($("#mytable"));
                     th = $("<thead></thead>");
                     th.appendTo(table);
@@ -1791,13 +1805,13 @@
                     flag = $(this).val();
                     if (flag == "0") {
                         denominator = 1;
-                        CreateChart1();
+                        RequestChart1();
                         CreateTable1();
                         set_time();
                     }
                     if (flag == "1") {
-                        denominator = 1000;
-                        CreateChart1();
+                        denominator = 100;
+                        RequestChart1();
                         CreateTable1();
                         set_time();
                     }
@@ -1823,8 +1837,8 @@
                 </ul>
                 <div id="choice" class="tab-content">
                     <div class="tab-pane fade in active" id="chart">
-                        <div id="mychart" style="width:85%;height:100%;float:right;overflow-x:auto"></div>
-                        <div id="mychoice" style="width:13%;height:100%;float:left;float:bottom;overflow-y:auto">
+                        <div id="mychart" style="width:85%;height:60%;;float:right"></div>
+                        <div id="mychoice" style="width:15%;height:72%;float:left;overflow-y :auto">
                             <div style="width:100%;height:30px;margin-top:10px;background-color:lightgray">
                                 <div class="checkbox" style="width:80%;height:20px;float:left;margin-left:5px">
                                     <label><input type="checkbox" value="tot_oper_rev" checked="checked"
@@ -1911,20 +1925,25 @@
                                      id="i_free_cash_flow"></div>
                             </div>
                         </div>
-                        <div style="width:100%;height:25px;margin-top: 20px">
-                            <div style="float: left;margin-left: 220px">
-                                <select class="form-control" id="unit">
+                        <div style="float:right;width:81.5%;height:10%;margin-top:1%;border-radius:8px;background-color:#dcdcdc">
+                            <div style="float: left;margin-left: 20px;margin-top:20px">
+                                <a style="width:50px;margin-left:10px;color: #0c0c0c">起始时间:</a><input size="16"
+                                                                                                      type="text"
+                                                                                                      value="1991-12-31"
+                                                                                                      id="endtime"
+                                                                                                      readonly
+                                                                                                      class="form_datetime">
+                                <a style="width:50px;margin-left:10px;color: #0c0c0c">结束时间:</a><input size="16"
+                                                                                                      type="text"
+                                                                                                      value="2016-12-31"
+                                                                                                      id="starttime"
+                                                                                                      readonly
+                                                                                                      class="form_datetime">
+                                <a style="width:50px;margin-left:10px;color: #0c0c0c">单位:</a>
+                                <select id="unit">
                                     <option value="0">亿</option>
-                                    <option value="1">兆</option>
+                                    <option value="1">千万</option>
                                 </select>
-                            </div>
-                            <div style="float: left;margin-left: 100px;margin-top: 5px">
-                                <lable>起始时间<input size="20" type="text" value="1991-12-31" id="endtime" readonly
-                                                  class="form_datetime"></lable>
-                            </div>
-                            <div style="float: left;margin-left: 90px;margin-top: 5px">
-                                <label>结束时间<input size="20" type="text" value="2016-12-31" id="starttime" readonly
-                                                  class="form_datetime"></label>
                             </div>
                         </div>
                     </div>
@@ -2200,7 +2219,7 @@
                 }
                 function CreateTable1() {
                     $("#mytable").empty();
-                    var table = $("<table id=\"temptable\" class=\"row-border hover order-column\" cellspacing=\"0\" width=\"100%\"  >");
+                    var table = $("<table id=\"temptable\" style=\"text-align:center\" class=\"row-border hover order-column\" cellspacing=\"0\" width=\"100%\"  >");
                     table.appendTo($("#mytable"));
                     th = $("<thead></thead>");
                     th.appendTo(table);
@@ -2358,13 +2377,13 @@
                     flag = $(this).val();
                     if (flag == "0") {
                         denominator = 1;
-                        CreateChart1();
+                        RequestChart1();
                         CreateTable1();
                         set_time();
                     }
                     if (flag == "1") {
-                        denominator = 1000;
-                        CreateChart1();
+                        denominator = 0.1;
+                        RequestChart1();
                         CreateTable1();
                         set_time();
                     }
@@ -2452,6 +2471,7 @@
 <SCRIPT Language=VBScript><!--
 
 //-->
+
 
 
 
