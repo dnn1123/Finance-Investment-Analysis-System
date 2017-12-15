@@ -33,8 +33,15 @@
     <!--链接本地文件的写法，css和js的写法不一样 ps:还有一个js文件在上面-->
     <link href="{{ url_for('static',filename='css/loader.min.css') }}"
           rel="stylesheet" type="text/css">
-    <link href="{{ url_for('static',filename='css/bootstrap.min.css') }}" rel="stylesheet" media="screen">
+
+{#    library for new  templates#}
+    <link href="{{ url_for('static',filename='bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" media="screen">
+    <link href="{{ url_for('static',filename='bootstrap/css/bootstrap-responsive.min.css') }}" rel="stylesheet" media="screen">
     <link href="{{ url_for('static',filename='css/nav.css') }}" rel="stylesheet" media="screen">
+    <link type="text/css" href="{{ url_for('static',filename='css/theme.css') }}" rel="stylesheet">
+    <link type="text/css" href="{{ url_for('static',filename='images/icons/css/font-awesome.css') }}" rel="stylesheet">
+    <link type="text/css" href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,400,600'
+            rel='stylesheet'>
     <!--自动补全-->
     <script>
         $(function () {
@@ -125,50 +132,135 @@
     {% block styles %}{% endblock %}
 </head>
 <body>
-<nav class="navbar navbar-inverse " role="navigation">
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <img src="../static/logo_white_test.png">
-        </div><!--OK-->
-        <div>
-            <a class="navbar-brand" href="#">金融投资分析系统</a>
+{#<nav class="navbar navbar-inverse " role="navigation">#}
+{#    <div class="container-fluid">#}
+{#        <div class="navbar-header">#}
+{#            <img src="../static/logo_white_test.png">#}
+{#        </div><!--OK-->#}
+{#        <div>#}
+{#            <a class="navbar-brand" href="#">金融投资分析系统</a>#}
+{#        </div>#}
+{#        <div class="pull-right">#}
+{#            <ul class="nav navbar-nav">#}
+{#                <li><a>{% block current_user %}{% endblock %}</a></li> <!--不套a标签就不显示当前用户为什么-->#}
+{##}
+{#                <li class="dropdown">#}
+{#                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">#}
+{#                        账户设置 <b class="caret"></b>#}
+{#                    </a>#}
+{#                    <ul class="dropdown-menu">#}
+{#                        <li><a href="#">设置</a></li>#}
+{#                        <li>#}
+{#                            <a href="{{ url_for('main.personal') }}">个人信息</a>#}
+{#                        </li>#}
+{#                        <li class="divider"></li>#}
+{#                        <li><a href="{{ url_for('main.logout') }}">注销退出</a></li>#}
+{#                    </ul>#}
+{#                </li>#}
+{#                <li><a href="{{ url_for('stock.home') }}">返回主页</a></li>#}
+{#            </ul>#}
+{#        </div>#}
+{#    </div>#}
+{#</nav>#}
+    <div class="navbar navbar-fixed-top">
+            <div class="navbar-inner">
+                <div class="container">
+                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".navbar-inverse-collapse">
+                        <i class="icon-reorder shaded"></i></a><a class="brand" href="index.html">Merit </a>
+                    <div class="nav-collapse collapse navbar-inverse-collapse">
+                        <ul class="nav nav-icons">
+                            <li class="active"><a href="#"><i class="icon-envelope"></i></a></li>
+                            <li><a href="#"><i class="icon-eye-open"></i></a></li>
+                            <li><a href="#"><i class="icon-bar-chart"></i></a></li>
+                        </ul>
+                        <form class="navbar-search pull-left input-append" action="#">
+                        <input type="text" class="span3">
+                        <button class="btn" type="button">
+                            <i class="icon-search"></i>
+                        </button>
+                        </form>
+                        <ul class="nav pull-right">
+                            <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">功能导航
+                                <b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="#">财务分析</a></li>
+                                    <li><a href="#">量化模型</a></li>
+                                    <li class="divider"></li>
+                                    <li><a href="#">交易系统</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="{{ url_for('stock.home') }}">返回主页 </a></li>
+                            <li class="nav-user dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <img src="{{ url_for('static',filename='images/user.png')}}" class="nav-avatar" />
+                                <b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="{{ url_for('main.personal') }}">个人信息</a></li>
+                                    <li><a href="#">编辑资料</a></li>
+                                    <li><a href="#">账户设置</a></li>
+                                    <li class="divider"></li>
+                                    <li><a href={{ url_for('main.logout') }}>退出登录</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- /.nav-collapse -->
+                </div>
+            </div>
+            <!-- /navbar-inner -->
         </div>
-        <div class="pull-right">
-            <ul class="nav navbar-nav">
-                <li><a>{% block current_user %}{% endblock %}</a></li> <!--不套a标签就不显示当前用户为什么-->
+    <div class="wrapper">
+            <div class="container">
+                <div class="row">
+                    <div class="span3">
+                        <div class="sidebar">
+                            <ul class="widget widget-menu unstyled">
+                                <li class="active"><a href="index.html"><i class="menu-icon icon-dashboard"></i>我的账户
+                                </a></li>
+                                <!--关注股票的综合面板-->
+                                <li><a href="activity.html"><i class="menu-icon icon-bullhorn"></i>我的关注股票</a>
+                                </li>
+                                <li><a href="form.html"><i class="menu-icon icon-paste"></i>当前持仓 </a></li>
+                                <li><a href="message.html"><i class="menu-icon icon-inbox"></i>我的消息 <b class="label green pull-right">
+                                    11</b> </a></li>
+                                <li><a href="task.html"><i class="menu-icon icon-tasks"></i>系统消息 <b class="label orange pull-right">
+                                    19</b> </a></li>
+                            </ul>
+                            <!--/.widget-nav-->
 
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        账户设置 <b class="caret"></b>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">设置</a></li>
-                        <li>
-                            <a href="{{ url_for('main.personal') }}">个人信息</a>
-                        </li>
-                        <li class="divider"></li>
-                        <li><a href="{{ url_for('main.logout') }}">注销退出</a></li>
-                    </ul>
-                </li>
-                <li><a href="{{ url_for('stock.home') }}">返回主页</a></li>
-            </ul>
+
+                            <ul class="widget widget-menu unstyled">
+                                <li><a class="collapsed" data-toggle="collapse" href="#togglePages"><i class="menu-icon icon-cog">
+                                </i><i class="icon-chevron-down pull-right"></i><i class="icon-chevron-up pull-right">
+                                </i>财务分析 </a>
+                                    <ul id="togglePages" class="collapse unstyled">
+                                        <li><a href="other-login.html"><i class="icon-inbox"></i>股票个体分析 </a></li>
+                                        <li><a href="other-user-profile.html"><i class="icon-inbox"></i>股票总体概览 </a></li>
+                                        <li><a href="other-user-listing.html"><i class="icon-inbox"></i>整体行业状况分析 </a></li>
+                                        <li><a href="other-user-listing.html"><i class="icon-inbox"></i>投资分类评级 </a></li>
+                                    </ul>
+                                </li>
+                                <li><a href="ui-button-icon.html"><i class="menu-icon icon-bold"></i> 财务分析 </a></li>
+
+                                <li><a href="ui-typography.html"><i class="menu-icon icon-book"></i> 量化模型 </a></li>
+
+                                <li><a href="table.html"><i class="menu-icon icon-table"></i>交易模型 </a></li>
+                                <!--<li><a href="charts.html"><i class="menu-icon icon-bar-chart"></i>Charts </a></li>-->
+                            </ul>
+                            <!--/.widget-nav-->
+                            <ul class="widget widget-menu unstyled">
+
+                                <li><a href="#"><i class="menu-icon icon-signout"></i>退出登录 </a></li>
+                            </ul>
+                        </div>
+                        <!--/.sidebar-->
+                    </div>
+                    <!--/.span3-->
+                    {% block body %}{% endblock %}
+                    <!--/.span9-->
+                </div>
+            </div>
+            <!--/.container-->
         </div>
-    </div>
-</nav>
-<div class="container-fluid" id="LG" style="width: 90%;margin: auto;margin-top: 1%;">
-    <div>
-        {% block body %}{% endblock %}
-    </div>
-</div>
+
 </body>
 </html>
-<SCRIPT Language=VBScript><!--
-
-//-->
-
-
-
-
-
-
-</SCRIPT>
