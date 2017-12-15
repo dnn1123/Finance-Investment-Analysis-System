@@ -50,6 +50,10 @@
                     <div><h4>当前盈亏</h4>
                         <div id="profitdisplay" style="text-align: center"></div>
                     </div>
+                    <div>
+                        <h4>盈利趋势</h4>
+                        <div id="chartdisplay" style="text-align: center;height: 600px;width:550px"></div>
+                    </div>
 				</div>
 			</div>
 		</div>
@@ -197,6 +201,7 @@
 
 <script>
     var profit=0
+    var myChart = echarts.init(document.getElementById('chartdisplay'));
 $(".date-input").datetimepicker({
     format: 'yyyy-mm-dd ',
     minView: 3,
@@ -206,6 +211,7 @@ $(".date-input").datetimepicker({
 $(document).ready(function () {
     getposition()
     displaycp()
+    displaychart()
 })
 
 
@@ -370,6 +376,51 @@ function clearall() {
         }
     })
 }
+function displaychart() {
+    $.ajax({
+        type: 'GET',
+        url: '{{url_for("restfulapi.profithistory")}}',
+        data: {},
+        dataType: 'json',//希望服务器返回json格式的数据
+        success: function (result) {
+            console.log(result)
+            var option = {
+
+    // Make gradient line here
+    visualMap: [{
+        show: false,
+        type: 'continuous',
+        seriesIndex: 0,
+        min: 0,
+        max: 400
+    }],
+    tooltip: {
+        trigger: 'axis'
+    },
+    xAxis: [{
+        data: result.date
+    }],
+    yAxis: [{
+        splitLine: {show: false}
+    }],
+    grid: [{
+        bottom: '60%'
+    }, {
+        top: '60%'
+    }],
+    series: [{
+        type: 'line',
+        showSymbol: false,
+        data: result.data
+    }]
+};
+
+myChart.setOption(option, true);
+        }
+    })
+
+}
+
 </script>
 
 {% endblock %}
