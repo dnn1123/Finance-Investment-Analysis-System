@@ -673,8 +673,6 @@ def is_repeatcode():
     else:
         data['exit'] = 'flase'
     return jsonify(data)
-<<<<<<< HEAD
-=======
 
 @api_blueprint.route('/analysis/buyStock', methods=['GET', 'POST'])
 def buystock():
@@ -795,7 +793,6 @@ def clearall():
     data = db.session.query(investment_portfolio).filter(investment_portfolio.user_name==current_user.username).delete(synchronize_session=False)
     db.session.commit()
     return jsonify({"result": "success"})
-<<<<<<< HEAD
 
 @api_blueprint.route('/analysis/profithistory', methods=['GET', 'POST'])
 def profithistory():
@@ -803,6 +800,3 @@ def profithistory():
     getdata=Profit_monitoring(data)
     results=getdata.start()
     return jsonify(results)
-=======
->>>>>>> dev
->>>>>>> dev
