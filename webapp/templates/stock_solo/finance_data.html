@@ -21,7 +21,13 @@
                     </ul>
                 </div>
             </div>
+
         </form>
+     <a style="color: #0c0c0c;margin: auto 0">当前股票代码：</a>
+        <input readonly="readonly" id="stockcode1" type="text"  name="stockcode"
+               style="margin:auto 0;width: 80px;height: 25px">
+        <input id="submitbtn1"  type="button"
+                style="padding: 8.5px 12px;margin-left: 2px;width: 80px;margin:auto 0" value="添加关注">
     </div>
     <script>
         var stocksuggest = $("input[name='stockcode']").bsSuggest({
@@ -66,7 +72,49 @@
                 }
             })
         })
-
+ $("#submitbtn1").click(function () {
+                $.ajax({
+                    type: 'POST',
+                    url: '{{url_for("restfulapi.iscode")}}',
+                    data: {
+                        'code': stockcode,
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.the_name != 'false') {
+                            $.ajax({
+                                type: 'POST',
+                                url: '{{url_for("restfulapi.is_repeatcode")}}',
+                                data: {
+                                    'code': stockcode,
+                                },
+                                dataType: 'json',
+                                success: function (data) {
+                                    if (data.exit == 'true') {
+                                        alert('您已关注该股票，请勿重复操作！')
+                                    }
+                                    else if (data.exit == 'flase') {
+                                        $.ajax({
+                                            type: 'POST',
+                                            url: '{{url_for("restfulapi.add_code_fd_yc")}}',
+                                            data: {
+                                                'code': stockcode
+                                            },
+                                            dataType: 'json',
+                                            success: function (data) {
+                                                alert('添加成功！')
+                                            }
+                                        })
+                                    }
+                                }
+                            })
+                        }
+                        else {
+                            alert($("#stockcode").val() + "号股票不存在！")
+                        }
+                    }
+                })
+            })
     </script>
 {% endblock %}
 
@@ -451,6 +499,7 @@
             getdata()
         })
         function getdata() {
+            $("#stockcode1").val({{ stockcode|safe }})
             $.ajax({
             type: 'GET',
             url: '{{url_for("restfulapi.finance_data")}}',

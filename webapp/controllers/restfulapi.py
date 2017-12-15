@@ -549,12 +549,25 @@ def add_code():
         return redirect(url_for('main.personal'))
 
 
+@api_blueprint.route('/personal/add_code_fd_yc', methods=['GET', 'POST'])
+def add_code_fd_yc():
+    data = {}
+    stockcode = request.form.get('code')
+    new_fcode = favorite_code()
+    new_fcode.user_name = current_user.username
+    new_fcode.code = stockcode
+    db.session.add(new_fcode)
+    db.session.commit()
+    data['value']='success'
+    return jsonify(data)
+
+
 @api_blueprint.route('/personal/delete_code', methods=['GET', 'POST'])
 def delete_code():
     data = {}
     code_delete_list = request.form.getlist('selected[]')
     for code in code_delete_list:
-        result = favorite_code.query.filter_by(user_name=current_user.username, code = code).first()
+        result = favorite_code.query.filter_by(user_name=current_user.username, code=code).first()
         # new_fcode1 = favorite_code()
         # new_fcode1.user_name = current_user.username
         # new_fcode1.code = code
@@ -585,7 +598,7 @@ def search():
 def is_repeatcode():
     data = {}
     code = request.form.get('code')
-    result = favorite_code.query.filter_by(user_name=current_user.username,code=code).first()
+    result = favorite_code.query.filter_by(user_name=current_user.username, code=code).first()
     if result:
         data['exit'] = 'true'
     else:

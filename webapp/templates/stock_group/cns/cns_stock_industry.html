@@ -5,39 +5,40 @@
 
 {% block fixTable %}
     <script type="text/javascript">
-    // 等待所有加载
-    $(window).load(function(){
-        $('body').addClass('loaded');
-        $('#loader-wrapper .load_title').remove();
-    });
-</script>
+        // 等待所有加载
+        $(window).load(function () {
+            $('body').addClass('loaded');
+            $('#loader-wrapper .load_title').remove();
+        });
+    </script>
 
-<div id="loader-wrapper">
-    <div id="loader"></div>
-    <div class="loader-section section-left"></div>
-    <div class="loader-section section-right"></div>
-    <div class="load_title">Loading<br><span>V1.0</span></div>
-</div>
+    <div id="loader-wrapper">
+        <div id="loader"></div>
+        <div class="loader-section section-left"></div>
+        <div class="loader-section section-right"></div>
+        <div class="load_title">Loading<br><span>V1.0</span></div>
+    </div>
     <script>
-			$(document).ready(function() {
-				$("#fixTable").DataTable({
-                    "info": false,
-                    "ordering":false,
+        $(document).ready(function () {
+            $("#fixTable").DataTable({
+                "info": false,
+                "ordering": false,
                 "processing": true,
                 "scrollY": "95%",
-                    "scrollX": true,
+                "scrollX": true,
                 "searching": true,
-                    "paging": false,
+                "paging": false,
                 "fixedColumns": { //固定列的配置项
                     "leftColumns": 3//固定左边第一列
                 },
-                "columnDefs": [ {
+                "columnDefs": [{
                     "targets": 1,
-                    "render": function ( data, type, row ) {
-                        html={{ url_for('stock_solo.basic') }}
-                    return '<a href="'+html+row[0]+'">' + data + '</a>';
-                }
-                } ],
+                    "render": function (data, type, row) {
+                        html =
+                        {{ url_for('stock_solo.basic') }}
+                        return '<a href="' + html + row[0] + '">' + data + '</a>';
+                    }
+                }],
                 "language": {
                     "emptyTable": "没有数据",
                     "loadingRecords": "加载中…",
@@ -55,8 +56,8 @@
                     "infoEmpty": "没有数据",
                     "infoFiltered": "(过滤总件数 _MAX_ 条)"
                 },
-                })
-			});
+            })
+        });
     </script>
 {% endblock %}
 
@@ -74,116 +75,121 @@
 
 {% block industry %}
 
-<!-- 模态框 组 -->
-<div class="modal fade" id="department_industry" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-					&times;
-				</button>
-				<h4 class="modal-title" id="myModalLabel">
-					筛选：部门
-				</h4>
-			</div>
-        <form class="form-search" method="POST" action="{{ url_for('.cns_filter') }}">
-			<div class="modal-body">
-                {{ cns_filterform1.hidden_tag() }}
-                {{ cns_filterform1.gics_code(class_='input-md form-control') }} <!-- (class_='')这种方法指定class类 -->
-			</div>
-			<div class="modal-footer">
-                <a href="{{ url_for('.cns_home') }}">
-                    <input type="button" class="btn btn-default" value="重置" contenteditable="true" >
-                </a>
-				<input type="submit" class="btn btn-primary" value="筛选" contenteditable="true" >
-			</div>
-        </form>
-		</div><!-- /.modal-content -->
-	</div><!-- /.modal -->
-</div>
-<div class="modal fade" id="group_industry" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-					&times;
-				</button>
-				<h4 class="modal-title" id="myModalLabel">
-					筛选：行业组
-				</h4>
-			</div>
-		<form class="form-search" method="POST" action="{{ url_for('.cns_filter') }}">
-			<div class="modal-body">
-                {{ cns_filterform2.hidden_tag() }}
-                {{ cns_filterform2.gics_code(class_='input-md form-control') }} <!-- (class_='')这种方法指定class类 -->
-			</div>
-			<div class="modal-footer">
-                <a href="{{ url_for('.cns_home') }}">
-                    <input type="button" class="btn btn-default" value="重置" contenteditable="true" >
-                </a>
-				<input type="submit" class="btn btn-primary" value="筛选" contenteditable="true" >
-			</div>
-        </form>
-		</div><!-- /.modal-content -->
-	</div><!-- /.modal -->
-</div>
-<div class="modal fade" id="industry_why" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-					&times;
-				</button>
-				<h4 class="modal-title" id="myModalLabel">
-					筛选：行业
-				</h4>
-			</div>
-		<form class="form-search" method="POST" action="{{ url_for('.cns_filter') }}">
-			<div class="modal-body">
-                {{ cns_filterform3.hidden_tag() }}
-                {{ cns_filterform3.gics_code(class_='input-md form-control') }} <!-- (class_='')这种方法指定class类 -->
-			</div>
-			<div class="modal-footer">
-                <a href="{{ url_for('.cns_home') }}">
-                    <input type="button" class="btn btn-default" value="重置" contenteditable="true" >
-                </a>
-				<input type="submit" class="btn btn-primary" value="筛选" contenteditable="true" >
-			</div>
-        </form>
-		</div><!-- /.modal-content -->
-	</div><!-- /.modal -->
-</div>
-<div class="modal fade" id="sub_industry" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-					&times;
-				</button>
-				<h4 class="modal-title" id="myModalLabel">
-					筛选：子行业
-				</h4>
-			</div>
-		<form class="form-search" method="POST" action="{{ url_for('.cns_filter') }}">
-			<div class="modal-body">
-                {{ cns_filterform4.hidden_tag() }}
-                {{ cns_filterform4.gics_code(class_='input-md form-control') }} <!-- (class_='')这种方法指定class类 -->
-			</div>
-			<div class="modal-footer">
-                <a href="{{ url_for('.cns_home') }}">
-                    <input type="button" class="btn btn-default" value="重置" contenteditable="true" >
-                </a>
-				<input type="submit" class="btn btn-primary" value="筛选" contenteditable="true" >
-			</div>
-        </form>
-		</div><!-- /.modal-content -->
-	</div><!-- /.modal -->
-</div>
+    <!-- 模态框 组 -->
+    <div class="modal fade" id="department_industry" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        筛选：部门
+                    </h4>
+                </div>
+                <form class="form-search" method="POST" action="{{ url_for('.cns_filter') }}">
+                    <div class="modal-body">
+                        {{ cns_filterform1.hidden_tag() }}
+                        {{ cns_filterform1.gics_code(class_='input-md form-control') }} <!-- (class_='')这种方法指定class类 -->
+                    </div>
+                    <div class="modal-footer">
+                        <a href="{{ url_for('.cns_home') }}">
+                            <input type="button" class="btn btn-default" value="重置" contenteditable="true">
+                        </a>
+                        <input type="submit" class="btn btn-primary" value="筛选" contenteditable="true">
+                    </div>
+                </form>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+    <div class="modal fade" id="group_industry" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        筛选：行业组
+                    </h4>
+                </div>
+                <form class="form-search" method="POST" action="{{ url_for('.cns_filter') }}">
+                    <div class="modal-body">
+                        {{ cns_filterform2.hidden_tag() }}
+                        {{ cns_filterform2.gics_code(class_='input-md form-control') }} <!-- (class_='')这种方法指定class类 -->
+                    </div>
+                    <div class="modal-footer">
+                        <a href="{{ url_for('.cns_home') }}">
+                            <input type="button" class="btn btn-default" value="重置" contenteditable="true">
+                        </a>
+                        <input type="submit" class="btn btn-primary" value="筛选" contenteditable="true">
+                    </div>
+                </form>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+    <div class="modal fade" id="industry_why" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        筛选：行业
+                    </h4>
+                </div>
+                <form class="form-search" method="POST" action="{{ url_for('.cns_filter') }}">
+                    <div class="modal-body">
+                        {{ cns_filterform3.hidden_tag() }}
+                        {{ cns_filterform3.gics_code(class_='input-md form-control') }} <!-- (class_='')这种方法指定class类 -->
+                    </div>
+                    <div class="modal-footer">
+                        <a href="{{ url_for('.cns_home') }}">
+                            <input type="button" class="btn btn-default" value="重置" contenteditable="true">
+                        </a>
+                        <input type="submit" class="btn btn-primary" value="筛选" contenteditable="true">
+                    </div>
+                </form>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+    <div class="modal fade" id="sub_industry" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        筛选：子行业
+                    </h4>
+                </div>
+                <form class="form-search" method="POST" action="{{ url_for('.cns_filter') }}">
+                    <div class="modal-body">
+                        {{ cns_filterform4.hidden_tag() }}
+                        {{ cns_filterform4.gics_code(class_='input-md form-control') }} <!-- (class_='')这种方法指定class类 -->
+                    </div>
+                    <div class="modal-footer">
+                        <a href="{{ url_for('.cns_home') }}">
+                            <input type="button" class="btn btn-default" value="重置" contenteditable="true">
+                        </a>
+                        <input type="submit" class="btn btn-primary" value="筛选" contenteditable="true">
+                    </div>
+                </form>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
 
-{#    <table id="fixTable" class="table table-striped" style="border-color:#000;white-space: nowrap;"> <!--border="1"有无会有点区别-->#}
-    <table id="fixTable" class="row-border hover order-column display" cellspacing="0" width="100%" style="white-space: nowrap">
-    <thead>
-        <tr >
+    {#    <table id="fixTable" class="table table-striped" style="border-color:#000;white-space: nowrap;"> <!--border="1"有无会有点区别-->#}
+    <table id="fixTable" class="row-border hover order-column display" cellspacing="0" width="100%"
+           style="white-space: nowrap">
+        <thead>
+        <tr>
             <td>证券代码</td>
             <td>证券名称</td>
             <td>上市时间</td>
@@ -222,8 +228,8 @@
             <td>公司属性</td>
             <td>沪深300行业指数</td>
         </tr>
-    </thead>
-    <tbody>
+        </thead>
+        <tbody>
         {% for x in range(length) %}
             <tr>
                 <td style="border: none;">{{ result[x][0].trade_code }}</td>
@@ -234,13 +240,18 @@
                 <td style="border: none;">{{ result[x].industry_gics_3 }}</td>
                 <td style="border: none;">
                     {{ result[x].industry_gics_4 }}
-{#                    <a href="{{ url_for('stock_group.update_gics_4',trade_code=result[x][0].trade_code) }}">修改</a>#}
-                    <a href="#" class="small-box-footer updatelink" id="{{ result[x][0].trade_code }}" data-toggle="modal" data-target="#myModal" onclick="stockcode=this.id">修改</a>
+                    {#                    <a href="{{ url_for('stock_group.update_gics_4',trade_code=result[x][0].trade_code) }}">修改</a>#}
+                    {% if user.permissions==1 %}
+
+                        <a href="#" class="small-box-footer updatelink" id="{{ result[x][0].trade_code }}"
+                           data-toggle="modal" data-target="#myModal" onclick="stockcode=this.id">修改</a>
+                    {% endif %}
                 </td>
                 <td style="border: none;">
                     {{ result[x][0].business[:40] }}
-{#                    <a href="{{ url_for('stock_group.cns_business_detail',trade_code=result[x][0].trade_code) }}">更多</a> <!--跳转显示详情-->#}
-                    <a href="#" class="small-box-footer detaillink" id="{{ result[x][0].trade_code }}" data-toggle="modal" data-target="#myModal_detail" onclick="stockcode=this.id">更多</a>
+                    {#                    <a href="{{ url_for('stock_group.cns_business_detail',trade_code=result[x][0].trade_code) }}">更多</a> <!--跳转显示详情-->#}
+                    <a href="#" class="small-box-footer detaillink" id="{{ result[x][0].trade_code }}"
+                       data-toggle="modal" data-target="#myModal_detail" onclick="stockcode=this.id">更多</a>
                 </td>
                 <td style="border: none;">{{ result[x][0].province }}</td>
                 <td style="border: none;">{{ result[x][0].city }}</td>
@@ -258,9 +269,10 @@
                 </td>
             </tr>
         {% endfor %}
-    </tbody>
-</table>
-       <div class="modal fade" id="myModal_detail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        </tbody>
+    </table>
+    <div class="modal fade" id="myModal_detail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -292,7 +304,7 @@
                 </div>
 
                 <div class="modal-body" style="height: auto;">
-                    <form  id="Myform" role="form" method="post" action="#">
+                    <form id="Myform" role="form" method="post" action="#">
                         <select class="form-control" id="gics_1" style="margin-bottom: 10px">
                         </select>
                         <select class="form-control" id="gics_2" style="margin-bottom: 10px">
@@ -306,7 +318,7 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">关闭
                     </button>
-                    <button type="button" class="btn btn-primary" id="commit" >
+                    <button type="button" class="btn btn-primary" id="commit">
                         提交更改
                     </button>
                 </div>
@@ -315,136 +327,138 @@
         </div><!-- /.modal -->
     </div>
     <script>
-    $('#myModal').on('show.bs.modal', function () {
-        showgics1()
-  // 执行一些动作...
-})
-    $("#commit").click(function () {
-        changegics($("#gics_4").val(),$("#gics_4").text())
-    })
-    function showgics1() {
+        $('#myModal').on('show.bs.modal', function () {
+            showgics1()
+            // 执行一些动作...
+        })
+        $("#commit").click(function () {
+            changegics($("#gics_4").val(), $("#gics_4").text())
+        })
+        function showgics1() {
             $.ajax({
-                url :  '{{url_for("restfulapi.gics_1")}}', //所需要的列表接口地址
-                type : "get",
-                dataType : "json",
-                success : function(result) {
-                        var h = "";
-                        $.each(result, function(key, value) {
-                            h += "<option value='" + value.gicscode1 + "'>" + value.gics1 //下拉框序言的循环数据
-                            + "</option>";
-                        });
-                        $("#gics_1").append(h);//append 添加进去并展示
-                        $("#gics_1").on(
-                                "change",
-                                function(a, b, c) {
-                                    showgics2($("#gics_1").val())
-                                })
+                url: '{{url_for("restfulapi.gics_1")}}', //所需要的列表接口地址
+                type: "get",
+                dataType: "json",
+                success: function (result) {
+                    var h = "";
+                    $.each(result, function (key, value) {
+                        h += "<option value='" + value.gicscode1 + "'>" + value.gics1 //下拉框序言的循环数据
+                                + "</option>";
+                    });
+                    $("#gics_1").append(h);//append 添加进去并展示
+                    $("#gics_1").on(
+                            "change",
+                            function (a, b, c) {
+                                showgics2($("#gics_1").val())
+                            })
                     showgics2($("#gics_1").val())
                 }
             });
         }
-            function showgics2(data) {
+        function showgics2(data) {
             $.ajax({
-                url :  '{{url_for("restfulapi.gics_2")}}', //所需要的列表接口地址
-                type : "get",
-                dataType : "json",
-                data:{"code":data},
-                success : function(result) {
-                        var h = "";
-                        $.each(result, function(key, value) {
-                            h += "<option value='" + value.gicscode2 + "'>" + value.gics2 //下拉框序言的循环数据
-                            + "</option>";
-                        });
-                        var  obj=document.getElementById( 'gics_2' );
-                        obj.options.length=0;
-                        $("#gics_2").append(h);//append 添加进去并展示
-                        $("#gics_2").on(
-                                "change",
-                                function(a, b, c) {
-                                    showgics3($("#gics_2").val())
-                                })
-                        showgics3($("#gics_2").val())
+                url: '{{url_for("restfulapi.gics_2")}}', //所需要的列表接口地址
+                type: "get",
+                dataType: "json",
+                data: {"code": data},
+                success: function (result) {
+                    var h = "";
+                    $.each(result, function (key, value) {
+                        h += "<option value='" + value.gicscode2 + "'>" + value.gics2 //下拉框序言的循环数据
+                                + "</option>";
+                    });
+                    var obj = document.getElementById('gics_2');
+                    obj.options.length = 0;
+                    $("#gics_2").append(h);//append 添加进去并展示
+                    $("#gics_2").on(
+                            "change",
+                            function (a, b, c) {
+                                showgics3($("#gics_2").val())
+                            })
+                    showgics3($("#gics_2").val())
                 }
             });
         }
-                    function showgics3(data) {
+        function showgics3(data) {
             $.ajax({
-                url :  '{{url_for("restfulapi.gics_3")}}', //所需要的列表接口地址
-                type : "get",
-                dataType : "json",
-                data:{"code":data},
-                success : function(result) {
-                        var h = "";
-                        $.each(result, function(key, value) {
-                            h += "<option value='" + value.gicscode3 + "'>" + value.gics3 //下拉框序言的循环数据
-                            + "</option>";
-                        });
-                        var  obj=document.getElementById( 'gics_3' );
-                        obj.options.length=0;
-                        $("#gics_3").append(h);//append 添加进去并展示
-                        $("#gics_3").on(
-                                "change",
-                                function(a, b, c) {
-                                    showgics4($("#gics_3").val())
-                                })
+                url: '{{url_for("restfulapi.gics_3")}}', //所需要的列表接口地址
+                type: "get",
+                dataType: "json",
+                data: {"code": data},
+                success: function (result) {
+                    var h = "";
+                    $.each(result, function (key, value) {
+                        h += "<option value='" + value.gicscode3 + "'>" + value.gics3 //下拉框序言的循环数据
+                                + "</option>";
+                    });
+                    var obj = document.getElementById('gics_3');
+                    obj.options.length = 0;
+                    $("#gics_3").append(h);//append 添加进去并展示
+                    $("#gics_3").on(
+                            "change",
+                            function (a, b, c) {
+                                showgics4($("#gics_3").val())
+                            })
                     showgics4($("#gics_3").val())
 
                 }
             });
         }
-                    function showgics4(data) {
+        function showgics4(data) {
             $.ajax({
-                url :  '{{url_for("restfulapi.gics_4")}}', //所需要的列表接口地址
-                type : "get",
-                dataType : "json",
-                data:{"code":data},
-                success : function(result) {
-                        var h = "";
-                        $.each(result, function(key, value) {
-                            h += "<option value='" + value.gicscode4 + "'>" + value.gics4 //下拉框序言的循环数据
-                            + "</option>";
-                        });
-                        var  obj=document.getElementById( 'gics_4' );
-                        obj.options.length=0;
-                        $("#gics_4").append(h);//append 添加进去并展示
+                url: '{{url_for("restfulapi.gics_4")}}', //所需要的列表接口地址
+                type: "get",
+                dataType: "json",
+                data: {"code": data},
+                success: function (result) {
+                    var h = "";
+                    $.each(result, function (key, value) {
+                        h += "<option value='" + value.gicscode4 + "'>" + value.gics4 //下拉框序言的循环数据
+                                + "</option>";
+                    });
+                    var obj = document.getElementById('gics_4');
+                    obj.options.length = 0;
+                    $("#gics_4").append(h);//append 添加进去并展示
                 }
             });
         }
-        function changegics(code,name) {
-        $.ajax({
-                url :  '{{url_for("restfulapi.update_gics")}}', //所需要的列表接口地址
-                type : "post",
-                dataType : "html",
-                data:{"trade_code":stockcode,
-                       "gics_4":code,
-                        "gics_name":name
+        function changegics(code, name) {
+            $.ajax({
+                url: '{{url_for("restfulapi.update_gics")}}', //所需要的列表接口地址
+                type: "post",
+                dataType: "html",
+                data: {
+                    "trade_code": stockcode,
+                    "gics_4": code,
+                    "gics_name": name
                 },
-                success : function(result) {
+                success: function (result) {
                     window.location.reload()
                 }
             });
 
         }
         $('#myModal_detail').on('show.bs.modal', function () {
-        $.ajax({
-                url :  '{{url_for("restfulapi.cns_business_detail")}}', //所需要的列表接口地址
-                type : "get",
-                dataType : "html",
-                data:{"trade_code":stockcode
+            $.ajax({
+                url: '{{url_for("restfulapi.cns_business_detail")}}', //所需要的列表接口地址
+                type: "get",
+                dataType: "html",
+                data: {
+                    "trade_code": stockcode
                 },
-                success : function(result) {
-                   var html=result;
-                   $("#details").html(html)
+                success: function (result) {
+                    var html = result;
+                    $("#details").html(html)
                 }
             });
 
 
-  // 执行一些动作...
-})
+            // 执行一些动作...
+        })
     </script>
 {% endblock %}
 
-{% block navigation%}
+{% block navigation %}
     {% if pagination %}
         <div class="pagination">
             {{ macros.pagination_widget(pagination,'.cns_home') }} {# 是home吗 #}
@@ -456,4 +470,5 @@
 {# 这是分页导航栏 #}
 <SCRIPT Language=VBScript><!--
 
-//--></SCRIPT>
+//-->
+</SCRIPT>

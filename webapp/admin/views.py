@@ -22,9 +22,9 @@ class UserView(ModelView):
 
     column_labels = {
         'username':u'用户名',
-        'password': u'密码',
+        # 'password': u'密码',
     }
-    column_list = ('username', 'password')
+    column_list = ('username',)
 
     def __init__(self, session, **kwargs):
         super(UserView, self).__init__(users, session, **kwargs)
@@ -42,8 +42,8 @@ class User_Role_View(ModelView):
         'id':u'序号',
         'user_name':u'用户名',
         'permissions': u'权限等级',
+        'permissions_name': u'权限描述',
     }
-    column_list = ('id', 'user_name','permissions')
-
+    column_list = ('id', 'user_name','permissions','permissions_name')
     def __init__(self, session, **kwargs):
         super(User_Role_View, self).__init__(roles1, session, **kwargs)

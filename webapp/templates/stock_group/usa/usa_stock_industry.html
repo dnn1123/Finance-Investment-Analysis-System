@@ -209,7 +209,10 @@
                 <td style="border: none;">{{ result[x].industry_gics_3 }}</td>
                 <td style="border: none;">
                     {{ result[x].industry_gics_4 }}
+                    {% if user.permissions==1 %}
+
                     <a href="{{ url_for('stock_group.usa_alter_sub_industry',sec_name=result[x][0].sec_name) }}">修改</a>
+                    {% endif %}
                 </td>
                 <td style="border: none;">
                     {{ result[x][0].business[:40] }}
