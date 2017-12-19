@@ -652,14 +652,18 @@ def search():
     user_name = current_user.username
     code_list = []
     name_list = []
+    count_list = []
     results = favorite_code.query.filter_by(user_name=user_name).all()
     for result in results:
         code_list.append(result.code)
         result1 = finance_basics.query.filter_by(trade_code=result.code).first_or_404()
+        result2 = finance_basics.query.filter_by(trade_code=result.code).count()
         name_list.append(result1.sec_name)
+        count_list.append(result2)
     data['code_list'] = code_list
     data['name_list'] = name_list
     data['user_name'] = current_user.username
+    data['count_list'] = count_list
     return jsonify(data)
 
 
