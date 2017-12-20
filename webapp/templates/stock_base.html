@@ -43,6 +43,7 @@
     <link type="text/css" href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,400,600'
             rel='stylesheet'>
     <!--自动补全-->
+
     <script>
         $(function () {
             var availableTags =
@@ -120,7 +121,7 @@
 
         }
 
-        thead {
+        thead,th,td {
             white-space: nowrap !important;
         }
 
@@ -132,6 +133,7 @@
     {% block styles %}{% endblock %}
 </head>
 <body>
+
 {#<nav class="navbar navbar-inverse " role="navigation">#}
 {#    <div class="container-fluid">#}
 {#        <div class="navbar-header">#}
@@ -192,6 +194,7 @@
                             <li><a href="{{ url_for('stock.home') }}">返回主页 </a></li>
                             <li class="nav-user dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 <img src="{{ url_for('static',filename='images/user.png')}}" class="nav-avatar" />
+                                {% block current_user %}{% endblock %}
                                 <b class="caret"></b></a>
                                 <ul class="dropdown-menu">
                                     <li><a href="{{ url_for('main.personal') }}">个人信息</a></li>
@@ -219,7 +222,7 @@
                                 <!--关注股票的综合面板-->
                                 <li><a href="activity.html"><i class="menu-icon icon-bullhorn"></i>我的关注股票</a>
                                 </li>
-                                <li><a href="form.html"><i class="menu-icon icon-paste"></i>当前持仓 </a></li>
+                                <li><a href="{{ url_for('stock.myposition') }}"><i class="menu-icon icon-paste"></i>当前持仓 </a></li>
                                 <li><a href="message.html"><i class="menu-icon icon-inbox"></i>我的消息 <b class="label green pull-right">
                                     11</b> </a></li>
                                 <li><a href="task.html"><i class="menu-icon icon-tasks"></i>系统消息 <b class="label orange pull-right">
@@ -233,7 +236,7 @@
                                 </i><i class="icon-chevron-down pull-right"></i><i class="icon-chevron-up pull-right">
                                 </i>财务分析 </a>
                                     <ul id="togglePages" class="collapse unstyled">
-                                        <li><a href="other-login.html"><i class="icon-inbox"></i>股票个体分析 </a></li>
+                                        <li><a href="{{ url_for('stock_solo.finance_data_yc') }}"><i class="icon-inbox"></i>股票个体分析 </a></li>
                                         <li><a href="other-user-profile.html"><i class="icon-inbox"></i>股票总体概览 </a></li>
                                         <li><a href="other-user-listing.html"><i class="icon-inbox"></i>整体行业状况分析 </a></li>
                                         <li><a href="other-user-listing.html"><i class="icon-inbox"></i>投资分类评级 </a></li>

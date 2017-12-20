@@ -15,7 +15,7 @@ stock_blueprint = Blueprint(
 
 
 # 用户登陆后主页
-@stock_blueprint.route('/home', methods=('GET', 'POST'))
+@stock_blueprint.route('/home', methods=['GET', 'POST'])
 @login_required
 def home():
     # roles = current_user.roles
@@ -23,3 +23,7 @@ def home():
     # # id = roles1.query.filter_by(user_name=current_user.username).first()
     # rolename = Role.query.filter_by(id=user.permissions).first()
     return render_template("stock/home.html")
+@stock_blueprint.route('/myposition/', methods=['GET', 'POST'])
+@login_required
+def myposition():
+    return render_template('myposition.html', current_user=current_user)

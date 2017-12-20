@@ -37,13 +37,13 @@ def login():
 
 @main_blueprint.route('/personal/', methods=['GET', 'POST'])
 def personal():
-    user = roles1.query.filter_by(user_name=current_user.username).first()
+    user = users_roles.query.filter_by(user_name=current_user.username).first()
     # rolename = Role.query.filter_by(id=user.permissions).first()
     role = Role.query.filter_by(id=user.permissions).first()
     rolename = role.description
     return render_template('personal/person.html',user=user,rolename=rolename)
 
-@main_blueprint.route('/analysis/', methods=['GET', 'POST'])
+@main_blueprint.route('/myposition/', methods=['GET', 'POST'])
 @login_required
 def analysis():
     return render_template('personal/analysis.html', current_user=current_user)
@@ -76,4 +76,7 @@ def logout():
     )
     return redirect(url_for('main.login'))
 
+@main_blueprint.route('/test')
+def test():
+    return render_template('test.html')
 

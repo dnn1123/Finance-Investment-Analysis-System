@@ -674,24 +674,26 @@ def is_repeatcode():
         data['exit'] = 'flase'
     return jsonify(data)
 
-@api_blueprint.route('/analysis/buyStock', methods=['GET', 'POST'])
+@api_blueprint.route('/buyStock', methods=['GET', 'POST'])
 def buystock():
     username=current_user.username
     date=request.form.get('date')
     code=request.form.get('codeName')
-    price=request.form.get('price')
-    amount=request.form.get('amount')
-    value=request.form.get('totalSum')
+    price=string.atof(request.form.get('price').encode("utf-8"))
+    amount=string.atof(request.form.get('amount').encode("utf-8"))
+    commission=string.atof(request.form.get('commission').encode("utf-8"))
     result = investment_portfolio.query.filter_by(user_name=current_user.username, code=code).first()
     if (result is None):
         new_data = investment_portfolio()
         new_data.user_name = current_user.username
         new_data.code = code
-        new_data.num = amount
+        new_data.shares = amount
+        new_data.total_cost = price * amount * (1 + commission) / amount #average cost per share
         db.session.add(new_data)
         db.session.commit()
     else:
-        result.num = result.num + string.atof(amount.encode("utf-8"))
+        result.total_cost = (result.total_cost * result.shares + price * amount * (1 + commission))/(result.shares+ amount)#average cost per share
+        result.shares = result.shares + amount
         db.session.commit()
     new_buy=history()
     new_buy.users=username
@@ -699,37 +701,30 @@ def buystock():
     new_buy.code=code
     new_buy.price=price
     new_buy.amount=amount
-    new_buy.value=value
+    new_buy.commission=commission
     new_buy.position="buy"
     db.session.add(new_buy)
     db.session.commit()
-    data = users_finance.query.filter_by(users=current_user.username).first()
-    if (data is None):
-        new_userf=users_finance()
-        new_userf.users=current_user.username
-        new_userf.cost=value
-        db.session.add(new_userf)
-        db.session.commit()
-    else:
-        data.cost=data.cost+string.atof(value.encode("utf-8"))
-        db.session.commit()
     return jsonify({"result":"success"})
 
-@api_blueprint.route('/analysis/sellStock', methods=['GET', 'POST'])
+@api_blueprint.route('/sellStock', methods=['GET', 'POST'])
 def sellstock():
     username=current_user.username
     date=request.form.get('date')
     code=request.form.get('codeName')
-    price=request.form.get('price')
-    amount=request.form.get('amount')
-    value=request.form.get('totalSum')
+    price=string.atof(request.form.get('price').encode("utf-8"))
+    amount=string.atof(request.form.get('amount').encode("utf-8"))
+    commission=string.atof(request.form.get('commission').encode("utf-8"))
     result = investment_portfolio.query.filter_by(user_name=current_user.username, code=code).first()
     if (result is None):
         return jsonify({"result":"no stock can be sold"})
     else:
-        if(result.num < string.atof(amount.encode("utf-8"))):
-            return jsonify({"result":"not enough stock can be sold"})
-        result.num = result.num - string.atof(amount.encode("utf-8"))
+        if(result.shares < amount):
+            return jsonify({"result":"not enough stock to be sold"})
+        elif (result.shares == amount):
+            investment_portfolio.query.filter_by(user_name=current_user.username, code=code).delete() # delete position info of stocks with 0 shares
+        result.total_cost = (result.total_cost * result.shares - price * amount * (1 + commission))/(result.shares- amount)#average cost per share
+        result.shares = result.shares - amount
         db.session.commit()
     new_buy=history()
     new_buy.users=username
@@ -737,12 +732,9 @@ def sellstock():
     new_buy.code=code
     new_buy.price=price
     new_buy.amount=amount
-    new_buy.value=value
+    new_buy.commission=commission
     new_buy.position="sell"
     db.session.add(new_buy)
-    db.session.commit()
-    data = users_finance.query.filter_by(users=current_user.username).first()
-    data.cost = data.cost - string.atof(value.encode("utf-8"))
     db.session.commit()
     return jsonify({"result":"success"})
 
@@ -759,11 +751,7 @@ def position_data():
     else:
         return jsonify(results)
 
-@api_blueprint.route('/analysis/realtime_quotes', methods=['GET', 'POST'])
-def realtime_quotes():
-    code=request.args.get("code")
-    df = ts.get_realtime_quotes(code)  # Single stock symbol
-    return jsonify({"rtlast":df.pre_close[0]})
+
 
 @api_blueprint.route('/analysis/history_data', methods=['GET', 'POST'])
 def history_data():
@@ -777,26 +765,96 @@ def history_data():
     else:
         return jsonify(results)
 
-@api_blueprint.route('/analysis/getcost', methods=['GET', 'POST'])
-def getcost():
-    data = users_finance.query.filter_by(users=current_user.username).first()
-    if (data is None):
-        return jsonify({"cost":0})
-    return jsonify({"cost":data.cost})
 
-@api_blueprint.route('/analysis/clearall', methods=['GET', 'POST'])
+@api_blueprint.route('/clearall', methods=['GET', 'POST'])
 def clearall():
-    data = db.session.query(users_finance).filter(users_finance.users==current_user.username).delete(synchronize_session=False)
-    db.session.commit()
     data = db.session.query(history).filter(history.users==current_user.username).delete(synchronize_session=False)
     db.session.commit()
     data = db.session.query(investment_portfolio).filter(investment_portfolio.user_name==current_user.username).delete(synchronize_session=False)
     db.session.commit()
     return jsonify({"result": "success"})
 
-@api_blueprint.route('/analysis/profithistory', methods=['GET', 'POST'])
-def profithistory():
-    data = history.query.filter_by(users=current_user.username).order_by(db.desc(history.time)).all()
+# data format {"date":[],"profit":[],"cost":[],"value":[]}
+# value refers to the market value
+@api_blueprint.route('/positionhistory', methods=['GET', 'POST'])
+def positionhistory():
+    username = request.args.get('username')
+    data = history.query.filter_by(users=username).order_by(db.desc(history.time)).all()
     getdata=Profit_monitoring(data)
     results=getdata.start()
+    print results
     return jsonify(results)
+
+@api_blueprint.route('/home/stats',methods=['GET','POST'])
+def home():
+    username = request.args.get('username')
+    permission_id = users_roles.query.filter_by(user_name = username).first().permissions
+    rolename = Role.query.filter_by(id=permission_id).first().description
+    favorite_stock_count = favorite_code.query.filter_by(user_name=username).count()
+    position_stock_count = investment_portfolio.query.filter_by(user_name=username).count()
+    results = {
+        'rolename':rolename,
+        'favorite_stock_count':favorite_stock_count,
+        'position_stock_count':position_stock_count,
+    }
+    return jsonify(results)
+@api_blueprint.route('/myposition',methods=['GET','POST'])
+def myposition():
+    username=request.args.get('username')
+    # get trade records
+    trade_records = history.query.filter_by(users=username).all()
+    namelist = []
+    for i in range(len(trade_records)):
+        stock_name = stock_basics.query.filter_by(trade_code=trade_records[i].code).first().sec_name
+        namelist.append(stock_name)
+    t_records=[]
+    for i in range(len(trade_records)):
+        record = [trade_records[i].code, namelist[i],trade_records[i].position,trade_records[i].price, trade_records[i].amount, trade_records[i].time]
+        t_records.append(record)
+    #get commission records
+    c_records = []
+    for i in range(len(trade_records)):
+        record = [trade_records[i].code, namelist[i],trade_records[i].commission, trade_records[i].amount ]
+        c_records.append(record)
+    # get position records
+    position_records = investment_portfolio.query.filter_by(user_name=username).all()
+    namelist = []
+    for i in range(len(position_records)):
+        stock_name = stock_basics.query.filter_by(trade_code=position_records[i].code).first().sec_name
+        namelist.append(stock_name)
+    # get latest closing price
+    pricelist = []
+    for i in range(len(position_records)):
+        pri = string.atof(ts.get_realtime_quotes(position_records[i].code).pre_close[0].encode("utf-8"))
+        pricelist.append(pri)
+    p_records=[]
+    for i in range(len(position_records)):
+        rec = [position_records[i].code,namelist[i],position_records[i].shares,position_records[i].total_cost,pricelist[i],(pricelist[i]-position_records[i].total_cost)*position_records[i].shares]
+        p_records.append(rec)
+    #get department info
+    departmentlist = []
+    for i in range(len(position_records)):
+        dep = stock_basics.query.filter_by(trade_code = position_records[i].code).first().industry_gics
+        departmentlist.append(dep)
+    d_records=[]
+    for i in range(len(position_records)):
+        rec = [namelist[i],departmentlist[i]]
+        d_records.append(rec)
+    #get group info
+    grouplist = []
+    for i in range(len(position_records)):
+        gro = basic_stock.query.filter_by(code = position_records[i].code).first().industry
+        grouplist.append(gro)
+    g_records=[]
+    for i in range(len(position_records)):
+        rec = [namelist[i],grouplist[i]]
+        g_records.append(rec)
+    results = {
+        'traderec':t_records,
+        'positionrec':p_records,
+        'commissionrec':c_records,
+        'departmentrec':d_records,
+        'grouprec':g_records,
+    }
+    return jsonify(results)
+
