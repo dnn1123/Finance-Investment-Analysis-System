@@ -17,7 +17,7 @@
                                             当前持仓股票</p>
                                     </a><a href="#" class="btn-box big span4"><i class="icon-money"></i><b id="myprofits"></b>
                                         <p class="text-muted">
-                                            当前收益</p>
+                                            当前持仓收益</p>
                                     </a>
                                 </div>
                                 <div class="btn-box-row row-fluid">
@@ -1154,6 +1154,7 @@
                     console.log(data);
                     $("#myfavorites").text(data.favorite_stock_count);
                     $("#mypositions").text(data.position_stock_count);
+                    $("#myprofits").text(data.position_profit);
                 }
             })
         })

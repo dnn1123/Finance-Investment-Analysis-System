@@ -1,0 +1,167 @@
+<html>
+    <head>
+        <meta charset='utf-8'>
+
+        <script type="text/javascript" src="{{ url_for('static',filename='js/jquery-2.0.0.min.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('static',filename='js/jquery-ui') }}"></script>
+        <script type="text/javascript" src="{{ url_for('static',filename='js/echarts.js') }}"></script>
+        <script type="text/javascript"
+                src="{{ url_for('static',filename='DataTables-1.10.15/media/js/jquery.dataTables.js') }}"></script>
+        <script type="text/javascript"
+                src="{{ url_for('static',filename='DataTables-1.10.15/fixedcolumns/js/dataTables.fixedColumns.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('static',filename='icheck/icheck.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('static',filename='js/bootstrap.min.js') }}"></script>
+        <script type="text/javascript"
+                src="{{ url_for('static',filename='bootstrap_datetimepicker/js/bootstrap-datetimepicker.js') }}"></script>
+        <script type="text/javascript"
+                src="{{ url_for('static',filename='bootstrap_select/js/bootstrap-select.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('static',filename='js/bootstrap-suggest.min.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('static',filename='js/jquery.cookie.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('static',filename='js/nav.js') }}"></script>
+
+        <link href="{{ url_for('static',filename='bootstrap_select/css/bootstrap-select.css') }}" rel="stylesheet"
+              type="text/css">
+        <link href="{{ url_for('static',filename='bootstrap_datetimepicker/css/bootstrap-datetimepicker.css') }}"
+              rel="stylesheet" type="text/css">
+        <link href="{{ url_for('static',filename='icheck/skins/minimal/blue.css') }}" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+        <link rel="stylesheet" href="http://jqueryui.com/resources/demos/style.css">
+        <link href="{{ url_for('static',filename='DataTables-1.10.15/media/css/jquery.dataTables.css') }}" rel="stylesheet"
+              type="text/css">
+        <link href="{{ url_for('static',filename='DataTables-1.10.15/fixedcolumns/css/fixedColumns.dataTables.css') }}"
+              rel="stylesheet" type="text/css">
+        <!--链接本地文件的写法，css和js的写法不一样 ps:还有一个js文件在上面-->
+        <link href="{{ url_for('static',filename='css/loader.min.css') }}"
+              rel="stylesheet" type="text/css">
+
+{#        library for new  templates#}
+        <link href="{{ url_for('static',filename='css/bootstrap.min.css') }}" rel="stylesheet" media="screen">
+        <link href="{{ url_for('static',filename='bootstrap/css/bootstrap-responsive.min.css') }}" rel="stylesheet" media="screen">
+
+        <link href="{{ url_for('static',filename='css/nav.css') }}" rel="stylesheet" media="screen">
+        <link type="text/css" href="{{ url_for('static',filename='css/theme.css') }}" rel="stylesheet">
+        <link type="text/css" href="{{ url_for('static',filename='images/icons/css/font-awesome.css') }}" rel="stylesheet">
+        <link type="text/css" href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,400,600'
+                rel='stylesheet'>
+        <!--自动补全-->
+        <script>
+            $(function () {
+                var availableTags =
+                        [{% for x in list_len %} <!--这里直接写range(list_len)不行，会在返回功能主页时出错"list_len is undefined"-->
+                            {% for i in (0,1) %}
+                                "{{ rs[x][i] }}",
+                            {% endfor %}
+                        {% endfor %}];
+                $("#tags").autocomplete({
+                    source: availableTags
+                });
+            });
+        </script>
+        <!--锁定行列的js文件-->
+        <script type="text/javascript" src="{{ url_for('static',filename='js/tableHeadFixer.js') }}"></script>
+        <!--js的分页方法，用于industry_analysis/annual_table.html-->
+        <script type="text/javascript" src="{{ url_for('static',filename='js/jquery.pagination.js') }}"></script>
+
+        {% block fixTable %}{% endblock %}
+        <style>
+            * {
+                font-family: "Times New Roman";
+                font-size: 12px;
+            }
+
+            .td_num {
+                text-align: right;
+                border-style: none;
+            }
+
+            .td_num_2 {
+                text-align: left;
+                border-style: none;
+            }
+
+            .td_project {
+                text-align: left;
+                border-left-style: none;
+                border-top-style: none;
+                border-bottom-style: none;
+            }
+
+            .td_bottom_line {
+                text-align: right;
+                border-left-style: none;
+                border-top-style: none;
+                border-right-style: none;
+            }
+
+            .td_bottom_line_title {
+                text-align: left;
+                border-left-style: none;
+                border-top-style: none;
+                border-right-style: none;
+            }
+
+            .td_bottom_line_title_2 {
+                text-align: left;
+                border-left-style: none;
+                border-top-style: none;
+            }
+
+            {# 这行有什么用 #}
+            .leftbox {
+                width: 15%;
+                height: 100%;
+                float: left;
+
+            }
+
+            .rightbox {
+                width: 80%;
+                height: 100%;
+                float: left;
+
+            }
+
+            thead {
+                white-space: nowrap !important;
+            }
+
+            #temptable {
+                table-layout: inherit;
+                width: 100px;
+            }
+                 thead,th,td {
+            white-space: nowrap !important;
+        }
+        </style>
+        {% block styles %}{% endblock %}
+    </head>
+    <body>
+
+  <div class="accordion-group">
+    <div class="accordion-heading" data-toggle="collapse" href="#collapseOne">
+      <div class="accordion-toggle" >
+        Collapsible Group Item #1
+      </div>
+    </div>
+    <div id="collapseOne" class="accordion-body collapse in">
+      <div class="accordion-inner">
+        Anim pariatur cliche...
+      </div>
+    </div>
+  </div>
+  <div class="accordion-group">
+    <div class="accordion-heading">
+      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">
+        Collapsible Group Item #2
+      </a>
+    </div>
+    <div id="collapseTwo" class="accordion-body collapse">
+      <div class="accordion-inner">
+        Anim pariatur cliche...
+      </div>
+    </div>
+  </div>
+
+    </body>
+
+</html>

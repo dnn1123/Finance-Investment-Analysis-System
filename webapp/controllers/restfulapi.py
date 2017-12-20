@@ -792,10 +792,22 @@ def home():
     rolename = Role.query.filter_by(id=permission_id).first().description
     favorite_stock_count = favorite_code.query.filter_by(user_name=username).count()
     position_stock_count = investment_portfolio.query.filter_by(user_name=username).count()
+
+    position_records = investment_portfolio.query.filter_by(user_name=username).all()
+    pricelist = []
+    for i in range(len(position_records)):
+        pri = string.atof(ts.get_realtime_quotes(position_records[i].code).pre_close[0].encode("utf-8"))
+        pricelist.append(pri)
+    p_records=[]
+    for i in range(len(position_records)):
+        rec = (pricelist[i]-position_records[i].total_cost)*position_records[i].shares
+        p_records.append(rec)
+    position_profit = sum(p_records)
     results = {
         'rolename':rolename,
         'favorite_stock_count':favorite_stock_count,
         'position_stock_count':position_stock_count,
+        'position_profit':position_profit,
     }
     return jsonify(results)
 @api_blueprint.route('/myposition',methods=['GET','POST'])
