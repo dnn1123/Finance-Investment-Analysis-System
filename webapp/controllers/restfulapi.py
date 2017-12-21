@@ -9,6 +9,7 @@ import string
 import tushare as ts
 import gc
 from  webapp.stratlib import *
+
 api_blueprint = Blueprint(
         'restfulapi',
         __name__,
@@ -53,6 +54,13 @@ def finance_data():
     return jsonify(data)
 
 
+@api_blueprint.route("/code_wind/", methods=('GET', 'POST'))
+def code_wind():
+    code_list = request.form.getlist('code_list[]')
+    data = []
+    return jsonify(data)
+
+
 @api_blueprint.route('/get_ajax_compare', methods=('GET', 'POST'))
 def get_ajax_compare():
     code = request.form.get('code')
@@ -93,6 +101,7 @@ def get_ajax_compare():
     data['the_year_list'] = year_list1
 
     return jsonify(data)
+
 
 @api_blueprint.route('/get_ajax', methods=('GET', 'POST'))
 def get_ajax():
@@ -148,6 +157,88 @@ def iscode():
     else:
         data['the_name'] = 'false'
     data['the_code'] = code
+    return jsonify(data)
+
+
+@api_blueprint.route("/finance_data_new/", methods=('GET', 'POST'))
+def finance_data_new():
+    stockcode = request.args.getlist('stockcode[]')
+    starttime = request.args.get('starttime')
+    endtime = request.args.get('endtime')
+    indexes = request.args.getlist('indexes[]')
+    data = {}
+    year_list = []
+    the_year_start = int(starttime[0:4] )
+    the_year_end = int(endtime[0:4] )
+    the_year = the_year_end
+    while the_year >= the_year_start:
+        year_list.append(the_year)
+        # year_list1.append(the_year / 10000)
+        the_year = the_year - 1
+    for index in indexes:
+        exec (index + "_list=[]")
+    data['the_name'] = []
+    for code in stockcode:
+        filters = {
+            finance_basics.trade_code == code,
+            finance_basics.the_year >= starttime,
+            finance_basics.the_year <= endtime,
+        }
+        results = finance_basics.query.filter(*filters).all()
+        result1 = finance_basics.query.filter_by(trade_code=code).first_or_404()
+        data['the_name'].append(result1.sec_name)
+        for result in results:
+            # year_list.append(result.the_year)
+            for index in indexes:
+                if eval("result." + index) is None:
+                    exec (index + "_list.append(result." + index + ")")
+                else:
+                    exec (index + "_list.append(float(result." + index + "))")
+
+    data['stock_code'] = stockcode
+    data['the_year'] = year_list
+    data['indexes'] = indexes
+    for index in indexes:
+        exec ("data['" + index + "']=" + index + "_list")
+    return jsonify(data)
+
+
+@api_blueprint.route("/invest_data_new/", methods=('GET', 'POST'))
+def invest_data_new():
+    stockcode = request.args.getlist('stockcode[]')
+    starttime = request.args.get('starttime')
+    endtime = request.args.get('endtime')
+    indexes = request.args.getlist('indexes[]')
+    data = {}
+    year_list = []
+    the_year_start = int(starttime[0:4])
+    the_year_end = int(endtime[0:4])
+    the_year = the_year_end
+    while the_year >= the_year_start:
+        year_list.append(the_year)
+        # year_list1.append(the_year / 10000)
+        the_year = the_year - 1
+    for index in indexes:
+        exec (index + "_list=[]")
+    for code in stockcode:
+        filters = {
+            invest_values.trade_code == code,
+            invest_values.the_year >= starttime,
+            invest_values.the_year <= endtime,
+        }
+        results = invest_values.query.filter(*filters).all()
+        for result in results:
+            # year_list.append(result.the_year)
+            for index in indexes:
+                if eval("result." + index) is None:
+                    exec (index + "_list.append(result." + index + ")")
+                else:
+                    exec (index + "_list.append(float(result." + index + "))")
+    data['stock_code'] = stockcode
+    data['the_year'] = year_list
+    data['indexes'] = indexes
+    for index in indexes:
+        exec ("data['" + index + "']=" + index + "_list")
     return jsonify(data)
 
 
@@ -280,13 +371,13 @@ def market_status1():
                        func.sum(finance_basics_add.financecashflow_ttm2).label("financecashflow_ttm2"),
                        func.sum(finance_basics_add.cashflow_ttm2).label("cashflow_ttm2"),
                        cns_department_industry.industry_gics_1.label("industry_gics_1")).filter(
-        finance_basics_add.trade_code == cns_stock_industry.trade_code).filter(
-        cns_stock_industry.industry_gicscode_4 == cns_sub_industry.industry_gicscode_4).filter(
-        cns_sub_industry.belong == cns_industry.industry_gicscode_3).filter(
-        cns_industry.belong == cns_group_industry.industry_gicscode_2).filter(
-        cns_group_industry.belong == cns_department_industry.industry_gicscode_1).filter(
-        cns_department_industry.industry_gicscode_1 == code).group_by(
-        finance_basics_add.the_year).all()
+            finance_basics_add.trade_code == cns_stock_industry.trade_code).filter(
+            cns_stock_industry.industry_gicscode_4 == cns_sub_industry.industry_gicscode_4).filter(
+            cns_sub_industry.belong == cns_industry.industry_gicscode_3).filter(
+            cns_industry.belong == cns_group_industry.industry_gicscode_2).filter(
+            cns_group_industry.belong == cns_department_industry.industry_gicscode_1).filter(
+            cns_department_industry.industry_gicscode_1 == code).group_by(
+            finance_basics_add.the_year).all()
     rs_list = range(len(rs))
     rs_list.reverse()
 
@@ -349,11 +440,11 @@ def market_status2():
                        func.sum(finance_basics_add.financecashflow_ttm2).label("financecashflow_ttm2"),
                        func.sum(finance_basics_add.cashflow_ttm2).label("cashflow_ttm2"),
                        cns_group_industry.industry_gics_2.label("industry_gics_2")).filter(
-        finance_basics_add.trade_code == cns_stock_industry.trade_code).filter(
-        cns_stock_industry.industry_gicscode_4 == cns_sub_industry.industry_gicscode_4).filter(
-        cns_sub_industry.belong == cns_industry.industry_gicscode_3).filter(
-        cns_industry.belong == cns_group_industry.industry_gicscode_2).filter(
-        cns_group_industry.industry_gicscode_2 == code).group_by(finance_basics_add.the_year).all()
+            finance_basics_add.trade_code == cns_stock_industry.trade_code).filter(
+            cns_stock_industry.industry_gicscode_4 == cns_sub_industry.industry_gicscode_4).filter(
+            cns_sub_industry.belong == cns_industry.industry_gicscode_3).filter(
+            cns_industry.belong == cns_group_industry.industry_gicscode_2).filter(
+            cns_group_industry.industry_gicscode_2 == code).group_by(finance_basics_add.the_year).all()
     rs_list = range(len(rs))
     rs_list.reverse()
 
@@ -412,10 +503,10 @@ def market_status3():
                        func.sum(finance_basics_add.financecashflow_ttm2).label("financecashflow_ttm2"),
                        func.sum(finance_basics_add.cashflow_ttm2).label("cashflow_ttm2"),
                        cns_industry.industry_gics_3.label("industry_gics_3")).filter(
-        finance_basics_add.trade_code == cns_stock_industry.trade_code).filter(
-        cns_stock_industry.industry_gicscode_4 == cns_sub_industry.industry_gicscode_4).filter(
-        cns_sub_industry.belong == cns_industry.industry_gicscode_3).filter(
-        cns_industry.industry_gicscode_3 == code).group_by(finance_basics_add.the_year).all()
+            finance_basics_add.trade_code == cns_stock_industry.trade_code).filter(
+            cns_stock_industry.industry_gicscode_4 == cns_sub_industry.industry_gicscode_4).filter(
+            cns_sub_industry.belong == cns_industry.industry_gicscode_3).filter(
+            cns_industry.industry_gicscode_3 == code).group_by(finance_basics_add.the_year).all()
     rs_list = range(len(rs))
     rs_list.reverse()
 
@@ -475,9 +566,9 @@ def market_status4():
                        func.sum(finance_basics_add.cashflow_ttm2).label("cashflow_ttm2"),
                        cns_sub_industry.industry_gicscode_4,
                        cns_sub_industry.industry_gics_4.label("industry_gics_4")).filter(
-        finance_basics_add.trade_code == cns_stock_industry.trade_code).filter(
-        cns_stock_industry.industry_gicscode_4 == cns_sub_industry.industry_gicscode_4).filter(
-        cns_sub_industry.industry_gicscode_4 == code).group_by(finance_basics_add.the_year).all()
+            finance_basics_add.trade_code == cns_stock_industry.trade_code).filter(
+            cns_stock_industry.industry_gicscode_4 == cns_sub_industry.industry_gicscode_4).filter(
+            cns_sub_industry.industry_gicscode_4 == code).group_by(finance_basics_add.the_year).all()
     rs_list = range(len(rs))
     rs_list.reverse()
 
@@ -627,7 +718,7 @@ def add_code_fd_yc():
     new_fcode.code = stockcode
     db.session.add(new_fcode)
     db.session.commit()
-    data['value']='success'
+    data['value'] = 'success'
     return jsonify(data)
 
 
@@ -678,14 +769,15 @@ def is_repeatcode():
         data['exit'] = 'flase'
     return jsonify(data)
 
+
 @api_blueprint.route('/analysis/buyStock', methods=['GET', 'POST'])
 def buystock():
-    username=current_user.username
-    date=request.form.get('date')
-    code=request.form.get('codeName')
-    price=request.form.get('price')
-    amount=request.form.get('amount')
-    value=request.form.get('totalSum')
+    username = current_user.username
+    date = request.form.get('date')
+    code = request.form.get('codeName')
+    price = request.form.get('price')
+    amount = request.form.get('amount')
+    value = request.form.get('totalSum')
     result = investment_portfolio.query.filter_by(user_name=current_user.username, code=code).first()
     if (result is None):
         new_data = investment_portfolio()
@@ -697,110 +789,121 @@ def buystock():
     else:
         result.num = result.num + string.atof(amount.encode("utf-8"))
         db.session.commit()
-    new_buy=history()
-    new_buy.users=username
-    new_buy.time=date
-    new_buy.code=code
-    new_buy.price=price
-    new_buy.amount=amount
-    new_buy.value=value
-    new_buy.position="buy"
+    new_buy = history()
+    new_buy.users = username
+    new_buy.time = date
+    new_buy.code = code
+    new_buy.price = price
+    new_buy.amount = amount
+    new_buy.value = value
+    new_buy.position = "buy"
     db.session.add(new_buy)
     db.session.commit()
     data = users_finance.query.filter_by(users=current_user.username).first()
     if (data is None):
-        new_userf=users_finance()
-        new_userf.users=current_user.username
-        new_userf.cost=value
+        new_userf = users_finance()
+        new_userf.users = current_user.username
+        new_userf.cost = value
         db.session.add(new_userf)
         db.session.commit()
     else:
-        data.cost=data.cost+string.atof(value.encode("utf-8"))
+        data.cost = data.cost + string.atof(value.encode("utf-8"))
         db.session.commit()
-    return jsonify({"result":"success"})
+    return jsonify({"result": "success"})
+
 
 @api_blueprint.route('/analysis/sellStock', methods=['GET', 'POST'])
 def sellstock():
-    username=current_user.username
-    date=request.form.get('date')
-    code=request.form.get('codeName')
-    price=request.form.get('price')
-    amount=request.form.get('amount')
-    value=request.form.get('totalSum')
+    username = current_user.username
+    date = request.form.get('date')
+    code = request.form.get('codeName')
+    price = request.form.get('price')
+    amount = request.form.get('amount')
+    value = request.form.get('totalSum')
     result = investment_portfolio.query.filter_by(user_name=current_user.username, code=code).first()
     if (result is None):
-        return jsonify({"result":"no stock can be sold"})
+        return jsonify({"result": "no stock can be sold"})
     else:
-        if(result.num < string.atof(amount.encode("utf-8"))):
-            return jsonify({"result":"not enough stock can be sold"})
+        if (result.num < string.atof(amount.encode("utf-8"))):
+            return jsonify({"result": "not enough stock can be sold"})
         result.num = result.num - string.atof(amount.encode("utf-8"))
         db.session.commit()
-    new_buy=history()
-    new_buy.users=username
-    new_buy.time=date
-    new_buy.code=code
-    new_buy.price=price
-    new_buy.amount=amount
-    new_buy.value=value
-    new_buy.position="sell"
+    new_buy = history()
+    new_buy.users = username
+    new_buy.time = date
+    new_buy.code = code
+    new_buy.price = price
+    new_buy.amount = amount
+    new_buy.value = value
+    new_buy.position = "sell"
     db.session.add(new_buy)
     db.session.commit()
     data = users_finance.query.filter_by(users=current_user.username).first()
     data.cost = data.cost - string.atof(value.encode("utf-8"))
     db.session.commit()
-    return jsonify({"result":"success"})
+    return jsonify({"result": "success"})
+
 
 @api_blueprint.route('/analysis/position', methods=['GET', 'POST'])
 def position_data():
-    data=investment_portfolio.query.filter_by(user_name=current_user.username).all()
+    data = investment_portfolio.query.filter_by(user_name=current_user.username).all()
     # 用first 结果判断用is not none 用all 判断用[]
-    results=[]
+    results = []
     if (data != []):
         for result in data:
-            results.append({"code":result.code,"num":result.num})
+            results.append({"code": result.code, "num": result.num})
         # return jsonify({"status":"exist","data":results})
         return jsonify(results)
     else:
         return jsonify(results)
+
 
 @api_blueprint.route('/analysis/realtime_quotes', methods=['GET', 'POST'])
 def realtime_quotes():
-    code=request.args.get("code")
+    code = request.args.get("code")
     df = ts.get_realtime_quotes(code)  # Single stock symbol
-    return jsonify({"rtlast":df.pre_close[0]})
+    return jsonify({"rtlast": df.pre_close[0]})
+
 
 @api_blueprint.route('/analysis/history_data', methods=['GET', 'POST'])
 def history_data():
-    results=[]
-    data=history.query.filter_by(users=current_user.username).order_by(db.desc(history.time)).all()
+    results = []
+    data = history.query.filter_by(users=current_user.username).order_by(db.desc(history.time)).all()
     if (data != []):
         for result in data:
-            results.append({"code":result.code,"position":result.position,"price":result.price,"amount":result.amount,"value":result.value,"time":result.time.strftime('%Y-%m-%d')})
+            results.append(
+                    {"code": result.code, "position": result.position, "price": result.price, "amount": result.amount,
+                     "value": result.value, "time": result.time.strftime('%Y-%m-%d')})
         # return jsonify({"status":"exist","data":results})
         return jsonify(results)
     else:
         return jsonify(results)
+
 
 @api_blueprint.route('/analysis/getcost', methods=['GET', 'POST'])
 def getcost():
     data = users_finance.query.filter_by(users=current_user.username).first()
     if (data is None):
-        return jsonify({"cost":0})
-    return jsonify({"cost":data.cost})
+        return jsonify({"cost": 0})
+    return jsonify({"cost": data.cost})
+
 
 @api_blueprint.route('/analysis/clearall', methods=['GET', 'POST'])
 def clearall():
-    data = db.session.query(users_finance).filter(users_finance.users==current_user.username).delete(synchronize_session=False)
+    data = db.session.query(users_finance).filter(users_finance.users == current_user.username).delete(
+        synchronize_session=False)
     db.session.commit()
-    data = db.session.query(history).filter(history.users==current_user.username).delete(synchronize_session=False)
+    data = db.session.query(history).filter(history.users == current_user.username).delete(synchronize_session=False)
     db.session.commit()
-    data = db.session.query(investment_portfolio).filter(investment_portfolio.user_name==current_user.username).delete(synchronize_session=False)
+    data = db.session.query(investment_portfolio).filter(
+        investment_portfolio.user_name == current_user.username).delete(synchronize_session=False)
     db.session.commit()
     return jsonify({"result": "success"})
+
 
 @api_blueprint.route('/analysis/profithistory', methods=['GET', 'POST'])
 def profithistory():
     data = history.query.filter_by(users=current_user.username).order_by(db.desc(history.time)).all()
-    getdata=Profit_monitoring(data)
-    results=getdata.start()
+    getdata = Profit_monitoring(data)
+    results = getdata.start()
     return jsonify(results)

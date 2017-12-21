@@ -466,6 +466,7 @@
         //                dataSeries = [{name:'123',type:'line',data:[1,2,3,4,5,6,7]},{name:'345',type:'line',data:[7,6,5,4,3,2,1]}];
         function CreateChart() {
             dataSeries = [];
+            console.log(Chosenindexes)
             for (var i = 0; i < finance_results.indexes.length; i++) {
                 if (Chosenindexes.hasOwnProperty(finance_results.indexes[i])) {
                     temp = {
