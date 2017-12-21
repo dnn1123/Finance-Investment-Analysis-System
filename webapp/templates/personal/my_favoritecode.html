@@ -8,10 +8,50 @@
     <div class="span9">
         <div class="content">
             <div class="btn-controls">
+                {#    This is the modal for addStock#}
+                <div class="modal fade" id="addStock" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                     aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                <h4 class="modal-title" id="myModalLabel">添加关注</h4>
+                            </div>
+                            <form id="searchform" class="navbar-form navbar-left" role="search" method="post"
+                                  action="{{ url_for('restfulapi.add_code') }}">
+                                <div class="modal-body">
+                                    <div calss="input-group">
+                                        <div class="form-group form-inline">
+                                            <label>股票： </label>
+                                            <input type="text" id="stockcode" name="stockcode" placeholder="Search" class="form-control"
+                                                   title="代码/拼音/名称"
+                                                   style="color: rgb(153, 153, 153);">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                                    <button type="button" class="btn btn-primary" onclick="addStock()">确认</button>
+                                </div>
+                            </form>
+
+                        </div><!-- /.modal-content -->
+                    </div><!-- /.modal-dialog -->
+                </div>
+
                 {#                股票列表#}
                 <div class="module">
                     <div class="module-head">
                         关注列表
+                        <div class="span3 pull-right">
+                            <button class="btn btn-mini btn-primary" type="button" data-toggle="modal"
+                                    data-target="#addStock">添加
+                            </button>
+                            <button class="btn btn-mini btn-danger" type="button" id="deleteStock"
+                            >删除
+                            </button>
+
+                        </div>
                     </div>
                     <div class="module-body">
                         <div class="btn-box-row row-fluid">
@@ -20,6 +60,9 @@
                                     <table id="mytable1" style="text-align:center;height:100px">
                                         <thead>
                                         <tr>
+                                            <th>
+                                                选择
+                                            </th>
                                             <th>
                                                 编号
                                             </th>
@@ -119,7 +162,7 @@
                                 <div id="placeholder2" class="graph" style="height: 300px">
                                     <div class="leftbox" style="position:relative;">
                                         <div>
-                                            <legend style="font-size:9px">比较代码列表</legend>
+                                            {#                                            <legend style="font-size:9px">比较代码列表</legend>#}
                                             <div id="code_checkbox"
                                                  style="height:80%;overflow-y :auto;margin-top:4.5%">
                                                 <div id="div_compare" style="overflow-y: auto;">
@@ -173,39 +216,7 @@
             </div>
             <!--/.content-->
         </div>
-        <!--右侧固定导航栏-->
-        <div class="J-global-toolbar">
-            <div class="toolbar-wrap J-wrap">
-                <div class="toolbar">
-                    <div class="toolbar-panels J-panel">
-                        <div style="visibility: hidden;"
-                             class="J-content toolbar-panel tbar-panel-cart toolbar-animate-out">
-                            <div style="float:left;width: 100px">
-                                <legend>关注股票列表</legend>
-                                <div style='width:280px;height: 600px;overflow-y: auto'>
 
-
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-
-                    <div class="toolbar-header"></div>
-
-                    <div class="toolbar-tabs J-tab">
-                        <div class="toolbar-tab tbar-tab-cart" style="height:35px">
-                            <i class="tab-ico"></i>
-                            <img src="/static/5_24.png" style="margin-top: 7px;margin-left: 2px">
-                            <em class="tab-text ">股票列表</em>
-                        </div>
-
-                    </div>
-                </div>
-
-
-            </div>
-        </div>
         <script>
 
         </script>
@@ -545,7 +556,30 @@
                 }
                 myChart3.setOption(option, true);
             }
-
+            {#            股票补全#}
+{#            var stocksuggest = $("input[name='stockcode']").bsSuggest({#}
+{#                indexKey: 1,#}
+{#                allowNoKeyword: false,#}
+{#                getDataMethod: "url",#}
+{#                url: '{{url_for("restfulapi.stock_code",q="")}}',#}
+{#                processData: function (json) {     // url 获取数据时，对数据的处理，作为 getData 的回调函数#}
+{#                    var i, len, data = {value: []};#}
+{##}
+{#                    if (!json || !json.stockcode || json.stockcode.length == 0) {#}
+{#                        return false;#}
+{#                    }#}
+{#                    len = json.stockcode.length;#}
+{##}
+{#                    for (i = 0; i < len; i++) {#}
+{#                        data.value.push({#}
+{#                            "Id": (i + 1),#}
+{#                            "stockcode": json.stockcode[i],#}
+{#                            "stockname": json.stockname[i],#}
+{#                        });#}
+{#                    }#}
+{#                    return data;#}
+{#                }#}
+{#            })#}
             {#yc#}
             var code_list = new Array();
 
@@ -756,7 +790,7 @@
                     {#                checked.checked = true#}
                 }
             }
-
+            {#关注股票列表生成#}
             function creat_code_table() {
                 $.ajax({
                     type: 'POST',
@@ -772,16 +806,16 @@
                         name_list = data.name_list
                         for (i = 0; i < data.code_list.length; i++) {
                             color[data.code_list[i]] = set_color()
-                            str = "<tr ><td>" + data.code_list[i] + "</td>" +
+                            str = "<tr ><td><input type='checkbox' class='code_table' value='" + data.name_list[i] + "' id='" + data.code_list[i] + "' ></td><td>" + data.code_list[i] + "</td>" +
                                     "<td>" + data.name_list[i] + "</td>" +
                                     "<td>暂无</td>" +
                                     "<td >暂无 </td>" +
                                     "<td>" + data.count_list[i] + " </td></tr>"
                             $("#tbody").append(str)
-                            $("#div_compare").append("<div style='width:100%;height:30px;margin-top:10px;background-color:lightgray' class='divcheckbox'>" +
-                                    "<div  style='width:80%;height:20px;float:left;'>" +
-                                    "<input type='checkbox' class='checkbox' value='" + data.name_list[i] + "' id='" + data.code_list[i] + "' >" + data.name_list[i] +
-                                    " <div id='div_" + data.code_list[i] + "' style='height: 10px;width: 10px;float: right;margin: 5px'></div> </div></div>")
+                            $("#div_compare").append("<div style='width:100%;height:30px;margin-top:10px;' class='divcheckbox'>" +
+                                    "<div style='width:100%;height:20px;float:left;'>" +
+                                    "<input type='checkbox' class='checkbox' value='" + data.name_list[i] + "' id='" + data.code_list[i] + "' style='margin:5px'>" + data.name_list[i] +
+                                    " <div id='div_" + data.code_list[i] + "' style='height: 10px;width: 10px;float: right;margin: 8px'></div> </div></div>")
                         }
 
                         set_checked_code_color(code_list, color)
@@ -890,6 +924,76 @@
                 }
 
             }
+
+            function addStock() {
+
+                $.ajax({
+                    type: 'POST',
+                    url: '{{url_for("restfulapi.iscode")}}',
+                    data: {
+                        'code': $("#stockcode").val(),
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.the_name != 'false') {
+                            $.ajax({
+                                type: 'POST',
+                                url: '{{url_for("restfulapi.is_repeatcode")}}',
+                                data: {
+                                    'code': $("#stockcode").val(),
+                                },
+                                dataType: 'json',
+                                success: function (data) {
+                                    if (data.exit == 'true') {
+                                        alert('您已关注该股票，请勿重复操作！')
+                                    }
+                                    else if (data.exit == 'flase') {
+                                        $.ajax({
+                                            type: 'POST',
+                                            url: '{{url_for("restfulapi.add_code_fd_yc")}}',
+                                            data: {
+                                                'code': $("#stockcode").val(),
+                                            },
+                                            dataType: 'json',
+                                            success: function (data) {
+                                                location.reload()
+                                                {#                                                first_visit()#}
+                                            }
+                                        })
+                                    }
+                                }
+                            })
+                        }
+                        else {
+                            alert($("#stockcode").val() + "号股票不存在！")
+                        }
+                    }
+                })
+
+            }
+
+            $("#deleteStock").click(function () {
+                var delete_list = new Array()
+                $('.code_table').each(function () {
+                    if ($(this).is(':checked')) {
+                        delete_list.push($(this).attr('id'))
+                    }
+                })
+                console.log(delete_list)
+                $.ajax({
+                    type: 'POST',
+                    url: '{{url_for("restfulapi.delete_code")}}',
+                    data: {
+                        'selected': delete_list
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        alert('删除成功')
+                        location.reload()
+                    }
+                })
+            })
+
             $(document).ready(function () {
 
                 function createchart(stock_code_list, unit, dzstart, dend) {
@@ -1109,6 +1213,7 @@
                 }
 
                 function index_chart_by_year(code_list, index, year, unit) {
+
                     var myChart2 = echarts.init(document.getElementById('index_chart_by_year'));
 
                     var legenddata1 = [];
@@ -1123,9 +1228,9 @@
                                 'date': [year, year],
                                 'index': index
                             },
+                            async: false,
                             dataType: 'json',
                             success: function (data) {
-
                                 for (i = 0; i < data.indexs.length; i++) {
                                     legenddata1.push(data.the_name)
                                     {#                                index_title = post_selected(data.indexs[i])#}
@@ -1195,15 +1300,11 @@
                                         }
                                     ]
                                 }
-                                myChart2.setOption(option, true);
 
-                                {#                                invest_results;#}
-                                {#                                finance_results;#}
-
-                                {#                            console.log(option)#}
                             }
                         })
                     }
+                    myChart2.setOption(option, true);
 
                 }
 
@@ -1221,7 +1322,6 @@
                     })
                 }
 
-
                 function first_visit() {
                     creat_select_option()
                     Uint = 100000000
@@ -1233,23 +1333,22 @@
 
                     {# 首次访问，填充datatable   #}
                     creat_code_table()
-{#                    $("input[type=checkbox]").each(function () {#}
-{#                        $(this).iCheck('check');#}
-{#                    })#}
-                    $(".checkbox").each(function (){
-                                            $(this).attr("checked",true)
-                                        })
-                     selectedindex = ['tot_oper_rev']
-                    set_timepicker('2010-q4', '2016-q4')
+                    {#                    $("input[type=checkbox]").each(function () {#}
+                    {#                        $(this).iCheck('check');#}
+                    {#                    })#}
+                    $(".checkbox").each(function () {
+                        $(this).attr("checked", true)
+                    })
+                    selectedindex = ['tot_oper_rev']
+                    set_timepicker('2010-q4', '2015-q4')
 
                     {#财务指标饼图#}
-                    index_chart_by_year(code_list, selectedindex, '2016', 1)
+                    index_chart_by_year(code_list,selectedindex, '2015', 1)
                     {#投资指标饼图#}
-                    getdata(code_list, '2016')
+                    getdata(code_list, '2015')
                     CreateChart(selectedindex, 1)
                     {# 绘制对比图#}
-
-                    createchart(code_list, Uint, '2010', '2016')
+                    createchart(code_list, Uint, '2010', '2015')
 
                 }
 
@@ -1350,10 +1449,11 @@
                     var year_pie = $('#year_pie').val().substring(0, 4)
                     var index_pie = document.getElementById("index_select_pie").value
                     index.push(index_pie)
+                    console.log(year_pie)
                     index_chart_by_year(code_list, index, year_pie, 1)
-                    getdata(code_list, year_pie)
-
-                    CreateChart(index, 1)
+{#                    getdata(code_list, year_pie)#}
+{##}
+{#                    CreateChart(index, 1)#}
 
                 })
                 $('select#index_select_pie_2').change(function () {
@@ -1428,6 +1528,7 @@
 
                     }
                 });
+
                 $.fn.dataTable.ext.errMode = 'none';
                 $("#hyfb").click(function () {
                     $(".fb").hide()

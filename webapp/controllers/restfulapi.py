@@ -236,6 +236,7 @@ def invest_data_new():
                     exec (index + "_list.append(float(result." + index + "))")
     data['stock_code'] = stockcode
     data['the_year'] = year_list
+    data['the_year'] = year_list
     data['indexes'] = indexes
     for index in indexes:
         exec ("data['" + index + "']=" + index + "_list")
@@ -719,6 +720,13 @@ def add_code_fd_yc():
     db.session.add(new_fcode)
     db.session.commit()
     data['value'] = 'success'
+    return jsonify(data)
+
+@api_blueprint.route('/personal/wind', methods=['GET', 'POST'])
+def wind():
+    stockcode = request.args.getlist('stockcode[]')
+    for code in stockcode:
+
     return jsonify(data)
 
 
