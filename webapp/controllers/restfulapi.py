@@ -8,6 +8,7 @@ from flask_login import current_user
 import string
 import tushare as ts
 import gc
+import pandas as pd
 from  webapp.stratlib import *
 api_blueprint = Blueprint(
         'restfulapi',
@@ -810,3 +811,24 @@ def stock_solo():
     data=favorite_code.query.filter_by(code=stockcode).all()
     count=len(data)
     return jsonify({"price": price,"roc":rate,"count":count})
+
+@api_blueprint.route('/stock_solo/stock_k', methods=['GET', 'POST'])
+def stock_solo_k():
+    stockcode = request.args.get('code')
+    results=[]
+    df_deal = pd.DataFrame()
+    df = ts.get_hist_data(stockcode)# Single stock symbol
+    date=df.index.tolist()
+    df_deal['open']=df.open
+    df_deal['close']=df.close
+    df_deal['low']=df.low
+    df_deal['high']=df.high
+    ma5=df.ma5.tolist()
+    ma10 = df.ma10.tolist()
+    ma20 = df.ma20.tolist()
+    p_change=df.p_change.tolist()
+    for indexs in df_deal.index:
+        mylist=(df_deal.loc[indexs].values.tolist())
+        mylist.append(indexs)
+        results.append(mylist)
+    return jsonify({"date":date,"k_data":results,"ma5":ma5,"ma10":ma10,"ma20":ma20,"p_change":p_change})

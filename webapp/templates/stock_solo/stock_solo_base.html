@@ -35,6 +35,7 @@
           rel="stylesheet" type="text/css">
 
 {#    library for new  templates#}
+    <script type="text/javascript" src="{{ url_for('static',filename='js/china.js') }}"></script>
     <link href="{{ url_for('static',filename='bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" media="screen">
     <link href="{{ url_for('static',filename='bootstrap/css/bootstrap-responsive.min.css') }}" rel="stylesheet" media="screen">
     <link href="{{ url_for('static',filename='css/nav.css') }}" rel="stylesheet" media="screen">
@@ -184,12 +185,11 @@
 
                         <form id="searchform" class="navbar-search pull-left input-append" role="search" method="post" action="{{ url_for('stock_solo.basic') }}">
                             <div class="input-group">
-                            <input type="text" class="span3 form-control" id="stockcode" placeholder="Search" name="stockcode">
-                            <button id="submitbtn" class="btn dropdown-toggle" data-toggle="dropdown" type="submit" ><i class="icon-search"></i></button>
-                            <ul class="dropdown-menu" role="menu" style="left: 0;"></ul>
+                            <input type="text" class="span3 form-control" id="stockcode" style="height: 30px" placeholder="Search" name="stockcode">
+                            <button id="submitbtn" class="btn dropdown-toggle" style="height: 30px" data-toggle="dropdown" type="submit" ><i class="icon-search"></i></button>
+                            <ul class="dropdown-menu" role="menu" style="left: 0!important;"></ul>
                             </div>
                         </form>
-
 
 
                         <ul class="nav pull-right">
@@ -226,8 +226,8 @@
 
     <div class="wrapper">
             <div class="container">
-                <div class="row" style="height: 1000px">
-                    <div class="span3">
+                <div  class="row" style="height: auto">
+                    <div class="span3"  >
                         <div class="sidebar">
                             <ul class="widget widget-menu unstyled">
                                 <li class="active"><a href="index.html"><i class="menu-icon icon-dashboard"></i>我的账户
@@ -269,6 +269,7 @@
                             </ul>
                         </div>
                         <!--/.sidebar-->
+                        {% block left %}{% endblock %}
                     </div>
                     <!--/.span3-->
                     {% block body %}{% endblock %}
