@@ -6,6 +6,7 @@ from sqlalchemy import create_engine, or_, func, desc, distinct  # me func用于
 from sqlalchemy.orm import sessionmaker  # me
 from flask_login import current_user
 import string
+from collections import Counter
 import tushare as ts
 import gc
 from  webapp.stratlib import *
@@ -56,9 +57,40 @@ def finance_data():
 
 @api_blueprint.route("/code_wind/", methods=('GET', 'POST'))
 def code_wind():
-    code_list = request.form.getlist('code_list[]')
-    data = []
+    code_list = request.args.getlist('codelist[]')
+
+    data = {}
+
+    data['codelist'] = code_list
+
     return jsonify(data)
+
+    # user_name = current_user.username
+    # codelist = []
+    # results = favorite_code.query.filter_by(user_name=user_name).all()
+    # for result in results:
+    #     code_list.append(result.code)
+
+    # wind_4 = []
+    # wind_3 = []
+    # wind_2 = []
+    # wind_1 = []
+    # for code in codelist:
+    #     result = cns_stock_industry.query.filter_by(trade_code=code).first_or_404()
+    #     wind_4.push(result.industry_gics_4)
+    #     result4 = cns_sub_industry.query.filter_by(industry_gicscode_4=result.industry_gicscode_4).first_or_404()
+    #     result3 = cns_industry.query.filter_by(industry_gicscode_3=result4.belong).first_or_404()
+    #     wind_3.push(result3.industry_gics_3)
+    #     result2 = cns_group_industry.query.filter_by(industry_gicscode_2=result3.belong).first_or_404()
+    #     wind_2.push(result2.industry_gics_2)
+    #     result1 = cns_department_industry.query.filter_by(industry_gicscode_1=result2.belong).first_or_404()
+    #     wind_1.push(result1.industry_gics_1)
+
+    # 'wind_4': wind_4,
+    # 'wind_3': wind_3,
+    # 'wind_2': wind_2,
+    # 'wind_1': wind_1,
+    # 'codelist':stockcode
 
 
 @api_blueprint.route('/get_ajax_compare', methods=('GET', 'POST'))
@@ -168,8 +200,8 @@ def finance_data_new():
     indexes = request.args.getlist('indexes[]')
     data = {}
     year_list = []
-    the_year_start = int(starttime[0:4] )
-    the_year_end = int(endtime[0:4] )
+    the_year_start = int(starttime[0:4])
+    the_year_end = int(endtime[0:4])
     the_year = the_year_end
     while the_year >= the_year_start:
         year_list.append(the_year)
@@ -722,11 +754,30 @@ def add_code_fd_yc():
     data['value'] = 'success'
     return jsonify(data)
 
+
 @api_blueprint.route('/personal/wind', methods=['GET', 'POST'])
 def wind():
     stockcode = request.args.getlist('stockcode[]')
+    wind_4 = []
+    wind_3 = []
+    wind_2 = []
+    wind_1 = []
     for code in stockcode:
-
+        result = cns_sub_industry.query.filter_by(trade_code=code).first_or_404()
+        wind_4.push(result.industry_gics_4)
+        result4 = cns_sub_industry.query.filter_by(industry_gicscode_4=result.industry_gicscode_4).first_or_404()
+        result3 = cns_industry.query.filter_by(industry_gicscode_3=result4.belong).first_or_404()
+        wind_3.push(result3.industry_gics_3)
+        result2 = cns_group_industry.query.filter_by(industry_gicscode_2=result3.belong).first_or_404()
+        wind_2.push(result2.industry_gics_2)
+        result1 = cns_department_industry.query.filter_by(industry_gicscode_1=result2.belong).first_or_404()
+        wind_1.push(result1.industry_gics_1)
+    data = {
+        'wind_4': wind_4,
+        'wind_3': wind_3,
+        'wind_2': wind_2,
+        'wind_1': wind_1
+    }
     return jsonify(data)
 
 
@@ -759,10 +810,42 @@ def search():
         result2 = finance_basics.query.filter_by(trade_code=result.code).count()
         name_list.append(result1.sec_name)
         count_list.append(result2)
+    wind_4 = []
+    wind_3 = []
+    wind_2 = []
+    wind_1 = []
+    for code in code_list:
+        result = cns_stock_industry.query.filter_by(trade_code=code).first_or_404()
+        wind_4.append(result.industry_gics_4)
+        result4 = cns_sub_industry.query.filter_by(industry_gicscode_4=result.industry_gicscode_4).first_or_404()
+        result3 = cns_industry.query.filter_by(industry_gicscode_3=result4.belong).first_or_404()
+        wind_3.append(result3.industry_gics_3)
+        result2 = cns_group_industry.query.filter_by(industry_gicscode_2=result3.belong).first_or_404()
+        wind_2.append(result2.industry_gics_2)
+        result1 = cns_department_industry.query.filter_by(industry_gicscode_1=result2.belong).first_or_404()
+        wind_1.append(result1.industry_gics_1)
+
+    citycount = {}
+    for code in code_list:
+        city = stock_basics.query.filter_by(trade_code=code).first().city
+        if (citycount.has_key(city)):
+            citycount[city] += 1
+        else:
+            citycount[city] = 1
+    cityrec = []
+    for key in citycount:
+        rec = [key, citycount[key]]
+        cityrec.append(rec)
+
+    data['wind_4'] = Counter(wind_4)
+    data['wind_3'] = Counter(wind_3)
+    data['wind_2'] = Counter(wind_2)
+    data['wind_1'] = Counter(wind_1)
     data['code_list'] = code_list
     data['name_list'] = name_list
     data['user_name'] = current_user.username
     data['count_list'] = count_list
+    data['cityrec'] = cityrec
     return jsonify(data)
 
 
@@ -899,12 +982,12 @@ def getcost():
 @api_blueprint.route('/analysis/clearall', methods=['GET', 'POST'])
 def clearall():
     data = db.session.query(users_finance).filter(users_finance.users == current_user.username).delete(
-        synchronize_session=False)
+            synchronize_session=False)
     db.session.commit()
     data = db.session.query(history).filter(history.users == current_user.username).delete(synchronize_session=False)
     db.session.commit()
     data = db.session.query(investment_portfolio).filter(
-        investment_portfolio.user_name == current_user.username).delete(synchronize_session=False)
+            investment_portfolio.user_name == current_user.username).delete(synchronize_session=False)
     db.session.commit()
     return jsonify({"result": "success"})
 
