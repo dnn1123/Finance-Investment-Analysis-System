@@ -792,7 +792,7 @@ def home():
     rolename = Role.query.filter_by(id=permission_id).first().description
     favorite_stock_count = favorite_code.query.filter_by(user_name=username).count()
     position_stock_count = investment_portfolio.query.filter_by(user_name=username).count()
-
+    trade_rec_count = history.query.filter_by(users=username).count()
     position_records = investment_portfolio.query.filter_by(user_name=username).all()
     pricelist = []
     for i in range(len(position_records)):
@@ -803,11 +803,26 @@ def home():
         rec = (pricelist[i]-position_records[i].total_cost)*position_records[i].shares
         p_records.append(rec)
     position_profit = sum(p_records)
+    #get city info. return a dictionary {cityname:count}
+    citycount = {}
+    for i in range(len(position_records)):
+        city = stock_basics.query.filter_by(trade_code = position_records[i].code).first().city
+        if (citycount.has_key(city)):
+            citycount[city] += 1
+        else:
+            citycount[city]=1
+    cityrec = []
+    for key in citycount:
+        rec=[key,citycount[key]]
+        cityrec.append(rec)
+
     results = {
         'rolename':rolename,
         'favorite_stock_count':favorite_stock_count,
         'position_stock_count':position_stock_count,
+        'trade_rec_count':trade_rec_count,
         'position_profit':position_profit,
+        'cityrec': cityrec,
     }
     return jsonify(results)
 @api_blueprint.route('/myposition',methods=['GET','POST'])
@@ -852,6 +867,7 @@ def myposition():
     for i in range(len(position_records)):
         rec = [namelist[i],departmentlist[i]]
         d_records.append(rec)
+
     #get group info
     grouplist = []
     for i in range(len(position_records)):
@@ -861,12 +877,32 @@ def myposition():
     for i in range(len(position_records)):
         rec = [namelist[i],grouplist[i]]
         g_records.append(rec)
+
+    #get city info. return a dictionary {cityname:count}
+    citycount = {}
+    for i in range(len(position_records)):
+        city = stock_basics.query.filter_by(trade_code = position_records[i].code).first().city
+        if (citycount.has_key(city)):
+            citycount[city] += 1
+        else:
+            citycount[city]=1
+    cityrec = []
+    for key in citycount:
+        rec=[key,citycount[key]]
+        cityrec.append(rec)
+    #get group info
+    g_records=[]
+    for i in range(len(position_records)):
+        rec = [namelist[i],grouplist[i]]
+        g_records.append(rec)
+
     results = {
         'traderec':t_records,
         'positionrec':p_records,
         'commissionrec':c_records,
         'departmentrec':d_records,
         'grouprec':g_records,
+        'cityrec':cityrec,
     }
     return jsonify(results)
 

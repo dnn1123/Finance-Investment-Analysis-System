@@ -61,6 +61,7 @@
     <script type="text/javascript" src="{{ url_for('static',filename='js/tableHeadFixer.js') }}"></script>
     <!--js的分页方法，用于industry_analysis/annual_table.html-->
     <script type="text/javascript" src="{{ url_for('static',filename='js/jquery.pagination.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static',filename='js/china.js') }}"></script>
 
     {% block fixTable %}{% endblock %}
     <style>
@@ -256,6 +257,10 @@
                             </ul>
                         </div>
                         <!--/.sidebar-->
+                        <div class="sidebar">
+                            {% block map %}{% endblock %}
+                        </div>
+
                     </div>
                     <!--/.span3-->
                     {% block body %}{% endblock %}
