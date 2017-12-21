@@ -800,3 +800,13 @@ def profithistory():
     getdata=Profit_monitoring(data)
     results=getdata.start()
     return jsonify(results)
+
+@api_blueprint.route('/stock_solo/stock_basic', methods=['GET', 'POST'])
+def stock_solo():
+    stockcode=request.args.get('code')
+    df = ts.get_realtime_quotes(stockcode)  # Single stock symbol
+    price=df.price[0]
+    rate=string.atof(df.price[0].encode("utf-8"))/string.atof(df.pre_close[0].encode("utf-8"))
+    data=favorite_code.query.filter_by(code=stockcode).all()
+    count=len(data)
+    return jsonify({"price": price,"roc":rate,"count":count})

@@ -25,28 +25,20 @@ stocksolo_blueprint = Blueprint(
 @login_required
 
 def basic(data=""):
-    form = CodeForm()
-    if data=="":
-        if session.has_key('stockcode'):
-            data = session['stockcode']
-        else:
-            data = '000001'
+    if session.has_key('stockcode'):
+        data = session['stockcode']
     else:
-        session['stockcode'] = data
-    if form.validate_on_submit():
-        data = form.code.data
-        session['stockcode'] = data
-        return redirect(url_for('stock_solo.basic', current_user=current_user, data=data))
+        data = '000001'
+    if (request.method == 'POST'):
+        stockcode=request.form.get("stockcode","000001")
+        session['stockcode'] = stockcode
+        return redirect(url_for('stock_solo.basic', current_user=current_user, data=stockcode))
     match = zhPattern.search(data)
     if match:
         stock = stock_basics.query.filter_by(sec_name=data).first_or_404()
     else:
         stock = stock_basics.query.filter_by(trade_code=data).first_or_404()
-    #导致高延迟 自动补全
-    # rs = stock_basics.query.with_entities(stock_basics.trade_code,stock_basics.sec_name)
-    # length = stock_basics.query.count()
-    # list_len = range(length)
-    return render_template("stock_solo/stock_solo_basic.html",current_user=current_user, form=form,stock=stock)
+    return render_template("stock_solo/stock_solo_basic.html", current_user=current_user,stock=stock)
 
 @stocksolo_blueprint.route('/finance_data',methods=('GET','POST'))
 @stocksolo_blueprint.route('/finance_data/<string:data>',methods=('GET','POST'))
