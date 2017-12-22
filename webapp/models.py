@@ -24,7 +24,7 @@ roles = db.Table(
 #     permissions = db.Column(db.Integer)
 
 
-class roles1(db.Model):
+class users_roles(db.Model):
     __bind_key__ = 'users_info'
     __tablename__ = 'users_role'
     id = db.Column(db.Integer, primary_key=True)
