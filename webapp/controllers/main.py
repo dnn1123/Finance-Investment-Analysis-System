@@ -80,3 +80,10 @@ def logout():
 def test():
     return render_template('test.html')
 
+@main_blueprint.route('/my_favoritecode/', methods=['GET', 'POST'])
+def my_favoritecode():
+    user = users_roles.query.filter_by(user_name=current_user.username).first()
+    # rolename = Role.query.filter_by(id=user.permissions).first()
+    role = Role.query.filter_by(id=user.permissions).first()
+    rolename = role.description
+    return render_template('personal/my_favoritecode.html',user=user,rolename=rolename)
