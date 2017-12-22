@@ -91,7 +91,9 @@
                 </div>
                 <div class="btn-box-row row-fluid">
                     <div class="module span12" style="background-color: transparent">
-                        <div class="module-head" > <button id="head2" class="btn btn-primary" data-toggle="button">行业状况</button></div>
+                        <div class="module-head">
+                            <button id="head2" class="btn btn-primary" data-toggle="button">行业状况</button>
+                        </div>
                         <div class="row-fluid" id="body2">
                             <div class="btn-box small span3">
                                 <div id="windpie_1" style="width:100%;height:200px;background-color: white"></div>
@@ -112,11 +114,12 @@
 
                 {#                基础指标&&投资指标#}
                 <div class="btn-box-row row-fluid">
-                    <div class="module span12" style="background-color: transparent" >
-                        <div class="module-head" > <button id="head3" class="btn btn-primary" data-toggle="button">指标概况</button>
+                    <div class="module span12" style="background-color: transparent">
+                        <div class="module-head">
+                            <button id="head3" class="btn btn-primary" data-toggle="button">指标概况</button>
                             <input
-                                type="text" id="year_pie"
-                                style="background-color:white;width: 70px;margin-top: 5px;height:20px"/>
+                                    type="text" id="year_pie"
+                                    style="background-color:white;width: 70px;margin-top: 5px;height:20px"/>
                         </div>
                         <div class="row-fluid" id="body3">
                             <div class="span6" style="background-color:white">
@@ -236,16 +239,16 @@
     </div>
 
     <script>
-     $("#head1").click(function () {
+        $("#head1").click(function () {
             $("#body1").toggle()
         })
-     $("#head4").click(function () {
+        $("#head4").click(function () {
             $("#body4").toggle()
         })
         $("#head2").click(function () {
             $("#body2").toggle()
         })
-     $("#head3").click(function () {
+        $("#head3").click(function () {
             $("#body3").toggle()
         })
 
@@ -1242,7 +1245,7 @@
                         {#                            },#}
                         series: [
                             {
-                                name: '子行业分布',
+                                name: '子行业',
                                 type: 'pie',
                                 radius: ['50%', '70%'],
                                 center: ['50%', '50%'],
@@ -1310,7 +1313,7 @@
                         {#                            },#}
                         series: [
                             {
-                                name: '子行业分布',
+                                name: '行业',
                                 type: 'pie',
                                 radius: ['50%', '70%'],
                                 center: ['50%', '50%'],
@@ -1446,7 +1449,7 @@
                         {#                            },#}
                         series: [
                             {
-                                name: '子行业分布',
+                                name: '部门',
                                 type: 'pie',
                                 radius: ['50%', '70%'],
                                 center: ['50%', '50%'],
@@ -1477,7 +1480,7 @@
                 }
             })
         }
-
+        {#对比表#}
         function creattable(stock_code_list, unit, start, end) {
             $("#table_head").empty();
             $("#table_body").empty();
@@ -1524,7 +1527,7 @@
                         Data = data
                         for (i = 0; i < data.indexs.length; i++) {
                             str1 = "color['" + data.the_code + "']"
-                            line = "<td style='color:" + eval(str1) + "'>" + data.the_name + "(" + post_selected(data.indexs[i]) + ")</td>"
+                            line = "<td style='color:" + eval(str1) + "'>" + data.the_name + "</td>"
                             str = "data." + data.indexs[i]
                             results = eval(str)
                             for (k = 0; k < results.length; k++) {
@@ -1686,7 +1689,7 @@
                                     {#                                        data: legenddata1#}
                                     {#                                    },#}
                                     grid: {
-                                        left: 100,
+{#                                        left: 100,#}
                                         right: '4%',
                                         bottom: '3%',
                                         containLabel: true
@@ -1781,7 +1784,7 @@
                                     {#                                        data: legenddata1#}
                                     {#                                    },#}
                                     grid: {
-                                        left: 100,
+{#                                        left: 100,#}
                                         right: '4%',
                                         bottom: '3%',
                                         containLabel: true
