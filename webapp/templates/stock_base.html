@@ -183,21 +183,6 @@
                         <i class="icon-search"></i>
                     </button>
                 </form>
-                <ul class="nav pull-right">
-                    <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">功能导航
-                        <b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="#">财务分析</a></li>
-                            <li><a href="#">量化模型</a></li>
-                            <li class="divider"></li>
-                            <li><a href="#">交易系统</a></li>
-                        </ul>
-                        <form class="navbar-search pull-left input-append" action="#">
-                        <input type="text" class="span3">
-                        <button class="btn" type="button">
-                            <i class="icon-search"></i>
-                        </button>
-                        </form>
                         <ul class="nav pull-right">
                             <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">功能导航
                                 <b class="caret"></b></a>
@@ -236,7 +221,7 @@
                                 <li class="active"><a href="{{ url_for('stock.home') }}"><i class="menu-icon icon-dashboard"></i>我的账户
                                 </a></li>
                                 <!--关注股票的综合面板-->
-                                <li><a href="activity.html"><i class="menu-icon icon-bullhorn"></i>我的关注股票</a>
+                                <li><a href="{{ url_for('main.my_favoritecode') }}"><i class="menu-icon icon-bullhorn"></i>我的关注股票</a>
                                 </li>
                                 <li><a href="{{ url_for('stock.myposition') }}"><i class="menu-icon icon-paste"></i>当前持仓 </a></li>
                                 <li><a href="message.html"><i class="menu-icon icon-inbox"></i>我的消息 <b class="label green pull-right">
@@ -252,7 +237,7 @@
                                 </i><i class="icon-chevron-down pull-right"></i><i class="icon-chevron-up pull-right">
                                 </i>财务分析 </a>
                                     <ul id="togglePages" class="collapse unstyled">
-                                        <li><a href="{{ url_for('stock_solo.finance_data_yc') }}"><i class="icon-inbox"></i>股票个体分析 </a></li>
+                                        <li><a href="{{ url_for('stock_solo.basic') }}"><i class="icon-inbox"></i>股票个体分析 </a></li>
                                         <li><a href="other-user-profile.html"><i class="icon-inbox"></i>股票总体概览 </a></li>
                                         <li><a href="other-user-listing.html"><i class="icon-inbox"></i>整体行业状况分析 </a></li>
                                         <li><a href="other-user-listing.html"><i class="icon-inbox"></i>投资分类评级 </a></li>
@@ -282,9 +267,6 @@
                     <!--/.span9-->
                 </div>
             </div>
-            <!--/.span3-->
-            {% block body %}{% endblock %}
-            <!--/.span9-->
         </div>
     </div>
     <!--/.container-->
