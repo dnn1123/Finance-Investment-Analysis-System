@@ -6,7 +6,7 @@ import pandas as pd
 import os
 from datetime import *
 def get_k_data_recent(instruement,startdate):
-    path = os.path.join('webapp','histdata')
+    path = os.path.join(os.getcwd(),'webapp','histdata')
     # 得到15分钟数据（股票300336,始于2016-01-01,止于2016-05-24,15分钟数据）
     data = ts.get_k_data(instruement,startdate)
     # 数据存盘
