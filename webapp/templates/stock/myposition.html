@@ -469,6 +469,13 @@
                         .row.add(data['traderec'][i])
                         .draw()
                         .node();
+                if (data['traderec'][i][2] == 'buy'){
+                    $(rowNode).attr('style', "color:red;");
+                }
+                else
+                {
+                    $(rowNode).attr('style', "color:blue");
+                }
 
             }
         }
@@ -515,11 +522,17 @@
             });
             setTimeout("$(\"#subject\").trigger(\"click\")", 100);
             for (var i = 0; i < data['positionrec'].length; i++) {
-
+                data['positionrec'][i][5] = data['positionrec'][i][5].toFixed(2);
                 var rowNode = mydatatb
                         .row.add(data['positionrec'][i])
                         .draw()
                         .node();
+                if (data['positionrec'][i][5]>=0){
+                    $(rowNode).attr('style', "color:red;");
+                }
+                else{
+                    $(rowNode).attr('style', "color:blue;");
+                }
 
             }
         }
@@ -541,7 +554,7 @@
                 },
                 dataType:'json',
                 success:function (data) {
-                    console.log(data["cityrec"]);
+                    console.log(data["traderec"].length);
                     createTable("mytable",data);
                     createPosTable("postable",data);
                     costDist(data);
@@ -1166,10 +1179,19 @@
         }
 {#        line chart for historical profit trend#}
         function profittrend(data){
-
+            var tra_recs = new Array();
+            console.log(data['traderec'])
+            for (var i = 0; i < data['traderec'].length; i++){
+                if (data['traderec'][i][2]=='buy'){
+                    tra_recs.push({xAxis:data['traderec'][i][5],yAxis:0,symbol:'triangle',symbolSize:15,symbolOffset:[0,'400%']})
+                }
+                else{
+                    tra_recs.push({xAxis:data['traderec'][i][5],yAxis:0,symbol:'triangle',symbolSize:15,symbolOffset:[0,'400%'],symbolRotate:180})
+                }
+            };
             var myChart = echarts.init(document.getElementById('profittrend'));
             var option = {
-
+            color:['#6633FF','red','#00008B'],
             tooltip: {
                 trigger: 'axis'
             },
@@ -1191,7 +1213,7 @@
             xAxis:  {
                 type: 'category',
                 boundaryGap: false,
-                data: data['date']
+                data: data['results']['date']
             },
             yAxis: {
                 type: 'value',
@@ -1202,54 +1224,61 @@
             series: [
                 {
                     name:'收益',
-                    type:'line',
-                    data:data['profit'],
-                    markPoint: {
-                        data: [
-                            {type: 'max', name: '最大值'},
-                            {type: 'min', name: '最小值'}
-                        ]
-                    },
-                    markLine: {
-                        data: [
-                            {type: 'average', name: '平均值'}
-                        ]
-                    }
-                },
-                {
-                    name:'成本',
-                    type:'line',
-                    data:data['cost'],
+
+                    type:'bar',
+                    data:data['results']['profit'],
 {#                    markPoint: {#}
 {#                        data: [#}
-{#                            {name: '周最低', value: -2, xAxis: 1, yAxis: -1.5}#}
+{#                            {type: 'max', name: '最大值'},#}
+{#                            {type: 'min', name: '最小值'}#}
 {#                        ]#}
 {#                    },#}
 {#                    markLine: {#}
 {#                        data: [#}
-{#                            {type: 'average', name: '平均值'},#}
-{#                            [{#}
-{#                                symbol: 'none',#}
-{#                                x: '90%',#}
-{#                                yAxis: 'max'#}
-{#                            }, {#}
-{#                                symbol: 'circle',#}
-{#                                label: {#}
-{#                                    normal: {#}
-{#                                        position: 'start',#}
-{#                                        formatter: '最大值'#}
-{#                                    }#}
-{#                                },#}
-{#                                type: 'max',#}
-{#                                name: '最高点'#}
-{#                            }]#}
+{#                            {type: 'average', name: '平均值'}#}
 {#                        ]#}
 {#                    }#}
                 },
                 {
+                    name:'成本',
+                    type:'line',
+                    data:data['results']['cost'],
+                    markPoint: {
+                        label:{
+                            normal:{
+                                show:false,
+                                position:'bottom',
+                            },
+                        },
+                        data: tra_recs,
+
+                    },
+                    markLine: {
+
+                        data: [
+                            {type: 'average', name: '平均值'},
+                            [{
+                                symbol: 'none',
+                                x: '90%',
+                                yAxis: 'max'
+                            }, {
+                                symbol: 'circle',
+                                label: {
+                                    normal: {
+                                        position: 'start',
+                                        formatter: '最大值'
+                                    }
+                                },
+                                type: 'max',
+                                name: '最高点'
+                            }]
+                        ]
+                    }
+                },
+                {
                     name:'市值',
                     type:'line',
-                    data:data['value'],
+                    data:data['results']['value'],
 {#                    markPoint: {#}
 {#                        data: [#}
 {#                            {name: '周最低', value: -2, xAxis: 1, yAxis: -1.5}#}

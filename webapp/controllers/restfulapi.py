@@ -782,8 +782,21 @@ def positionhistory():
     data = history.query.filter_by(users=username).order_by(db.desc(history.time)).all()
     getdata=Profit_monitoring(data)
     results=getdata.start()
-    print results
-    return jsonify(results)
+    # get trade records
+    trade_records = history.query.filter_by(users=username).all()
+    namelist = []
+    for i in range(len(trade_records)):
+        stock_name = stock_basics.query.filter_by(trade_code=trade_records[i].code).first().sec_name
+        namelist.append(stock_name)
+    t_records=[]
+    for i in range(len(trade_records)):
+        record = [trade_records[i].code, namelist[i],trade_records[i].position,trade_records[i].price, trade_records[i].amount, trade_records[i].time.strftime('%Y-%m-%d')]
+        t_records.append(record)
+    res = {
+        'results':results,
+        'traderec':t_records,
+    }
+    return jsonify(res)
 
 @api_blueprint.route('/home/stats',methods=['GET','POST'])
 def home():
@@ -836,7 +849,7 @@ def myposition():
         namelist.append(stock_name)
     t_records=[]
     for i in range(len(trade_records)):
-        record = [trade_records[i].code, namelist[i],trade_records[i].position,trade_records[i].price, trade_records[i].amount, trade_records[i].time]
+        record = [trade_records[i].code, namelist[i],trade_records[i].position,trade_records[i].price, trade_records[i].amount, trade_records[i].time.strftime('%Y-%m-%d')]
         t_records.append(record)
     #get commission records
     c_records = []

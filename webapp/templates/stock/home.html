@@ -245,7 +245,7 @@
             xAxis:  {
                 type: 'category',
                 boundaryGap: false,
-                data: data['date']
+                data: data['results']['date']
             },
             yAxis: {
                 type: 'value',
@@ -257,7 +257,7 @@
                 {
                     name:'收益',
                     type:'line',
-                    data:data['profit'],
+                    data:data['results']['profit'],
 {#                    markPoint: {#}
 {#                        data: [#}
 {#                            {type: 'max', name: '最大值'},#}
@@ -273,7 +273,7 @@
                 {
                     name:'成本',
                     type:'bar',
-                    data:data['cost'],
+                    data:data['results']['cost'],
 {#                    markPoint: {#}
 {#                        data: [#}
 {#                            {name: '周最低', value: -2, xAxis: 1, yAxis: -1.5}#}
@@ -303,7 +303,7 @@
                 {
                     name:'市值',
                     type:'bar',
-                    data:data['value'],
+                    data:data['results']['value'],
 {#                    markPoint: {#}
 {#                        data: [#}
 {#                            {name: '周最低', value: -2, xAxis: 1, yAxis: -1.5}#}
