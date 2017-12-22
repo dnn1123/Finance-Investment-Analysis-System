@@ -1,4 +1,26 @@
 {% extends "stock_solo/stock_solo_base.html" %}
+{% block styles %}
+{#<style>#}
+{#div.sidebar input {#}
+{#	background: #fff;#}
+{##}
+{#	-webkit-border-radius: 3px;#}
+{#	-moz-border-radius: 3px;#}
+{#	border-radius: 3px;#}
+{##}
+{#	overflow: hidden#}
+{#}#}
+{#.widget-menu a {#}
+{#	color: #555;#}
+{#	display: block;#}
+{#	line-height: 20px;#}
+{#	padding: 15px;#}
+{#	text-decoration: none!important#}
+{#}#}
+{##}
+{##}
+{#</style>#}
+{% endblock %}
 {% block left %}
 <div class="module">
     <div class="module-head">
@@ -16,13 +38,13 @@
         <div class="content">
             <div class="module">
                 <div class="module-head">
-                    <h3>股票信息</h3>
+                    <a class="collapsed" data-toggle="collapse" data-target="#mycollapse"><h3>股票信息</h3></a>
                 </div>
                 <div class="module-body" >
                     <section class="docs">
                         <h2 >{{ stock.sec_name }} ({{ stock.trade_code }})</h2>
 {#                        <p>All HTML headings, <code>&lt;h1&gt;</code> through <code>&lt;h6&gt;</code> are available.</p>#}
-                        <div class="docs">
+                        <div class="docs" id="mycollapse">
                             <table class="auto-style1" align="center"
            style="width:100%;height: 400px; border-width: 2px; border-style: solid; border-color: #000000; background-color: #FFFFFF; font-family: 宋体, Arial, Helvetica, sans-serif; font-size: 10px;">
         <tr style="height: 15%">
@@ -172,22 +194,23 @@
 {#                    </ul>#}
 {#                </div>#}
             </div>
-
-            <div class="module">
+            <div class="row">
+                <div class="span5">
+                    <div class="module">
     <div class="module-head">
         <h3>股票历史价格趋势</h3>
     </div>
     <div class="module-body">
-        <div id="history_k" style="width: 850px;height:500px;"></div>
+        <div id="history_k" style="width: 438px;height:395px;"></div>
     </div>
 </div>
-
-                        <div class="module">
+                </div>
+                <div class="span4"> <div class="module">
     <div class="module-head">
         <h3>股票历史涨跌幅</h3>
     </div>
     <div class="module-body">
-        <table id="history_roc" class="row-border hover order-column" style="text-align: center">
+        <table id="history_roc" class="row-border hover order-column" style="text-align: center;">
             <thead>
             <tr>
                 <td>日期</td>
@@ -198,7 +221,11 @@
             <tbody></tbody>
         </table>
     </div>
-</div>
+</div></div>
+            </div>
+
+
+
 
 
 
@@ -218,8 +245,10 @@
 
 {% block bottombody %}
     <div class="row">
-    <div class="span3"  >
-        <div class="sidebar">
+        <div class="span6">
+            <div class="row">
+                    <div class="span2"  >
+        <div class="sidebar" >
             <div id="checkbox" style="height:85%;overflow-y :auto;margin-top:5%;">
         <fieldset style='padding:0;' id="index">
             <legend>财务数据分析</legend>
@@ -232,7 +261,7 @@
     </div>
         </div>
     </div>
-    <div class="span9">
+                        <div class="span4">
         <ul id="myTab" class="nav nav-tabs">
                     <li class="disabled">
                         <a href="javascript:return false;" data-toggle="tab" disabled='true'>视图：</a>
@@ -258,21 +287,21 @@
                     </div>
     </div>
 <div class="well well-lg" >
-                     <div id="echartindex" style="height:10%;">
-        <div style="height:25px;margin-top: 10px">
+                     <div id="echartindex" style="">
+        <div >
             <a style="width:50px;margin-left:10px;color: #0c0c0c">起始时间:</a><input type="text" id="ui3"
                                                                                   style="background-color:white;width: 100px;margin-left: 10px"/>
-            <a style="width:50px;margin-left:10px;color: #0c0c0c">结束时间:</a><input type="text" id="ui4"
+            <br/><a style="width:50px;margin-left:10px;color: #0c0c0c">结束时间:</a><input type="text" id="ui4"
                                                                                   style="background-color:white;width: 100px;margin-left: 10px"/>
-            <a style="width:50px;margin-left:10px;color: #0c0c0c">单位:</a>
-            <select id="unit">
+            <br/><a style="width:50px;margin-left:10px;color: #0c0c0c">单位:</a>
+            <select id="unit"  style="background-color:white;width: 100px;height:20px;padding:0px;margin-left: 10px">
                 <option value="100000000">亿</option>
                 <option value="1000000000">十亿</option>
                 <option value="10000000">千万</option>
                 <option value="1">元</option>
             </select>
-            <a style="width:50px;margin-left:10px;color: #0c0c0c">年份排序:</a>
-            <select id="yearorder">
+            <br/><a style="width:50px;margin-left:10px;color: #0c0c0c">年份排序:</a>
+            <select id="yearorder"  style="background-color:white;width: 100px;height:20px;margin-left: 10px;padding: 0px">
                 <option value="asc">升序</option>
                 <option value="desc">降序</option>
             </select>
@@ -283,17 +312,13 @@
 
 
     </div>
-
-
-
-
-
-</div>
-
-
-    <div class="row">
-    <div class="span3">
+            </div>
+        </div>
+        <div class="span6">
+            <div class="row">
+                    <div class="span2">
         <div class="sidebar">
+{#            ##2d2b32#}
             <div id="checkbox" style="height:85%;overflow-y :auto;margin-top:5%;">
         <fieldset style='padding:0;' id="index2">
             <legend>投资价值分析</legend>
@@ -339,7 +364,7 @@
         };
         function creatindex() {
             for (var key in dict1) {
-                $("#index2").append("<div style='width:100%;height:30px;margin-top:10px;background-color:lightgray'><label style='font-size:12px;font-weight:normal'><input id='cl_" + key + "' type='checkbox' class='sty2'  value='" + key + "'  >" + dict1[key] + " <div id='div_" + key + "' style='height: 10px;width: 10px;float: right;margin: 5px'></div></label> </div>"
+                $("#index2").append("<div style='width:100%;height:30px;margin-top:10px;'><label style='font-size:12px;font-weight:normal'><input id='cl_" + key + "' type='checkbox' class='sty2'  value='" + key + "'  >" + dict1[key] + " <div id='div_" + key + "' style='height: 10px;width: 10px;float: right;margin: 5px'></div></label> </div>"
                 )
             }
         }
@@ -396,7 +421,7 @@
             CreateTable();
         });
     </script>
-    <div class="span9">
+    <div class="span4">
          <ul id="myTab" class="nav nav-tabs">
                     <li class="disabled">
                         <a href="javascript:return false;" data-toggle="tab" disabled='true'>视图：</a>
@@ -406,27 +431,27 @@
                 </ul>
                 <div id="myTabContent" class="tab-content">
                     <div class="tab-pane fade in active" id="chart2">
-                       <div id="mychart" style="width: auto;height:60%;margin-left:20px"></div>
+                       <div id="mychart" style="width: auto;height:60%;margin-left:20px;margin-top: 10px"></div>
                     </div>
                     <div class="tab-pane fade" id="tables2">
-                           <div id="mytable" style="width: auto;height:60%;margin-left:20px"></div>
+                           <div id="mytable" style="width: auto;height:60%;margin-left:20px;margin-top: 10px"></div>
                     </div>
     </div>
-    <div style="height: 50px;">
-        <div style="height:25px;margin-top: 10px">
+    <div class="well well-lg">
+        <div style="">
                 <a style="width:50px;margin-left:10px;color: #0c0c0c">起始时间:</a><input size="16" type="text"
                                                                                       value="2016-12-31" id="starttime"
-                                                                                      readonly class="form_datetime">
-                <a style="width:50px;margin-left:10px;color: #0c0c0c">结束时间:</a><input size="16" type="text"
+                                                                                      readonly class="form_datetime"  style="background-color:white;width: 100px;margin-left: 10px">
+                <br/><a style="width:50px;margin-left:10px;color: #0c0c0c">结束时间:</a><input size="16" type="text"
                                                                                       value="2006-01-01" id="endtime"
-                                                                                      readonly class="form_datetime">
-                <a style="width:50px;margin-left:10px;color: #0c0c0c">单位:</a>
-                <select id="unit">
+                                                                                      readonly class="form_datetime"  style="background-color:white;width: 100px;margin-left: 10px">
+                <br/><a style="width:50px;margin-left:10px;color: #0c0c0c">单位:</a>
+                <select id="unit" style="background-color:white;width: 100px;height:20px;padding:0px;margin-left: 10px">
                     <option value="0">元</option>
                     <option value="1">百万</option>
                 </select>
-                <a style="width:50px;margin-left:10px;color: #0c0c0c">顺序:</a>
-                <select id="yearorder">
+                <br/><a style="width:50px;margin-left:10px;color: #0c0c0c">顺序:</a>
+                <select id="yearorder" style="background-color:white;width: 100px;height:20px;padding:0px;margin-left: 10px">
                     <option value="desc">降序</option>
                     <option value="asc">升序</option>
                 </select>
@@ -505,7 +530,15 @@
         }
     </script>
     </div>
-    </div>
+            </div>
+        </div>
+
+
+
+
+
+
+</div>
 {% endblock %}
 
 
@@ -553,7 +586,8 @@ var myChart_k = echarts.init(document.getElementById('history_k'));
 var mytable_roc=$('#history_roc').DataTable({
                 "info": false,
                 "processing": true,
-                "searching": true,
+                "searching": false,
+                "lengthChange":false,
                 "order": [[ 0, "desc" ]],
                 "language": {
                     "emptyTable": "没有数据",
@@ -984,7 +1018,8 @@ function DisplayKChart() {
 
 
 function DisplayROCTable() {
-    for(i=0;i<50;i++){
+    console.log(k_data.date)
+    for(i=(k_data.date.length)-1;i>=k_data.date.length-50;i--){
         var rowNode = mytable_roc
                             .row.add([k_data.date[i],k_data.k_data[i][1],k_data.p_change[i]+"%"])
                             .draw()
@@ -1519,7 +1554,7 @@ function DisplayROCTable() {
 
         function creatindex() {
             for (var key in indexdictionary) {
-                $("#index").append("<div style='width:100%;height:30px;margin-top:10px;background-color:lightgray'><div class='checkbox' style='width:80%;height:20px;float:left;margin-left:25px'><input type='checkbox' class='checkbox' value='" + indexdictionary[key] + "' id='" + indexdictionary[key] + "' >" + key + " <div id='div_" + indexdictionary[key] + "' style='height: 10px;width: 10px;float: right;margin-top:5px;'></div></div></div>"
+                $("#index").append("<div style='width:100%;height:30px;margin-top:10px;'><div class='checkbox' style='width:80%;height:20px;float:left;margin-left:25px'><input type='checkbox' class='checkbox' value='" + indexdictionary[key] + "' id='" + indexdictionary[key] + "' >" + key + " <div id='div_" + indexdictionary[key] + "' style='height: 10px;width: 10px;float: right;margin-top:5px;'></div></div></div>"
                 )
             }
         }
@@ -2382,7 +2417,7 @@ function DisplayROCTable() {
             option = {
                 title: {
                     text: finance_results['the_name'] + '财务指标及分析',
-                    left: '49%'
+                    left: '0'
                 },
 
                 tooltip: {

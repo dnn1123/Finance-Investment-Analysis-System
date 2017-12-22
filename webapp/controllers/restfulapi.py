@@ -818,6 +818,7 @@ def stock_solo_k():
     results=[]
     df_deal = pd.DataFrame()
     df = ts.get_hist_data(stockcode)# Single stock symbol
+    df=df.sort_index(ascending=True)
     date=df.index.tolist()
     df_deal['open']=df.open
     df_deal['close']=df.close
