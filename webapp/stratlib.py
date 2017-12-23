@@ -6,7 +6,7 @@ import pandas as pd
 import os
 from datetime import *
 def get_k_data_recent(instruement,startdate):
-    path = os.path.join('webapp','histdata')
+    path = os.path.join(os.getcwd(),'webapp','histdata')
     # 得到15分钟数据（股票300336,始于2016-01-01,止于2016-05-24,15分钟数据）
     data = ts.get_k_data(instruement,startdate)
     # 数据存盘
@@ -44,7 +44,7 @@ class Profit_monitoring():
             for result in data:
                 self.mylist.append(
                     {"code": result.code, "position": result.position, "price": result.price, "amount": result.amount,
-                     "value": result.value, "time": result.time.strftime('%Y-%m-%d')})
+                     "commission": result.commission, "time": result.time.strftime('%Y-%m-%d')})
     def clear(self):
         self.mylist=[]
     def getfeed(self):
@@ -68,12 +68,16 @@ class Profit_monitoring():
             myStrategy=Profit_monitoring_strategy(barfeed,self.mylist)
             myStrategy.run()
             date=myStrategy.date
-            data=myStrategy.data
-            return {"date":date,"data":data}
+            profit=myStrategy.profit
+            cost=myStrategy.cost
+            value=myStrategy.value
+            return {"date":date,"profit":profit,"cost":cost,"value":value}
 
 class Profit_monitoring_strategy(strategy.BacktestingStrategy):
     date=[]
-    data=[]
+    profit=[]
+    cost=[]
+    value=[]
     __handlelist__=[]
     __profit__=0
     __cost__=0
@@ -87,23 +91,29 @@ class Profit_monitoring_strategy(strategy.BacktestingStrategy):
         self.__maxorder__=len(mylist)
         self.__order__=self.__maxorder__-1
         self.date=[]
-        self.data=[]
+        self.cost=[]
+        self.profit=[]
+        self.value=[]
         self.__position__={}
     def onBars(self, bars):
         # 1.判断日期符合 是否买入卖出
-        print self.__profit__
         __value=0
+
         t=self.__handlelist__[self.__order__]['time']
         d = datetime.strptime(t, '%Y-%m-%d')
         if bars.getDateTime() == d:
             if self.__handlelist__[self.__order__]['position']=='buy':
-                self.__cost__+=self.__handlelist__[self.__order__]['value']
+                # print self.__handlelist__[self.__order__]['amount']
+                # print self.__handlelist__[self.__order__]['price']
+                # print self.__handlelist__[self.__order__]['commission']
+                self.__cost__+=self.__handlelist__[self.__order__]['amount'] * self.__handlelist__[self.__order__]['price'] * (1+self.__handlelist__[self.__order__]['commission'])
                 if self.__position__.has_key(self.__handlelist__[self.__order__]['code']):
                     self.__position__[self.__handlelist__[self.__order__]['code']]+=self.__handlelist__[self.__order__]['amount']
                 else:
                     self.__position__.setdefault(self.__handlelist__[self.__order__]['code'],self.__handlelist__[self.__order__]['amount'])
             if self.__handlelist__[self.__order__]['position']=='sell':
-                self.__cost__-=self.__handlelist__[self.__order__]['value']
+                self.__cost__ -= self.__handlelist__[self.__order__]['amount'] * self.__handlelist__[self.__order__][
+                    'price'] * (1 + self.__handlelist__[self.__order__]['commission'])
                 self.__position__[self.__handlelist__[self.__order__]['code']] -= self.__handlelist__[
                     self.__order__]['amount']
             self.__order__ -= 1
@@ -113,8 +123,10 @@ class Profit_monitoring_strategy(strategy.BacktestingStrategy):
             if bar is not None:
                 __value+=bar.getClose()*self.__position__[key]
         self.__profit__ = __value - self.__cost__
-        self.data.append(self.__profit__)
+        self.profit.append(self.__profit__)
         self.date.append(bars.getDateTime().strftime('%Y-%m-%d'))
+        self.cost.append(self.__cost__)
+        self.value.append(__value)
 
             # 日期转换
             # t_str = '2015-4-1'

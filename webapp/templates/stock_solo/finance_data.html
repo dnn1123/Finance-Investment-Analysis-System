@@ -131,7 +131,7 @@
 
 {% block choice %}
     <div id="checkbox" style="height:85%;overflow-y :auto;margin-top:5%;">
-        <fieldset style='padding:0;' id="index">
+        <fieldset style='padding:0;' id="index2">
             <legend>指标选择</legend>
 
         </fieldset>
@@ -176,7 +176,7 @@
         };
         function creatindex() {
             for (var key in dict1) {
-                $("#index").append("<div style='width:100%;height:30px;margin-top:10px;background-color:lightgray'><label style='font-size:12px;font-weight:normal'><input id='cl_" + key + "' type='checkbox'  value='" + key + "'  >" + dict1[key] + " <div id='div_" + key + "' style='height: 10px;width: 10px;float: right;margin: 5px'></div></label> </div>"
+                $("#index2").append("<div style='width:100%;height:30px;margin-top:10px;background-color:lightgray'><label style='font-size:12px;font-weight:normal'><input id='cl_" + key + "' type='checkbox'  value='" + key + "'  >" + dict1[key] + " <div id='div_" + key + "' style='height: 10px;width: 10px;float: right;margin: 5px'></div></label> </div>"
                 )
             }
         }
@@ -466,6 +466,7 @@
         //                dataSeries = [{name:'123',type:'line',data:[1,2,3,4,5,6,7]},{name:'345',type:'line',data:[7,6,5,4,3,2,1]}];
         function CreateChart() {
             dataSeries = [];
+            console.log(Chosenindexes)
             for (var i = 0; i < finance_results.indexes.length; i++) {
                 if (Chosenindexes.hasOwnProperty(finance_results.indexes[i])) {
                     temp = {
@@ -954,6 +955,7 @@
                             .node();
                     $(rowNode)
                             .attr('id', finance_results_t.indexes[i]);
+
                 }
             }
             for (var i = 0; i < invest_results_t.indexes.length; i++) {

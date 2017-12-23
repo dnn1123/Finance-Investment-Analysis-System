@@ -46,4 +46,4 @@ class User_Role_View(ModelView):
     }
     column_list = ('id', 'user_name','permissions','permissions_name')
     def __init__(self, session, **kwargs):
-        super(User_Role_View, self).__init__(roles1, session, **kwargs)
+        super(User_Role_View, self).__init__(users_roles, session, **kwargs)

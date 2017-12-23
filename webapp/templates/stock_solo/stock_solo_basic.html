@@ -1,37 +1,52 @@
 {% extends "stock_solo/stock_solo_base.html" %}
-{% block form %}
-    <form class="form-search" method="POST" action="{{ url_for('stock_solo.basic') }}">
-        {{ form.hidden_tag() }}
-        {{ form.code(id='tags',class_='input-sm',placeholder='输入股票代号或名称',title="内含自动补全功能，输入关键字即可补全股票代码或名称") }}
-        <input class="btn btn-success btn-xs" type="submit" value="搜索" contenteditable="true" data-toggle="tooltip"
-               title="内含自动补全功能，输入关键字即可补全股票代码或名称" data-placement="right">
-    </form>
-    <script>
-        $(function () {
-            $("[data-toggle='tooltip']").tooltip();
-        });
-    </script> <!--用于实现“右侧提示框”-->
+{% block styles %}
+{#<style>#}
+{#div.sidebar input {#}
+{#	background: #fff;#}
+{##}
+{#	-webkit-border-radius: 3px;#}
+{#	-moz-border-radius: 3px;#}
+{#	border-radius: 3px;#}
+{##}
+{#	overflow: hidden#}
+{#}#}
+{#.widget-menu a {#}
+{#	color: #555;#}
+{#	display: block;#}
+{#	line-height: 20px;#}
+{#	padding: 15px;#}
+{#	text-decoration: none!important#}
+{#}#}
+{##}
+{##}
+{#</style>#}
 {% endblock %}
-
-{% block tab %}
-    <ul class="nav nav-pills">
-        <li class="active"><a href="{{ url_for('stock_solo.basic') }}">基本情况</a></li>
-        <li><a href="{{ url_for('stock_solo.finance_data_yc') }}">财务数据及分析</a></li>
-        <li><a href="{{ url_for('stock_solo.invest_value') }}">投资价值分析</a></li>
-        <li><a href="{{ url_for('stock_solo.compare') }}">股票对比分析</a></li>
-    </ul>
-{% endblock %}
-
-{% block chart %}
-    <div id="map">
-
+{% block left %}
+<div class="module">
+    <div class="module-head">
+        <h3>公司所在地</h3>
     </div>
-
+    <div class="module-body">
+        <div id="map" style="width: 270px;height:300px;"></div>
+    </div>
+</div>
 {% endblock %}
 
-{% block table %}
-    <table class="auto-style1" align="center"
-           style="width:100%;height: 100%; border-width: 2px; border-style: solid; border-color: #000000; background-color: #FFFFFF; font-family: 宋体, Arial, Helvetica, sans-serif; font-size: 10px;">
+
+{% block body %}
+    <div class="span9">
+        <div class="content">
+            <div class="module">
+                <div class="module-head">
+                    <a class="collapsed" data-toggle="collapse" data-target="#mycollapse"><h3>股票信息</h3></a>
+                </div>
+                <div class="module-body" >
+                    <section class="docs">
+                        <h2 >{{ stock.sec_name }} ({{ stock.trade_code }})</h2>
+{#                        <p>All HTML headings, <code>&lt;h1&gt;</code> through <code>&lt;h6&gt;</code> are available.</p>#}
+                        <div class="docs" id="mycollapse">
+                            <table class="auto-style1" align="center"
+           style="width:100%;height: 400px; border-width: 2px; border-style: solid; border-color: #000000; background-color: #FFFFFF; font-family: 宋体, Arial, Helvetica, sans-serif; font-size: 10px;">
         <tr style="height: 15%">
             <td rowspan="2"
                 style="text-align:center; width:15%; border-style: solid; border-width: thin; border-color: #000000;">
@@ -39,13 +54,13 @@
             <td colspan="7">&nbsp;</td>
         </tr>
         <tr style="height: 10%">
-            <td class="auto-style3" style="width: 12%;background-color: #FF3300; color: #FFFFFF;">证券代码</td>
-            <td class="auto-style3" style="width: 12%;background-color: #FF3300; color: #FFFFFF;">证券名称</td>
-            <td class="auto-style3" style="width: 12%;background-color: #FF3300; color: #FFFFFF;">上市时间</td>
-            <td class="auto-style3" style="width: 12%;background-color: #FF3300; color: #FFFFFF;">部门</td>
-            <td class="auto-style3" style="width: 12%;background-color: #FF3300; color: #FFFFFF;">行业组</td>
-            <td class="auto-style3" style="width: 12%;background-color: #FF3300; color: #FFFFFF;">行业</td>
-            <td class="auto-style3" style="width: 12%;background-color: #FF3300; color: #FFFFFF;">子行业</td>
+            <td class="auto-style3" style="width: 12%;background-color: darkslategray; color: white;">证券代码</td>
+            <td class="auto-style3" style="width: 12%;background-color: darkslategray; color: white;">证券名称</td>
+            <td class="auto-style3" style="width: 12%;background-color: darkslategray; color: white;">上市时间</td>
+            <td class="auto-style3" style="width: 12%;background-color: darkslategray; color: white;">部门</td>
+            <td class="auto-style3" style="width: 12%;background-color: darkslategray; color: white;">行业组</td>
+            <td class="auto-style3" style="width: 12%;background-color: darkslategray; color: white;">行业</td>
+            <td class="auto-style3" style="width: 12%;background-color: darkslategray; color: white;">子行业</td>
         </tr>
         <tr>
             <td rowspan="7" style="border:1px solid;">&nbsp;</td>
@@ -58,13 +73,13 @@
             <td></td>
         </tr>
         <tr>
-            <td>上市地点</td>
-            <td>所属板块</td>
-            <td>交易币种</td>
-            <td>会计年结日</td>
-            <td>审计机构</td>
-            <td>省份</td>
-            <td>城市</td>
+            <td class="auto-style3" style="width: 12%;background-color: darkslategray; color: white;">上市地点</td>
+            <td class="auto-style3" style="width: 12%;background-color: darkslategray; color: white;">所属板块</td>
+            <td class="auto-style3" style="width: 12%;background-color: darkslategray; color: white;">交易币种</td>
+            <td class="auto-style3" style="width: 12%;background-color: darkslategray; color: white;">会计年结日</td>
+            <td class="auto-style3" style="width: 12%;background-color: darkslategray; color: white;">审计机构</td>
+            <td class="auto-style3" style="width: 12%;background-color: darkslategray; color: white;">省份</td>
+            <td class="auto-style3" style="width: 12%;background-color: darkslategray; color: white;">城市</td>
         </tr>
         <tr>
             <td>{{ stock.exch_city }}</td>
@@ -76,12 +91,12 @@
             <td>{{ stock.city }}</td>
         </tr>
         <tr>
-            <td class="auto-style2">成立时间</td>
-            <td class="auto-style2">公司属性</td>
-            <td class="auto-style2">董事长</td>
-            <td class="auto-style2" colspan="2">实际控制人</td>
-            <td class="auto-style2">公司网站</td>
-            <td class="auto-style2">联系电话</td>
+            <td class="auto-style2" style="width: 12%;background-color: darkslategray; color: white;">成立时间</td>
+            <td class="auto-style2" style="width: 12%;background-color: darkslategray; color: white;">公司属性</td>
+            <td class="auto-style2" style="width: 12%;background-color: darkslategray; color: white;">董事长</td>
+            <td class="auto-style2" colspan="2" style="width: 12%;background-color: darkslategray; color: white;">实际控制人</td>
+            <td class="auto-style2" style="width: 12%;background-color: darkslategray; color: white;">公司网站</td>
+            <td class="auto-style2" style="width: 12%;background-color: darkslategray; color: white;">联系电话</td>
         </tr>
         <tr>
             <td>{{ stock.founddate }}</td>
@@ -93,19 +108,2772 @@
             <td>{{ stock.phone }}</td>
         </tr>
         <tr>
-            <td>主营产品类型</td>
+            <td style="background-color: darkslategray; color: white;">主营产品类型</td>
             <td colspan="6">{{ stock.majorproducttype }}</td>
         </tr>
         <tr>
-            <td class="auto-style2">主营产品名称</td>
+            <td class="auto-style2" style="background-color: darkslategray; color: white;">主营产品名称</td>
             <td class="auto-style2" colspan="6">{{ stock.majorproductname }}</td>
         </tr>
     </table>
+                        </div>
+                    </section>
+                </div>
+            </div>
+
+            <div class="btn-controls">
+                <div class="btn-box-row row-fluid">
+                    <a href="#" class="btn-box big span4"><i class="icon-money "></i><b id="price">-</b>
+                        <p class="text-muted">
+                            当前价格</p>
+                    </a><a href="#" class="btn-box big span4"><i class="icon-random"></i><b id="roc">-</b>
+                    <p class="text-muted">
+                        变动幅度</p>
+                </a><a href="#" class="btn-box big span4"><i class="icon-user"></i><b id="count">-</b>
+                    <p class="text-muted">
+                        关注人数</p>
+                </a>
+                </div>
+{#                <div class="btn-box-row row-fluid">#}
+{#                    <div class="span8">#}
+{#                        <div class="row-fluid">#}
+{#                            <div class="span12">#}
+{#                                <a href="#" class="btn-box small span4"><i class="icon-envelope"></i><b>Messages</b>#}
+{#                                </a><a href="#" class="btn-box small span4"><i class="icon-group"></i><b>Clients</b>#}
+{#                            </a><a href="#" class="btn-box small span4"><i class="icon-exchange"></i><b>Expenses</b>#}
+{#                            </a>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                        <div class="row-fluid">#}
+{#                            <div class="span12">#}
+{#                                <a href="#" class="btn-box small span4"><i class="icon-save"></i><b>Total Sales</b>#}
+{#                                </a><a href="#" class="btn-box small span4"><i class="icon-bullhorn"></i><b>Social#}
+{#                                Feed</b>#}
+{#                            </a><a href="#" class="btn-box small span4"><i class="icon-sort-down"></i><b>Bounce#}
+{#                                Rate</b> </a>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                    <ul class="widget widget-usage unstyled span4">#}
+{#                        <li>#}
+{#                            <p>#}
+{#                                <strong>Windows 8</strong> <span class="pull-right small muted">78%</span>#}
+{#                            </p>#}
+{#                            <div class="progress tight">#}
+{#                                <div class="bar" style="width: 78%;">#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </li>#}
+{#                        <li>#}
+{#                            <p>#}
+{#                                <strong>Mac</strong> <span class="pull-right small muted">56%</span>#}
+{#                            </p>#}
+{#                            <div class="progress tight">#}
+{#                                <div class="bar bar-success" style="width: 56%;">#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </li>#}
+{#                        <li>#}
+{#                            <p>#}
+{#                                <strong>Linux</strong> <span class="pull-right small muted">44%</span>#}
+{#                            </p>#}
+{#                            <div class="progress tight">#}
+{#                                <div class="bar bar-warning" style="width: 44%;">#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </li>#}
+{#                        <li>#}
+{#                            <p>#}
+{#                                <strong>iPhone</strong> <span class="pull-right small muted">67%</span>#}
+{#                            </p>#}
+{#                            <div class="progress tight">#}
+{#                                <div class="bar bar-danger" style="width: 67%;">#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </li>#}
+{#                    </ul>#}
+{#                </div>#}
+            </div>
+            <div class="row">
+                <div class="span5">
+                    <div class="module">
+    <div class="module-head">
+        <h3>股票历史价格趋势</h3>
+    </div>
+    <div class="module-body">
+        <div id="history_k" style="width: 438px;height:395px;"></div>
+    </div>
+</div>
+                </div>
+                <div class="span4"> <div class="module">
+    <div class="module-head">
+        <h3>股票历史涨跌幅</h3>
+    </div>
+    <div class="module-body">
+        <table id="history_roc" class="row-border hover order-column" style="text-align: center;">
+            <thead>
+            <tr>
+                <td>日期</td>
+                <td>当日价格</td>
+                <td>变动幅度</td>
+            </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</div></div>
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+        </div>
+    </div>
+
 {% endblock %}
 
-<SCRIPT Language=VBScript><!--
-
-//-->
 
 
-</SCRIPT>
+{% block bottombody %}
+    <div class="row">
+        <div class="span6">
+            <div class="row">
+                    <div class="span2"  >
+        <div class="sidebar" >
+            <div id="checkbox" style="height:85%;overflow-y :auto;margin-top:5%;">
+        <fieldset style='padding:0;' id="index">
+            <legend>财务数据分析</legend>
+        </fieldset>
+    </div>
+    <div style="margin-top: 7px">
+        <input type="button" value="全选" id="checkall"/>
+        <input type="button" value="全不选" id="revokeall"/>
+        {#    <input type="button" value="提交" id="commit" />#}
+    </div>
+        </div>
+    </div>
+                        <div class="span4">
+        <ul id="myTab" class="nav nav-tabs">
+                    <li class="disabled">
+                        <a href="javascript:return false;" data-toggle="tab" disabled='true'>视图：</a>
+                    </li>
+                    <li><a href="#chart" data-toggle="tab">图表</a></li>
+                    <li><a href="#tables" data-toggle="tab" onclick="RequestTable()">数据</a></li>
+                </ul>
+                <div id="myTabContent" class="tab-content">
+                    <div class="tab-pane fade in active" id="chart">
+                        <div id="echart" style="width: auto;height:60%;margin-left:20px;margin-top: 10px;"></div>
+                    </div>
+                    <div class="tab-pane fade" id="tables">
+                            <div id="table" style="width: auto;height:60%;margin-left:20px;overflow-x: auto">
+        <table id="fixTable" class="row-border hover order-column" cellspacing="0" width="100%">
+            <thead id="table_head">
+
+            </thead>
+            <tbody id="table_body">
+
+            </tbody>
+        </table>
+    </div>
+                    </div>
+    </div>
+<div class="well well-lg" >
+                     <div id="echartindex" style="">
+        <div >
+            <a style="width:50px;margin-left:10px;color: #0c0c0c">起始时间:</a><input type="text" id="ui3"
+                                                                                  style="background-color:white;width: 100px;margin-left: 10px"/>
+            <br/><a style="width:50px;margin-left:10px;color: #0c0c0c">结束时间:</a><input type="text" id="ui4"
+                                                                                  style="background-color:white;width: 100px;margin-left: 10px"/>
+            <br/><a style="width:50px;margin-left:10px;color: #0c0c0c">单位:</a>
+            <select id="unit"  style="background-color:white;width: 100px;height:20px;padding:0px;margin-left: 10px">
+                <option value="100000000">亿</option>
+                <option value="1000000000">十亿</option>
+                <option value="10000000">千万</option>
+                <option value="1">元</option>
+            </select>
+            <br/><a style="width:50px;margin-left:10px;color: #0c0c0c">年份排序:</a>
+            <select id="yearorder"  style="background-color:white;width: 100px;height:20px;margin-left: 10px;padding: 0px">
+                <option value="asc">升序</option>
+                <option value="desc">降序</option>
+            </select>
+
+        </div>
+    </div>
+                </div>
+
+
+    </div>
+            </div>
+        </div>
+        <div class="span6">
+            <div class="row">
+                    <div class="span2">
+        <div class="sidebar">
+{#            ##2d2b32#}
+            <div id="checkbox" style="height:85%;overflow-y :auto;margin-top:5%;">
+        <fieldset style='padding:0;' id="index2">
+            <legend>投资价值分析</legend>
+        </fieldset>
+    </div>
+    <div style="margin-top: 7px">
+        <input type="button" value="全选" id="CheckAll2"/>
+        <input type="button" value="全不选" id="UnCheckAll2"/>
+        {#    <input type="button" value="提交" id="commit" />#}
+    </div>
+        </div>
+    </div>
+    <script>
+        var Chosenindexes = new Array();
+        var dict1 = {
+            'tot_oper_cost': '总营业成本',
+            'tot_oper_rev': '总营业收入',
+            'wgsd_net_inc': '净利润（股东）',
+            'tot_assets': '资产总计',
+            'wgsd_com_eq': '归属股东权益',
+            'net_inc_eq_rate': '净资产收益率（股东）',
+            'total_shares': '股本',
+            'earnings_per_share': '每股收益',
+            'net_assets_per_share': '每股净资产',
+            'cash_per_share': '每股账面现金',
+            'div_cashandstock': '每股现金股息',
+            'payment_proportion': '支付比例',
+            'equal_earning_rate': '均衡市盈率',
+            'equal_market_rate': '均衡市净率',
+            'com_value_evaluate': '公司价值估计',
+            'per_com_value_evaluate': '每股价值估计',
+            'fre_cash_evaluate': '自由现金流估计',
+            'ev': '市值',
+            'earning_rate': '市盈率',
+            'net_rate': '市净率',
+            'sale_rate': '市销率',
+            'cash_rate': '市现率',
+            'dividendyield2': '股息收益率',
+            'cash_yield_evaluate': '现金收益率估计',
+            'ev1': '整体价值估计（含货币）',
+            'ev2': '整体价值估计（不含货币）',
+            'employee': '雇员数量'
+        };
+        function creatindex() {
+            for (var key in dict1) {
+                $("#index2").append("<div style='width:100%;height:30px;margin-top:10px;'><label style='font-size:12px;font-weight:normal'><input id='cl_" + key + "' type='checkbox' class='sty2'  value='" + key + "'  >" + dict1[key] + " <div id='div_" + key + "' style='height: 10px;width: 10px;float: right;margin: 5px'></div></label> </div>"
+                )
+            }
+        }
+        creatindex();
+        $(document).ready(function () {
+            $('input.sty2').iCheck({
+                checkboxClass: 'icheckbox_minimal-blue',
+                radioClass: 'iradio_minimal-blue',
+                increaseArea: '20%' // optional
+            });
+        });
+        $("input#commit").click(function () {
+            Chosenindexes = [];
+            $("div#unselected").empty();
+            $("div#selected").empty();
+            $("input[type=checkbox]").each(function () {//each()方法遍历所有的复选框
+                if ($(this).is(':checked') == true) {//这里就可以判断当前是否被选择了
+                    indexname = $(this).val();
+                    Chosenindexes.push(indexname);
+                    var tempspan = $("<span class=\"label label-default\" data-stopPropagation=\"true\" id=\"" + indexname + "\">" + dict[indexname] + "</span>")
+                    tempspan.appendTo($("div#unselected"));
+                    $("div#unselected").append(" ");
+                }
+            })
+            CreateChart();
+        })
+        $("input#CheckAll2").click(function () {
+            $("input[type=checkbox]").each(function () {
+                $(this).iCheck('check');
+            })
+        })
+        $("input#UnCheckAll2").click(function () {
+            $("input[type=checkbox]").each(function () {
+                $(this).iCheck('uncheck');
+            })
+        })
+        $('input').on('ifChecked', function (event) {
+            indexname = $(this).val();
+            console.log(this)
+            Chosenindexes[indexname] = NewColor();
+            $("#div_" + indexname).css("background-color", Chosenindexes[indexname])
+            {#            $(this).parent().parent().css("color", Chosenindexes[indexname])#}
+            console.log(Chosenindexes)
+            CreateChart();
+            CreateTable();
+        });
+        $('input').on('ifUnchecked', function (event) {
+            indexname = $(this).val();
+            delete Chosenindexes[indexname]
+            $("#div_" + indexname).css("background-color", 'transparent')
+            {#            $(this).parent().parent().css("color", "black")#}
+            console.log(Chosenindexes)
+            CreateChart();
+            CreateTable();
+        });
+    </script>
+    <div class="span4">
+         <ul id="myTab" class="nav nav-tabs">
+                    <li class="disabled">
+                        <a href="javascript:return false;" data-toggle="tab" disabled='true'>视图：</a>
+                    </li>
+                    <li><a href="#chart2" data-toggle="tab">图表</a></li>
+                    <li><a href="#tables2" data-toggle="tab" onclick="RequestTable()">数据</a></li>
+                </ul>
+                <div id="myTabContent" class="tab-content">
+                    <div class="tab-pane fade in active" id="chart2">
+                       <div id="mychart" style="width: auto;height:60%;margin-left:20px;margin-top: 10px"></div>
+                    </div>
+                    <div class="tab-pane fade" id="tables2">
+                           <div id="mytable" style="width: auto;height:60%;margin-left:20px;margin-top: 10px"></div>
+                    </div>
+    </div>
+    <div class="well well-lg">
+        <div style="">
+                <a style="width:50px;margin-left:10px;color: #0c0c0c">起始时间:</a><input size="16" type="text"
+                                                                                      value="2016-12-31" id="starttime"
+                                                                                      readonly class="form_datetime"  style="background-color:white;width: 100px;margin-left: 10px">
+                <br/><a style="width:50px;margin-left:10px;color: #0c0c0c">结束时间:</a><input size="16" type="text"
+                                                                                      value="2006-01-01" id="endtime"
+                                                                                      readonly class="form_datetime"  style="background-color:white;width: 100px;margin-left: 10px">
+                <br/><a style="width:50px;margin-left:10px;color: #0c0c0c">单位:</a>
+                <select id="unit" style="background-color:white;width: 100px;height:20px;padding:0px;margin-left: 10px">
+                    <option value="0">元</option>
+                    <option value="1">百万</option>
+                </select>
+                <br/><a style="width:50px;margin-left:10px;color: #0c0c0c">顺序:</a>
+                <select id="yearorder" style="background-color:white;width: 100px;height:20px;padding:0px;margin-left: 10px">
+                    <option value="desc">降序</option>
+                    <option value="asc">升序</option>
+                </select>
+        </div>
+    </div>
+     <script>
+        denominator = 1
+        orderflag="desc"
+        var starttime = "20061231"
+        var endtime = "20161231"
+        $("select#unit").change(function () {
+            flag = $(this).val()
+            if (flag == "0") {
+                denominator = 1
+                CreateChart();
+                CreateTable();
+            }
+            if (flag == "1") {
+                denominator = 1000000
+                CreateChart();
+                CreateTable();
+            }
+        });
+        $("select#yearorder").change(function () {
+            flag = $(this).val()
+            if (flag == "asc") {
+                orderflag="asc"
+                getdata();
+                CreateChart();
+                RequestTable();
+            }
+            if (flag == "desc") {
+                orderflag="desc"
+                getdata();
+                CreateChart();
+                RequestTable();
+            }
+        });
+        $(".form_datetime").datetimepicker({
+            format: 'yyyy-mm-dd ',
+            minView: 3,
+            autoclose: true,
+            pickerPosition: 'top-right'
+        });
+        $('#starttime')
+                .datetimepicker()
+                .on('changeDate', function (ev) {
+                    startime = ev.date.Format("yyyy年Q4")
+                    option.dataZoom[0].startValue = startime
+                    myChart.setOption(option)
+                    RequestTable();
+                });
+        $('#endtime')
+                .datetimepicker()
+                .on('changeDate', function (ev) {
+                    endtime = ev.date.Format("yyyy年Q4")
+                    option.dataZoom[0].endValue = endtime
+                    myChart.setOption(option)
+                    RequestTable();
+
+                });
+        Date.prototype.Format = function (fmt) { //author: meizz
+            var o = {
+                "M+": this.getMonth() + 1, //月份
+                "d+": this.getDate(), //日
+                "h+": this.getHours(), //小时
+                "m+": this.getMinutes(), //分
+                "s+": this.getSeconds(), //秒
+                "q+": Math.floor((this.getMonth() + 3) / 3), //季度
+                "S": this.getMilliseconds() //毫秒
+            };
+            if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+            for (var k in o)
+                if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+            return fmt;
+        }
+    </script>
+    </div>
+            </div>
+        </div>
+
+
+
+
+
+
+</div>
+{% endblock %}
+
+
+
+{% block scripts %}
+<script>
+var currentcode="{{ stock.trade_code }}"
+var k_data;
+$(document).ready(function () {
+    $.ajax({
+                type: 'GET',
+                url: '{{url_for("restfulapi.stock_solo")}}',
+                data: {
+                    'code': currentcode,
+                },
+                dataType: 'json',
+                success: function (data) {
+                    $("#price").html(data.price+"元")
+                    if(data.roc-1>=0)
+                        $("#roc").css("color","red")
+                    else
+                        $("#roc").css("color","green")
+                    $("#roc").html(((data.roc-1)*100).toFixed(2)+"%")
+                    $("#count").html(data.count)
+                }
+    })
+    $.ajax({
+                type: 'GET',
+                url: '{{url_for("restfulapi.stock_solo_k")}}',
+                data: {
+                    'code': currentcode,
+                },
+                dataType: 'json',
+                success: function (data) {
+                    k_data=data
+                    DisplayKChart()
+                    DisplayROCTable()
+
+                }
+    })
+})
+
+var myChart_map = echarts.init(document.getElementById('map'));
+var myChart_k = echarts.init(document.getElementById('history_k'));
+var mytable_roc=$('#history_roc').DataTable({
+                "info": false,
+                "processing": true,
+                "searching": false,
+                "lengthChange":false,
+                "order": [[ 0, "desc" ]],
+                "language": {
+                    "emptyTable": "没有数据",
+                    "loadingRecords": "加载中…",
+                    "processing": "查询中…",
+                    "search": "检索:",
+                    "lengthMenu": "每页 _MENU_ 条",
+                    "zeroRecords": "没有数据",
+                    "paginate": {
+                        "first": "第一页",
+                        "last": "最后一页",
+                        "next": "",
+                        "previous": ""
+                    },
+                    "info": "第 _PAGE_ 页 / 总 _PAGES_ 页",
+                    "infoEmpty": "没有数据",
+                    "infoFiltered": "(过滤总件数 _MAX_ 条)"
+                }
+            });
+var data = [
+     {name: '{{ stock.city }}', value: 100}
+];
+var geoCoordMap = {
+    '海门市':[121.15,31.89],
+    '鄂尔多斯市':[109.781327,39.608266],
+    '招远市':[120.38,37.35],
+    '舟山市':[122.207216,29.985295],
+    '齐齐哈尔市':[123.97,47.33],
+    '盐城市':[120.13,33.38],
+    '赤峰市':[118.87,42.28],
+    '青岛市':[120.33,36.07],
+    '乳山市':[121.52,36.89],
+    '金昌市':[102.188043,38.520089],
+    '泉州市':[118.58,24.93],
+    '莱西市':[120.53,36.86],
+    '日照市':[119.46,35.42],
+    '胶南市':[119.97,35.88],
+    '南通市':[121.05,32.08],
+    '拉萨市':[91.11,29.97],
+    '云浮市':[112.02,22.93],
+    '梅州市':[116.1,24.55],
+    '文登市':[122.05,37.2],
+    '上海市':[121.48,31.22],
+    '攀枝花市':[101.718637,26.582347],
+    '威海市':[122.1,37.5],
+    '承德市':[117.93,40.97],
+    '厦门市':[118.1,24.46],
+    '汕尾市':[115.375279,22.786211],
+    '潮州市':[116.63,23.68],
+    '丹东市':[124.37,40.13],
+    '太仓市':[121.1,31.45],
+    '曲靖市':[103.79,25.51],
+    '烟台市':[121.39,37.52],
+    '福州市':[119.3,26.08],
+    '瓦房店市':[121.979603,39.627114],
+    '即墨市':[120.45,36.38],
+    '抚顺市':[123.97,41.97],
+    '玉溪市':[102.52,24.35],
+    '张家口市':[114.87,40.82],
+    '阳泉市':[113.57,37.85],
+    '莱州市':[119.942327,37.177017],
+    '湖州市':[120.1,30.86],
+    '汕头市':[116.69,23.39],
+    '昆山市':[120.95,31.39],
+    '宁波市':[121.56,29.86],
+    '湛江市':[110.359377,21.270708],
+    '揭阳市':[116.35,23.55],
+    '荣成市':[122.41,37.16],
+    '连云港市':[119.16,34.59],
+    '葫芦岛市':[120.836932,40.711052],
+    '常熟市':[120.74,31.64],
+    '东莞市':[113.75,23.04],
+    '河源市':[114.68,23.73],
+    '淮安市':[119.15,33.5],
+    '泰州市':[119.9,32.49],
+    '南宁市':[108.33,22.84],
+    '营口市':[122.18,40.65],
+    '惠州市':[114.4,23.09],
+    '江阴市':[120.26,31.91],
+    '蓬莱市':[120.75,37.8],
+    '韶关市':[113.62,24.84],
+    '嘉峪关市':[98.289152,39.77313],
+    '广州市':[113.23,23.16],
+    '延安市':[109.47,36.6],
+    '太原市':[112.53,37.87],
+    '清远市':[113.01,23.7],
+    '中山市':[113.38,22.52],
+    '昆明市':[102.73,25.04],
+    '寿光市':[118.73,36.86],
+    '盘锦市':[122.070714,41.119997],
+    '长治市':[113.08,36.18],
+    '深圳市':[114.07,22.62],
+    '珠海市':[113.52,22.3],
+    '宿迁市':[118.3,33.96],
+    '咸阳市':[108.72,34.36],
+    '铜川市':[109.11,35.09],
+    '平度市':[119.97,36.77],
+    '佛山市':[113.11,23.05],
+    '海口市':[110.35,20.02],
+    '江门市':[113.06,22.61],
+    '章丘市':[117.53,36.72],
+    '肇庆市':[112.44,23.05],
+    '大连市':[121.62,38.92],
+    '临汾市':[111.5,36.08],
+    '吴江市':[120.63,31.16],
+    '石嘴山市':[106.39,39.04],
+    '沈阳市':[123.38,41.8],
+    '苏州市':[120.62,31.32],
+    '茂名市':[110.88,21.68],
+    '嘉兴市':[120.76,30.77],
+    '长春市':[125.35,43.88],
+    '胶州市':[120.03336,36.264622],
+    '银川市':[106.27,38.47],
+    '张家港市':[120.555821,31.875428],
+    '三门峡市':[111.19,34.76],
+    '锦州市':[121.15,41.13],
+    '南昌市':[115.89,28.68],
+    '柳州市':[109.4,24.33],
+    '三亚市':[109.511909,18.252847],
+    '自贡市':[104.778442,29.33903],
+    '吉林市':[126.57,43.87],
+    '阳江市':[111.95,21.85],
+    '泸州市':[105.39,28.91],
+    '西宁市':[101.74,36.56],
+    '宜宾市':[104.56,29.77],
+    '呼和浩特市':[111.65,40.82],
+    '成都市':[104.06,30.67],
+    '大同市':[113.3,40.12],
+    '镇江市':[119.44,32.2],
+    '桂林市':[110.28,25.29],
+    '张家界市':[110.479191,29.117096],
+    '宜兴市':[119.82,31.36],
+    '北海市':[109.12,21.49],
+    '西安市':[108.95,34.27],
+    '金坛市':[119.56,31.74],
+    '东营市':[118.49,37.46],
+    '牡丹江市':[129.58,44.6],
+    '遵义市':[106.9,27.7],
+    '绍兴市':[120.58,30.01],
+    '扬州市':[119.42,32.39],
+    '常州市':[119.95,31.79],
+    '潍坊市':[119.1,36.62],
+    '重庆市':[106.54,29.59],
+    '台州市':[121.420757,28.656386],
+    '南京市':[118.78,32.04],
+    '滨州市':[118.03,37.36],
+    '贵阳市':[106.71,26.57],
+    '无锡市':[120.29,31.59],
+    '本溪市':[123.73,41.3],
+    '克拉玛依市':[84.77,45.59],
+    '渭南市':[109.5,34.52],
+    '马鞍山市':[118.48,31.56],
+    '宝鸡市':[107.15,34.38],
+    '焦作市':[113.21,35.24],
+    '句容市':[119.16,31.95],
+    '北京市':[116.46,39.92],
+    '徐州市':[117.2,34.26],
+    '衡水市':[115.72,37.72],
+    '包头市':[110,40.58],
+    '绵阳市':[104.73,31.48],
+    '乌鲁木齐市':[87.68,43.77],
+    '枣庄市':[117.57,34.86],
+    '杭州市':[120.19,30.26],
+    '淄博市':[118.05,36.78],
+    '鞍山市':[122.85,41.12],
+    '溧阳市':[119.48,31.43],
+    '库尔勒市':[86.06,41.68],
+    '安阳市':[114.35,36.1],
+    '开封市':[114.35,34.79],
+    '济南市':[117,36.65],
+    '德阳市':[104.37,31.13],
+    '温州市':[120.65,28.01],
+    '九江市':[115.97,29.71],
+    '邯郸市':[114.47,36.6],
+    '临安市':[119.72,30.23],
+    '兰州市':[103.73,36.03],
+    '沧州市':[116.83,38.33],
+    '临沂市':[118.35,35.05],
+    '南充市':[106.110698,30.837793],
+    '天津市':[117.2,39.13],
+    '富阳市':[119.95,30.07],
+    '泰安市':[117.13,36.18],
+    '诸暨市':[120.23,29.71],
+    '郑州市':[113.65,34.76],
+    '哈尔滨市':[126.63,45.75],
+    '聊城市':[115.97,36.45],
+    '芜湖市':[118.38,31.33],
+    '唐山市':[118.02,39.63],
+    '平顶山市':[113.29,33.75],
+    '邢台市':[114.48,37.05],
+    '德州市':[116.29,37.45],
+    '济宁市':[116.59,35.38],
+    '荆州市':[112.239741,30.335165],
+    '宜昌市':[111.3,30.7],
+    '义乌市':[120.06,29.32],
+    '丽水市':[119.92,28.45],
+    '洛阳市':[112.44,34.7],
+    '秦皇岛市':[119.57,39.95],
+    '株洲市':[113.16,27.83],
+    '石家庄市':[114.48,38.03],
+    '莱芜市':[117.67,36.19],
+    '常德市':[111.69,29.05],
+    '保定市':[115.48,38.85],
+    '湘潭市':[112.91,27.87],
+    '金华市':[119.64,29.12],
+    '岳阳市':[113.09,29.37],
+    '长沙市':[113,28.21],
+    '衢州市':[118.88,28.97],
+    '廊坊市':[116.7,39.53],
+    '菏泽市':[115.480656,35.23375],
+    '合肥市':[117.27,31.86],
+    '武汉市':[114.31,30.52],
+    '大庆市':[125.03,46.58]
+};
+var convertData = function (data) {
+    var res = [];
+    for (var i = 0; i < data.length; i++) {
+        var geoCoord = geoCoordMap[data[i].name];
+        if (geoCoord) {
+            res.push({
+                name: data[i].name,
+                value: geoCoord.concat(data[i].value)
+            });
+        }
+    }
+    return res;
+};
+option = {
+    tooltip : {
+        trigger: 'item'
+    },
+    geo: {
+        map: 'china',
+        roam:true,
+        label: {
+            emphasis: {
+                show: false
+            }
+        },
+        itemStyle: {
+            normal: {
+                areaColor: '#323c48',
+                borderColor: '#111'
+            },
+            emphasis: {
+                areaColor: '#2a333d'
+            }
+        }
+    },
+    series : [
+        {
+            name: 'pm2.5',
+            type: 'scatter',
+            coordinateSystem: 'geo',
+            data: convertData(data),
+            symbolSize: function (val) {
+                return val[2] / 10;
+            },
+            label: {
+                normal: {
+                    formatter: '{b}',
+                    position: 'right',
+                    show: true
+                },
+                emphasis: {
+                    show: true
+                }
+            },
+            itemStyle: {
+                normal: {
+                    color: 'red'
+                }
+            }
+        },
+        {
+            name: 'Top 5',
+            type: 'effectScatter',
+            coordinateSystem: 'bmap',
+            data: convertData(data.sort(function (a, b) {
+                return b.value - a.value;
+            }).slice(0, 6)),
+            symbolSize: function (val) {
+                return val[2] / 10;
+            },
+            showEffectOn: 'render',
+            rippleEffect: {
+                brushType: 'stroke'
+            },
+            hoverAnimation: true,
+            label: {
+                normal: {
+                    formatter: '{b}',
+                    position: 'right',
+                    show: true
+                }
+            },
+            itemStyle: {
+                normal: {
+                    color: 'purple',
+                    shadowBlur: 10,
+                    shadowColor: '#333'
+                }
+            },
+            zlevel: 1
+        }
+    ]
+};
+myChart_map.setOption(option);
+$(function () {
+            $("[data-toggle='tooltip']").tooltip();
+        }); <!--用于实现“右侧提示框”-->
+function DisplayKChart() {
+    var option = {
+    backgroundColor: '#21202D',
+    legend: {
+        data: ['日K', 'MA5', 'MA10', 'MA20'],
+        inactiveColor: '#777',
+        textStyle: {
+            color: '#fff'
+        }
+    },
+    tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+            animation: false,
+            type: 'cross',
+            lineStyle: {
+                color: '#376df4',
+                width: 2,
+                opacity: 1
+            }
+        }
+    },
+    xAxis: {
+        data:k_data.date,
+        type: 'category',
+        axisLine: { lineStyle: { color: '#8392A5' } }
+    },
+    yAxis: {
+        scale: true,
+        axisLine: { lineStyle: { color: '#8392A5' } },
+        splitLine: { show: false }
+    },
+    grid: {
+        bottom: 80
+    },
+    dataZoom: [{
+        textStyle: {
+            color: '#8392A5'
+        },
+        handleIcon: 'M10.7,11.9v-1.3H9.3v1.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4v1.3h1.3v-1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z',
+        handleSize: '80%',
+        dataBackground: {
+            areaStyle: {
+                color: '#8392A5'
+            },
+            lineStyle: {
+                opacity: 0.8,
+                color: '#8392A5'
+            }
+        },
+        handleStyle: {
+            color: '#fff',
+            shadowBlur: 3,
+            shadowColor: 'rgba(0, 0, 0, 0.6)',
+            shadowOffsetX: 2,
+            shadowOffsetY: 2
+        }
+    }, {
+        type: 'inside'
+    }],
+    animation: false,
+    series: [
+        {
+            type: 'candlestick',
+            name: '日K',
+            data:k_data.k_data,
+            itemStyle: {
+                normal: {
+                    color: '#FD1050',
+                    color0: '#0CF49B',
+                    borderColor: '#FD1050',
+                    borderColor0: '#0CF49B'
+                }
+            }
+        },
+        {
+            name: 'MA5',
+            type: 'line',
+            data: k_data.ma5,
+            smooth: true,
+            showSymbol: false,
+            lineStyle: {
+                normal: {
+                    width: 1
+                }
+            }
+        },
+        {
+            name: 'MA10',
+            type: 'line',
+            data: k_data.ma10,
+            smooth: true,
+            showSymbol: false,
+            lineStyle: {
+                normal: {
+                    width: 1
+                }
+            }
+        },
+        {
+            name: 'MA20',
+            type: 'line',
+            data: k_data.ma20,
+            smooth: true,
+            showSymbol: false,
+            lineStyle: {
+                normal: {
+                    width: 1
+                }
+            }
+        },
+    ]
+};
+    myChart_k.setOption(option)
+
+}
+
+
+function DisplayROCTable() {
+    console.log(k_data.date)
+    for(i=(k_data.date.length)-1;i>=k_data.date.length-50;i--){
+        var rowNode = mytable_roc
+                            .row.add([k_data.date[i],k_data.k_data[i][1],k_data.p_change[i]+"%"])
+                            .draw()
+                            .node();
+                    if(k_data.p_change[i]<0){
+                        $(rowNode)
+                            .css('color','green')
+                    }
+                    else {
+                        $(rowNode)
+                            .css('color','red')
+                    }
+    }
+}
+
+</script>
+
+
+<script>
+
+
+        var indexdictionary = {
+            '营业总收入': 'tot_oper_rev',
+            '营业总成本': 'tot_oper_cost',
+            '息税前利润率': 'ebit_rate',
+            '财务费用': 'fin_exp_is',
+            '利润总额': 'tot_profit',
+            '净利润（总额）': 'net_profit_is',
+            '净利润（股东）': 'wgsd_net_inc',
+            '资产总计': 'tot_assets',
+            '流动资产合计': 'tot_cur_assets',
+            '非流动资产合计': 'tot_non_cur_assets',
+            '负债合计': 'tot_liab',
+            '流动负债合计': 'tot_cur_liab',
+            '非流动负债合计': 'tot_non_cur_liab',
+            '归属母公司股东权益': 'wgsd_com_eq',
+            '经营活动现金净流量': 'operatecashflow_ttm2',
+            '投资活动现金净流量': 'investcashflow_ttm2',
+            '筹资活动现金净流量': 'financecashflow_ttm2',
+            '现金净流量(TTM)': 'cashflow_ttm2',
+            '货币资金': 'monetary_cap',
+            '销售毛利率': 'grossprofitmargin',
+            '投入资本回报率': 'roic',
+            '营业周期': 'turndays',
+            '存货周转天数': 'invturndays',
+            '应收账款周转天数': 'arturndays',
+            '应付账款周转天数': 'apturndays'
+        }
+
+        function get_selected(selected_cn) {
+            if (selected_cn == '营业总收入')
+                return 'tot_oper_rev'
+            else if (selected_cn == '营业总成本')
+                return 'tot_oper_cost'
+            else if (selected_cn == '息税前利润率')
+                return 'ebit_rate'
+            else if (selected_cn == '财务费用')
+                return 'fin_exp_is'
+            else if (selected_cn == '利润总额')
+                return 'tot_profit'
+            else if (selected_cn == '净利润（总额）')
+                return 'net_profit_is'
+            else if (selected_cn == '净利润（股东）')
+                return 'wgsd_net_inc'
+            else if (selected_cn == '资产总计')
+                return 'tot_assets'
+            else if (selected_cn == '流动资产合计')
+                return 'tot_cur_assets'
+            else if (selected_cn == '非流动资产合计')
+                return 'tot_non_cur_assets'
+            else if (selected_cn == '负债合计')
+                return 'tot_liab'
+            else if (selected_cn == '流动负债合计')
+                return 'tot_cur_liab'
+            else if (selected_cn == '非流动负债合计')
+                return 'tot_non_cur_liab'
+            else if (selected_cn == '归属母公司股东权益')
+                return 'wgsd_com_eq'
+            else if (selected_cn == '经营活动现金净流量')
+                return 'operatecashflow_ttm2'
+            else if (selected_cn == '投资活动现金净流量')
+                return 'investcashflow_ttm2'
+            else if (selected_cn == '筹资活动现金净流量')
+                return 'financecashflow_ttm2'
+            else if (selected_cn == '现金净流量(TTM)')
+                return 'cashflow_ttm2'
+            else if (selected_cn == '货币资金')
+                return 'monetary_cap'
+            else if (selected_cn == '销售毛利率')
+                return 'grossprofitmargin'
+            else if (selected_cn == '投入资本回报率')
+                return 'roic'
+            else if (selected_cn == '营业周期')
+                return 'turndays'
+            else if (selected_cn == '存货周转天数')
+                return 'invturndays'
+            else if (selected_cn == '应收账款周转天数')
+                return 'arturndays'
+            else if (selected_cn == '应付账款周转天数')
+                return 'apturndays'
+        }
+
+        function post_selected(selected_cn) {
+            if (selected_cn == 'tot_oper_rev')
+                return '营业总收入'
+            else if (selected_cn == 'tot_oper_cost')
+                return '营业总成本'
+            else if (selected_cn == 'fin_exp_is')
+                return '财务费用'
+            else if (selected_cn == 'ebit_rate')
+                return '息税前利润率'
+            else if (selected_cn == 'tot_profit')
+                return '利润总额'
+            else if (selected_cn == 'net_profit_is')
+                return '净利润（总额）'
+            else if (selected_cn == 'wgsd_net_inc')
+                return '净利润（股东）'
+            else if (selected_cn == 'tot_assets')
+                return '资产总计'
+            else if (selected_cn == 'tot_cur_assets')
+                return '流动资产合计'
+            else if (selected_cn == 'tot_non_cur_assets')
+                return '非流动资产合计'
+            else if (selected_cn == 'tot_liab')
+                return '负债合计'
+            else if (selected_cn == 'tot_cur_liab')
+                return '流动负债合计'
+            else if (selected_cn == 'tot_non_cur_liab')
+                return '非流动负债合计'
+            else if (selected_cn == 'wgsd_com_eq')
+                return '归属母公司股东权益'
+            else if (selected_cn == 'operatecashflow_ttm2')
+                return '经营活动现金净流量'
+            else if (selected_cn == 'investcashflow_ttm2')
+                return '投资活动现金净流量'
+            else if (selected_cn == 'financecashflow_ttm2')
+                return '筹资活动现金净流量'
+            else if (selected_cn == 'cashflow_ttm2')
+                return '现金净流量(TTM)'
+            else if (selected_cn == 'monetary_cap')
+                return '货币资金'
+            else if (selected_cn == 'grossprofitmargin')
+                return '销售毛利率'
+            else if (selected_cn == 'roic')
+                return '投入资本回报率'
+            else if (selected_cn == 'turndays')
+                return '营业周期'
+            else if (selected_cn == 'invturndays')
+                return '存货周转天数'
+            else if (selected_cn == 'arturndays')
+                return '应收账款周转天数'
+            else if (selected_cn == 'apturndays')
+                return '应付账款周转天数'
+        }
+
+        var color = new Array();
+        var Data = new Array();
+        var selectedindex;
+        var Uint = 1;
+        var stockcode = '';
+        var startyear = ''
+        var endyear = ''
+        var order = ''
+        var myChart1 = echarts.init(document.getElementById('echart'));
+        function set_color() {
+            return (function (m, s, c) {
+                return (c ? arguments.callee(m, s, c - 1) : '#') +
+                        s[m.floor(m.random() * 16)]
+            })(Math, '0123456789abcdef', 5)
+        }
+
+        function getunitname(uint) {
+            if (uint / 10000000 == 1) {
+                return '千万'
+            }
+            else if (uint / 10000000 == 10) {
+                return '亿'
+            }
+            else if (uint / 10000000 == 100) {
+                return '十亿'
+            }
+            else if (uint / 1 == 1) {
+                return '元'
+            }
+        }
+
+        function creattable(stock_code, color, unit, start, end) {
+            $.ajax({
+                type: 'POST',
+                url: '{{url_for("restfulapi.get_ajax")}}',
+                data: {
+                    'code': currentcode,
+                    'date': [start, end],
+                    'selected': selectedindex
+                },
+                dataType: 'json',
+                success: function (data) {
+                    console.log(data)
+                    Data = ''
+                    Data = data
+                    startyear = data.the_year_list[data.the_year_list.length - 1]
+                    endyear = data.the_year_list[0]
+                    $(".checkbox").each(function () {
+                        $(this).attr("checked", false)
+                    })
+                    for (i = 0; i < data.indexs.length; i++) {
+                        var checked = document.getElementById(data.indexs[i]);//获取div下的input
+                        checked.checked = true
+                        {#                                    color[data.indexs[i]] = set_color()#}
+                    }
+
+                    $("#table_head").empty();
+                    $("#table_body").empty();
+                    head = "<th  >" + data.the_name + "(单位:" + getunitname(unit) + ")</th>"
+                    for (i = 0; i < data.the_year_list.length; i++) {
+                        head += "<th >"
+                                + data.the_year_list[i] + "</th>"
+                    }
+                    $("#table_head").append("<tr >" + head + "</tr>")
+                    for (i = 0; i < data.indexs.length; i++) {
+                        line = "<td style='color:" + color[data.indexs[i]] + "'>" + post_selected(data.indexs[i]) + "</td>"
+                        str = "data." + data.indexs[i]
+                        results = eval(str)
+                        for (var j = 0; j < results.length; j++) {
+                            line += "<td >" + (results[j] / unit).toFixed(2) + "</td>"
+                        }
+                        $("#table_body").append("<tr>" + line + "</tr>")
+                    }
+                    var table = $('#fixTable').DataTable({
+                        "info": false,
+                        "processing": true,
+                        {#                        "scrollX": true,#}
+                        "searching": true,
+                        "fixedColumns": { //固定列的配置项
+                            "leftColumns": 1//固定左边第一列
+                        },
+                        "language": {
+                            "emptyTable": "没有数据",
+                            "loadingRecords": "加载中…",
+                            "processing": "查询中…",
+                            "search": "检索:",
+                            "lengthMenu": "每页 _MENU_ 条",
+                            "zeroRecords": "没有数据",
+                            "paginate": {
+                                "first": "第一页",
+                                "last": "最后一页",
+                                "next": "",
+                                "previous": ""
+                            },
+                            "info": "第 _PAGE_ 页 / 总 _PAGES_ 页",
+                            "infoEmpty": "没有数据",
+                            "infoFiltered": "(过滤总件数 _MAX_ 条)"
+                        },
+
+                    })
+                }
+            });
+        }
+
+        <!--tablehide无用-->
+        function tablehide(dzstart1, dzend1) {
+            var dzstart = dzstart1
+            var dzend = dzend1
+            var dzstartpc = (endyear - dzend) / (endyear - startyear) * 100
+            var dzendpc = 100 - (dzstart - startyear) / (endyear - startyear) * 100
+            var hidelist = []
+            createchart(Data, color, dzstart, dzend)
+            {#                            var nendyear = endyear - Math.ceil(params.start / 100 * (endyear - startyear))#}
+            for (i = 1; i < Math.ceil(dzstartpc / 100 * (endyear - startyear)) + 1; i++) {
+                hidelist.push(i);
+            }
+            if (Math.ceil((1 - dzendpc / 100))) {
+                var nstartyear = startyear + Math.ceil((1 - dzendpc / 100) * (endyear - startyear)) - 1
+                for (i = 26 - Math.ceil((1 - dzendpc / 100) * (endyear - startyear)) + 1; i <= 26; i++) {
+                    hidelist.push(i);
+                }
+            }
+            else {
+                var nstartyear = '1991'
+            }
+            var mychart = $('#fixTable').DataTable({})
+            mychart.columns([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26]).visible(true)
+            mychart.columns(hidelist).visible(false, false);
+        }
+
+        function createchart(stock_code, color, unit, dzstart, dend) {
+            $.ajax({
+                type: 'POST',
+                url: '{{url_for("restfulapi.get_ajax")}}',
+                data: {
+                    'code': currentcode,
+                    'date': ['1991', '2016'],
+                    'selected': selectedindex
+                },
+                dataType: 'json',
+                success: function (data) {
+                    if (order == 'desc') {
+                        var legenddata1 = new Array();
+                        var aAxisdata1 = new Array();
+                        var seriesdata1 = [];
+                        var result = {};
+                        for (i = 0; i < data.indexs.length; i++) {
+                            legenddata1.push(post_selected(data.indexs[i]))
+                        }
+                        aAxisdata1 = data.the_year_list
+                        for (i = 0; i < data.indexs.length; i++) {
+                            str = "data." + data.indexs[i]
+                            value = eval(str)
+                            var value2 = [];
+                            for (var j = 0; j < value.length; j++) {
+                                value2.push((value[j] / unit).toFixed(2))
+                            }
+                            result = {
+                                name: post_selected(data.indexs[i]),
+                                type: 'line',
+                                smooth: true,
+                                symbolSize: 8,
+                                itemStyle: {
+                                    normal: {
+                                        color: color[data.indexs[i]],
+                                        lineStyle: {
+                                            color: color[data.indexs[i]]
+                                        }
+                                    }
+                                },
+                                data: value2
+                            }
+                            seriesdata1.push(result)
+
+                        }
+                        console.log(seriesdata1)
+                        // 指定图表的配置项和数据
+                        option = {
+                            title: {
+                                text: data.the_name + "（单位：" + getunitname(unit) + "）"
+                            },
+                            tooltip: {
+                                trigger: 'axis'
+                            },
+                            {#                        legend: {#}
+                            {#                            data: legenddata1#}
+                            {#                        },#}
+                            grid: {
+                                left: '3%',
+                                right: '4%',
+                                bottom: '3%',
+                                containLabel: true
+                            },
+                            toolbox: {
+
+                                feature: {
+                                    saveAsImage: {},
+                                    magicType: {
+                                        type: ['line', 'bar', 'stack', 'tiled']
+                                    }
+                                }
+                            },
+                            xAxis: {
+                                type: 'category',
+                                boundaryGap: false,
+                                axisTick: {
+                                    show: false
+                                },
+                                data: aAxisdata1,
+                            },
+                            yAxis: {
+                                type: 'value',
+                                axisTick: {
+                                    show: false
+                                },
+                            },
+                            dataZoom: [
+                                {
+                                    {#                                id: 'dataZoomX',#}
+                                    type: 'slider',
+                                    xAxisIndex: [0],
+                                    height: 20,
+                                    filterMode: 'filter',
+                                    {#                                show : true,#}
+                                    startValue: dzstart,
+                                    endValue: dend,
+                                },
+
+                                {#                            {#}
+                                {#                                id: 'dataZoomY',#}
+                                {#                                type: 'slider',#}
+                                {#                                yAxisIndex: [0],#}
+                                {#                                filterMode: 'empty'#}
+                                {#                            }#}
+                            ],
+
+                            series: seriesdata1
+                        };
+                        myChart1.setOption(option, true);
+                        myChart1.on('dataZoom', function (params) {
+                            var nendyear = 2016 - Math.ceil(params.start / 100 * 25)
+                            if (Math.ceil(1 - params.end / 100)) {
+                                var nstartyear = 1991 + Math.ceil((1 - params.end / 100) * 25) - 1
+                            }
+                            else {
+                                var nstartyear = '1991'
+                            }
+                            set_timepicker(nstartyear, nendyear)
+                            {#                            creattable(stockcode, color, unit, nstartyear, nendyear)#}
+                        });
+                    }
+                    else if (order == 'asc') {
+                        var legenddata1 = new Array();
+                        var aAxisdata1 = new Array();
+                        var seriesdata1 = [];
+                        var result = {};
+                        for (i = data.indexs.length - 1; i >= 0; i--) {
+                            legenddata1.push(post_selected(data.indexs[i]))
+                        }
+                        for (i = data.the_year_list.length - 1; i >= 0; i--) {
+                            aAxisdata1.push(data.the_year_list[i])
+                        }
+                        for (i = data.indexs.length - 1; i >= 0; i--) {
+                            str = "data." + data.indexs[i]
+                            value = eval(str)
+                            var value2 = [];
+                            for (var j = value.length - 1; j >= 0; j--) {
+                                value2.push((value[j] / unit).toFixed(2))
+                            }
+                            result = {
+                                name: post_selected(data.indexs[i]),
+                                type: 'line',
+                                smooth: true,
+                                symbolSize: 8,
+                                itemStyle: {
+                                    normal: {
+                                        color: color[data.indexs[i]],
+                                        lineStyle: {
+                                            color: color[data.indexs[i]]
+                                        }
+                                    }
+                                },
+                                data: value2
+                            }
+                            seriesdata1.push(result)
+
+                        }
+                        console.log(seriesdata1)
+                        // 指定图表的配置项和数据
+                        option = {
+                            title: {
+                                text: data.the_name + "（单位：" + getunitname(unit) + "）"
+                            },
+                            tooltip: {
+                                trigger: 'axis'
+                            },
+                            {#                        legend: {#}
+                            {#                            data: legenddata1#}
+                            {#                        },#}
+                            grid: {
+                                left: '3%',
+                                right: '4%',
+                                bottom: '3%',
+                                containLabel: true
+                            },
+                            toolbox: {
+
+                                feature: {
+                                    saveAsImage: {},
+                                    magicType: {
+                                        type: ['line', 'bar', 'stack', 'tiled']
+                                    }
+                                }
+                            },
+                            xAxis: {
+                                type: 'category',
+                                boundaryGap: false,
+                                axisTick: {
+                                    show: false
+                                },
+                                data: aAxisdata1,
+                            },
+                            yAxis: {
+                                type: 'value',
+                                axisTick: {
+                                    show: false
+                                },
+                            },
+                            dataZoom: [
+                                {
+                                    {#                                id: 'dataZoomX',#}
+                                    type: 'slider',
+                                    xAxisIndex: [0],
+                                    height: 20,
+                                    filterMode: 'filter',
+                                    {#                                show : true,#}
+                                    startValue: dend,
+                                    endValue: dzstart,
+                                },
+
+
+                            ],
+
+                            series: seriesdata1
+                        };
+                        myChart1.setOption(option, true);
+                        myChart1.on('dataZoom', function (params) {
+                            var nstartyear = 1991 + Math.ceil(params.start / 100 * 25)
+                            {#                            if (Math.ceil(1 - params.end / 100)) {#}
+                            var nendyear = 1991 + Math.ceil(params.end / 100 * 25) - 1
+                            {#                            }#}
+                            {#                            else {#}
+                            {#                                var nendyear = '1991'#}
+                            {#                            }#}
+                            set_timepicker(nstartyear, nendyear)
+                            {#                            creattable(stockcode, color, unit, nstartyear, nendyear)#}
+                        });
+                    }
+                }
+            })
+        }
+
+        function set_timepicker(start, end) {
+            document.getElementById('ui3').value = start
+            document.getElementById('ui4').value = end
+
+        }
+
+        function setcheckboxcolor(selectedindex, color) {
+            for (var key in color) {
+                $("#div_" + key).css("background-color", 'transparent')
+            }
+            for (i = 0; i <= selectedindex.length; i++) {
+                $("#div_" + selectedindex[i]).css("background-color", color[selectedindex[i]])
+            }
+        }
+
+        function creatindex() {
+            for (var key in indexdictionary) {
+                $("#index").append("<div style='width:100%;height:30px;margin-top:10px;'><div class='checkbox' style='width:80%;height:20px;float:left;margin-left:25px'><input type='checkbox' class='checkbox' value='" + indexdictionary[key] + "' id='" + indexdictionary[key] + "' >" + key + " <div id='div_" + indexdictionary[key] + "' style='height: 10px;width: 10px;float: right;margin-top:5px;'></div></div></div>"
+                )
+            }
+        }
+
+        function RequestTable() {
+            var myChart = echarts.init(document.getElementById('echart'));
+            var opt = myChart.getOption();
+            var dz = opt.dataZoom[0];
+            if (order == 'desc') {
+                creattable(stockcode, color, Uint, opt.xAxis[0].data[dz.endValue], opt.xAxis[0].data[dz.startValue])
+            }
+            else if (order == 'asc') {
+                creattable(stockcode, color, Uint, opt.xAxis[0].data[dz.startValue], opt.xAxis[0].data[dz.endValue])
+            }
+
+        }
+
+        $(document).ready(function () {
+            function firstvisit() {
+                stockcode = currentcode;
+                {#                document.getElementById("yearorder").value = 'asc';#}
+                {#                order = document.getElementById("yearorder").value#}
+                order = 'asc'
+                Uint = 100000000
+                selectedindex = ['tot_oper_rev']
+                $.ajax({
+                    type: 'POST',
+                    url: '{{url_for("restfulapi.get_ajax")}}',
+                    data: {
+                        'code': stockcode,
+                        'date': ['1991', '2016'],
+                        'selected': selectedindex
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        Data = ''
+                        Data = data
+                        startyear = data.the_year_list[data.the_year_list.length - 1]
+                        endyear = data.the_year_list[0]
+                        $(".checkbox").each(function () {
+                            $(this).attr("checked", false)
+                        })
+                        for (i = 0; i < data.indexs.length; i++) {
+                            var checked = document.getElementById(data.indexs[i]);//获取div下的input
+                            checked.checked = true
+                            color[data.indexs[i]] = set_color()
+                        }
+                        setcheckboxcolor(selectedindex, color)
+                        set_timepicker('2010-q4', '2016-q4')
+                        creattable(stockcode, color, Uint, '2010', '2016')
+                        createchart(stockcode, color, Uint, '2010', '2016')
+                        {#                        document.getElementById("stockcode").value='111'#}
+                        $("#stockcode1").val(stockcode)
+                    }
+
+                })
+            }
+
+            $("#ui3").datepicker({
+                changeYear: true,
+                dateFormat: 'yy',
+                showButtonPanel: true,
+                yearRange: "1991:2016",
+
+                onClose: function (dateText, inst) {
+                    {#                            var month = $("#ui-datepicker-div .ui-datepicker-month option:selected").val();//得到选中的月份值#}
+                    var year = $("#ui-datepicker-div .ui-datepicker-year option:selected").val();//得到选中的年份值
+                    $('#ui3').val(year + '-q4');//给input赋值，其中要对月值加1才是实际的月份
+                    var unit = document.getElementById("unit").value;
+                    var dzstartyear = $('#ui3').val().substring(0, 4)
+                    var dzendyear = $('#ui4').val().substring(0, 4)
+                    {#                var myChart = echarts.init(document.getElementById('echart'));#}
+                    {#                var opt = myChart1.getOption();#}
+                    Uint = unit
+                    {#                option.dataZoom[0].startValue = dzstartyear#}
+                    {#                option.dataZoom[0].endValue = dzendyear#}
+                    {#                myChart1.setOption(option)#}
+                    creattable(stockcode, color, Uint, dzstartyear, dzendyear)
+                    createchart(stockcode, color, Uint, dzstartyear, dzendyear)
+                }
+            });
+            $("#ui4").datepicker({
+                changeYear: true,
+                dateFormat: 'yy',
+                showButtonPanel: true,
+                yearRange: "1991:2016",
+                onClose: function (dateText, inst) {
+                    {#                            var month = $("#ui-datepicker-div .ui-datepicker-month option:selected").val();//得到选中的月份值#}
+                    var year = $("#ui-datepicker-div .ui-datepicker-year option:selected").val();//得到选中的年份值
+                    $('#ui4').val(year + '-q4');//给input赋值，其中要对月值加1才是实际的月份
+                    var unit = document.getElementById("unit").value;
+                    var dzstartyear = $('#ui3').val().substring(0, 4)
+                    var dzendyear = $('#ui4').val().substring(0, 4)
+                    {#                var myChart = echarts.init(document.getElementById('echart'));#}
+                    {#                var opt = myChart1.getOption();#}
+                    Uint = unit
+                    {#                option.dataZoom[0].startValue = dzstartyear#}
+                    {#                option.dataZoom[0].endValue = dzendyear#}
+                    {#                myChart1.setOption(option)#}
+                    creattable(stockcode, color, Uint, dzstartyear, dzendyear)
+                    createchart(stockcode, color, Uint, dzstartyear, dzendyear)
+                }
+            });
+            $("select#unit").change(function () {
+                var unit = document.getElementById("unit").value;
+                var dzstartyear = $('#ui3').val().substring(0, 4)
+                var dzendyear = $('#ui4').val().substring(0, 4)
+                {#                var myChart = echarts.init(document.getElementById('echart'));#}
+                {#                var opt = myChart1.getOption();#}
+                Uint = unit
+                {#                option.dataZoom[0].startValue = dzstartyear#}
+                {#                option.dataZoom[0].endValue = dzendyear#}
+                {#                myChart1.setOption(option)#}
+                creattable(stockcode, color, Uint, dzstartyear, dzendyear)
+                createchart(stockcode, color, Uint, dzstartyear, dzendyear)
+            });
+            $("select#yearorder").change(function () {
+                var unit = document.getElementById("unit").value;
+                var dzstartyear = $('#ui3').val().substring(0, 4)
+                var dzendyear = $('#ui4').val().substring(0, 4)
+                order = document.getElementById("yearorder").value;
+                Uint = unit
+                {#                option.dataZoom[0].startValue = dzstartyear#}
+                {#                option.dataZoom[0].endValue = dzendyear#}
+                {#                myChart1.setOption(option)#}
+                creattable(stockcode, color, Uint, dzstartyear, dzendyear)
+                createchart(stockcode, color, Uint, dzstartyear, dzendyear)
+            });
+            creatindex()
+            firstvisit()
+            $('.checkbox').on('click', function () {
+                if (!$(this).is(':checked')) {// 取消
+                    {#                                var myChart = echarts.getInstanceByDom(document.getElementById("echart"))#}
+                    var selected = new Array()
+                    var unit = document.getElementById("unit").value;
+                    var dzstartyear = $('#ui3').val().substring(0, 4)
+                    var dzendyear = $('#ui4').val().substring(0, 4)
+                    {#                                color[$(this).attr('value')] = 'transparent'#}
+                    $(".checkbox").each(function () {
+                        if ($(this).is(':checked')) {
+                            selected.push($(this).attr('value'))
+                        }
+                    })
+                    selectedindex = selected
+                    $.ajax({
+                        type: 'POST',
+                        url: '{{url_for("restfulapi.get_ajax")}}',
+                        data: {
+                            'code': stockcode,
+                            'date': ['1991', '2016'],
+                            'selected': selectedindex
+                        },
+                        dataType: 'json',
+                        success: function (data) {
+                            Data = ''
+                            Data = data
+                            Uint = unit
+                            setcheckboxcolor(selectedindex, color)
+                            console.log(color)
+                            creattable(stockcode, color, Uint, dzstartyear, dzendyear)
+                            {#                                        tablehide(dzstartyear, dzendyear)#}
+                            createchart(stockcode, color, Uint, dzstartyear, dzendyear)
+                        }
+                    })
+
+
+                }
+                else {
+                    {#                                var myChart = echarts.getInstanceByDom(document.getElementById("echart"))#}
+                    var selected = new Array()
+                    var unit = document.getElementById("unit").value;
+                    var dzstartyear = $('#ui3').val().substring(0, 4)
+                    var dzendyear = $('#ui4').val().substring(0, 4)
+                    color[$(this).attr('value')] = set_color()
+                    index = $(this).attr('value')
+                    $(".checkbox").each(function () {
+                        if ($(this).is(':checked')) {
+                            selected.push($(this).attr('value'))
+                        }
+                    })
+                    selectedindex = selected
+
+                    $.ajax({
+                        type: 'POST',
+                        url: '{{url_for("restfulapi.get_ajax")}}',
+                        data: {
+                            'code': stockcode,
+                            'date': ['1991', '2016'],
+                            'selected': selectedindex
+                        },
+                        dataType: 'json',
+                        success: function (data) {
+                            Data = ''
+                            Data = data
+                            Uint = unit
+                            console.log(data)
+
+
+                            val = eval("data." + index)
+                            count = 0
+                            for (j = 0; j < val.length; j++) {
+                                count += val[j]
+                                if (val[j] < 1000 && 0 < val[j]) {
+                                    alert(post_selected(index) + "数值过小，可根据需要调整单位后查看")
+                                    break
+                                }
+                            }
+                            if (count == 0) {
+                                alert(post_selected(index) + "在数据库中未存值！")
+                            }
+
+
+                            setcheckboxcolor(selectedindex, color)
+                            creattable(stockcode, color, Uint, dzstartyear, dzendyear)
+                            createchart(stockcode, color, Uint, dzstartyear, dzendyear)
+
+
+                        }
+                    })
+
+
+                }
+            });
+            $(document).on('click', '.options', function (e) {
+                color[get_selected($(this).text())] = set_color()
+                $('#selected').append("<span class='selected' onclick='spanclick();' style='color:" + color[get_selected($(this).text())] + "'>"
+                        + $(this).text() + "</span>");
+                $(this).remove();
+
+            });
+            $(document).on('click', '.selected', function (e) {
+                $('#options').append("<span class='options' onclick='spanclick();'>"
+                        + $(this).text() + "</span>");
+                $(this).remove();
+
+            });
+            $("#checkall").click(function () {
+                var selected = new Array()
+                var unit = document.getElementById("unit").value;
+                var dzstartyear = $('#ui3').val().substring(0, 4)
+                var dzendyear = $('#ui4').val().substring(0, 4)
+                $("input[type=checkbox]").each(function () {
+                    $(this).iCheck('check');
+                    selected.push($(this).attr('value'))
+                    color[$(this).attr('value')] = set_color()
+                })
+                selectedindex = selected
+                {#                setcheckboxcolor(selected, color)#}
+                $.ajax({
+                    type: 'POST',
+                    url: '{{url_for("restfulapi.get_ajax")}}',
+                    data: {
+                        'code': stockcode,
+                        'date': ['1991', '2016'],
+                        'selected': selectedindex
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        Data = ''
+                        Data = data
+                        Uint = unit
+                        setcheckboxcolor(selectedindex, color)
+
+                        creattable(stockcode, color, Uint, dzstartyear, dzendyear)
+                        {#                                        tablehide(dzstartyear, dzendyear)#}
+                        createchart(stockcode, color, Uint, dzstartyear, dzendyear)
+                    }
+                })
+            })
+            $("#revokeall").click(function () {
+                var selected = new Array()
+                var unit = document.getElementById("unit").value;
+                var dzstartyear = $('#ui3').val().substring(0, 4)
+                var dzendyear = $('#ui4').val().substring(0, 4)
+                $("input[type=checkbox]").each(function () {
+                    $(this).iCheck('uncheck');
+
+                })
+                selectedindex = selected
+                {#                setcheckboxcolor(selected, color)#}
+                $.ajax({
+                    type: 'POST',
+                    url: '{{url_for("restfulapi.get_ajax")}}',
+                    data: {
+                        'code': stockcode,
+                        'date': ['1991', '2016'],
+                        'selected': selectedindex
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        Data = ''
+                        Data = data
+                        Uint = unit
+                        setcheckboxcolor(selectedindex, color)
+
+                        creattable(stockcode, color, Uint, dzstartyear, dzendyear)
+                        {#                                        tablehide(dzstartyear, dzendyear)#}
+                        createchart(stockcode, color, Uint, dzstartyear, dzendyear)
+                    }
+                })
+            })
+            $.fn.dataTable.ext.errMode = 'none';
+            $("#submit1").click(function () {
+
+                $("#searchform").submit();
+                var stock_code = $("#stockcode").val();
+                stockcode = $("#stockcode").val()
+                $.cookie('stockcode', stockcode, {expires: 7});
+                Uint = 100000000
+                selectedindex = ['tot_oper_rev', 'tot_oper_cost', 'fin_exp_is', 'tot_profit', 'tot_assets']
+                $.ajax({
+                    type: 'POST',
+                    url: '{{url_for("restfulapi.get_ajax")}}',
+                    data: {
+                        'code': stock_code,
+                        'date': ['1991', '2016'],
+                        'selected': selectedindex
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        Data = ''
+                        Data = data
+                        startyear = data.the_year_list[data.the_year_list.length - 1]
+                        endyear = data.the_year_list[0]
+                        $(".checkbox").each(function () {
+                            $(this).attr("checked", false)
+                        })
+                        for (i = 0; i < data.indexs.length; i++) {
+                            var checked = document.getElementById(data.indexs[i]);//获取div下的input
+                            checked.checked = true
+                            color[data.indexs[i]] = set_color()
+                        }
+                        setcheckboxcolor(selectedindex, color)
+                        set_timepicker('2010-q4', '2016-q4')
+                        creattable(stockcode, color, Uint, '2010', '2016')
+                        createchart(stockcode, color, Uint, '2010', '2016')
+                        var mychart = $('#fixTable').DataTable()
+                        mychart.columns([8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26]).visible(false, false)
+                    }
+
+
+                });
+
+            })
+            $("#post_ajax").click(function () {
+
+                {#                var selected = new Array()#}
+                {#                Uint = 100000000#}
+                {#                $("span").each(function () {#}
+                {#                    if ($(this).parent().attr('id') == 'selected') {#}
+                {#                        selected.push(get_selected($(this).text()))#}
+                {#                    }#}
+                {#                })#}
+                {#                var stock_code = $("#code").val();#}
+                {#                stockcode = $("#code").val()#}
+                {#                startyear = '1991'#}
+                {#                endyear = '2016'#}
+                {#                $("tr").remove()#}
+                {#                var data = new Array()#}
+                {#                data.push(startyear)#}
+                {#                data.push(endyear)#}
+                {#                $.ajax({#}
+                {#                    type: 'POST',#}
+                {#                    url: '{{url_for("stock_solo.get_ajax")}}',#}
+                {#                    data: {#}
+                {#                        'code': stock_code,#}
+                {#                        'date': data,#}
+                {#                        'selected': selected,#}
+                {#                    },#}
+                {#                    dataType: 'json',#}
+                {#                    success: function (data) {#}
+                {#                        Data = data#}
+                {#                        $(".checkbox").each(function () {#}
+                {#                            $(this).attr("checked", false)#}
+                {#                        })#}
+                {#                        for (i = 0; i < data.indexs.length; i++) {#}
+                {#                            var checked = document.getElementById(data.indexs[i]);//获取div下的input#}
+                {#                            checked.checked = true#}
+                {#                        }#}
+                {#                        setcheckboxcolor(color)#}
+                {#                        set_timepicker('2010-q4', '2016-q4')#}
+                {#                        creattable(Data, color, Uint)#}
+                {#                        tablehide('2010', '2016')#}
+                {#                        createchart(Data, color, Uint, '2010', '2016')#}
+                {#                        console.log(Data)#}
+                {#                                                            var mychart = $('#fixTable').DataTable()#}
+                {#                                                            mychart.columns([10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26]).visible(false, false)#}
+                {##}
+                {#                    }#}
+                {#                });#}
+            })
+            $("#set_favorite").click(function () {
+
+            })
+            $("#submitbtn1").click(function () {
+                $.ajax({
+                    type: 'POST',
+                    url: '{{url_for("restfulapi.iscode")}}',
+                    data: {
+                        'code': stockcode,
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.the_name != 'false') {
+                            $.ajax({
+                                type: 'POST',
+                                url: '{{url_for("restfulapi.is_repeatcode")}}',
+                                data: {
+                                    'code': stockcode,
+                                },
+                                dataType: 'json',
+                                success: function (data) {
+                                    if (data.exit == 'true') {
+                                        alert('您已关注该股票，请勿重复操作！')
+                                    }
+                                    else if (data.exit == 'flase') {
+                                        $.ajax({
+                                            type: 'POST',
+                                            url: '{{url_for("restfulapi.add_code_fd_yc")}}',
+                                            data: {
+                                                'code': stockcode
+                                            },
+                                            dataType: 'json',
+                                            success: function (data) {
+                                                alert('添加成功！')
+                                            }
+                                        })
+                                    }
+                                }
+                            })
+                        }
+                        else {
+                            alert($("#stockcode").val() + "号股票不存在！")
+                        }
+                    }
+                })
+            })
+        });
+
+
+    </script>
+
+
+
+    <script>
+        function selectline(linename) {
+            for (var line in option.series) {
+                l = parseInt(line);
+                if (option.series[l].name == linename) {
+                    tempcolor = NewColor();
+                    option.series[l].lineStyle.normal.color = tempcolor;
+                    option.series[l].itemStyle.normal.color = tempcolor;
+                    $("span#" + linename).css('color', tempcolor);
+                    selectedindexes.push(l);
+                    selectedindexname.push(option.series[l].name);
+                    option.legend.data = selectedindexname;
+                    myChart.setOption(option);
+                    {#if($('tr#'+option.series[l].name).length>0) {  列头不变色 将查询的data存储 分割函数 代码冗余度高
+                        $('tr#' + option.series[l].name).css('color', option.series[l].lineStyle.normal.color)
+                    }#}
+
+                }
+            }
+
+        }
+        function unselectline(linename) {
+            for (var line in option.series) {
+                l = parseInt(line);
+                if (option.series[l].name == linename) {
+                    option.series[l].lineStyle.normal.color = '#C4D2DB';
+                    option.series[l].itemStyle.normal.color = '#C4D2DB';
+                    $("span#" + linename).css('color', 'white');
+                    selectedindexes.splice(selectedindexes.indexOf(l), 1);
+                    selectedindexname.splice(selectedindexname.indexOf(option.series[l].name), 1);
+                    option.legend.data = selectedindexname;
+                    myChart.setOption(option);
+
+                }
+            }
+
+        }
+    </script>
+
+    <script>
+        var myChart = echarts.init(document.getElementById('mychart'));
+        var invest_results;
+        var finance_results;
+        var dict = {
+            'tot_oper_cost': '总营业成本',
+            'tot_oper_rev': '总营业收入',
+            'wgsd_net_inc': '净利润（股东）',
+            'tot_assets': '资产总计',
+            'wgsd_com_eq': '归属股东权益',
+            'net_inc_eq_rate': '净资产收益率（股东）',
+            'total_shares': '股本',
+            'earnings_per_share': '每股收益',
+            'net_assets_per_share': '每股净资产',
+            'cash_per_share': '每股账面现金',
+            'div_cashandstock': '每股现金股息',
+            'payment_proportion': '支付比例',
+            'equal_earning_rate': '均衡市盈率',
+            'equal_market_rate': '均衡市净率',
+            'com_value_evaluate': '公司价值估计',
+            'per_com_value_evaluate': '每股价值估计',
+            'fre_cash_evaluate': '自由现金流估计',
+            'ev': '市值',
+            'earning_rate': '市盈率',
+            'net_rate': '市净率',
+            'sale_rate': '市销率',
+            'cash_rate': '市现率',
+            'dividendyield2': '股息收益率',
+            'cash_yield_evaluate': '现金收益率估计',
+            'ev1': '整体价值估计（含货币）',
+            'ev2': '整体价值估计（不含货币）',
+            'employee': '雇员数量'
+        };
+        $(document).ready(function () {
+            getdata()
+        })
+        function getdata() {
+            $("#stockcode1").val({{ stockcode|safe }})
+            $.ajax({
+            type: 'GET',
+            url: '{{url_for("restfulapi.finance_data")}}',
+            data: {
+                stockcode: currentcode,
+                starttime: '19901231',
+                endtime: '20161231',
+                indexes: ['tot_oper_cost', 'tot_oper_rev', 'wgsd_net_inc', 'tot_assets', 'wgsd_com_eq', 'monetary_cap', 'operatecashflow_ttm2', 'investcashflow_ttm2']
+            },
+            dataType: 'json',//希望服务器返回json格式的数据
+            success: function (data) {
+                if(orderflag=="asc"){
+                    for (var i = 0; i < data.indexes.length; i++) {
+                    eval("data." + data.indexes[i]).reverse();
+                    }
+                    data.the_year.reverse();
+                }
+                finance_results = data;
+                finance_results_t = data;
+
+                $.ajax({
+                    type: 'GET',
+                    url: '{{url_for("restfulapi.invest_data")}}',
+                    data: {
+                        stockcode: currentcode,
+                        starttime: '19901231',
+                        endtime: '20161231',
+                        indexes: ['total_shares', 'div_cashandstock', 'ev', 'employee', 'dividendyield2', 'ev1', 'ev2']
+                    },
+                    dataType: 'json',//希望服务器返回json格式的数据
+                    success: function (data) {
+                    if(orderflag=="asc"){
+                        for (var i = 0; i < data.indexes.length; i++) {
+                            eval("data." + data.indexes[i]).reverse();
+                        }
+                    data.the_year.reverse();
+                    }
+                        invest_results = data;
+                        invest_results_t = data;
+                        CreateChart();
+                        $("input#cl_tot_oper_cost").iCheck('check')
+                        {#                            选中一条线#}
+                    }
+                })
+            }
+        })
+        }
+
+        //                dataSeries = [{name:'123',type:'line',data:[1,2,3,4,5,6,7]},{name:'345',type:'line',data:[7,6,5,4,3,2,1]}];
+        function CreateChart() {
+            dataSeries = [];
+            for (var i = 0; i < finance_results.indexes.length; i++) {
+                if (Chosenindexes.hasOwnProperty(finance_results.indexes[i])) {
+                    temp = {
+                        name: finance_results.indexes[i],
+                        type: 'line',
+                        lineStyle: {normal: {width: 2}},
+                        itemStyle: {normal: {color: Chosenindexes[finance_results.indexes[i]]}},
+                        symbolSize: 8,
+                        smooth: true,
+                        data: numfilter(eval("finance_results." + finance_results.indexes[i]))
+                    };
+                    dataSeries.push(temp);
+
+                }
+            }
+            for (var i = 0; i < invest_results.indexes.length; i++) {
+                if (Chosenindexes.hasOwnProperty(invest_results.indexes[i])) {
+                    temp = {
+                        name: invest_results.indexes[i],
+                        type: 'line',
+                        lineStyle: {normal: {width: 2}},
+                        itemStyle: {normal: {color: Chosenindexes[invest_results.indexes[i]]}},
+                        symbolSize: 8,
+                        smooth: true,
+                        data: numfilter(eval("invest_results." + invest_results.indexes[i]))
+                    };
+                    dataSeries.push(temp);
+                }
+            }
+            if (Chosenindexes.hasOwnProperty("net_inc_eq_rate")) {
+                tempdata = []
+                for (i = 0; i < finance_results.the_year.length; i++) {
+                    datavalue = finance_results.wgsd_net_inc[i] / finance_results.wgsd_com_eq[i]
+                    tempdata.push(datavalue)
+                }
+                temp = {
+                    name: "net_inc_eq_rate",
+                    type: 'line',
+                    lineStyle: {normal: {width: 2}},
+                    itemStyle: {normal: {color: Chosenindexes["net_inc_eq_rate"]}},
+                    symbolSize: 8,
+                    smooth: true,
+                    data: numfilter(tempdata)
+                };
+                dataSeries.push(temp);
+            }
+            if (Chosenindexes.hasOwnProperty("earnings_per_share")) {
+                tempdata = []
+                for (i = 0; i < finance_results.the_year.length; i++) {
+                    datavalue = finance_results.wgsd_net_inc[i] / invest_results.total_shares[i]
+                    tempdata.push(datavalue)
+                }
+                temp = {
+                    name: "earnings_per_share",
+                    type: 'line',
+                    lineStyle: {normal: {width: 2}},
+                    itemStyle: {normal: {color: Chosenindexes["earnings_per_share"]}},
+                    symbolSize: 8,
+                    smooth: true,
+                    data: numfilter(tempdata)
+                };
+                dataSeries.push(temp);
+            }
+            if (Chosenindexes.hasOwnProperty("net_assets_per_share")) {
+                tempdata = []
+                for (i = 0; i < finance_results.the_year.length; i++) {
+                    datavalue = finance_results.wgsd_com_eq[i] / invest_results.total_shares[i]
+                    tempdata.push(datavalue)
+                }
+                temp = {
+                    name: "net_assets_per_share",
+                    type: 'line',
+                    lineStyle: {normal: {width: 2}},
+                    itemStyle: {normal: {color: Chosenindexes["net_assets_per_share"]}},
+                    symbolSize: 8,
+                    smooth: true,
+                    data: numfilter(tempdata)
+                };
+                dataSeries.push(temp);
+            }
+            if (Chosenindexes.hasOwnProperty("cash_per_share")) {
+                tempdata = []
+                for (i = 0; i < finance_results.the_year.length; i++) {
+                    datavalue = finance_results.monetary_cap[i] / invest_results.total_shares[i]
+                    tempdata.push(datavalue)
+                }
+                temp = {
+                    name: "cash_per_share",
+                    type: 'line',
+                    lineStyle: {normal: {width: 2}},
+                    itemStyle: {normal: {color: Chosenindexes["cash_per_share"]}},
+                    symbolSize: 8,
+                    smooth: true,
+                    data: numfilter(tempdata)
+                };
+                dataSeries.push(temp);
+            }
+            if (Chosenindexes.hasOwnProperty("payment_proportion")) {
+                tempdata = []
+                for (i = 0; i < finance_results.the_year.length; i++) {
+                    datavalue = (invest_results.total_shares[i] * invest_results.div_cashandstock[i]) / finance_results.wgsd_net_inc[i]
+                    tempdata.push(datavalue)
+                }
+                temp = {
+                    name: "payment_proportion",
+                    type: 'line',
+                    lineStyle: {normal: {width: 2}},
+                    itemStyle: {normal: {color: Chosenindexes["payment_proportion"]}},
+                    symbolSize: 8,
+                    smooth: true,
+                    data: numfilter(tempdata)
+                };
+                dataSeries.push(temp);
+            }
+            if (Chosenindexes.hasOwnProperty("equal_earning_rate")) {
+                tempdata = []
+                for (i = 0; i < finance_results.the_year.length; i++) {
+                    datavalue = 1 / (Math.pow(1 - finance_results.wgsd_net_inc[i] / finance_results.wgsd_com_eq[i], 5)) / (finance_results.wgsd_net_inc[i] / finance_results.wgsd_com_eq[i])
+                    tempdata.push(datavalue)
+                }
+                temp = {
+                    name: "equal_earning_rate",
+                    type: 'line',
+                    lineStyle: {normal: {width: 2}},
+                    itemStyle: {normal: {color: Chosenindexes["equal_earning_rate"]}},
+                    symbolSize: 8,
+                    smooth: true,
+                    data: numfilter(tempdata)
+                };
+                dataSeries.push(temp);
+            }
+            if (Chosenindexes.hasOwnProperty("equal_market_rate")) {
+                tempdata = []
+                for (i = 0; i < finance_results.the_year.length; i++) {
+                    datavalue = 1 / ( Math.pow(1 - finance_results.wgsd_net_inc[i] / finance_results.wgsd_com_eq[i], 5))
+                    tempdata.push(datavalue)
+                }
+                temp = {
+                    name: "equal_market_rate",
+                    type: 'line',
+                    lineStyle: {normal: {width: 2}},
+                    itemStyle: {normal: {color: Chosenindexes["equal_market_rate"]}},
+                    symbolSize: 8,
+                    smooth: true,
+                    data: numfilter(tempdata)
+                };
+                dataSeries.push(temp);
+            }
+            if (Chosenindexes.hasOwnProperty("com_value_evaluate")) {
+                tempdata = []
+                for (i = 0; i < finance_results.the_year.length; i++) {
+                    datavalue = finance_results.wgsd_net_inc[i] *
+                            (1 / (Math.pow(1 - finance_results.wgsd_net_inc[i] / finance_results.wgsd_com_eq[i], 5)) / (finance_results.wgsd_net_inc[i] / finance_results.wgsd_com_eq[i]))
+                    tempdata.push(datavalue)
+                }
+                temp = {
+                    name: "com_value_evaluate",
+                    type: 'line',
+                    lineStyle: {normal: {width: 2}},
+                    itemStyle: {normal: {color: Chosenindexes["com_value_evaluate"]}},
+                    symbolSize: 8,
+                    smooth: true,
+                    data: numfilter(tempdata)
+                };
+                dataSeries.push(temp);
+            }
+            if (Chosenindexes.hasOwnProperty("per_com_value_evaluate")) {
+                tempdata = []
+                for (i = 0; i < finance_results.the_year.length; i++) {
+                    datavalue = (finance_results.wgsd_net_inc[i] *
+                            (1 / (Math.pow(1 - finance_results.wgsd_net_inc[i] / finance_results.wgsd_com_eq[i], 5)) / (finance_results.wgsd_net_inc[i] / finance_results.wgsd_com_eq[i]))) / invest_results.total_shares[i]
+                    tempdata.push(datavalue)
+                }
+                temp = {
+                    name: "per_com_value_evaluate",
+                    type: 'line',
+                    lineStyle: {normal: {width: 2}},
+                    itemStyle: {normal: {color: Chosenindexes["per_com_value_evaluate"]}},
+                    symbolSize: 8,
+                    smooth: true,
+                    data: numfilter(tempdata)
+                };
+                dataSeries.push(temp);
+            }
+
+            if (Chosenindexes.hasOwnProperty("fre_cash_evaluate")) {
+                tempdata = []
+                for (i = 0; i < finance_results.the_year.length; i++) {
+                    datavalue = finance_results.operatecashflow_ttm2[i] + finance_results.investcashflow_ttm2[i]
+                    tempdata.push(datavalue)
+                }
+                temp = {
+                    name: "fre_cash_evaluate",
+                    type: 'line',
+                    lineStyle: {normal: {width: 2}},
+                    itemStyle: {normal: {color: Chosenindexes["fre_cash_evaluate"]}},
+                    symbolSize: 8,
+                    smooth: true,
+                    data: numfilter(tempdata)
+                };
+                dataSeries.push(temp);
+            }
+            if (Chosenindexes.hasOwnProperty("earning_rate")) {
+                tempdata = []
+                for (i = 0; i < finance_results.the_year.length; i++) {
+                    datavalue = invest_results.ev[i] / finance_results.wgsd_net_inc[i]
+                    tempdata.push(datavalue)
+                }
+                temp = {
+                    name: "earning_rate",
+                    type: 'line',
+                    lineStyle: {normal: {width: 2}},
+                    itemStyle: {normal: {color: Chosenindexes["earning_rate"]}},
+                    symbolSize: 8,
+                    smooth: true,
+                    data: numfilter(tempdata)
+                };
+                dataSeries.push(temp);
+            }
+            if (Chosenindexes.hasOwnProperty("net_rate")) {
+                tempdata = []
+                for (i = 0; i < finance_results.the_year.length; i++) {
+                    datavalue = invest_results.ev[i] / finance_results.wgsd_com_eq[i]
+                    tempdata.push(datavalue)
+                }
+                temp = {
+                    name: "net_rate",
+                    type: 'line',
+                    lineStyle: {normal: {width: 2}},
+                    itemStyle: {normal: {color: Chosenindexes["net_rate"]}},
+                    symbolSize: 8,
+                    smooth: true,
+                    data: numfilter(tempdata)
+                };
+                dataSeries.push(temp);
+            }
+            if (Chosenindexes.hasOwnProperty("sale_rate")) {
+                tempdata = []
+                for (i = 0; i < finance_results.the_year.length; i++) {
+                    datavalue = invest_results.ev[i] / finance_results.tot_oper_rev[i]
+                    tempdata.push(datavalue)
+                }
+                temp = {
+                    name: "sale_rate",
+                    type: 'line',
+                    lineStyle: {normal: {width: 2}},
+                    itemStyle: {normal: {color: Chosenindexes["sale_rate"]}},
+                    symbolSize: 8,
+                    smooth: true,
+                    data: numfilter(tempdata)
+                };
+                dataSeries.push(temp);
+            }
+            if (Chosenindexes.hasOwnProperty("cash_rate")) {
+                tempdata = []
+                for (i = 0; i < finance_results.the_year.length; i++) {
+                    datavalue = invest_results.ev[i] / finance_results.operatecashflow_ttm2[i]
+                    tempdata.push(datavalue)
+                }
+                temp = {
+                    name: "cash_rate",
+                    type: 'line',
+                    lineStyle: {normal: {width: 2}},
+                    itemStyle: {normal: {color: Chosenindexes["cash_rate"]}},
+                    symbolSize: 8,
+                    smooth: true,
+                    data: numfilter(tempdata)
+                };
+                dataSeries.push(temp);
+            }
+            if (Chosenindexes.hasOwnProperty("cash_yield_evaluate")) {
+                tempdata = []
+                for (i = 0; i < finance_results.the_year.length; i++) {
+                    datavalue = (finance_results.operatecashflow_ttm2[i] + finance_results.investcashflow_ttm2[i]) / invest_results.ev[i]
+                    tempdata.push(datavalue)
+                }
+                temp = {
+                    name: "cash_yield_evaluate",
+                    type: 'line',
+                    lineStyle: {normal: {width: 2}},
+                    itemStyle: {normal: {color: Chosenindexes["cash_yield_evaluate"]}},
+                    symbolSize: 8,
+                    smooth: true,
+                    data: numfilter(tempdata)
+                };
+                dataSeries.push(temp);
+            }
+            option = {
+                title: {
+                    text: finance_results['the_name'] + '财务指标及分析',
+                    left: '0'
+                },
+
+                tooltip: {
+                    trigger: 'item',
+                    formatter: function (params) {
+                        return dict[params.seriesName] + "</br>" + "时间：" + params.name + "</br>" + "数据：" + params.data
+
+                    }
+                },
+                legend: {
+                    data: [],
+                    orient: 'vertical',
+                    left: '85%',
+                    top: '10%',
+                    formatter: function (name) {
+                        return dict[name];
+                    }
+
+                },
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '10%',
+                    containLabel: true
+                },
+                toolbox: {
+                    feature: {
+                        magicType: {
+                            type: ['line', 'bar', 'stack', 'tiled']
+                        }
+                    }
+
+                },
+                xAxis: {
+                    type: 'category',
+                    boundaryGap: false,
+                    axisTick: {
+                        show: false
+                    },
+                    data: dateformat(finance_results.the_year),
+                    Interval: 5
+                },
+                yAxis: {
+                    type: 'value',
+                    axisTick: {
+                        show: false
+                    },
+                },
+                dataZoom: [
+                    {   // 这个dataZoom组件，默认控制x轴。
+                        type: 'slider', // 这个 dataZoom 组件是 slider 型 dataZoom 组件
+                        xAxisIndex: [0],
+                        height:20,
+{#                        startValue: "2016年Q4",#}
+                        start: 0,      // 左边在 10% 的位置。
+                        end: 50,         // 右边在 60% 的位置。
+{#                            top: '93%',#}
+{#                        endValue: "2006年Q4",#}
+                        filterMode: 'filter',
+                    },
+                    {   // 这个dataZoom组件，默认控制x轴。
+                        type: 'inside', // 这个 dataZoom 组件是 slider 型 dataZoom 组件
+                        xAxisIndex: [0],
+                        {#   start: 0,      // 左边在 10% 的位置。
+                            end: 100,         // 右边在 60% 的位置。
+                            top: '93%'#}
+                        filterMode: 'filter',
+                    }
+                ],
+                series: dataSeries
+            };
+
+            myChart.setOption(option, true);
+            myChart.on('datazoom', function (params) {
+                option.xAxis.interval = 10 * (params.end - params.start) / 100
+            })
+            myChart.on('mouseover', function (params) {
+                oldwidth = option.series[params.seriesIndex].lineStyle.normal.width;
+                if (oldwidth == 2) {
+                    option.series[params.seriesIndex].lineStyle.normal.width = 4;
+                    myChart.setOption(option);
+                }
+            })
+            myChart.on('mouseout', function (params) {
+                oldwidth = option.series[params.seriesIndex].lineStyle.normal.width;
+                if (oldwidth == 4) {
+                    option.series[params.seriesIndex].lineStyle.normal.width = 2;
+                    myChart.setOption(option);
+                }
+            })
+        }
+
+
+    </script>
+    <script>
+        var finance_results_t;
+        var invest_results_t;
+        function RequestTable() {
+            var opt = myChart.getOption();
+            var dz = opt.dataZoom[0];
+            $.ajax({
+                type: 'GET',
+                url: '{{url_for("restfulapi.finance_data")}}',
+                data: {
+                    stockcode:currentcode,
+                    starttime: parseInt(opt.xAxis[0].data[dz.startValue])<=parseInt(opt.xAxis[0].data[dz.endValue])?opt.xAxis[0].data[dz.startValue]:opt.xAxis[0].data[dz.endValue],
+                    endtime: parseInt(opt.xAxis[0].data[dz.startValue])>=parseInt(opt.xAxis[0].data[dz.endValue])?opt.xAxis[0].data[dz.startValue]:opt.xAxis[0].data[dz.endValue],
+                    indexes: ['tot_oper_cost', 'tot_oper_rev', 'wgsd_net_inc', 'tot_assets', 'wgsd_com_eq', 'monetary_cap', 'operatecashflow_ttm2', 'investcashflow_ttm2']
+                },
+                dataType: 'json',//希望服务器返回json格式的数据
+                success: function (data) {
+                    console.log(data)
+                    if(orderflag=="asc"){
+                    for (var i = 0; i < data.indexes.length; i++) {
+                    eval("data." + data.indexes[i]).reverse();
+                    }
+                    data.the_year.reverse();
+                }
+                    finance_results_t = data;
+                    $.ajax({
+                        type: 'GET',
+                        url: '{{url_for("restfulapi.invest_data")}}',
+                        data: {
+                            stockcode: currentcode,
+                            starttime: opt.xAxis[0].data[dz.endValue],
+                            endtime: opt.xAxis[0].data[dz.startValue],
+                            indexes: ['total_shares', 'div_cashandstock', 'ev', 'employee', 'dividendyield2', 'ev1', 'ev2']
+                        },
+                        dataType: 'json',//希望服务器返回json格式的数据
+                        success: function (data) {
+                            if(orderflag=="asc"){
+                    for (var i = 0; i < data.indexes.length; i++) {
+                    eval("data." + data.indexes[i]).reverse();
+                    }
+                    data.the_year.reverse();
+                }
+                            invest_results_t = data;
+                            CreateTable();
+
+                        }
+                    })
+                }
+            })
+        }
+        function CreateTable() {
+            $("#mytable").empty();
+            var table = $("<table id=\"temptable\" class=\"row-border hover order-column\" cellspacing=\"0\" width=\"100%\"  >");
+            table.appendTo($("#mytable"));
+            th = $("<thead></thead>");
+            th.appendTo(table);
+            var tr = $("<tr></tr>");
+            tr.appendTo(th);
+            var td = $("<td id=\"subject\">" + "项目" + "</td>");
+            td.appendTo(tr);
+            theyear = dateformat(finance_results_t.the_year)
+            for (var j = 0; j < theyear.length; j++) {
+                var td = $("<td>" + theyear[j] + "</td>");
+                td.appendTo(tr);
+            }
+            tb = $("<tbody></tbody>");
+            tb.appendTo(table);
+            $("#mytable").append("</table>");
+            var mydatatb = $('#temptable').DataTable({
+                "info": false,
+                "processing": true,
+                "scrollX": true,
+                "searching": true,
+                "fixedColumns": { //固定列的配置项
+                    "leftColumns": 1//固定左边第一列
+                },
+                "language": {
+                    "emptyTable": "没有数据",
+                    "loadingRecords": "加载中…",
+                    "processing": "查询中…",
+                    "search": "检索:",
+                    "lengthMenu": "每页 _MENU_ 条",
+                    "zeroRecords": "没有数据",
+                    "paginate": {
+                        "first": "第一页",
+                        "last": "最后一页",
+                        "next": "",
+                        "previous": ""
+                    },
+                    "info": "第 _PAGE_ 页 / 总 _PAGES_ 页",
+                    "infoEmpty": "没有数据",
+                    "infoFiltered": "(过滤总件数 _MAX_ 条)"
+                }
+            });
+            setTimeout("$(\"#subject\").trigger(\"click\")", 100);
+            for (var i = 0; i < finance_results_t.indexes.length; i++) {
+                if (Chosenindexes.hasOwnProperty(finance_results.indexes[i])) {
+                    var rowNode = mydatatb
+                            .row.add([dict[finance_results_t.indexes[i]]].concat(numfilter(eval("finance_results_t." + finance_results_t.indexes[i]))))
+                            .draw()
+                            .node();
+                    $(rowNode)
+                            .attr('id', finance_results_t.indexes[i]);
+
+                }
+            }
+            for (var i = 0; i < invest_results_t.indexes.length; i++) {
+                if (Chosenindexes.hasOwnProperty(invest_results_t.indexes[i])) {
+                    var rowNode = mydatatb
+                            .row.add([dict[invest_results_t.indexes[i]]].concat(numfilter(eval("invest_results_t." + invest_results_t.indexes[i]))))
+                            .draw()
+                            .node();
+                    $(rowNode)
+                            .attr('id', invest_results_t.indexes[i]);
+                }
+            }
+            if (Chosenindexes.hasOwnProperty("net_inc_eq_rate")) {
+                tempdata = []
+                for (i = 0; i < finance_results_t.the_year.length; i++) {
+                    datavalue = finance_results_t.wgsd_net_inc[i] / finance_results_t.wgsd_com_eq[i]
+                    tempdata.push(datavalue)
+                }
+                var rowNode = mydatatb
+                        .row.add([dict["net_inc_eq_rate"]].concat(numfilter(tempdata)))
+                        .draw()
+                        .node();
+                $(rowNode)
+                        .attr('id', "net_inc_eq_rate");
+            }
+            if (Chosenindexes.hasOwnProperty("earnings_per_share")) {
+                tempdata = []
+                for (i = 0; i < finance_results_t.the_year.length; i++) {
+                    datavalue = finance_results_t.wgsd_net_inc[i] / invest_results_t.total_shares[i]
+                    tempdata.push(datavalue)
+                }
+
+                var rowNode = mydatatb
+                        .row.add([dict["earnings_per_share"]].concat(numfilter(tempdata)))
+                        .draw()
+                        .node();
+                $(rowNode)
+                        .attr('id', "earnings_per_share");
+            }
+            if (Chosenindexes.hasOwnProperty("net_assets_per_share")) {
+                tempdata = []
+                for (i = 0; i < finance_results_t.the_year.length; i++) {
+                    datavalue = finance_results_t.wgsd_com_eq[i] / invest_results_t.total_shares[i]
+                    tempdata.push(datavalue)
+                }
+
+                var rowNode = mydatatb
+                        .row.add([dict["net_assets_per_share"]].concat(numfilter(tempdata)))
+                        .draw()
+                        .node();
+                $(rowNode)
+                        .attr('id', "net_assets_per_share");
+            }
+            if (Chosenindexes.hasOwnProperty("cash_per_share")) {
+                tempdata = []
+                for (i = 0; i < finance_results_t.the_year.length; i++) {
+                    datavalue = finance_results_t.monetary_cap[i] / invest_results_t.total_shares[i]
+                    tempdata.push(datavalue)
+                }
+
+                var rowNode = mydatatb
+                        .row.add([dict["cash_per_share"]].concat(numfilter(tempdata)))
+                        .draw()
+                        .node();
+                $(rowNode)
+                        .attr('id', "cash_per_share");
+            }
+            if (Chosenindexes.hasOwnProperty("payment_proportion")) {
+                tempdata = []
+                for (i = 0; i < finance_results_t.the_year.length; i++) {
+                    datavalue = (invest_results_t.total_shares[i] * invest_results_t.div_cashandstock[i]) / finance_results_t.wgsd_net_inc[i]
+                    tempdata.push(datavalue)
+                }
+
+                var rowNode = mydatatb
+                        .row.add([dict["payment_proportion"]].concat(numfilter(tempdata)))
+                        .draw()
+                        .node();
+                $(rowNode)
+                        .attr('id', "payment_proportion");
+            }
+            if (Chosenindexes.hasOwnProperty("equal_earning_rate")) {
+                tempdata = []
+                for (i = 0; i < finance_results_t.the_year.length; i++) {
+                    datavalue = 1 / (Math.pow(1 - finance_results_t.wgsd_net_inc[i] / finance_results_t.wgsd_com_eq[i], 5)) / (finance_results_t.wgsd_net_inc[i] / finance_results_t.wgsd_com_eq[i])
+                    tempdata.push(datavalue)
+                }
+
+                var rowNode = mydatatb
+                        .row.add([dict["equal_earning_rate"]].concat(numfilter(tempdata)))
+                        .draw()
+                        .node();
+                $(rowNode)
+                        .attr('id', "equal_earning_rate");
+            }
+            if (Chosenindexes.hasOwnProperty("equal_market_rate")) {
+                tempdata = []
+                for (i = 0; i < finance_results_t.the_year.length; i++) {
+                    datavalue = 1 / ( Math.pow(1 - finance_results_t.wgsd_net_inc[i] / finance_results_t.wgsd_com_eq[i], 5))
+                    tempdata.push(datavalue)
+                }
+
+                var rowNode = mydatatb
+                        .row.add([dict["equal_market_rate"]].concat(numfilter(tempdata)))
+                        .draw()
+                        .node();
+                $(rowNode)
+                        .attr('id', "equal_market_rate");
+            }
+            if (Chosenindexes.hasOwnProperty("com_value_evaluate")) {
+                tempdata = []
+                for (i = 0; i < finance_results_t.the_year.length; i++) {
+                    datavalue = finance_results_t.wgsd_net_inc[i] *
+                            (1 / (Math.pow(1 - finance_results_t.wgsd_net_inc[i] / finance_results_t.wgsd_com_eq[i], 5)) / (finance_results_t.wgsd_net_inc[i] / finance_results_t.wgsd_com_eq[i]))
+                    tempdata.push(datavalue)
+                }
+
+                var rowNode = mydatatb
+                        .row.add([dict["com_value_evaluate"]].concat(numfilter(tempdata)))
+                        .draw()
+                        .node();
+                $(rowNode)
+                        .attr('id', "com_value_evaluate");
+            }
+            if (Chosenindexes.hasOwnProperty("per_com_value_evaluate")) {
+                tempdata = []
+                for (i = 0; i < finance_results_t.the_year.length; i++) {
+                    datavalue = (finance_results_t.wgsd_net_inc[i] *
+                            (1 / (Math.pow(1 - finance_results_t.wgsd_net_inc[i] / finance_results_t.wgsd_com_eq[i], 5)) / (finance_results_t.wgsd_net_inc[i] / finance_results_t.wgsd_com_eq[i]))) / invest_results_t.total_shares[i]
+                    tempdata.push(datavalue)
+                }
+
+                var rowNode = mydatatb
+                        .row.add([dict["per_com_value_evaluate"]].concat(numfilter(tempdata)))
+                        .draw()
+                        .node();
+                $(rowNode)
+                        .attr('id', "per_com_value_evaluate");
+            }
+
+            if (Chosenindexes.hasOwnProperty("fre_cash_evaluate")) {
+                tempdata = []
+                for (i = 0; i < finance_results_t.the_year.length; i++) {
+                    datavalue = finance_results_t.operatecashflow_ttm2[i] + finance_results_t.investcashflow_ttm2[i]
+                    tempdata.push(datavalue)
+                }
+
+                var rowNode = mydatatb
+                        .row.add([dict["fre_cash_evaluate"]].concat(numfilter(tempdata)))
+                        .draw()
+                        .node();
+                $(rowNode)
+                        .attr('id', "fre_cash_evaluate");
+            }
+            if (Chosenindexes.hasOwnProperty("earning_rate")) {
+                tempdata = []
+                for (i = 0; i < finance_results_t.the_year.length; i++) {
+                    datavalue = invest_results_t.ev[i] / finance_results_t.wgsd_net_inc[i]
+                    tempdata.push(datavalue)
+                }
+
+                var rowNode = mydatatb
+                        .row.add([dict["earning_rate"]].concat(numfilter(tempdata)))
+                        .draw()
+                        .node();
+                $(rowNode)
+                        .attr('id', "earning_rate");
+            }
+            if (Chosenindexes.hasOwnProperty("net_rate")) {
+                tempdata = []
+                for (i = 0; i < finance_results_t.the_year.length; i++) {
+                    datavalue = invest_results_t.ev[i] / finance_results_t.wgsd_com_eq[i]
+                    tempdata.push(datavalue)
+                }
+
+                var rowNode = mydatatb
+                        .row.add([dict["net_rate"]].concat(numfilter(tempdata)))
+                        .draw()
+                        .node();
+                $(rowNode)
+                        .attr('id', "net_rate");
+            }
+            if (Chosenindexes.hasOwnProperty("sale_rate")) {
+                tempdata = []
+                for (i = 0; i < finance_results_t.the_year.length; i++) {
+                    datavalue = invest_results_t.ev[i] / finance_results_t.tot_oper_rev[i]
+                    tempdata.push(datavalue)
+                }
+
+                var rowNode = mydatatb
+                        .row.add([dict["sale_rate"]].concat(numfilter(tempdata)))
+                        .draw()
+                        .node();
+                $(rowNode)
+                        .attr('id', "sale_rate");
+            }
+            if (Chosenindexes.hasOwnProperty("cash_rate")) {
+                tempdata = []
+                for (i = 0; i < finance_results_t.the_year.length; i++) {
+                    datavalue = invest_results_t.ev[i] / finance_results_t.operatecashflow_ttm2[i]
+                    tempdata.push(datavalue)
+                }
+
+                var rowNode = mydatatb
+                        .row.add([dict["cash_rate"]].concat(numfilter(tempdata)))
+                        .draw()
+                        .node();
+                $(rowNode)
+                        .attr('id', "cash_rate");
+            }
+            if (Chosenindexes.hasOwnProperty("cash_yield_evaluate")) {
+                tempdata = []
+                for (i = 0; i < finance_results_t.the_year.length; i++) {
+                    datavalue = (finance_results_t.operatecashflow_ttm2[i] + finance_results_t.investcashflow_ttm2[i]) / invest_results_t.ev[i]
+                    tempdata.push(datavalue)
+                }
+
+                var rowNode = mydatatb
+                        .row.add([dict["cash_yield_evaluate"]].concat(numfilter(tempdata)))
+                        .draw()
+                        .node();
+                $(rowNode)
+                        .attr('id', "cash_yield_evaluate");
+            }
+            for (var key in Chosenindexes) {
+                $('tr#' + key).css('color', Chosenindexes[key])
+            }
+
+
+        }
+        function NewColor() {
+            var colorElements = "0,1,2,3,4,5,6,7,8,9,a,b,c,d,e,f";
+            var colorArray = colorElements.split(",");
+            var color = "#";
+            for (var i = 0; i < 6; i++) {
+                color += colorArray[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+        function numfilter(oldnum) {
+            newnum = []
+            for (i = 0; i < oldnum.length; i++) {
+                temp = oldnum[i] / denominator;
+                temp.toFixed(2);
+                newnum.push(temp)
+            }
+            return newnum;
+        }
+        function dateformat(olddate) {
+            newdate = []
+
+            for (i = 0; i < olddate.length; i++) {
+                var str = olddate[i];
+                var reg = /1231/g;
+                str = str.replace(reg, '年Q4');
+                newdate.push(str)
+            }
+            return newdate
+        }
+    </script>
+{% endblock %}

@@ -24,13 +24,13 @@ roles = db.Table(
 #     permissions = db.Column(db.Integer)
 
 
-class roles1(db.Model):
+class users_roles(db.Model):
     __bind_key__ = 'users_info'
-    __tablename__ = 'users_role'
+    __tablename__ = 'role1'
     id = db.Column(db.Integer, primary_key=True)
     user_name = db.Column(db.String(80), db.ForeignKey('users.username'))
     permissions = db.Column(db.Integer)
-    permissions_name = db.Column(db.Integer)
+    # permissions_name = db.Column(db.Integer)
 
 
 # 权限常量
@@ -49,7 +49,7 @@ class users(UserMixin, db.Model):
     # def __init__(self, **kwargs):
     #     super(User, self).__init__(**kwargs)
     def can(self, permissions):
-        result = roles1.query.filter_by(user_name=self.username).first()
+        result = users_roles.query.filter_by(user_name=self.username).first()
         return result is not None and \
                result.permissions <= permissions
 
@@ -103,7 +103,7 @@ class history(db.Model):
     position=db.Column(db.String(10))
     price=db.Column(db.Numeric)
     amount=db.Column(db.Integer)
-    value = db.Column(db.Numeric)
+    commission=db.Column(db.Numeric)
     time=db.Column(db.DateTime())
 
 class investment_portfolio(db.Model):
@@ -112,12 +112,8 @@ class investment_portfolio(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_name = db.Column(db.String(20), db.ForeignKey('users.username'))
     code = db.Column(db.String(10))
-    num=db.Column(db.Integer)
-class users_finance(db.Model):
-    __bind_key__ = 'users_info'
-    __tablename__ = 'users_finance'
-    users = db.Column(db.String(20),db.ForeignKey('users.username'),primary_key=True)
-    cost=db.Column(db.Numeric)
+    shares=db.Column(db.Integer)
+    total_cost=db.Column(db.Numeric)
 
 class Role(db.Model):
     __bind_key__ = 'users_info'
@@ -126,6 +122,11 @@ class Role(db.Model):
     name = db.Column(db.String(80), unique=True)
     description = db.Column(db.String(255))
 
+class basic_stock(db.Model):
+    __tablename__="basic_stock"
+    code=db.Column(db.String(20), primary_key=True)
+    name=db.Column(db.String(20))
+    industry=db.Column(db.String(20))
 
 class stock_basics(db.Model):
     __tablename__ = 'stock_basics'
