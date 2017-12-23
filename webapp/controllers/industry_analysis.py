@@ -423,3 +423,9 @@ def annual_table_b(year='20151231', parameter=4):  # 默认是2015年
 @login_required
 def market_value():
     return render_template('industry_analysis/market_value.html')
+
+
+@industryanalysis_blueprint.route('/mymark', methods=('GET', 'POST'))  # 太慢了！！！
+@login_required
+def mymark():
+    return render_template('industry_analysis/mymark.html')
