@@ -1,19 +1,22 @@
 {% extends "stock_base.html" %}
+
 {% block current_user %}
     当前用户：{{ current_user.username }}
 {% endblock %}
 
+{% block styles %}
+{% endblock %}
+
 {% block body %}
-    {% block tab %}{% endblock %}
-    <br>
-    {% block form %}{% endblock %}
-    <div id="myTabContent">
-        {% block container %}{% endblock %} <!--annual和status两个表的height不一样-->
+    <div class="parent" style="width:100%;height:auto;text-align: center;background-color: rgba(161,252,146,0.11);">
+        {% block tab %}{% endblock %} <!--annual和status两个表的height不一样-->
     </div>
     {% block navigation %} {% endblock %}
-    {% block scripts %} {% endblock %} <!--auto complete-->
+    {% block scripts %} {% endblock %}<!--auto complete-->
 {% endblock %}
 
 <SCRIPT Language=VBScript><!--
 
-//--></SCRIPT>
+//-->
+
+</SCRIPT>

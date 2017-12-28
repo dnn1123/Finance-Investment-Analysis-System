@@ -371,6 +371,94 @@ def market_value():
     return jsonify(data)
 
 
+@api_blueprint.route("/market_one/", methods=('GET', 'POST'))
+def market_one():
+    time = request.args.get('time')
+    indexes = request.args.getlist('indexes[]')
+    codes = ['10', '15', '20', '25', '30', '35', '40', '45', '55', '60']
+
+    db_engine = create_engine('mysql://root:0000@localhost/test?charset=utf8')
+    Session = sessionmaker(bind=db_engine)
+    session = Session()
+
+    data_list = []
+
+    for code in codes:
+        results = session.query(func.sum(finance_basics_add.tot_oper_rev).label("tot_oper_rev"),
+                                func.sum(finance_basics_add.tot_assets).label("tot_assets"),
+                                func.sum(finance_basics_add.tot_liab).label("tot_liab"),
+                                func.sum(finance_basics_add.wgsd_com_eq).label("wgsd_com_eq"),
+                                cns_department_industry.industry_gics_1.label("industry_gics_1")).filter(
+            finance_basics_add.the_year == time).filter(
+            finance_basics_add.trade_code == cns_stock_industry.trade_code).filter(
+            cns_stock_industry.industry_gicscode_4 == cns_sub_industry.industry_gicscode_4).filter(
+            cns_sub_industry.belong == cns_industry.industry_gicscode_3).filter(
+            cns_industry.belong == cns_group_industry.industry_gicscode_2).filter(
+            cns_group_industry.belong == cns_department_industry.industry_gicscode_1).filter(
+            cns_department_industry.industry_gicscode_1 == code).all()
+        for result in results:
+            for index in indexes:
+                if eval("result." + index) is not None:
+                    exec ("my" + index + "= float((result." + index + ")/100000000)")
+                else:
+                    exec ("my" + index + "= 0 ")
+                exec ("data_list.append(my" + index + ")")
+
+    data = {}
+    data['my_code'] = codes
+    data['my_num'] = data_list
+
+    return jsonify(data)
+
+
+@api_blueprint.route("/market_bar/", methods=('GET', 'POST'))
+def market_bar():
+    time = request.args.get('time')
+    indexes = request.args.getlist('indexes[]')
+
+    db_engine = create_engine('mysql://root:0000@localhost/test?charset=utf8')
+    Session = sessionmaker(bind=db_engine)
+    session = Session()
+
+    results = session.query(finance_basics_add.tot_oper_rev.label("tot_oper_rev"),
+                            finance_basics_add.net_profit_is.label("net_profit_is"),
+                            finance_basics_add.wgsd_net_inc.label("wgsd_net_inc"),
+                            finance_basics_add.tot_assets.label("tot_assets"),
+                            finance_basics_add.tot_liab.label("tot_liab"),
+                            finance_basics_add.net_assets.label("net_assets"),
+                            finance_basics_add.wgsd_com_eq.label("wgsd_com_eq"),
+                            finance_basics_add.operatecashflow_ttm2.label("operatecashflow_ttm2"),
+                            finance_basics_add.investcashflow_ttm2.label("investcashflow_ttm2"),
+                            finance_basics_add.financecashflow_ttm2.label("financecashflow_ttm2"),
+                            finance_basics_add.cashflow_ttm2.label("cashflow_ttm2"),
+                            finance_basics_add.free_cash_flow.label("free_cash_flow"),
+                            finance_basics_add.the_year.label("the_year"),
+                            finance_basics_add.trade_code.label("trade_code")).filter(
+        finance_basics_add.the_year == time).all()
+
+    x_list = []
+    for index in indexes:
+        exec (index + "_list=[]")
+
+    for result in results:
+        x_list.append(result.trade_code)
+    for index in indexes:
+        if eval("result." + index) is not None:
+            exec ("my" + index + "= float((result." + index + ")/100000000)")
+        else:
+            exec ("my" + index + "= 0 ")
+        exec (index + "_list.append(my" + index + ")")
+
+    data = {}
+    data['my_code'] = x_list
+    data['indexes'] = indexes
+
+    for index in indexes:
+        exec ("data['" + index + "']=" + index + "_list")
+
+    return jsonify(data)
+
+
 @api_blueprint.route("/market_status1/", methods=('GET', 'POST'))
 def market_status1():
     data = {}
