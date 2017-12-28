@@ -230,12 +230,12 @@
                     <div class="span3"  >
                         <div class="sidebar">
                             <ul class="widget widget-menu unstyled">
-                                <li class="active"><a href="index.html"><i class="menu-icon icon-dashboard"></i>我的账户
+                                 <li class="active"><a href="{{ url_for('stock.home') }}"><i class="menu-icon icon-dashboard"></i>我的账户
                                 </a></li>
                                 <!--关注股票的综合面板-->
-                                <li><a href="activity.html"><i class="menu-icon icon-bullhorn"></i>我的关注股票</a>
+                                <li><a href="{{ url_for('main.my_favoritecode') }}"><i class="menu-icon icon-bullhorn"></i>我的关注股票</a>
                                 </li>
-                                <li><a href="form.html"><i class="menu-icon icon-paste"></i>当前持仓 </a></li>
+                                <li><a href="{{ url_for('stock.myposition') }}"><i class="menu-icon icon-paste"></i>当前持仓 </a></li>
                                 <li><a href="message.html"><i class="menu-icon icon-inbox"></i>我的消息 <b class="label green pull-right">
                                     11</b> </a></li>
                                 <li><a href="task.html"><i class="menu-icon icon-tasks"></i>系统消息 <b class="label orange pull-right">
