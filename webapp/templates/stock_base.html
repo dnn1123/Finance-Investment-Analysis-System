@@ -178,12 +178,18 @@
                     <li><a href="#"><i class="icon-eye-open"></i></a></li>
                     <li><a href="#"><i class="icon-bar-chart"></i></a></li>
                 </ul>
-                <form class="navbar-search pull-left input-append" action="#">
-                    <input type="text" class="span3">
-                    <button class="btn" type="button">
-                        <i class="icon-search"></i>
-                    </button>
-                </form>
+
+                {##}
+                {#                        <form class="navbar-search pull-left input-append" action="#">#}
+                {#                        <input type="text" class="span3">#}
+                {#                        <button class="btn" type="button">#}
+                {#                            <i class="icon-search"></i>#}
+                {#                        </button>#}
+                {#                        </form>#}
+
+                {% block searchForm %}{% endblock %}
+
+
                 <ul class="nav pull-right">
                     <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">功能导航
                         <b class="caret"></b></a>
@@ -197,7 +203,6 @@
                     <li><a href="{{ url_for('stock.home') }}">返回主页 </a></li>
                     <li class="nav-user dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <img src="{{ url_for('static',filename='images/user.png') }}" class="nav-avatar"/>
-                        {% block current_user %}{% endblock %}
                         <b class="caret"></b></a>
                         <ul class="dropdown-menu">
                             <li><a href="{{ url_for('main.personal') }}">个人信息</a></li>
@@ -208,78 +213,77 @@
                         </ul>
                     </li>
                 </ul>
-                </li>
-                </ul>
             </div>
             <!-- /.nav-collapse -->
         </div>
-        <div class="wrapper">
-            <div class="container">
-                <div class="row">
-                    <div class="span3">
-                        <div class="sidebar">
-                            <ul class="widget widget-menu unstyled">
-                                <li class="active"><a href="{{ url_for('stock.home') }}"><i
-                                        class="menu-icon icon-dashboard"></i>我的账户
-                                </a></li>
-                                <!--关注股票的综合面板-->
-                                <li><a href="{{ url_for('main.my_favoritecode') }}"><i
-                                        class="menu-icon icon-bullhorn"></i>我的关注股票</a>
-                                </li>
-                                <li><a href="{{ url_for('stock.myposition') }}"><i class="menu-icon icon-paste"></i>当前持仓
-                                </a></li>
-                                <li><a href="message.html"><i class="menu-icon icon-inbox"></i>我的消息 <b
-                                        class="label green pull-right">
-                                    11</b> </a></li>
-                                <li><a href="task.html"><i class="menu-icon icon-tasks"></i>系统消息 <b
-                                        class="label orange pull-right">
-                                    19</b> </a></li>
+    </div>
+    <!-- /navbar-inner -->
+</div>
+
+<div class="wrapper">
+    <div class="container">
+        <div class="row" style="height: auto">
+            <div class="span3">
+                <div class="sidebar">
+                    <ul class="widget widget-menu unstyled">
+                        <li class="active"><a href="{{ url_for('stock.home') }}"><i
+                                class="menu-icon icon-dashboard"></i>我的账户
+                        </a></li>
+                        <!--关注股票的综合面板-->
+                        <li><a href="{{ url_for('main.my_favoritecode') }}"><i class="menu-icon icon-bullhorn"></i>我的关注股票</a>
+                        </li>
+                        <li><a href="{{ url_for('stock.myposition') }}"><i class="menu-icon icon-paste"></i>当前持仓 </a>
+                        </li>
+                        <li><a href="message.html"><i class="menu-icon icon-inbox"></i>我的消息 <b
+                                class="label green pull-right">
+                            11</b> </a></li>
+                        <li><a href="task.html"><i class="menu-icon icon-tasks"></i>系统消息 <b
+                                class="label orange pull-right">
+                            19</b> </a></li>
+                    </ul>
+                    <!--/.widget-nav-->
+
+
+                    <ul class="widget widget-menu unstyled">
+                        <li><a class="collapsed" data-toggle="collapse" href="#togglePages"><i
+                                class="menu-icon icon-cog">
+                        </i><i class="icon-chevron-down pull-right"></i><i class="icon-chevron-up pull-right">
+                        </i>财务分析 </a>
+                            <ul id="togglePages" class="collapse unstyled">
+                                <li><a href="{{ url_for('stock_solo.basic') }}"><i class="icon-inbox"></i>股票个体分析 </a></li>
+                                <li><a href="{{ url_for('stock_group.navigation') }}"><i class="icon-inbox"></i>股票总体概览 </a></li>
+                                <li><a href="{{ url_for('industry_analysis.mymark') }}"><i class="icon-inbox"></i>整体行业状况分析 </a></li>
+                                <li><a href="{{ url_for('stock_solo.basic') }}"><i class="icon-inbox"></i>投资分类评级 </a></li>
                             </ul>
-                            <!--/.widget-nav-->
+                        </li>
+                        <li><a href="ui-button-icon.html"><i class="menu-icon icon-bold"></i> 财务分析 </a></li>
 
+                        <li><a href="ui-typography.html"><i class="menu-icon icon-book"></i> 量化模型 </a></li>
 
-                            <ul class="widget widget-menu unstyled">
-                                <li><a class="collapsed" data-toggle="collapse" href="#togglePages"><i
-                                        class="menu-icon icon-cog">
-                                </i><i class="icon-chevron-down pull-right"></i><i class="icon-chevron-up pull-right">
-                                </i>财务分析 </a>
-                                    <ul id="togglePages" class="collapse unstyled">
-                                        <li><a href="{{ url_for('stock_solo.basic') }}"><i class="icon-inbox"></i>股票个体分析
-                                        </a></li>
-                                        <li><a href="other-user-profile.html"><i class="icon-inbox"></i>股票总体概览 </a></li>
-                                        <li><a href="{{ url_for('industry_analysis.mymark')}}"><i class="icon-inbox"></i>整体行业状况分析 </a>
-                                        </li>
-                                        <li><a href="other-user-listing.html"><i class="icon-inbox"></i>投资分类评级 </a></li>
-                                    </ul>
-                                </li>
-                                <li><a href="ui-button-icon.html"><i class="menu-icon icon-bold"></i> 财务分析 </a></li>
+                        <li><a href="table.html"><i class="menu-icon icon-table"></i>交易模型 </a></li>
+                        <!--<li><a href="charts.html"><i class="menu-icon icon-bar-chart"></i>Charts </a></li>-->
+                    </ul>
+                    <!--/.widget-nav-->
+                    <ul class="widget widget-menu unstyled">
 
-                                <li><a href="ui-typography.html"><i class="menu-icon icon-book"></i> 量化模型 </a></li>
-
-                                <li><a href="table.html"><i class="menu-icon icon-table"></i>交易模型 </a></li>
-                                <!--<li><a href="charts.html"><i class="menu-icon icon-bar-chart"></i>Charts </a></li>-->
-                            </ul>
-                            <!--/.widget-nav-->
-                            <ul class="widget widget-menu unstyled">
-
-                                <li><a href="#"><i class="menu-icon icon-signout"></i>退出登录 </a></li>
-                            </ul>
-                        </div>
-                        <!--/.sidebar-->
-                        <div class="sidebar">
+                        <li><a href="{{ url_for('main.logout') }}"><i class="menu-icon icon-signout"></i>退出登录 </a></li>
+                    </ul>
+                </div>
+                <!--/.sidebar-->
+            <div class="sidebar">
                             {% block map %}{% endblock %}
                         </div>
+                {% block left %}{% endblock %}
 
-                    </div>
-                    <!--/.span3-->
-                    {% block body %}{% endblock %}
-                    <!--/.span9-->
-                </div>
             </div>
+            <!--/.span3-->
+            {% block body %}{% endblock %}
+            <!--/.span9-->
         </div>
+        {% block bottombody %}{% endblock %}
     </div>
     <!--/.container-->
 </div>
-
 </body>
+{% block JavaScripts %}{% endblock %}
 </html>

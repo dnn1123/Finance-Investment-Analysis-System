@@ -70,10 +70,10 @@ def cns_home():
         cns_stock_industry.trade_code).paginate(page, per_page=200, error_out=False)  # 共有3197条记录 此为分页功能
     result = pagination.items
     length = len(result)
-    user = roles1.query.filter_by(user_name=current_user.username).first()
+    # user = roles1.query.filter_by(user_name=current_user.username).first()
     return render_template("stock_group/cns/cns_stock_industry.html", cns_filterform1=cns_filterform1,
                            cns_filterform2=cns_filterform2, cns_filterform3=cns_filterform3,
-                           cns_filterform4=cns_filterform4, result=result, pagination=pagination, length=length,user=user)
+                           cns_filterform4=cns_filterform4, result=result, pagination=pagination, length=length)
 
 # 显示“主营业务”详情
 @stockgroup_blueprint.route('/cns_business_detail/', methods=('GET', 'POST'))
@@ -271,10 +271,10 @@ def cnsb_home():
                                                                                               error_out=False)  # 共有3197条记录 此为分页功能
     result = pagination.items
     length = len(result)
-    user = roles1.query.filter_by(user_name=current_user.username).first()
+    # user = roles1.query.filter_by(user_name=current_user.username).first()
     return render_template("stock_group/cns/cnsb_stock_industry.html", cnsb_filterform1=cnsb_filterform1,
                            cnsb_filterform2=cnsb_filterform2, cnsb_filterform3=cnsb_filterform3,
-                           cnsb_filterform4=cnsb_filterform4, result=result, pagination=pagination, length=length,user=user)
+                           cnsb_filterform4=cnsb_filterform4, result=result, pagination=pagination, length=length)
 
 
 # usa美国市场
@@ -295,10 +295,10 @@ def usa_home():
                                                                                                   error_out=False)  # 这一段去掉了也无影响：.filter(usa_group_industry.belong==usa_department_industry.industry_gicscode_1).filter(usa_industry.belong==usa_group_industry.industry_gicscode_2).filter(usa_sub_industry.belong==usa_industry.industry_gicscode_3).filter(usa_stock_industry.industry_gicscode_4==usa_sub_industry.industry_gicscode_4)
     result = pagination.items  # per_page从300改成了200
     length = len(result)
-    user = roles1.query.filter_by(user_name=current_user.username).first()
+    # user = roles1.query.filter_by(user_name=current_user.username).first()
     return render_template("stock_group/usa/usa_stock_industry.html", usa_filterform1=usa_filterform1,
                            usa_filterform2=usa_filterform2, usa_filterform3=usa_filterform3,
-                           usa_filterform4=usa_filterform4, result=result, pagination=pagination, length=length,user=user)
+                           usa_filterform4=usa_filterform4, result=result, pagination=pagination, length=length)
 
 
 # usa-显示“主营业务”详情
@@ -337,7 +337,7 @@ def usa_update_gics_4(trade_code='A'):  # 疑问：这一行是什么意思？�
 @stockgroup_blueprint.route('/usa_update_industry/<string:trade_code>', methods=('GET', 'POST'))
 @login_required
 def usa_update_industry(trade_code='A'):  # 疑问：这一行是什么意思？之前写的‘000001’就不对，必须改成‘A’
-    form = usa_Update_department_1_Form()
+    form = usa_update_department_Form()
     if form.validate_on_submit():
         old_industry = request.form.get('old_industry')
         new_industry = request.form.get('new_industry')
@@ -467,9 +467,9 @@ def usa_djia():
 
     v_stock_industry = usa_stock_industry.query.all()  # 以下是获取数据总共有多少个
     # stock_length = len(v_stock_industry)
-    user = roles1.query.filter_by(user_name=current_user.username).first()
+    # user = roles1.query.filter_by(user_name=current_user.username).first()
     return render_template("stock_group/usa/usa_djia.html", result=result, pagination=pagination,
-                           v_stock_industry=v_stock_industry, length=length,user=user)
+                           v_stock_industry=v_stock_industry, length=length)
 
 
 # 标准普尔500成份股
@@ -499,9 +499,9 @@ def usa_sp500():
     length = len(result)
 
     v_stock_industry = usa_stock_industry.query.all()  # 以下是获取数据总共有多少个
-    user = roles1.query.filter_by(user_name=current_user.username).first()
+    # user = roles1.query.filter_by(user_name=current_user.username).first()
     return render_template("stock_group/usa/usa_sp500.html", result=result, pagination=pagination,
-                           v_stock_industry=v_stock_industry, length=length,user=user)
+                           v_stock_industry=v_stock_industry, length=length)
 
 
 # hks 香港市场
