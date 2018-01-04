@@ -22,13 +22,14 @@ stocksolo_blueprint = Blueprint(
 )
 @stocksolo_blueprint.route('/',methods=('GET','POST'))
 @stocksolo_blueprint.route('/<string:data>',methods=('GET','POST'))
-# @login_required
+@login_required
 
-def basic(data=""):
-    if session.has_key('stockcode'):
-        data = session['stockcode']
-    else:
-        data = '000001'
+def basic(data):
+    if data=="":
+        if session.has_key('stockcode'):
+            data = session['stockcode']
+        else:
+            data = '000001'
     if (request.method == 'POST'):
         stockcode=request.form.get("stockcode","000001")
         session['stockcode'] = stockcode

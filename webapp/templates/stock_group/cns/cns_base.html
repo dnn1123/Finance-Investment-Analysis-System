@@ -1,25 +1,26 @@
 {% extends "stock_base.html" %}
 {% block current_user %}
-    当前用户：{{ current_user.username }}
+    {{ current_user.username }}
 {% endblock %}
 {% block body %}
+    <div class="span9">
     <div>
         {% block form %} {% endblock %}
     </div>
 
 {% block tab %}{% endblock %}
-    <br>
     <!-- 以下对应四个板块-->
-    <div id="myTabContent" class="tab-content" > <!--style="border:1px solid #000"-->
+    <div id="myTabContent" class="tab-content" style="overflow: visible"> <!--style="border:1px solid #000"-->
    {#     <div class="tab-pane fade in active" id="industry" style="height:70%;overflow-y:auto;"> <!--overflow-y:auto;限定div范围设置滚动条防止溢出-->
             {% block industry %}{% endblock %}
         </div>#}
-        <div class="tab-pane fade in active" id="industry" style="height:70%;"> <!--overflow-y:auto;限定div范围设置滚动条防止溢出-->
+        <div class="tab-pane fade in active" id="industry" style="height:80%;"> <!--overflow-y:auto;限定div范围设置滚动条防止溢出-->
             {% block industry %}{% endblock %}
         </div>
     </div>
 
     {% block navigation%} {% endblock %}
+    </div>>
 {% endblock %}
 <SCRIPT Language=VBScript><!--
 

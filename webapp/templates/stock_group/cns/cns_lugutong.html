@@ -4,10 +4,60 @@
 {% import "_macros.html" as macros %}
 
 {% block fixTable %}
+    <script type="text/javascript">
+        // 等待所有加载
+        $(window).load(function () {
+            $('body').addClass('loaded');
+            $('#loader-wrapper .load_title').remove();
+        });
+    </script>
+
+    <div id="loader-wrapper">
+        <div id="loader"></div>
+        <div class="loader-section section-left"></div>
+        <div class="loader-section section-right"></div>
+        <div class="load_title">Loading<br><span>V1.0</span></div>
+    </div>
     <script>
-			$(document).ready(function() {
-				$("#fixTable").tableHeadFixer({"left" : 3});
-			});
+        $(document).ready(function () {
+            $("#fixTable").DataTable({
+                "info": false,
+                "ordering": false,
+                "processing": true,
+                "scrollY": "95%",
+                "scrollX": true,
+                "searching": true,
+                "paging": false,
+                "fixedColumns": { //固定列的配置项
+                    "leftColumns": 3//固定左边第一列
+                },
+                "columnDefs": [{
+                    "targets": 1,
+                    "render": function (data, type, row) {
+                        html =
+                        {{ url_for('stock_solo.basic') }}
+                        return '<a href="' + html + row[0] + '">' + data + '</a>';
+                    }
+                }],
+                "language": {
+                    "emptyTable": "没有数据",
+                    "loadingRecords": "加载中…",
+                    "processing": "查询中…",
+                    "search": "检索:",
+                    "lengthMenu": "每页 _MENU_ 条",
+                    "zeroRecords": "没有数据",
+                    "paginate": {
+                        "first": "第一页",
+                        "last": "最后一页",
+                        "next": "",
+                        "previous": ""
+                    },
+                    "info": "第 _PAGE_ 页 / 总 _PAGES_ 页",
+                    "infoEmpty": "没有数据",
+                    "infoFiltered": "(过滤总件数 _MAX_ 条)"
+                },
+            })
+        });
     </script>
 {% endblock %}
 
@@ -36,21 +86,21 @@
 {% block industry %}
 <table  id="fixTable" class="table table-striped" style="border-color:#000;white-space: nowrap;">
     <thead>
-        <tr bgcolor="#CC0000">
-            <td><font color="white">证券代码</font></td>
-            <td><font color="white">证券名称</font></td>
-            <td><font color="white">上市时间</font></td>
-            <td><font color="white">部门</font></td>
-            <td><font color="white">行业组</font></td>
-            <td><font color="white">行业</font></td>
-            <td><font color="white">子行业</font></td>
-            <td><font color="white">主营业务</font></td>
-            <td><font color="white">所在区域</font></td>
-            <td><font color="white">注册城市</font></td>
-            <td><font color="white">交易所</font></td>
-            <td><font color="white">所属国家</font></td>
-            <td><font color="white">交易币种</font></td>
-            <td><font color="white">公司属性</font></td>
+        <tr >
+            <td style="background-color: #F1F0EE">证券代码</td>
+            <td style="background-color: #F1F0EE">证券名称</td>
+            <td style="background-color: #F1F0EE">上市时间</td>
+            <td>部门</td>
+            <td>行业组</td>
+            <td>行业</td>
+            <td>子行业</td>
+            <td>主营业务</td>
+            <td>所在区域</td>
+            <td>注册城市</td>
+            <td>交易所</td>
+            <td>所属国家</td>
+            <td>交易币种</td>
+            <td>公司属性</td>
         </tr>
     </thead>
     <tbody>
