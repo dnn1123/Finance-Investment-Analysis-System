@@ -5,8 +5,11 @@ import tushare as ts
 import pandas as pd
 import os
 from datetime import *
+# 服务器路径
+# path = '/var/www/wsgi-scripts/webapp/histdata'
+# 调试路径
+path = os.path.join(os.getcwd(),'webapp', 'histdata')
 def get_k_data_recent(instruement,startdate):
-    path='/var/www/wsgi-scripts/webapp/histdata'
     # 得到15分钟数据（股票300336,始于2016-01-01,止于2016-05-24,15分钟数据）
     data = ts.get_k_data(instruement,startdate)
     # 数据存盘
@@ -58,7 +61,7 @@ class Profit_monitoring():
                 __codelist__.append(i['code'])
         for i in __codelist__:
             get_k_data_recent(i,__time__)
-            feed.addBarsFromCSV(i, os.path.join('/var/www/wsgi-scripts/webapp','histdata',i+'.csv'))
+            feed.addBarsFromCSV(i, os.path.join(path,i+'.csv'))
         return feed
     def start(self):
         if self.__status__=='null':

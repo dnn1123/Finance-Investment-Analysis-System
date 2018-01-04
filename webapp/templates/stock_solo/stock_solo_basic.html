@@ -1,25 +1,8 @@
 {% extends "stock_solo/stock_solo_base.html" %}
+{% block current_user %}
+    {{ current_user.username }}
+{% endblock %}
 {% block styles %}
-    {#<style>#}
-    {#div.sidebar input {#}
-    {#	background: #fff;#}
-    {##}
-    {#	-webkit-border-radius: 3px;#}
-    {#	-moz-border-radius: 3px;#}
-    {#	border-radius: 3px;#}
-    {##}
-    {#	overflow: hidden#}
-    {#}#}
-    {#.widget-menu a {#}
-    {#	color: #555;#}
-    {#	display: block;#}
-    {#	line-height: 20px;#}
-    {#	padding: 15px;#}
-    {#	text-decoration: none!important#}
-    {#}#}
-    {##}
-    {##}
-    {#</style>#}
 {% endblock %}
 {% block left %}
     <div class="module">
@@ -268,23 +251,18 @@
                 </div>
             </div>
 
+<div class="row">
 
-        </div>
-    </div>
-
-{% endblock %}
-
-
-
-{% block bottombody %}
-    <div class="row">
-        <div class="span6">
-            <div class="row">
+        <div class="span9 module">
+            <div class="module-head">
+                <h3>财务数据分析</h3>
+            </div>
+            <div class="module-body">
+                <div class="row">
                 <div class="span2">
                     <div class="sidebar">
                         <div id="checkbox" style="height:85%;overflow-y :auto;margin-top:5%;">
                             <fieldset style='padding:0;' id="index">
-                                <legend>财务数据分析</legend>
                             </fieldset>
                         </div>
                         <div style="margin-top: 7px">
@@ -294,7 +272,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="span4">
+                <div class="span6">
                     <ul id="myTab" class="nav nav-tabs">
                         <li class="disabled">
                             <a href="javascript:return false;" data-toggle="tab" disabled='true'>视图：</a>
@@ -325,7 +303,7 @@
                                 <a style="width:50px;margin-left:10px;color: #0c0c0c">起始时间:</a><input type="text"
                                                                                                       id="ui3"
                                                                                                       style="background-color:white;width: 100px;margin-left: 10px"/>
-                                <br/><a style="width:50px;margin-left:10px;color: #0c0c0c">结束时间:</a><input type="text"
+                                <a style="width:50px;margin-left:10px;color: #0c0c0c">结束时间:</a><input type="text"
                                                                                                            id="ui4"
                                                                                                            style="background-color:white;width: 100px;margin-left: 10px"/>
                                 <br/><a style="width:50px;margin-left:10px;color: #0c0c0c">单位:</a>
@@ -336,7 +314,7 @@
                                     <option value="10000000">千万</option>
                                     <option value="1">元</option>
                                 </select>
-                                <br/><a style="width:50px;margin-left:10px;color: #0c0c0c">年份排序:</a>
+                                <a style="width:50px;margin-left:10px;color: #0c0c0c">年份排序:</a>
                                 <select id="yearorder"
                                         style="background-color:white;width: 100px;height:20px;margin-left: 10px;padding: 0px">
                                     <option value="asc">升序</option>
@@ -350,15 +328,25 @@
 
                 </div>
             </div>
+            </div>
+
         </div>
-        <div class="span6">
+
+    </div>
+
+
             <div class="row">
+                <div class="span9 module">
+                    <div class="module-head">
+                        <h3>投资价值分析</h3>
+                    </div>
+                    <div class="module-body">
+                        <div class="row">
                 <div class="span2">
                     <div class="sidebar">
                         {#            ##2d2b32#}
                         <div id="checkbox" style="height:85%;overflow-y :auto;margin-top:5%;">
                             <fieldset style='padding:0;' id="index2">
-                                <legend>投资价值分析</legend>
                             </fieldset>
                         </div>
                         <div style="margin-top: 7px">
@@ -458,7 +446,7 @@
                         CreateTable();
                     });
                 </script>
-                <div class="span4">
+                <div class="span6">
                     <ul id="myTab" class="nav nav-tabs">
                         <li class="disabled">
                             <a href="javascript:return false;" data-toggle="tab" disabled='true'>视图：</a>
@@ -482,7 +470,7 @@
                                                                                                   readonly
                                                                                                   class="form_datetime"
                                                                                                   style="background-color:white;width: 100px;margin-left: 10px">
-                            <br/><a style="width:50px;margin-left:10px;color: #0c0c0c">结束时间:</a><input size="16"
+                            <a style="width:50px;margin-left:10px;color: #0c0c0c">结束时间:</a><input size="16"
                                                                                                        type="text"
                                                                                                        value="2006-01-01"
                                                                                                        id="endtime"
@@ -495,7 +483,7 @@
                                 <option value="0">元</option>
                                 <option value="1">百万</option>
                             </select>
-                            <br/><a style="width:50px;margin-left:10px;color: #0c0c0c">顺序:</a>
+                            <a style="width:50px;margin-left:10px;color: #0c0c0c">顺序:</a>
                             <select id="yearorder"
                                     style="background-color:white;width: 100px;height:20px;padding:0px;margin-left: 10px">
                                 <option value="desc">降序</option>
@@ -577,10 +565,20 @@
                     </script>
                 </div>
             </div>
+                    </div>
+
         </div>
 
+            </div>>
 
+        </div>
     </div>
+
+{% endblock %}
+
+
+
+{% block bottombody %}
 {% endblock %}
 
 
