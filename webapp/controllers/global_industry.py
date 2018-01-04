@@ -51,9 +51,10 @@ def cns_market(sec_name=None, trade_code=None, query_history=None):
             stock_grade_h.grade_time.desc()).join(invest_grade).add_columns(invest_grade.grade_name).all()
         history_data_len = len(history_data)
         sec_name = None
+    user = users_roles.query.filter_by(user_name=current_user.username).first()
     return render_template("global_industry/cns_market.html", form=form, sec_name=sec_name, trade_code=trade_code,
                            query_history=query_history, result=result, pagination=pagination, length=length,
-                           history_data=history_data, history_data_len=history_data_len)
+                           history_data=history_data, history_data_len=history_data_len, current_user=current_user,user = user)
 
 
 # 修改:股票的评级

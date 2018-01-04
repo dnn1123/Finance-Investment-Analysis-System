@@ -896,7 +896,10 @@ def search():
     for result in results:
         code_list.append(result.code)
         result1 = finance_basics.query.filter_by(trade_code=result.code).first_or_404()
-        result2 = finance_basics.query.filter_by(trade_code=result.code).count()
+        result2 = favorite_code.query.filter_by(code=result.code).count()
+        # count=len(result2)
+        # data=favorite_code.query.filter_by(code=stockcode).all()
+        # count=len(data)
         name_list.append(result1.sec_name)
         count_list.append(result2)
     wind_4 = []

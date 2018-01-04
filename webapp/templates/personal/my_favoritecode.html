@@ -17,24 +17,38 @@
                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                                 <h4 class="modal-title" id="myModalLabel">添加关注</h4>
                             </div>
-                            <form id="searchform" class="navbar-form navbar-left" role="search" method="post"
-                                  action="{{ url_for('restfulapi.add_code') }}">
-                                <div class="modal-body">
-                                    <div calss="input-group">
-                                        <div class="form-group form-inline">
-                                            <label>股票： </label>
-                                            <input type="text" id="stockcode" name="stockcode" placeholder="Search"
-                                                   class="form-control"
-                                                   title="代码/拼音/名称"
-                                                   style="color: rgb(153, 153, 153);">
-                                        </div>
-                                    </div>
+{#                            <div class="modal-body">#}
+                            <form id="searchform" class="navbar-search pull-left input-append" role="search"
+                                  method="post"
+                                  action="{{ url_for('stock_solo.basic') }}">
+                                <div class="input-group" style="margin-left:10px">
+                                    <input type="text" class="span3 form-control" id="stockcode" style="height: 30px"
+                                           placeholder="Search" name="stockcode">
+{#                                    <button id="submitbtn" class="btn dropdown-toggle" style="height: 30px"#}
+{#                                            data-toggle="dropdown"#}
+{#                                            type="submit"><i class="icon-search"></i></button>#}
+                                    <ul class="dropdown-menu" role="menu" style="left: 0!important;"></ul>
                                 </div>
+                            </form>
+{#                               </div>#}
+{#                            <form id="searchform" class="navbar-form navbar-left" role="search" method="post"#}
+{#                                  action="{{ url_for('restfulapi.add_code') }}">#}
+{#                                <div class="modal-body">#}
+{#                                    <div calss="input-group">#}
+{#                                        <div class="form-group form-inline">#}
+{#                                            <label>股票： </label>#}
+{#                                            <input type="text" id="stockcode" name="stockcode" placeholder="Search"#}
+{#                                                   class="form-control"#}
+{#                                                   title="代码/拼音/名称"#}
+{#                                                   style="color: rgb(153, 153, 153);">#}
+{#                                        </div>#}
+{#                                    </div>#}
+{#                                </div>#}
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
                                     <button type="button" class="btn btn-primary" onclick="addStock()">确认</button>
                                 </div>
-                            </form>
+{#                            </form>#}
 
                         </div><!-- /.modal-content -->
                     </div><!-- /.modal-dialog -->
@@ -201,16 +215,16 @@
                                         <li><a href="#table" data-toggle="tab" onclick="RequestTable()">数据</a>
                                         </li>
                                     </ul>
-                                    <div id="myTabContent" class="tab-content" style="width: 100%">
+                                    <div id="myTabContent" class="tab-content" style="width: 100%;">
                                         <div class="tab-pane fade in active" id="chart">
                                             <div id="echart1"
-                                                 style="width: auto;height:80%;margin-left:20px;margin-top: 10px;">
+                                                 style="width: auto;height:250px;margin-left:20px;margin-top: 10px;">
 
                                             </div>
                                         </div>
                                         <div class="tab-pane fade" id="table" style="width:  100%">
                                             <div id="mytable"
-                                                 style="width: 100%;height:80%;overflow-y:scroll;overflow-x:scroll;">
+                                                 style="width: 100%;height:250px;overflow-y:scroll;overflow-x:scroll;">
                                                 <table id="fixTable" class="row-border hover order-column"
                                                        cellspacing="0" width="100%">
                                                     <thead id="table_head">
@@ -830,7 +844,7 @@
 
 
         }
-
+        {#投资指标饼状图#}
         function CreateChart(index, unit) {
             console.log(finance_results)
             {#                console.log(dataSeries)#}
@@ -862,9 +876,8 @@
                     y: 'bottom',
                     textStyle: {//主标题文本样式{"fontSize": 18,"fontWeight": "bolder","color": "#333"}
 
-                        fontSize: 3,
-
-                        fontWeight: 'lighter',
+                        fontSize: 10,
+                        fontWeight: 'bolder',
                     },
                 },
                 tooltip: {
@@ -912,29 +925,27 @@
             myChart3.setOption(option, true);
         }
         {#            股票补全#}
-        {#            var stocksuggest = $("input[name='stockcode']").bsSuggest({#}
-        {#                indexKey: 1,#}
-        {#                allowNoKeyword: false,#}
-        {#                getDataMethod: "url",#}
-        {#                url: '{{url_for("restfulapi.stock_code",q="")}}',#}
-        {#                processData: function (json) {     // url 获取数据时，对数据的处理，作为 getData 的回调函数#}
-        {#                    var i, len, data = {value: []};#}
-        {##}
-        {#                    if (!json || !json.stockcode || json.stockcode.length == 0) {#}
-        {#                        return false;#}
-        {#                    }#}
-        {#                    len = json.stockcode.length;#}
-        {##}
-        {#                    for (i = 0; i < len; i++) {#}
-        {#                        data.value.push({#}
-        {#                            "Id": (i + 1),#}
-        {#                            "stockcode": json.stockcode[i],#}
-        {#                            "stockname": json.stockname[i],#}
-        {#                        });#}
-        {#                    }#}
-        {#                    return data;#}
-        {#                }#}
-        {#            })#}
+        var stocksuggest = $("input[name='stockcode']").bsSuggest({
+            indexKey: 1,
+            allowNoKeyword: false,
+            getDataMethod: "url",
+            url: '{{url_for("restfulapi.stock_code",q="")}}',
+            processData: function (json) {     // url 获取数据时，对数据的处理，作为 getData 的回调函数
+                var i, len, data = {value: []};
+                if (!json || !json.stockcode || json.stockcode.length == 0) {
+                    return false;
+                }
+                len = json.stockcode.length;
+                for (i = 0; i < len; i++) {
+                    data.value.push({
+                        "Id": (i + 1),
+                        "stockcode": json.stockcode[i],
+                        "stockname": json.stockname[i],
+                    });
+                }
+                return data;
+            }
+        });
         {#yc#}
         var code_list = new Array();
 
@@ -1224,9 +1235,10 @@
                             y: 'bottom',
                             textStyle: {//主标题文本样式{"fontSize": 18,"fontWeight": "bolder","color": "#333"}
 
-                                fontSize: 3,
 
-                                fontWeight: 'lighter',
+                                fontSize: 10,
+                                fontWeight: 'bolder',
+
                             },
                         },
 
@@ -1292,9 +1304,8 @@
                             y: 'bottom',
                             textStyle: {//主标题文本样式{"fontSize": 18,"fontWeight": "bolder","color": "#333"}
 
-                                fontSize: 3,
-
-                                fontWeight: 'lighter',
+                                fontSize: 10,
+                                fontWeight: 'bolder',
                             },
                         },
 
@@ -1360,9 +1371,8 @@
                             y: 'bottom',
                             textStyle: {//主标题文本样式{"fontSize": 18,"fontWeight": "bolder","color": "#333"}
 
-                                fontSize: 3,
-
-                                fontWeight: 'lighter',
+                                fontSize: 10,
+                                fontWeight: 'bolder',
                             },
                         },
 
@@ -1428,9 +1438,8 @@
                             y: 'bottom',
                             textStyle: {//主标题文本样式{"fontSize": 18,"fontWeight": "bolder","color": "#333"}
 
-                                fontSize: 3,
-
-                                fontWeight: 'lighter',
+                                fontSize: 10,
+                                fontWeight: 'bolder',
                             },
                         },
 
@@ -1624,7 +1633,7 @@
         })
 
         $(document).ready(function () {
-
+            {#绘制对比折线图#}
             function createchart(stock_code_list, unit, dzstart, dend) {
                 var legenddata1 = new Array();
                 var seriesdata1 = [];
@@ -1689,10 +1698,10 @@
                                     {#                                        data: legenddata1#}
                                     {#                                    },#}
                                     grid: {
-{#                                        left: 100,#}
-                                        right: '4%',
-                                        bottom: '3%',
-                                        containLabel: true
+                                        {#                                        left: 100,#}
+                                        {#                                        right: '4%',#}
+                                        {#                                        bottom: '3%',#}
+                                        {#                                        containLabel: true#}
                                     },
                                     toolbox: {
 
@@ -1784,10 +1793,10 @@
                                     {#                                        data: legenddata1#}
                                     {#                                    },#}
                                     grid: {
-{#                                        left: 100,#}
-                                        right: '4%',
-                                        bottom: '3%',
-                                        containLabel: true
+                                        {#                                        left: 100,#}
+                                        {#                                        right: '4%',#}
+                                        {#                                        bottom: '3%',#}
+                                        {#                                        containLabel: true#}
                                     },
                                     toolbox: {
 
@@ -1841,6 +1850,7 @@
                 }
             }
 
+            {#财务指标饼状图#}
             function index_chart_by_year(code_list, index, year, unit) {
 
                 var myChart2 = echarts.init(document.getElementById('index_chart_by_year'));
@@ -1881,9 +1891,8 @@
                                     y: 'bottom',
                                     textStyle: {//主标题文本样式{"fontSize": 18,"fontWeight": "bolder","color": "#333"}
 
-                                        fontSize: 3,
-
-                                        fontWeight: 'lighter',
+                                        fontSize: 10,
+                                        fontWeight: 'bolder',
                                     },
                                 },
 
@@ -2161,19 +2170,7 @@
             });
 
             $.fn.dataTable.ext.errMode = 'none';
-            $("#hyfb").click(function () {
-                $(".fb").hide()
-                $("#div_hyfb").toggle();
 
-            });
-            $("#dqfb").click(function () {
-                $(".fb").hide()
-                $("#div_dqfb").toggle();
-            });
-            $("#sssj").click(function () {
-                $(".fb").hide()
-                $("#div_sssj").toggle();
-            });
 
         })
     </script>
