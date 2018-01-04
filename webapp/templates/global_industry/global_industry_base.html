@@ -4,17 +4,23 @@
 {% endblock %}
 
 {% block body %}
-    <div>
-    </div>
-
-{% block tab %}{% endblock %}
+    {#    <div>#}
+    <div class="span9">
+        <div class="content">
+            <div class="btn-controls">
+    {% block tab %}{% endblock %}
     <br>
     <div id="myTabContent">
         <div id="basics" style="height:70%;overflow-y:auto;">
             {% block table %}{% endblock %}
         </div>
     </div>
-    {% block navigation%} {% endblock %}
-{% endblock %}<SCRIPT Language=VBScript><!--
+    {% block navigation %} {% endblock %}
+        </div>
+    </div>
+    </div>
+{% endblock %}
+<SCRIPT Language=VBScript><!--
 
-//--></SCRIPT>
+//-->
+</SCRIPT>
