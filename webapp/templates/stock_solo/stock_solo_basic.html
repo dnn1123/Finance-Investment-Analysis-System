@@ -21,15 +21,15 @@
         <div class="content">
             <div class="module">
                 <div class="module-head">
-                    <a class="collapsed" data-toggle="collapse" data-target="#mycollapse"><h3>股票信息</h3></a>
+                    <button id="head1" class="btn btn-primary" data-toggle="button">股票信息</button>
                 </div>
-                <div class="module-body">
+                <div class="module-body" id="body1">
                     <section class="docs">
                         <h2>{{ stock.sec_name }} ({{ stock.trade_code }})</h2>
                         {#                        <p>All HTML headings, <code>&lt;h1&gt;</code> through <code>&lt;h6&gt;</code> are available.</p>#}
-                        <div class="docs" id="mycollapse">
+                        <div class="docs">
                             <table class="auto-style1" align="center"
-                                   style="width:100%;height: 400px; border-width: 2px; border-style: solid; border-color: #000000; background-color: #FFFFFF; font-family: 宋体, Arial, Helvetica, sans-serif; font-size: 10px;">
+                                   style="width:100%;height:400px;table-layout:fixed;word-break:break-all; word-wrap:break-word;table-layout:fixed; border-width: 2px; border-style: solid; border-color: #000000; background-color: #FFFFFF; font-family: 宋体, Arial, Helvetica, sans-serif; font-size: 10px;">
                                 <tr style="height: 15%">
                                     <td rowspan="2"
                                         style="text-align:center; width:15%; border-style: solid; border-width: thin; border-color: #000000;">
@@ -121,14 +121,14 @@
                                         style="width: 12%;background-color: darkslategray; color: white;">联系电话
                                     </td>
                                 </tr>
+
                                 <tr>
-                                    <td>{{ stock.founddate }}</td>
-                                    <td>{{ stock.concept }}</td>
-                                    <td>{{ stock.boardchairmen }}</td>
-                                    <td>{{ stock.holder_controller }}</td>
-                                    <td></td><!--需要合并单元格-->
-                                    <td>{{ stock.website }}</td>
-                                    <td>{{ stock.phone }}</td>
+                                    <td style="width: 12%;word-wrap: break-word">{{ stock.founddate }}</td>
+                                    <td style="width: 12%;word-wrap: break-word">{{ stock.concept }}</td>
+                                    <td style="width: 12%;word-wrap: break-word">{{ stock.boardchairmen }}</td>
+                                    <td style="width: 12%;word-wrap: break-word" colspan="2">{{ stock.holder_controller }}</td>
+                                    <td style="width: 12%;word-wrap: break-word">{{ stock.website }}</td>
+                                    <td style="width: 12%;word-wrap: break-word">{{ stock.phone }}</td>
                                 </tr>
                                 <tr>
                                     <td style="background-color: darkslategray; color: white;">主营产品类型</td>
@@ -138,8 +138,9 @@
                                     <td class="auto-style2" style="background-color: darkslategray; color: white;">
                                         主营产品名称
                                     </td>
-                                    <td class="auto-style2" colspan="6">{{ stock.majorproductname }}</td>
+                                    <td class="auto-style2" colspan="6" style="word-wrap:break-word;word-break:break-all;">{{ stock.majorproductname }}</td>
                                 </tr>
+
                             </table>
                         </div>
                     </section>
@@ -428,11 +429,9 @@
                     })
                     $('input').on('ifChecked', function (event) {
                         indexname = $(this).val();
-                        console.log(this)
                         Chosenindexes[indexname] = NewColor();
                         $("#div_" + indexname).css("background-color", Chosenindexes[indexname])
                         {#            $(this).parent().parent().css("color", Chosenindexes[indexname])#}
-                        console.log(Chosenindexes)
                         CreateChart();
                         CreateTable();
                     });
@@ -441,7 +440,6 @@
                         delete Chosenindexes[indexname]
                         $("#div_" + indexname).css("background-color", 'transparent')
                         {#            $(this).parent().parent().css("color", "black")#}
-                        console.log(Chosenindexes)
                         CreateChart();
                         CreateTable();
                     });
@@ -1059,7 +1057,6 @@
 
 
         function DisplayROCTable() {
-            console.log(k_data.date)
             for (i = (k_data.date.length) - 1; i >= k_data.date.length - 50; i--) {
                 var rowNode = mytable_roc
                     .row.add([k_data.date[i], k_data.k_data[i][1], k_data.p_change[i] + "%"])
@@ -1258,7 +1255,6 @@
                 },
                 dataType: 'json',
                 success: function (data) {
-                    console.log(data)
                     Data = ''
                     Data = data
                     startyear = data.the_year_list[data.the_year_list.length - 1]
@@ -1391,7 +1387,6 @@
                             seriesdata1.push(result)
 
                         }
-                        console.log(seriesdata1)
                         // 指定图表的配置项和数据
                         option = {
                             title: {
@@ -1503,7 +1498,6 @@
                             seriesdata1.push(result)
 
                         }
-                        console.log(seriesdata1)
                         // 指定图表的配置项和数据
                         option = {
                             title: {
@@ -1754,7 +1748,6 @@
                             Data = data
                             Uint = unit
                             setcheckboxcolor(selectedindex, color)
-                            console.log(color)
                             creattable(stockcode, color, Uint, dzstartyear, dzendyear)
                             {#                                        tablehide(dzstartyear, dzendyear)#}
                             createchart(stockcode, color, Uint, dzstartyear, dzendyear)
@@ -1791,7 +1784,6 @@
                             Data = ''
                             Data = data
                             Uint = unit
-                            console.log(data)
 
 
                             val = eval("data." + index)
@@ -2570,7 +2562,6 @@
                 },
                 dataType: 'json',//希望服务器返回json格式的数据
                 success: function (data) {
-                    console.log(data)
                     if (orderflag == "asc") {
                         for (var i = 0; i < data.indexes.length; i++) {
                             eval("data." + data.indexes[i]).reverse();
@@ -2916,5 +2907,9 @@
             }
             return newdate
         }
+
+    $("#head1").click(function () {
+            $("#body1").toggle()
+        })
     </script>
 {% endblock %}
