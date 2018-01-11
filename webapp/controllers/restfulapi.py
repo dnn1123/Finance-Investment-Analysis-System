@@ -10,6 +10,8 @@ from collections import Counter
 import tushare as ts
 import gc
 import pandas as pd
+from datetime import datetime
+from datetime import timedelta
 from  webapp.stratlib import *
 
 api_blueprint = Blueprint(
@@ -1215,9 +1217,14 @@ def stock_solo():
 @api_blueprint.route('/stock_solo/stock_k', methods=['GET', 'POST'])
 def stock_solo_k():
     stockcode = request.args.get('code')
+    period=request.args.get('period')
+    now = datetime.now()
+    delta = timedelta(days=string.atoi(period.encode("utf-8")))
+    n_days = now - delta
+    starttime=n_days.strftime('%Y-%m-%d')
     results=[]
     df_deal = pd.DataFrame()
-    df = ts.get_hist_data(stockcode)# Single stock symbol
+    df = ts.get_hist_data(stockcode,starttime)# Single stock symbol
     df=df.sort_index(ascending=True)
     date=df.index.tolist()
     df_deal['open']=df.open
