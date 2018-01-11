@@ -316,10 +316,22 @@ def invest_data():
 @api_blueprint.route("/market_value/", methods=('GET', 'POST'))
 def market_value():
     data = {}
-
+    province = request.args.get('province')
     starttime = request.args.get('starttime')
     endtime = request.args.get('endtime')
     indexes = request.args.getlist('indexes[]')
+    # yc
+    if province == 'all':
+        results = stock_basics.query.filter().all()
+    else:
+        filters = {
+            stock_basics.province.like("%" + province + "%")
+        }
+        results = stock_basics.query.filter(or_(*filters)).all()
+    code_list = []
+    for result in results:
+        code_list.append(result.trade_code)
+    # yc_end
 
     db_engine = create_engine('mysql://root:0000@localhost/test?charset=utf8')
     Session = sessionmaker(bind=db_engine)
@@ -335,7 +347,33 @@ def market_value():
     year_list = []
     for year in years:
         year_list.append(year.the_year)
+        # yc
+        # value_list = []
+        # for index in indexes:
+        #     exec (index + "_list=[]")
+        # for index in indexes:
+        #     exec (index + "_value=0")
+        # for year in year_list:
+        #     # value = 0
+        #     for code in code_list:
+        #         Filters = {
+        #             finance_basics_add.trade_code == code,
+        #             finance_basics_add.the_year == year,
+        #         }
+        #         result = finance_basics_add.query.filter(*Filters).first()
+        #         for index in indexes:
+        #             if eval("result." + index) is not None:
+        #                 exec (index+"_value += float(result." + index + "/100000000)")
+        #             else:
+        #                 exec (index+"_value += 0")
+        #     for index in indexes:
+        #         exec (index + "_list.append(" + str(index+"_value")+")")
+        #
+        # for index in indexes:
+        #     exec ("data['" + index + "']=" + index + "_list")
 
+
+        # zyq
     rs = session.query(func.sum(finance_basics_add.tot_oper_rev).label("tot_oper_rev"),
                        func.sum(finance_basics_add.net_profit_is).label("net_profit_is"),
                        func.sum(finance_basics_add.wgsd_net_inc).label("wgsd_net_inc"),
@@ -348,14 +386,13 @@ def market_value():
                        func.sum(finance_basics_add.financecashflow_ttm2).label("financecashflow_ttm2"),
                        func.sum(finance_basics_add.cashflow_ttm2).label("cashflow_ttm2"),
                        func.sum(finance_basics_add.free_cash_flow).label("free_cash_flow"),
-                       finance_basics_add.the_year.label("the_year")).group_by(finance_basics_add.the_year).all()
+                       finance_basics_add.the_year.label("the_year")).filter(
+        finance_basics_add.trade_code.in_(code_list)).group_by(finance_basics_add.the_year).all()
     rs_list = range(len(rs))
     rs_list.reverse()
-
     for index in indexes:
         exec (index + "_list=[]")
         exec ("my" + index + "=0")
-
     for x in rs_list:
         for index in indexes:
             if eval("rs[x]." + index) is not None:
@@ -363,13 +400,11 @@ def market_value():
             else:
                 exec ("my" + index + "= 0 ")
             exec (index + "_list.append(my" + index + ")")
-
     data['the_year'] = year_list
     data['indexes'] = indexes
-
+    data['code_list'] = code_list
     for index in indexes:
         exec ("data['" + index + "']=" + index + "_list")
-
     return jsonify(data)
 
 
@@ -391,13 +426,13 @@ def market_one():
                                 func.sum(finance_basics_add.tot_liab).label("tot_liab"),
                                 func.sum(finance_basics_add.wgsd_com_eq).label("wgsd_com_eq"),
                                 cns_department_industry.industry_gics_1.label("industry_gics_1")).filter(
-            finance_basics_add.the_year == time).filter(
-            finance_basics_add.trade_code == cns_stock_industry.trade_code).filter(
-            cns_stock_industry.industry_gicscode_4 == cns_sub_industry.industry_gicscode_4).filter(
-            cns_sub_industry.belong == cns_industry.industry_gicscode_3).filter(
-            cns_industry.belong == cns_group_industry.industry_gicscode_2).filter(
-            cns_group_industry.belong == cns_department_industry.industry_gicscode_1).filter(
-            cns_department_industry.industry_gicscode_1 == code).all()
+                finance_basics_add.the_year == time).filter(
+                finance_basics_add.trade_code == cns_stock_industry.trade_code).filter(
+                cns_stock_industry.industry_gicscode_4 == cns_sub_industry.industry_gicscode_4).filter(
+                cns_sub_industry.belong == cns_industry.industry_gicscode_3).filter(
+                cns_industry.belong == cns_group_industry.industry_gicscode_2).filter(
+                cns_group_industry.belong == cns_department_industry.industry_gicscode_1).filter(
+                cns_department_industry.industry_gicscode_1 == code).all()
         for result in results:
             for index in indexes:
                 if eval("result." + index) is not None:
@@ -436,7 +471,7 @@ def market_bar():
                             finance_basics_add.free_cash_flow.label("free_cash_flow"),
                             finance_basics_add.the_year.label("the_year"),
                             finance_basics_add.trade_code.label("trade_code")).filter(
-        finance_basics_add.the_year == time).all()
+            finance_basics_add.the_year == time).all()
 
     x_list = []
     for index in indexes:
@@ -957,12 +992,12 @@ def is_repeatcode():
 
 @api_blueprint.route('/buyStock', methods=['GET', 'POST'])
 def buystock():
-    username=current_user.username
-    date=request.form.get('date')
-    code=request.form.get('codeName')
-    price=string.atof(request.form.get('price').encode("utf-8"))
-    amount=string.atof(request.form.get('amount').encode("utf-8"))
-    commission=string.atof(request.form.get('commission').encode("utf-8"))
+    username = current_user.username
+    date = request.form.get('date')
+    code = request.form.get('codeName')
+    price = string.atof(request.form.get('price').encode("utf-8"))
+    amount = string.atof(request.form.get('amount').encode("utf-8"))
+    commission = string.atof(request.form.get('commission').encode("utf-8"))
 
     result = investment_portfolio.query.filter_by(user_name=current_user.username, code=code).first()
     if (result is None):
@@ -970,55 +1005,60 @@ def buystock():
         new_data.user_name = current_user.username
         new_data.code = code
         new_data.shares = amount
-        new_data.total_cost = price * amount * (1 + commission) / amount #average cost per share
+        new_data.total_cost = price * amount * (1 + commission) / amount  # average cost per share
         db.session.add(new_data)
         db.session.commit()
     else:
-        result.total_cost = (result.total_cost * result.shares + price * amount * (1 + commission))/(result.shares+ amount)#average cost per share
+        result.total_cost = (result.total_cost * result.shares + price * amount * (1 + commission)) / (
+            result.shares + amount)  # average cost per share
         result.shares = result.shares + amount
         db.session.commit()
-    new_buy=history()
-    new_buy.users=username
-    new_buy.time=date
-    new_buy.code=code
-    new_buy.price=price
-    new_buy.amount=amount
-    new_buy.commission=commission
-    new_buy.position="buy"
+    new_buy = history()
+    new_buy.users = username
+    new_buy.time = date
+    new_buy.code = code
+    new_buy.price = price
+    new_buy.amount = amount
+    new_buy.commission = commission
+    new_buy.position = "buy"
     db.session.add(new_buy)
     db.session.commit()
-    return jsonify({"result":"success"})
+    return jsonify({"result": "success"})
+
 
 @api_blueprint.route('/sellStock', methods=['GET', 'POST'])
 def sellstock():
-    username=current_user.username
-    date=request.form.get('date')
-    code=request.form.get('codeName')
-    price=string.atof(request.form.get('price').encode("utf-8"))
-    amount=string.atof(request.form.get('amount').encode("utf-8"))
-    commission=string.atof(request.form.get('commission').encode("utf-8"))
+    username = current_user.username
+    date = request.form.get('date')
+    code = request.form.get('codeName')
+    price = string.atof(request.form.get('price').encode("utf-8"))
+    amount = string.atof(request.form.get('amount').encode("utf-8"))
+    commission = string.atof(request.form.get('commission').encode("utf-8"))
     result = investment_portfolio.query.filter_by(user_name=current_user.username, code=code).first()
     if (result is None):
         return jsonify({"result": "no stock can be sold"})
     else:
-        if(result.shares < amount):
-            return jsonify({"result":"not enough stock to be sold"})
+        if (result.shares < amount):
+            return jsonify({"result": "not enough stock to be sold"})
         elif (result.shares == amount):
-            investment_portfolio.query.filter_by(user_name=current_user.username, code=code).delete() # delete position info of stocks with 0 shares
-        result.total_cost = (result.total_cost * result.shares - price * amount * (1 + commission))/(result.shares- amount)#average cost per share
+            investment_portfolio.query.filter_by(user_name=current_user.username,
+                                                 code=code).delete()  # delete position info of stocks with 0 shares
+        result.total_cost = (result.total_cost * result.shares - price * amount * (1 + commission)) / (
+            result.shares - amount)  # average cost per share
         result.shares = result.shares - amount
         db.session.commit()
-    new_buy=history()
-    new_buy.users=username
-    new_buy.time=date
-    new_buy.code=code
-    new_buy.price=price
-    new_buy.amount=amount
-    new_buy.commission=commission
-    new_buy.position="sell"
+    new_buy = history()
+    new_buy.users = username
+    new_buy.time = date
+    new_buy.code = code
+    new_buy.price = price
+    new_buy.amount = amount
+    new_buy.commission = commission
+    new_buy.position = "sell"
     db.session.add(new_buy)
     db.session.commit()
-    return jsonify({"result":"success"})
+    return jsonify({"result": "success"})
+
 
 @api_blueprint.route('/analysis/position', methods=['GET', 'POST'])
 def position_data():
@@ -1051,12 +1091,13 @@ def history_data():
 
 @api_blueprint.route('/clearall', methods=['GET', 'POST'])
 def clearall():
-    data = db.session.query(history).filter(history.users==current_user.username).delete(synchronize_session=False)
+    data = db.session.query(history).filter(history.users == current_user.username).delete(synchronize_session=False)
     db.session.commit()
     data = db.session.query(investment_portfolio).filter(
             investment_portfolio.user_name == current_user.username).delete(synchronize_session=False)
     db.session.commit()
     return jsonify({"result": "success"})
+
 
 # data format {"date":[],"profit":[],"cost":[],"value":[]}
 # value refers to the market value
@@ -1064,28 +1105,30 @@ def clearall():
 def positionhistory():
     username = request.args.get('username')
     data = history.query.filter_by(users=username).order_by(db.desc(history.time)).all()
-    getdata=Profit_monitoring(data)
-    results=getdata.start()
+    getdata = Profit_monitoring(data)
+    results = getdata.start()
     # get trade records
     trade_records = history.query.filter_by(users=username).all()
     namelist = []
     for i in range(len(trade_records)):
         stock_name = stock_basics.query.filter_by(trade_code=trade_records[i].code).first().sec_name
         namelist.append(stock_name)
-    t_records=[]
+    t_records = []
     for i in range(len(trade_records)):
-        record = [trade_records[i].code, namelist[i],trade_records[i].position,trade_records[i].price, trade_records[i].amount, trade_records[i].time.strftime('%Y-%m-%d')]
+        record = [trade_records[i].code, namelist[i], trade_records[i].position, trade_records[i].price,
+                  trade_records[i].amount, trade_records[i].time.strftime('%Y-%m-%d')]
         t_records.append(record)
     res = {
-        'results':results,
-        'traderec':t_records,
+        'results': results,
+        'traderec': t_records,
     }
     return jsonify(res)
 
-@api_blueprint.route('/home/stats',methods=['GET','POST'])
+
+@api_blueprint.route('/home/stats', methods=['GET', 'POST'])
 def home():
     username = request.args.get('username')
-    permission_id = users_roles.query.filter_by(user_name = username).first().permissions
+    permission_id = users_roles.query.filter_by(user_name=username).first().permissions
     rolename = Role.query.filter_by(id=permission_id).first().description
     favorite_stock_count = favorite_code.query.filter_by(user_name=username).count()
     position_stock_count = investment_portfolio.query.filter_by(user_name=username).count()
@@ -1095,50 +1138,53 @@ def home():
     for i in range(len(position_records)):
         pri = string.atof(ts.get_realtime_quotes(position_records[i].code).pre_close[0].encode("utf-8"))
         pricelist.append(pri)
-    p_records=[]
+    p_records = []
     for i in range(len(position_records)):
-        rec = (pricelist[i]-position_records[i].total_cost)*position_records[i].shares
+        rec = (pricelist[i] - position_records[i].total_cost) * position_records[i].shares
         p_records.append(rec)
     position_profit = sum(p_records)
-    #get city info. return a dictionary {cityname:count}
+    # get city info. return a dictionary {cityname:count}
     citycount = {}
     for i in range(len(position_records)):
-        city = stock_basics.query.filter_by(trade_code = position_records[i].code).first().city
+        city = stock_basics.query.filter_by(trade_code=position_records[i].code).first().city
         if (citycount.has_key(city)):
             citycount[city] += 1
         else:
-            citycount[city]=1
+            citycount[city] = 1
     cityrec = []
     for key in citycount:
-        rec=[key,citycount[key]]
+        rec = [key, citycount[key]]
         cityrec.append(rec)
 
     results = {
-        'rolename':rolename,
-        'favorite_stock_count':favorite_stock_count,
-        'position_stock_count':position_stock_count,
-        'trade_rec_count':trade_rec_count,
-        'position_profit':position_profit,
+        'rolename': rolename,
+        'favorite_stock_count': favorite_stock_count,
+        'position_stock_count': position_stock_count,
+        'trade_rec_count': trade_rec_count,
+        'position_profit': position_profit,
         'cityrec': cityrec,
     }
     return jsonify(results)
-@api_blueprint.route('/myposition',methods=['GET','POST'])
+
+
+@api_blueprint.route('/myposition', methods=['GET', 'POST'])
 def myposition():
-    username=request.args.get('username')
+    username = request.args.get('username')
     # get trade records
     trade_records = history.query.filter_by(users=username).all()
     namelist = []
     for i in range(len(trade_records)):
         stock_name = stock_basics.query.filter_by(trade_code=trade_records[i].code).first().sec_name
         namelist.append(stock_name)
-    t_records=[]
+    t_records = []
     for i in range(len(trade_records)):
-        record = [trade_records[i].code, namelist[i],trade_records[i].position,trade_records[i].price, trade_records[i].amount, trade_records[i].time.strftime('%Y-%m-%d')]
+        record = [trade_records[i].code, namelist[i], trade_records[i].position, trade_records[i].price,
+                  trade_records[i].amount, trade_records[i].time.strftime('%Y-%m-%d')]
         t_records.append(record)
-    #get commission records
+    # get commission records
     c_records = []
     for i in range(len(trade_records)):
-        record = [trade_records[i].code, namelist[i],trade_records[i].commission, trade_records[i].amount ]
+        record = [trade_records[i].code, namelist[i], trade_records[i].commission, trade_records[i].amount]
         c_records.append(record)
     # get position records
     position_records = investment_portfolio.query.filter_by(user_name=username).all()
@@ -1151,68 +1197,70 @@ def myposition():
     for i in range(len(position_records)):
         pri = string.atof(ts.get_realtime_quotes(position_records[i].code).pre_close[0].encode("utf-8"))
         pricelist.append(pri)
-    p_records=[]
+    p_records = []
     for i in range(len(position_records)):
-        rec = [position_records[i].code,namelist[i],position_records[i].shares,position_records[i].total_cost,pricelist[i],(pricelist[i]-position_records[i].total_cost)*position_records[i].shares]
+        rec = [position_records[i].code, namelist[i], position_records[i].shares, position_records[i].total_cost,
+               pricelist[i], (pricelist[i] - position_records[i].total_cost) * position_records[i].shares]
         p_records.append(rec)
-    #get department info
+    # get department info
     departmentlist = []
     for i in range(len(position_records)):
-        dep = stock_basics.query.filter_by(trade_code = position_records[i].code).first().industry_gics
+        dep = stock_basics.query.filter_by(trade_code=position_records[i].code).first().industry_gics
         departmentlist.append(dep)
-    d_records=[]
+    d_records = []
     for i in range(len(position_records)):
-        rec = [namelist[i],departmentlist[i]]
+        rec = [namelist[i], departmentlist[i]]
         d_records.append(rec)
 
-    #get group info
+    # get group info
     grouplist = []
     for i in range(len(position_records)):
-        gro = basic_stock.query.filter_by(code = position_records[i].code).first().industry
+        gro = basic_stock.query.filter_by(code=position_records[i].code).first().industry
         grouplist.append(gro)
-    g_records=[]
+    g_records = []
     for i in range(len(position_records)):
-        rec = [namelist[i],grouplist[i]]
+        rec = [namelist[i], grouplist[i]]
         g_records.append(rec)
 
-    #get city info. return a dictionary {cityname:count}
+    # get city info. return a dictionary {cityname:count}
     citycount = {}
     for i in range(len(position_records)):
-        city = stock_basics.query.filter_by(trade_code = position_records[i].code).first().city
+        city = stock_basics.query.filter_by(trade_code=position_records[i].code).first().city
         if (citycount.has_key(city)):
             citycount[city] += 1
         else:
-            citycount[city]=1
+            citycount[city] = 1
     cityrec = []
     for key in citycount:
-        rec=[key,citycount[key]]
+        rec = [key, citycount[key]]
         cityrec.append(rec)
-    #get group info
-    g_records=[]
+    # get group info
+    g_records = []
     for i in range(len(position_records)):
-        rec = [namelist[i],grouplist[i]]
+        rec = [namelist[i], grouplist[i]]
         g_records.append(rec)
 
     results = {
-        'traderec':t_records,
-        'positionrec':p_records,
-        'commissionrec':c_records,
-        'departmentrec':d_records,
-        'grouprec':g_records,
-        'cityrec':cityrec,
+        'traderec': t_records,
+        'positionrec': p_records,
+        'commissionrec': c_records,
+        'departmentrec': d_records,
+        'grouprec': g_records,
+        'cityrec': cityrec,
     }
     return jsonify(results)
 
 
 @api_blueprint.route('/stock_solo/stock_basic', methods=['GET', 'POST'])
 def stock_solo():
-    stockcode=request.args.get('code')
+    stockcode = request.args.get('code')
     df = ts.get_realtime_quotes(stockcode)  # Single stock symbol
-    price=df.price[0]
-    rate=string.atof(df.price[0].encode("utf-8"))/string.atof(df.pre_close[0].encode("utf-8"))
-    data=favorite_code.query.filter_by(code=stockcode).all()
-    count=len(data)
-    return jsonify({"price": price,"roc":rate,"count":count})
+    price = df.price[0]
+    rate = string.atof(df.price[0].encode("utf-8")) / string.atof(df.pre_close[0].encode("utf-8"))
+    data = favorite_code.query.filter_by(code=stockcode).all()
+    count = len(data)
+    return jsonify({"price": price, "roc": rate, "count": count})
+
 
 @api_blueprint.route('/stock_solo/stock_k', methods=['GET', 'POST'])
 def stock_solo_k():
@@ -1234,9 +1282,9 @@ def stock_solo_k():
     ma5=df.ma5.tolist()
     ma10 = df.ma10.tolist()
     ma20 = df.ma20.tolist()
-    p_change=df.p_change.tolist()
+    p_change = df.p_change.tolist()
     for indexs in df_deal.index:
-        mylist=(df_deal.loc[indexs].values.tolist())
+        mylist = (df_deal.loc[indexs].values.tolist())
         mylist.append(indexs)
         results.append(mylist)
-    return jsonify({"date":date,"k_data":results,"ma5":ma5,"ma10":ma10,"ma20":ma20,"p_change":p_change})
+    return jsonify({"date": date, "k_data": results, "ma5": ma5, "ma10": ma10, "ma20": ma20, "p_change": p_change})
