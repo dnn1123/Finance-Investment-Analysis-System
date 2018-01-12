@@ -23,7 +23,6 @@ stocksolo_blueprint = Blueprint(
 @stocksolo_blueprint.route('/',methods=('GET','POST'))
 @stocksolo_blueprint.route('/<string:data>',methods=('GET','POST'))
 @login_required
-
 def basic(data=""):
     if data=="":
         if session.has_key('stockcode'):

@@ -20,6 +20,20 @@ api_blueprint = Blueprint(
         url_prefix='/api'
 )
 
+@api_blueprint.route("/admin/", methods=('GET', 'POST'))
+def admin():
+    stockcode = request.args.get('code')
+    results = users_roles.query.all()
+    name_list = []
+    permission_list = []
+    for result in results:
+        name_list.append(result.user_name)
+        permission_list.append(result.permissions)
+    data = {
+        'name_list':name_list,
+        "permission_list":permission_list
+    }
+    return jsonify(data)
 
 # 数据库查询api 用于Ajax数据返回 json格式数据
 @api_blueprint.route("/finance_data/", methods=('GET', 'POST'))
@@ -95,6 +109,24 @@ def code_wind():
     # 'wind_1': wind_1,
     # 'codelist':stockcode
 
+@api_blueprint.route('/change_permission', methods=('GET', 'POST'))
+def change_permission():
+    name = request.form.get('name')
+    permission = request.form.get('permission')
+
+    old_users_roles =  users_roles.query.filter_by(user_name=name).first()
+    db.session.delete(old_users_roles)
+    db.session.commit()
+
+    n_users_roles =  users_roles(user_name=name)
+    n_users_roles.permissions = permission
+    db.session.add(n_users_roles)
+    db.session.commit()
+    data={
+        'name':name,
+        'permission':permission
+    }
+    return jsonify(data)
 
 @api_blueprint.route('/get_ajax_compare', methods=('GET', 'POST'))
 def get_ajax_compare():
@@ -320,18 +352,6 @@ def market_value():
     starttime = request.args.get('starttime')
     endtime = request.args.get('endtime')
     indexes = request.args.getlist('indexes[]')
-    # yc
-    if province == 'all':
-        results = stock_basics.query.filter().all()
-    else:
-        filters = {
-            stock_basics.province.like("%" + province + "%")
-        }
-        results = stock_basics.query.filter(or_(*filters)).all()
-    code_list = []
-    for result in results:
-        code_list.append(result.trade_code)
-    # yc_end
 
     db_engine = create_engine('mysql://root:0000@localhost/test?charset=utf8')
     Session = sessionmaker(bind=db_engine)
@@ -347,6 +367,47 @@ def market_value():
     year_list = []
     for year in years:
         year_list.append(year.the_year)
+    # yc
+    if province == 'all':
+        rs = session.query(func.sum(finance_basics_add.tot_oper_rev).label("tot_oper_rev"),
+                           func.sum(finance_basics_add.net_profit_is).label("net_profit_is"),
+                           func.sum(finance_basics_add.wgsd_net_inc).label("wgsd_net_inc"),
+                           func.sum(finance_basics_add.tot_assets).label("tot_assets"),
+                           func.sum(finance_basics_add.tot_liab).label("tot_liab"),
+                           func.sum(finance_basics_add.net_assets).label("net_assets"),
+                           func.sum(finance_basics_add.wgsd_com_eq).label("wgsd_com_eq"),
+                           func.sum(finance_basics_add.operatecashflow_ttm2).label("operatecashflow_ttm2"),
+                           func.sum(finance_basics_add.investcashflow_ttm2).label("investcashflow_ttm2"),
+                           func.sum(finance_basics_add.financecashflow_ttm2).label("financecashflow_ttm2"),
+                           func.sum(finance_basics_add.cashflow_ttm2).label("cashflow_ttm2"),
+                           func.sum(finance_basics_add.free_cash_flow).label("free_cash_flow"),
+                           finance_basics_add.the_year.label("the_year")).group_by(finance_basics_add.the_year).all()
+    else:
+        filters = {
+            stock_basics.province.like("%" + province + "%")
+        }
+        results = stock_basics.query.filter(or_(*filters)).all()
+        code_list = []
+        for result in results:
+            code_list.append(result.trade_code)
+        rs = session.query(func.sum(finance_basics_add.tot_oper_rev).label("tot_oper_rev"),
+                           func.sum(finance_basics_add.net_profit_is).label("net_profit_is"),
+                           func.sum(finance_basics_add.wgsd_net_inc).label("wgsd_net_inc"),
+                           func.sum(finance_basics_add.tot_assets).label("tot_assets"),
+                           func.sum(finance_basics_add.tot_liab).label("tot_liab"),
+                           func.sum(finance_basics_add.net_assets).label("net_assets"),
+                           func.sum(finance_basics_add.wgsd_com_eq).label("wgsd_com_eq"),
+                           func.sum(finance_basics_add.operatecashflow_ttm2).label("operatecashflow_ttm2"),
+                           func.sum(finance_basics_add.investcashflow_ttm2).label("investcashflow_ttm2"),
+                           func.sum(finance_basics_add.financecashflow_ttm2).label("financecashflow_ttm2"),
+                           func.sum(finance_basics_add.cashflow_ttm2).label("cashflow_ttm2"),
+                           func.sum(finance_basics_add.free_cash_flow).label("free_cash_flow"),
+                           finance_basics_add.the_year.label("the_year")).filter(
+                finance_basics_add.trade_code.in_(code_list)).group_by(finance_basics_add.the_year).all()
+
+        # yc_end
+
+
         # yc
         # value_list = []
         # for index in indexes:
@@ -374,20 +435,6 @@ def market_value():
 
 
         # zyq
-    rs = session.query(func.sum(finance_basics_add.tot_oper_rev).label("tot_oper_rev"),
-                       func.sum(finance_basics_add.net_profit_is).label("net_profit_is"),
-                       func.sum(finance_basics_add.wgsd_net_inc).label("wgsd_net_inc"),
-                       func.sum(finance_basics_add.tot_assets).label("tot_assets"),
-                       func.sum(finance_basics_add.tot_liab).label("tot_liab"),
-                       func.sum(finance_basics_add.net_assets).label("net_assets"),
-                       func.sum(finance_basics_add.wgsd_com_eq).label("wgsd_com_eq"),
-                       func.sum(finance_basics_add.operatecashflow_ttm2).label("operatecashflow_ttm2"),
-                       func.sum(finance_basics_add.investcashflow_ttm2).label("investcashflow_ttm2"),
-                       func.sum(finance_basics_add.financecashflow_ttm2).label("financecashflow_ttm2"),
-                       func.sum(finance_basics_add.cashflow_ttm2).label("cashflow_ttm2"),
-                       func.sum(finance_basics_add.free_cash_flow).label("free_cash_flow"),
-                       finance_basics_add.the_year.label("the_year")).filter(
-        finance_basics_add.trade_code.in_(code_list)).group_by(finance_basics_add.the_year).all()
     rs_list = range(len(rs))
     rs_list.reverse()
     for index in indexes:
@@ -402,7 +449,6 @@ def market_value():
             exec (index + "_list.append(my" + index + ")")
     data['the_year'] = year_list
     data['indexes'] = indexes
-    data['code_list'] = code_list
     for index in indexes:
         exec ("data['" + index + "']=" + index + "_list")
     return jsonify(data)
@@ -411,9 +457,21 @@ def market_value():
 @api_blueprint.route("/market_one/", methods=('GET', 'POST'))
 def market_one():
     time = request.args.get('time')
+    province = request.args.get('province')
     indexes = request.args.getlist('indexes[]')
     codes = ['10', '15', '20', '25', '30', '35', '40', '45', '55', '60']
-
+    # yc
+    if province == 'all':
+        results = stock_basics.query.filter().all()
+    else:
+        filters = {
+            stock_basics.province.like("%" + province + "%")
+        }
+        results = stock_basics.query.filter(or_(*filters)).all()
+    code_list = []
+    for result in results:
+        code_list.append(result.trade_code)
+    # yc_end
     db_engine = create_engine('mysql://root:0000@localhost/test?charset=utf8')
     Session = sessionmaker(bind=db_engine)
     session = Session()
@@ -427,7 +485,7 @@ def market_one():
                                 func.sum(finance_basics_add.wgsd_com_eq).label("wgsd_com_eq"),
                                 cns_department_industry.industry_gics_1.label("industry_gics_1")).filter(
                 finance_basics_add.the_year == time).filter(
-                finance_basics_add.trade_code == cns_stock_industry.trade_code).filter(
+                finance_basics_add.trade_code.in_(code_list)).filter(
                 cns_stock_industry.industry_gicscode_4 == cns_sub_industry.industry_gicscode_4).filter(
                 cns_sub_industry.belong == cns_industry.industry_gicscode_3).filter(
                 cns_industry.belong == cns_group_industry.industry_gicscode_2).filter(
@@ -1265,21 +1323,21 @@ def stock_solo():
 @api_blueprint.route('/stock_solo/stock_k', methods=['GET', 'POST'])
 def stock_solo_k():
     stockcode = request.args.get('code')
-    period=request.args.get('period')
+    period = request.args.get('period')
     now = datetime.now()
     delta = timedelta(days=string.atoi(period.encode("utf-8")))
     n_days = now - delta
-    starttime=n_days.strftime('%Y-%m-%d')
-    results=[]
+    starttime = n_days.strftime('%Y-%m-%d')
+    results = []
     df_deal = pd.DataFrame()
-    df = ts.get_hist_data(stockcode,starttime)# Single stock symbol
-    df=df.sort_index(ascending=True)
-    date=df.index.tolist()
-    df_deal['open']=df.open
-    df_deal['close']=df.close
-    df_deal['low']=df.low
-    df_deal['high']=df.high
-    ma5=df.ma5.tolist()
+    df = ts.get_hist_data(stockcode, starttime)  # Single stock symbol
+    df = df.sort_index(ascending=True)
+    date = df.index.tolist()
+    df_deal['open'] = df.open
+    df_deal['close'] = df.close
+    df_deal['low'] = df.low
+    df_deal['high'] = df.high
+    ma5 = df.ma5.tolist()
     ma10 = df.ma10.tolist()
     ma20 = df.ma20.tolist()
     p_change = df.p_change.tolist()
