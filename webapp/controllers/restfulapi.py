@@ -15,9 +15,9 @@ from datetime import timedelta
 from  webapp.stratlib import *
 
 api_blueprint = Blueprint(
-        'restfulapi',
-        __name__,
-        url_prefix='/api'
+    'restfulapi',
+    __name__,
+    url_prefix='/api'
 )
 
 
@@ -426,13 +426,13 @@ def market_one():
                                 func.sum(finance_basics_add.tot_liab).label("tot_liab"),
                                 func.sum(finance_basics_add.wgsd_com_eq).label("wgsd_com_eq"),
                                 cns_department_industry.industry_gics_1.label("industry_gics_1")).filter(
-                finance_basics_add.the_year == time).filter(
-                finance_basics_add.trade_code == cns_stock_industry.trade_code).filter(
-                cns_stock_industry.industry_gicscode_4 == cns_sub_industry.industry_gicscode_4).filter(
-                cns_sub_industry.belong == cns_industry.industry_gicscode_3).filter(
-                cns_industry.belong == cns_group_industry.industry_gicscode_2).filter(
-                cns_group_industry.belong == cns_department_industry.industry_gicscode_1).filter(
-                cns_department_industry.industry_gicscode_1 == code).all()
+            finance_basics_add.the_year == time).filter(
+            finance_basics_add.trade_code == cns_stock_industry.trade_code).filter(
+            cns_stock_industry.industry_gicscode_4 == cns_sub_industry.industry_gicscode_4).filter(
+            cns_sub_industry.belong == cns_industry.industry_gicscode_3).filter(
+            cns_industry.belong == cns_group_industry.industry_gicscode_2).filter(
+            cns_group_industry.belong == cns_department_industry.industry_gicscode_1).filter(
+            cns_department_industry.industry_gicscode_1 == code).all()
         for result in results:
             for index in indexes:
                 if eval("result." + index) is not None:
@@ -471,7 +471,7 @@ def market_bar():
                             finance_basics_add.free_cash_flow.label("free_cash_flow"),
                             finance_basics_add.the_year.label("the_year"),
                             finance_basics_add.trade_code.label("trade_code")).filter(
-            finance_basics_add.the_year == time).all()
+        finance_basics_add.the_year == time).all()
 
     x_list = []
     for index in indexes:
@@ -530,13 +530,13 @@ def market_status1():
                        func.sum(finance_basics_add.financecashflow_ttm2).label("financecashflow_ttm2"),
                        func.sum(finance_basics_add.cashflow_ttm2).label("cashflow_ttm2"),
                        cns_department_industry.industry_gics_1.label("industry_gics_1")).filter(
-            finance_basics_add.trade_code == cns_stock_industry.trade_code).filter(
-            cns_stock_industry.industry_gicscode_4 == cns_sub_industry.industry_gicscode_4).filter(
-            cns_sub_industry.belong == cns_industry.industry_gicscode_3).filter(
-            cns_industry.belong == cns_group_industry.industry_gicscode_2).filter(
-            cns_group_industry.belong == cns_department_industry.industry_gicscode_1).filter(
-            cns_department_industry.industry_gicscode_1 == code).group_by(
-            finance_basics_add.the_year).all()
+        finance_basics_add.trade_code == cns_stock_industry.trade_code).filter(
+        cns_stock_industry.industry_gicscode_4 == cns_sub_industry.industry_gicscode_4).filter(
+        cns_sub_industry.belong == cns_industry.industry_gicscode_3).filter(
+        cns_industry.belong == cns_group_industry.industry_gicscode_2).filter(
+        cns_group_industry.belong == cns_department_industry.industry_gicscode_1).filter(
+        cns_department_industry.industry_gicscode_1 == code).group_by(
+        finance_basics_add.the_year).all()
     rs_list = range(len(rs))
     rs_list.reverse()
 
@@ -599,11 +599,11 @@ def market_status2():
                        func.sum(finance_basics_add.financecashflow_ttm2).label("financecashflow_ttm2"),
                        func.sum(finance_basics_add.cashflow_ttm2).label("cashflow_ttm2"),
                        cns_group_industry.industry_gics_2.label("industry_gics_2")).filter(
-            finance_basics_add.trade_code == cns_stock_industry.trade_code).filter(
-            cns_stock_industry.industry_gicscode_4 == cns_sub_industry.industry_gicscode_4).filter(
-            cns_sub_industry.belong == cns_industry.industry_gicscode_3).filter(
-            cns_industry.belong == cns_group_industry.industry_gicscode_2).filter(
-            cns_group_industry.industry_gicscode_2 == code).group_by(finance_basics_add.the_year).all()
+        finance_basics_add.trade_code == cns_stock_industry.trade_code).filter(
+        cns_stock_industry.industry_gicscode_4 == cns_sub_industry.industry_gicscode_4).filter(
+        cns_sub_industry.belong == cns_industry.industry_gicscode_3).filter(
+        cns_industry.belong == cns_group_industry.industry_gicscode_2).filter(
+        cns_group_industry.industry_gicscode_2 == code).group_by(finance_basics_add.the_year).all()
     rs_list = range(len(rs))
     rs_list.reverse()
 
@@ -662,10 +662,10 @@ def market_status3():
                        func.sum(finance_basics_add.financecashflow_ttm2).label("financecashflow_ttm2"),
                        func.sum(finance_basics_add.cashflow_ttm2).label("cashflow_ttm2"),
                        cns_industry.industry_gics_3.label("industry_gics_3")).filter(
-            finance_basics_add.trade_code == cns_stock_industry.trade_code).filter(
-            cns_stock_industry.industry_gicscode_4 == cns_sub_industry.industry_gicscode_4).filter(
-            cns_sub_industry.belong == cns_industry.industry_gicscode_3).filter(
-            cns_industry.industry_gicscode_3 == code).group_by(finance_basics_add.the_year).all()
+        finance_basics_add.trade_code == cns_stock_industry.trade_code).filter(
+        cns_stock_industry.industry_gicscode_4 == cns_sub_industry.industry_gicscode_4).filter(
+        cns_sub_industry.belong == cns_industry.industry_gicscode_3).filter(
+        cns_industry.industry_gicscode_3 == code).group_by(finance_basics_add.the_year).all()
     rs_list = range(len(rs))
     rs_list.reverse()
 
@@ -725,9 +725,9 @@ def market_status4():
                        func.sum(finance_basics_add.cashflow_ttm2).label("cashflow_ttm2"),
                        cns_sub_industry.industry_gicscode_4,
                        cns_sub_industry.industry_gics_4.label("industry_gics_4")).filter(
-            finance_basics_add.trade_code == cns_stock_industry.trade_code).filter(
-            cns_stock_industry.industry_gicscode_4 == cns_sub_industry.industry_gicscode_4).filter(
-            cns_sub_industry.industry_gicscode_4 == code).group_by(finance_basics_add.the_year).all()
+        finance_basics_add.trade_code == cns_stock_industry.trade_code).filter(
+        cns_stock_industry.industry_gicscode_4 == cns_sub_industry.industry_gicscode_4).filter(
+        cns_sub_industry.industry_gicscode_4 == code).group_by(finance_basics_add.the_year).all()
     rs_list = range(len(rs))
     rs_list.reverse()
 
@@ -745,6 +745,54 @@ def market_status4():
 
     for index in indexes:
         exec ("data['" + index + "']=" + index + "_list")
+    return jsonify(data)
+
+
+@api_blueprint.route("/market_form1/", methods=('GET', 'POST'))
+def market_form1():
+    data = []
+    code = request.args.get('code')
+
+    Filters = {
+        cns_group_industry.belong == code,
+    }
+    results = cns_group_industry.query.filter(*Filters).all()
+
+    for result in results:
+        data.append(result.industry_gicscode_2)
+
+    return jsonify(data)
+
+
+@api_blueprint.route("/market_form2/", methods=('GET', 'POST'))
+def market_form2():
+    data = []
+    code = request.args.get('code')
+
+    Filters = {
+        cnsb_industry.belong == code,
+    }
+    results = cnsb_industry.query.filter(*Filters).all()
+
+    for result in results:
+        data.append(result.industry_gicscode_3)
+
+    return jsonify(data)
+
+
+@api_blueprint.route("/market_form3/", methods=('GET', 'POST'))
+def market_form3():
+    data = []
+    code = request.args.get('code')
+
+    Filters = {
+        hks_sub_industry.belong == code,
+    }
+    results = hks_sub_industry.query.filter(*Filters).all()
+
+    for result in results:
+        data.append(result.industry_gicscode_4)
+
     return jsonify(data)
 
 
@@ -825,7 +873,7 @@ def update_gics():
     Session = sessionmaker(bind=db_engine)
     session = Session()
     session.query(cns_stock_industry).filter(cns_stock_industry.trade_code == trade_code).update(
-            {'belong': gics_4, 'industry_gicscode_4': gics_4, 'industry_gics_4': gics_name})  # 改为belong
+        {'belong': gics_4, 'industry_gicscode_4': gics_4, 'industry_gics_4': gics_name})  # 改为belong
     session.commit()  # 少写了这一行，所以修改没成功
     return "true"
 
@@ -839,7 +887,7 @@ def update_gicsb():
     Session = sessionmaker(bind=db_engine)
     session = Session()
     session.query(cnsb_stock_industry).filter(cnsb_stock_industry.trade_code == trade_code).update(
-            {'industry_gicscode_4': gics_4, 'industry_gics_4': gics_name})  # 改为belong
+        {'industry_gicscode_4': gics_4, 'industry_gics_4': gics_name})  # 改为belong
     session.commit()  # 少写了这一行，所以修改没成功
     return "true"
 
@@ -862,8 +910,8 @@ def add_code():
         db.session.add(new_fcode)
         db.session.commit()
         flash(
-                "添加成功",
-                category="success"
+            "添加成功",
+            category="success"
         )
         return redirect(url_for('main.personal'))
 
@@ -1081,8 +1129,8 @@ def history_data():
     if (data != []):
         for result in data:
             results.append(
-                    {"code": result.code, "position": result.position, "price": result.price, "amount": result.amount,
-                     "value": result.value, "time": result.time.strftime('%Y-%m-%d')})
+                {"code": result.code, "position": result.position, "price": result.price, "amount": result.amount,
+                 "value": result.value, "time": result.time.strftime('%Y-%m-%d')})
         # return jsonify({"status":"exist","data":results})
         return jsonify(results)
     else:
@@ -1094,7 +1142,7 @@ def clearall():
     data = db.session.query(history).filter(history.users == current_user.username).delete(synchronize_session=False)
     db.session.commit()
     data = db.session.query(investment_portfolio).filter(
-            investment_portfolio.user_name == current_user.username).delete(synchronize_session=False)
+        investment_portfolio.user_name == current_user.username).delete(synchronize_session=False)
     db.session.commit()
     return jsonify({"result": "success"})
 
@@ -1265,21 +1313,21 @@ def stock_solo():
 @api_blueprint.route('/stock_solo/stock_k', methods=['GET', 'POST'])
 def stock_solo_k():
     stockcode = request.args.get('code')
-    period=request.args.get('period')
+    period = request.args.get('period')
     now = datetime.now()
     delta = timedelta(days=string.atoi(period.encode("utf-8")))
     n_days = now - delta
-    starttime=n_days.strftime('%Y-%m-%d')
-    results=[]
+    starttime = n_days.strftime('%Y-%m-%d')
+    results = []
     df_deal = pd.DataFrame()
-    df = ts.get_hist_data(stockcode,starttime)# Single stock symbol
-    df=df.sort_index(ascending=True)
-    date=df.index.tolist()
-    df_deal['open']=df.open
-    df_deal['close']=df.close
-    df_deal['low']=df.low
-    df_deal['high']=df.high
-    ma5=df.ma5.tolist()
+    df = ts.get_hist_data(stockcode, starttime)  # Single stock symbol
+    df = df.sort_index(ascending=True)
+    date = df.index.tolist()
+    df_deal['open'] = df.open
+    df_deal['close'] = df.close
+    df_deal['low'] = df.low
+    df_deal['high'] = df.high
+    ma5 = df.ma5.tolist()
     ma10 = df.ma10.tolist()
     ma20 = df.ma20.tolist()
     p_change = df.p_change.tolist()
