@@ -57,6 +57,12 @@ def register():
         new_user.set_password(register_form.password.data)
         db.session.add(new_user)
         db.session.commit()
+
+        new_user_role = users_roles()
+        new_user_role.user_name = register_form.username.data
+        new_user_role.permissions = 3
+        db.session.add(new_user_role)
+        db.session.commit()
         flash(
             "注册成功！请登录",
             category="success"
@@ -87,3 +93,13 @@ def my_favoritecode():
     role = Role.query.filter_by(id=user.permissions).first()
     rolename = role.description
     return render_template('personal/my_favoritecode.html',user=user,rolename=rolename)
+
+@main_blueprint.route('/admin/', methods=['GET', 'POST'])
+@login_required
+@permission_required(Permission.administrator)
+def admin():
+    user = users_roles.query.filter_by(user_name=current_user.username).first()
+    # rolename = Role.query.filter_by(id=user.permissions).first()
+    role = Role.query.filter_by(id=user.permissions).first()
+    rolename = role.description
+    return render_template('admin/admin_permission.html',user=user,rolename=rolename)
