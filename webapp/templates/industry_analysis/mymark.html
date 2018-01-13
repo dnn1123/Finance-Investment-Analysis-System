@@ -545,7 +545,7 @@
                                     </li>
                                     <li class="active"><a href="#chart1" data-toggle="tab">图表</a>
                                     </li>
-                                    <li><a href="#table1" data-toggle="tab" onclick="RequestTable1()">数据</a></li>
+                                    <li><a href="#table1" data-toggle="tab">数据</a></li>
                                 </ul>
                                 <div id="mychoice1" style="width:18%;height:300px;float:left;overflow-y :auto">
                                     <div class="thediv"
@@ -717,9 +717,14 @@
                                         '6010': '房地产Ⅱ'
                                     };
                                     $("#submit1").click(function () {
+                                        param = 1;
                                         thiscode1 = $("#stockcode1").val();
+                                        Chosenindexes1 = [];
                                         Chosenindexes1 = ['tot_oper_rev'];
                                         Chosenindexes1['tot_oper_rev'] = "#000000";
+                                        $('#itemlist22').empty();
+                                        $('#itemlist33').empty();
+                                        $('#itemlist44').empty();
                                         $.ajax({
                                             type: 'GET',
                                             url: '{{ url_for("restfulapi.market_form1") }}',
@@ -732,6 +737,7 @@
                                                     $('#itemlist22').append("<option value='" + data[i] + "'>" + dbct[data[i]] + "</option>")
                                                 }
                                                 requestChart1();
+                                                set_time1();
                                                 $("div#mychoice1 :checkbox").each(function () {//each()方法遍历所有的复选框
                                                     a = $(this).val();
                                                     if ($(this).is(':checked') == true) {//这里就可以判断当前是否被选择了
@@ -815,11 +821,14 @@
                                         '601020': '房地产管理和开发',
                                     };
                                     $("#submit2").click(function () {
+                                        param = 2;
                                         thiscode2 = $("#stockcode2").val();
-                                        $("#mytable1").empty();
                                         myChart1.clear();
-                                        Chosenindexes2 = ['tot_oper_rev'];
-                                        Chosenindexes2['tot_oper_rev'] = "#000000";
+                                        Chosenindexes1 = [];
+                                        Chosenindexes1 = ['tot_oper_rev'];
+                                        Chosenindexes1['tot_oper_rev'] = "#000000";
+                                        $('#itemlist33').empty();
+                                        $('#itemlist44').empty();
                                         $.ajax({
                                             type: 'GET',
                                             url: '{{ url_for("restfulapi.market_form2") }}',
@@ -832,6 +841,7 @@
                                                     $('#itemlist33').append("<option value='" + data[i] + "'>" + dcct[data[i]] + "</option>")
                                                 }
                                                 requestChart2();
+                                                set_time1();
                                                 $("div#mychoice1 :checkbox").each(function () {//each()方法遍历所有的复选框
                                                     a = $(this).val();
                                                     if ($(this).is(':checked') == true) {//这里就可以判断当前是否被选择了
@@ -987,11 +997,13 @@
                                         '60102040': '房地产服务',
                                     };
                                     $("#submit3").click(function () {
+                                        param = 3;
                                         thiscode3 = $("#stockcode3").val();
-                                        $("#mytable1").empty();
                                         myChart1.clear();
-                                        Chosenindexes3 = ['tot_oper_rev'];
-                                        Chosenindexes3['tot_oper_rev'] = "#000000";
+                                        Chosenindexes1 = [];
+                                        Chosenindexes1 = ['tot_oper_rev'];
+                                        Chosenindexes1['tot_oper_rev'] = "#000000";
+                                        $('#itemlist44').empty();
                                         $.ajax({
                                             type: 'GET',
                                             url: '{{ url_for("restfulapi.market_form3") }}',
@@ -1004,6 +1016,7 @@
                                                     $('#itemlist44').append("<option value='" + data[i] + "'>" + ddct[data[i]] + "</option>")
                                                 }
                                                 requestChart3();
+                                                set_time1();
                                                 $("div#mychoice1 :checkbox").each(function () {//each()方法遍历所有的复选框
                                                     a = $(this).val();
                                                     if ($(this).is(':checked') == true) {//这里就可以判断当前是否被选择了
@@ -1019,15 +1032,18 @@
                                         });
                                     });
                                 </script>
-                                <!--级联菜单3-->
+                                <!--级联菜单4-->
                                 <script>
                                     $("#submit4").click(function () {
+                                        param = 4;
                                         thiscode4 = $("#stockcode4").val();
                                         $("#mytable1").empty();
                                         myChart1.clear();
-                                        Chosenindexes4 = ['tot_oper_rev'];
-                                        Chosenindexes4['tot_oper_rev'] = "#000000";
+                                        Chosenindexes1 = [];
+                                        Chosenindexes1 = ['tot_oper_rev'];
+                                        Chosenindexes1['tot_oper_rev'] = "#000000";
                                         requestChart4();
+                                        set_time1();
                                         $("div#mychoice1 :checkbox").each(function () {//each()方法遍历所有的复选框
                                             a = $(this).val();
                                             if ($(this).is(':checked') == true) {//这里就可以判断当前是否被选择了
@@ -1042,11 +1058,16 @@
                                     });
                                 </script>
 
-                                <!--建图1-->
+                                <!--图表-->
                                 <script>
                                     var myChart1 = echarts.init(document.getElementById('mychart1'));
                                     var market_results1;
+                                    var market_results_t1;
+                                    var invest_results_t1;
                                     var thiscode1 = '10';
+                                    var param = 1;
+                                    var starttime1 = "19911231";
+                                    var endtime1 = "20161231";
                                     var dict = {
                                         'tot_oper_rev': '总营业收入',
                                         'net_profit_is': '净利润总和',
@@ -1077,6 +1098,9 @@
                                         },
                                         dataType: 'json',
                                         success: function (data) {
+                                            console.log(data);
+                                            market_results_t1 = data;
+                                            invest_results_t1 = data;
                                             dataSeries = [];
                                             temp = {
                                                 name: data.indexes,
@@ -1086,7 +1110,7 @@
                                                 data: numfilter1(eval("data." + data.indexes))
                                             };
                                             dataSeries.push(temp);
-                                            option = {
+                                            options = {
                                                 title: {
                                                     text: '财务指标分析图',
                                                     left: '45%'
@@ -1143,9 +1167,9 @@
                                                 ],
                                                 series: dataSeries
                                             };
-                                            myChart1.setOption(option, true);
+                                            myChart1.setOption(options, true);
                                             myChart1.on('datazoom', function (params) {
-                                                option.xAxis.interval = 10 * (params.end - params.start) / 100;
+                                                options.xAxis.interval = 10 * (params.end - params.start) / 100;
                                                 var ends = (2016 - Math.ceil(params.start / 100 * 25)) + '-12-31'
                                                 if (Math.ceil(1 - params.end / 100)) {
                                                     var starts = (1991 + Math.ceil((1 - params.end / 100) * 25) - 1) + '-12-31'
@@ -1155,106 +1179,12 @@
                                                 }
                                                 set_timepicker1(starts, ends)
                                             });
-                                            function set_timepicker1(start, end) {
-                                                document.getElementById('endtime1').value = start
-                                                document.getElementById('starttime1').value = end
-                                            }
+                                            createTable();
                                         }
                                     });
+
+                                    <!--初始状态-->
                                     function requestChart1() {
-                                        $.ajax({
-                                            type: 'GET',
-                                            url: '{{ url_for("restfulapi.market_status1") }}',
-                                            data: {
-                                                code: thiscode1,
-                                                starttime: '19911231',
-                                                endtime: '20161231',
-                                                indexes: ['tot_oper_rev'],
-                                            },
-                                            dataType: 'json',
-                                            success: function (data) {
-                                                dataSeries = [];
-                                                temp = {
-                                                    name: data.indexes,
-                                                    type: 'bar',
-                                                    itemStyle: {normal: {color: '#000000'}},
-                                                    smooth: true,
-                                                    data: numfilter1(eval("data." + data.indexes))
-                                                };
-                                                dataSeries.push(temp);
-                                                option = {
-                                                    title: {
-                                                        text: '财务指标分析图',
-                                                        left: '45%'
-                                                    },
-                                                    tooltip: {
-                                                        trigger: 'item',
-                                                        formatter: function (params) {
-                                                            return dict[params.seriesName] + "<br/> 时间：" + params.name + "<br/> 数据：" + params.data;
-                                                        }
-                                                    },
-                                                    legend: {
-                                                        data: [],
-                                                        orient: 'vertical',
-                                                        left: '85%',
-                                                        top: '10%',
-                                                        formatter: function (name) {
-                                                            return dict[name];
-                                                        }
-                                                    },
-                                                    grid: {
-                                                        left: '5%',
-                                                        top: '10%',
-                                                        containLabel: true
-                                                    },
-                                                    toolbox: {
-                                                        feature: {
-                                                            magicType: {
-                                                                type: ['line', 'bar']
-                                                            }
-                                                        }
-                                                    },
-                                                    xAxis: {
-                                                        type: 'category',
-                                                        axisTick: {
-                                                            show: false
-                                                        },
-                                                        data: dateformat(data.the_year),
-                                                        Interval: 5
-                                                    },
-                                                    yAxis: {
-                                                        type: 'value',
-                                                        axisTick: {
-                                                            show: false
-                                                        },
-                                                    },
-                                                    dataZoom: [
-                                                        {
-                                                            type: 'slider',
-                                                            xAxisIndex: [0],
-                                                            startValue: "2016年Q4",
-                                                            endValue: "1991年Q4",
-                                                            filterMode: 'filter',
-                                                        }
-                                                    ],
-                                                    series: dataSeries
-                                                };
-                                                myChart1.setOption(option, true);
-                                                myChart1.on('datazoom', function (params) {
-                                                    option.xAxis.interval = 10 * (params.end - params.start) / 100;
-                                                    var ends = (2016 - Math.ceil(params.start / 100 * 25)) + '-12-31'
-                                                    if (Math.ceil(1 - params.end / 100)) {
-                                                        var starts = (1991 + Math.ceil((1 - params.end / 100) * 25) - 1) + '-12-31'
-                                                    }
-                                                    else {
-                                                        var starts = '1991-12-31'
-                                                    }
-                                                    set_timepicker1(starts, ends)
-                                                });
-                                            }
-                                        });
-                                    }
-                                    function RequestChart1() {
                                         $.ajax({
                                             type: 'GET',
                                             url: '{{ url_for("restfulapi.market_status1") }}',
@@ -1266,98 +1196,15 @@
                                             },
                                             dataType: 'json',
                                             success: function (data) {
+                                                console.log(data);
+                                                market_results_t1 = data;
+                                                invest_results_t1 = data;
                                                 market_results1 = data;
-                                                CreateChart1();
+                                                createChart();
+                                                createTable();
                                             }
                                         });
                                     }
-                                    function CreateChart1() {
-                                        dataSeries = [];
-                                        for (var i = 0; i < market_results1.indexes.length; i++) {
-                                            temp = {
-                                                name: market_results1.indexes[i],
-                                                type: 'bar',
-                                                itemStyle: {normal: {color: Chosenindexes1[market_results1.indexes[i]]}},
-                                                smooth: true,
-                                                data: numfilter1(eval("market_results1." + market_results1.indexes[i]))
-                                            };
-                                            dataSeries.push(temp);
-                                        }
-                                        option = {
-                                            title: {
-                                                text: '财务指标分析图',
-                                                left: '45%'
-                                            },
-                                            tooltip: {
-                                                trigger: 'item',
-                                                formatter: function (params) {
-                                                    return dict[params.seriesName] + "<br/> 时间：" + params.name + "<br/> 数据：" + params.data;
-                                                }
-                                            },
-                                            legend: {
-                                                data: [],
-                                                orient: 'vertical',
-                                                left: '85%',
-                                                top: '10%',
-                                                formatter: function (name) {
-                                                    return dict[name];
-                                                }
-                                            },
-                                            grid: {
-                                                left: '5%',
-                                                top: '10%',
-                                                containLabel: true
-                                            },
-                                            toolbox: {
-                                                feature: {
-                                                    magicType: {
-                                                        type: ['line', 'bar']
-                                                    }
-                                                }
-                                            },
-                                            xAxis: {
-                                                type: 'category',
-                                                axisTick: {
-                                                    show: false
-                                                },
-                                                data: dateformat(market_results1.the_year),
-                                                Interval: 5
-                                            },
-                                            yAxis: {
-                                                type: 'value',
-                                                axisTick: {
-                                                    show: false
-                                                },
-                                            },
-                                            dataZoom: [
-                                                {
-                                                    type: 'slider',
-                                                    xAxisIndex: [0],
-                                                    startValue: "2016年Q4",
-                                                    endValue: "1991年Q4",
-                                                    filterMode: 'filter',
-                                                }
-                                            ],
-                                            series: dataSeries
-                                        };
-                                        myChart1.setOption(option, true);
-                                        myChart1.on('datazoom', function (params) {
-                                            option.xAxis.interval = 10 * (params.end - params.start) / 100;
-                                            var ends = (2016 - Math.ceil(params.start / 100 * 25)) + '-12-31'
-                                            if (Math.ceil(1 - params.end / 100)) {
-                                                var starts = (1991 + Math.ceil((1 - params.end / 100) * 25) - 1) + '-12-31'
-                                            }
-                                            else {
-                                                var starts = '1991-12-31'
-                                            }
-                                            set_timepicker1(starts, ends)
-                                        });
-                                        function set_timepicker1(start, end) {
-                                            document.getElementById('endtime1').value = start
-                                            document.getElementById('starttime1').value = end
-                                        }
-                                    }
-
                                     function requestChart2() {
                                         $.ajax({
                                             type: 'GET',
@@ -1366,88 +1213,16 @@
                                                 code: thiscode2,
                                                 starttime: '19911231',
                                                 endtime: '20161231',
-                                                indexes: ['tot_oper_rev'],
+                                                indexes: Chosenindexes1,
                                             },
                                             dataType: 'json',
                                             success: function (data) {
-                                                dataSeries = [];
-                                                temp = {
-                                                    name: data.indexes,
-                                                    type: 'bar',
-                                                    itemStyle: {normal: {color: '#000000'}},
-                                                    smooth: true,
-                                                    data: numfilter1(eval("data." + data.indexes))
-                                                };
-                                                dataSeries.push(temp);
-                                                option = {
-                                                    title: {
-                                                        text: '财务指标分析图',
-                                                        left: '45%'
-                                                    },
-                                                    tooltip: {
-                                                        trigger: 'item',
-                                                        formatter: function (params) {
-                                                            return dict[params.seriesName] + "<br/> 时间：" + params.name + "<br/> 数据：" + params.data;
-                                                        }
-                                                    },
-                                                    legend: {
-                                                        data: [],
-                                                        orient: 'vertical',
-                                                        left: '85%',
-                                                        top: '10%',
-                                                        formatter: function (name) {
-                                                            return dict[name];
-                                                        }
-                                                    },
-                                                    grid: {
-                                                        left: '5%',
-                                                        top: '10%',
-                                                        containLabel: true
-                                                    },
-                                                    toolbox: {
-                                                        feature: {
-                                                            magicType: {
-                                                                type: ['line', 'bar']
-                                                            }
-                                                        }
-                                                    },
-                                                    xAxis: {
-                                                        type: 'category',
-                                                        axisTick: {
-                                                            show: false
-                                                        },
-                                                        data: dateformat(data.the_year),
-                                                        Interval: 5
-                                                    },
-                                                    yAxis: {
-                                                        type: 'value',
-                                                        axisTick: {
-                                                            show: false
-                                                        },
-                                                    },
-                                                    dataZoom: [
-                                                        {
-                                                            type: 'slider',
-                                                            xAxisIndex: [0],
-                                                            startValue: "2016年Q4",
-                                                            endValue: "1991年Q4",
-                                                            filterMode: 'filter',
-                                                        }
-                                                    ],
-                                                    series: dataSeries
-                                                };
-                                                myChart1.setOption(option, true);
-                                                myChart1.on('datazoom', function (params) {
-                                                    option.xAxis.interval = 10 * (params.end - params.start) / 100;
-                                                    var ends = (2016 - Math.ceil(params.start / 100 * 25)) + '-12-31'
-                                                    if (Math.ceil(1 - params.end / 100)) {
-                                                        var starts = (1991 + Math.ceil((1 - params.end / 100) * 25) - 1) + '-12-31'
-                                                    }
-                                                    else {
-                                                        var starts = '1991-12-31'
-                                                    }
-                                                    set_timepicker1(starts, ends)
-                                                });
+                                                console.log(data);
+                                                market_results_t1 = data;
+                                                invest_results_t1 = data;
+                                                market_results1 = data;
+                                                createChart();
+                                                createTable();
                                             }
                                         });
                                     }
@@ -1459,88 +1234,16 @@
                                                 code: thiscode3,
                                                 starttime: '19911231',
                                                 endtime: '20161231',
-                                                indexes: ['tot_oper_rev'],
+                                                indexes:Chosenindexes1,
                                             },
                                             dataType: 'json',
                                             success: function (data) {
-                                                dataSeries = [];
-                                                temp = {
-                                                    name: data.indexes,
-                                                    type: 'bar',
-                                                    itemStyle: {normal: {color: '#000000'}},
-                                                    smooth: true,
-                                                    data: numfilter1(eval("data." + data.indexes))
-                                                };
-                                                dataSeries.push(temp);
-                                                option = {
-                                                    title: {
-                                                        text: '财务指标分析图',
-                                                        left: '45%'
-                                                    },
-                                                    tooltip: {
-                                                        trigger: 'item',
-                                                        formatter: function (params) {
-                                                            return dict[params.seriesName] + "<br/> 时间：" + params.name + "<br/> 数据：" + params.data;
-                                                        }
-                                                    },
-                                                    legend: {
-                                                        data: [],
-                                                        orient: 'vertical',
-                                                        left: '85%',
-                                                        top: '10%',
-                                                        formatter: function (name) {
-                                                            return dict[name];
-                                                        }
-                                                    },
-                                                    grid: {
-                                                        left: '5%',
-                                                        top: '10%',
-                                                        containLabel: true
-                                                    },
-                                                    toolbox: {
-                                                        feature: {
-                                                            magicType: {
-                                                                type: ['line', 'bar']
-                                                            }
-                                                        }
-                                                    },
-                                                    xAxis: {
-                                                        type: 'category',
-                                                        axisTick: {
-                                                            show: false
-                                                        },
-                                                        data: dateformat(data.the_year),
-                                                        Interval: 5
-                                                    },
-                                                    yAxis: {
-                                                        type: 'value',
-                                                        axisTick: {
-                                                            show: false
-                                                        },
-                                                    },
-                                                    dataZoom: [
-                                                        {
-                                                            type: 'slider',
-                                                            xAxisIndex: [0],
-                                                            startValue: "2016年Q4",
-                                                            endValue: "1991年Q4",
-                                                            filterMode: 'filter',
-                                                        }
-                                                    ],
-                                                    series: dataSeries
-                                                };
-                                                myChart1.setOption(option, true);
-                                                myChart1.on('datazoom', function (params) {
-                                                    option.xAxis.interval = 10 * (params.end - params.start) / 100;
-                                                    var ends = (2016 - Math.ceil(params.start / 100 * 25)) + '-12-31'
-                                                    if (Math.ceil(1 - params.end / 100)) {
-                                                        var starts = (1991 + Math.ceil((1 - params.end / 100) * 25) - 1) + '-12-31'
-                                                    }
-                                                    else {
-                                                        var starts = '1991-12-31'
-                                                    }
-                                                    set_timepicker1(starts, ends)
-                                                });
+                                                console.log(data);
+                                                market_results_t1 = data;
+                                                invest_results_t1 = data;
+                                                market_results1 = data;
+                                                createChart();
+                                                createTable();
                                             }
                                         });
                                     }
@@ -1552,128 +1255,20 @@
                                                 code: thiscode4,
                                                 starttime: '19911231',
                                                 endtime: '20161231',
-                                                indexes: ['tot_oper_rev'],
+                                                indexes:Chosenindexes1,
                                             },
                                             dataType: 'json',
                                             success: function (data) {
-                                                dataSeries = [];
-                                                temp = {
-                                                    name: data.indexes,
-                                                    type: 'bar',
-                                                    itemStyle: {normal: {color: '#000000'}},
-                                                    smooth: true,
-                                                    data: numfilter1(eval("data." + data.indexes))
-                                                };
-                                                dataSeries.push(temp);
-                                                option = {
-                                                    title: {
-                                                        text: '财务指标分析图',
-                                                        left: '45%'
-                                                    },
-                                                    tooltip: {
-                                                        trigger: 'item',
-                                                        formatter: function (params) {
-                                                            return dict[params.seriesName] + "<br/> 时间：" + params.name + "<br/> 数据：" + params.data;
-                                                        }
-                                                    },
-                                                    legend: {
-                                                        data: [],
-                                                        orient: 'vertical',
-                                                        left: '85%',
-                                                        top: '10%',
-                                                        formatter: function (name) {
-                                                            return dict[name];
-                                                        }
-                                                    },
-                                                    grid: {
-                                                        left: '5%',
-                                                        top: '10%',
-                                                        containLabel: true
-                                                    },
-                                                    toolbox: {
-                                                        feature: {
-                                                            magicType: {
-                                                                type: ['line', 'bar']
-                                                            }
-                                                        }
-                                                    },
-                                                    xAxis: {
-                                                        type: 'category',
-                                                        axisTick: {
-                                                            show: false
-                                                        },
-                                                        data: dateformat(data.the_year),
-                                                        Interval: 5
-                                                    },
-                                                    yAxis: {
-                                                        type: 'value',
-                                                        axisTick: {
-                                                            show: false
-                                                        },
-                                                    },
-                                                    dataZoom: [
-                                                        {
-                                                            type: 'slider',
-                                                            xAxisIndex: [0],
-                                                            startValue: "2016年Q4",
-                                                            endValue: "1991年Q4",
-                                                            filterMode: 'filter',
-                                                        }
-                                                    ],
-                                                    series: dataSeries
-                                                };
-                                                myChart1.setOption(option, true);
-                                                myChart1.on('datazoom', function (params) {
-                                                    option.xAxis.interval = 10 * (params.end - params.start) / 100;
-                                                    var ends = (2016 - Math.ceil(params.start / 100 * 25)) + '-12-31'
-                                                    if (Math.ceil(1 - params.end / 100)) {
-                                                        var starts = (1991 + Math.ceil((1 - params.end / 100) * 25) - 1) + '-12-31'
-                                                    }
-                                                    else {
-                                                        var starts = '1991-12-31'
-                                                    }
-                                                    set_timepicker1(starts, ends)
-                                                });
+                                                console.log(data);
+                                                market_results_t1 = data;
+                                                invest_results_t1 = data;
+                                                market_results1 = data;
+                                                createChart();
+                                                createTable();
                                             }
                                         });
                                     }
-
-                                    function set_timepicker1(start, end) {
-                                        document.getElementById('endtime1').value = start
-                                        document.getElementById('starttime1').value = end
-                                    }
-                                    function set_time1() {
-                                        document.getElementById('endtime1').value = "1991-12-31"
-                                        document.getElementById('starttime1').value = "2016-12-31"
-                                    }
-                                </script>
-
-                                <!--建表-->
-                                <script>
-                                    var market_results_t1;
-                                    var invest_results_t1;
-                                    function RequestTable1() {
-                                        var opt = myChart1.getOption();
-                                        var dz = opt.dataZoom[0];
-                                        $.ajax({
-                                            type: 'GET',
-                                            url: '{{url_for("restfulapi.market_status1")}}',
-                                            data: {
-                                                code: thiscode1,
-                                                starttime: opt.xAxis[0].data[dz.endValue],
-                                                endtime: opt.xAxis[0].data[dz.startValue],
-                                                indexes: Chosenindexes1
-                                            },
-                                            dataType: 'json',//希望服务器返回json格式的数据
-                                            success: function (data) {
-                                                console.log(data)
-                                                market_results_t1 = data;
-                                                invest_results_t1 = data;
-                                                CreateTable1();
-                                            }
-                                        })
-                                    }
-                                    function CreateTable1() {
+                                    function createTable() {
                                         $("#mytable1").empty();
                                         var table = $("<table id=\"temptable1\" style=\"text-align:center\" class=\"row-border hover order-column\" cellspacing=\"0\" width=\"100%\"  >");
                                         table.appendTo($("#mytable1"));
@@ -1730,7 +1325,259 @@
                                             $('tr#' + key).css('color', Chosenindexes1[key])
                                         }
                                     }
+
+                                    <!--图操作-->
+                                    function RequestChart1() {
+                                        $.ajax({
+                                            type: 'GET',
+                                            url: '{{ url_for("restfulapi.market_status1") }}',
+                                            data: {
+                                                code: thiscode1,
+                                                starttime: '19911231',
+                                                endtime: '20161231',
+                                                indexes: Chosenindexes1,
+                                            },
+                                            dataType: 'json',
+                                            success: function (data) {
+                                                market_results1 = data;
+                                                createChart();
+                                            }
+                                        });
+                                    }
+                                    function RequestChart2() {
+                                        $.ajax({
+                                            type: 'GET',
+                                            url: '{{ url_for("restfulapi.market_status2") }}',
+                                            data: {
+                                                code: thiscode2,
+                                                starttime: '19911231',
+                                                endtime: '20161231',
+                                                indexes: Chosenindexes1,
+                                            },
+                                            dataType: 'json',
+                                            success: function (data) {
+                                                market_results1 = data;
+                                                createChart();
+                                            }
+                                        });
+                                    }
+                                    function RequestChart3() {
+                                        $.ajax({
+                                            type: 'GET',
+                                            url: '{{ url_for("restfulapi.market_status3") }}',
+                                            data: {
+                                                code: thiscode3,
+                                                starttime: '19911231',
+                                                endtime: '20161231',
+                                                indexes: Chosenindexes1,
+                                            },
+                                            dataType: 'json',
+                                            success: function (data) {
+                                                market_results1 = data;
+                                                createChart();
+                                            }
+                                        });
+                                    }
+                                    function RequestChart4() {
+                                        $.ajax({
+                                            type: 'GET',
+                                            url: '{{ url_for("restfulapi.market_status4") }}',
+                                            data: {
+                                                code: thiscode4,
+                                                starttime: '19911231',
+                                                endtime: '20161231',
+                                                indexes: Chosenindexes1,
+                                            },
+                                            dataType: 'json',
+                                            success: function (data) {
+                                                market_results1 = data;
+                                                createChart();
+                                            }
+                                        });
+                                    }
+                                    function createChart() {
+                                        dataSeries = [];
+                                        for (var i = 0; i < market_results1.indexes.length; i++) {
+                                            temp = {
+                                                name: market_results1.indexes[i],
+                                                type: 'bar',
+                                                itemStyle: {normal: {color: Chosenindexes1[market_results1.indexes[i]]}},
+                                                smooth: true,
+                                                data: numfilter1(eval("market_results1." + market_results1.indexes[i]))
+                                            };
+                                            dataSeries.push(temp);
+                                        }
+                                        options = {
+                                            title: {
+                                                text: '财务指标分析图',
+                                                left: '45%'
+                                            },
+                                            tooltip: {
+                                                trigger: 'item',
+                                                formatter: function (params) {
+                                                    return dict[params.seriesName] + "<br/> 时间：" + params.name + "<br/> 数据：" + params.data;
+                                                }
+                                            },
+                                            legend: {
+                                                data: [],
+                                                orient: 'vertical',
+                                                left: '85%',
+                                                top: '10%',
+                                                formatter: function (name) {
+                                                    return dict[name];
+                                                }
+                                            },
+                                            grid: {
+                                                left: '5%',
+                                                top: '10%',
+                                                containLabel: true
+                                            },
+                                            toolbox: {
+                                                feature: {
+                                                    magicType: {
+                                                        type: ['line', 'bar']
+                                                    }
+                                                }
+                                            },
+                                            xAxis: {
+                                                type: 'category',
+                                                axisTick: {
+                                                    show: false
+                                                },
+                                                data: dateformat(market_results1.the_year),
+                                                Interval: 5
+                                            },
+                                            yAxis: {
+                                                type: 'value',
+                                                axisTick: {
+                                                    show: false
+                                                },
+                                            },
+                                            dataZoom: [
+                                                {
+                                                    type: 'slider',
+                                                    xAxisIndex: [0],
+                                                    startValue: "2016年Q4",
+                                                    endValue: "1991年Q4",
+                                                    filterMode: 'filter',
+                                                }
+                                            ],
+                                            series: dataSeries
+                                        };
+                                        myChart1.setOption(options, true);
+                                        myChart1.on('datazoom', function (params) {
+                                            options.xAxis.interval = 10 * (params.end - params.start) / 100;
+                                            var ends = (2016 - Math.ceil(params.start / 100 * 25)) + '-12-31'
+                                            if (Math.ceil(1 - params.end / 100)) {
+                                                var starts = (1991 + Math.ceil((1 - params.end / 100) * 25) - 1) + '-12-31'
+                                            }
+                                            else {
+                                                var starts = '1991-12-31'
+                                            }
+                                            set_timepicker1(starts, ends)
+                                        });
+                                        function set_timepicker1(start, end) {
+                                            document.getElementById('endtime1').value = start
+                                            document.getElementById('starttime1').value = end
+                                        }
+                                    }
+
+                                    <!--表操作-->
+                                    function RequestTable1() {
+                                        var opt = myChart1.getOption();
+                                        var dz = opt.dataZoom[0];
+                                        $.ajax({
+                                            type: 'GET',
+                                            url: '{{url_for("restfulapi.market_status1")}}',
+                                            data: {
+                                                code: thiscode1,
+                                                starttime: opt.xAxis[0].data[dz.endValue],
+                                                endtime: opt.xAxis[0].data[dz.startValue],
+                                                indexes: Chosenindexes1
+                                            },
+                                            dataType: 'json',//希望服务器返回json格式的数据
+                                            success: function (data) {
+                                                console.log(data);
+                                                market_results_t1 = data;
+                                                invest_results_t1 = data;
+                                                createTable();
+                                            }
+                                        })
+                                    }
+                                    function RequestTable2() {
+                                        var opt = myChart1.getOption();
+                                        var dz = opt.dataZoom[0];
+                                        $.ajax({
+                                            type: 'GET',
+                                            url: '{{url_for("restfulapi.market_status2")}}',
+                                            data: {
+                                                code: thiscode2,
+                                                starttime: opt.xAxis[0].data[dz.endValue],
+                                                endtime: opt.xAxis[0].data[dz.startValue],
+                                                indexes: Chosenindexes1
+                                            },
+                                            dataType: 'json',//希望服务器返回json格式的数据
+                                            success: function (data) {
+                                                console.log(data);
+                                                market_results_t1 = data;
+                                                invest_results_t1 = data;
+                                                createTable();
+                                            }
+                                        })
+                                    }
+                                    function RequestTable3() {
+                                        var opt = myChart1.getOption();
+                                        var dz = opt.dataZoom[0];
+                                        $.ajax({
+                                            type: 'GET',
+                                            url: '{{url_for("restfulapi.market_status3")}}',
+                                            data: {
+                                                code: thiscode3,
+                                                starttime: opt.xAxis[0].data[dz.endValue],
+                                                endtime: opt.xAxis[0].data[dz.startValue],
+                                                indexes: Chosenindexes1
+                                            },
+                                            dataType: 'json',//希望服务器返回json格式的数据
+                                            success: function (data) {
+                                                console.log(data);
+                                                market_results_t1 = data;
+                                                invest_results_t1 = data;
+                                                createTable();
+                                            }
+                                        })
+                                    }
+                                    function RequestTable4() {
+                                        var opt = myChart1.getOption();
+                                        var dz = opt.dataZoom[0];
+                                        $.ajax({
+                                            type: 'GET',
+                                            url: '{{url_for("restfulapi.market_status4")}}',
+                                            data: {
+                                                code: thiscode4,
+                                                starttime: opt.xAxis[0].data[dz.endValue],
+                                                endtime: opt.xAxis[0].data[dz.startValue],
+                                                indexes: Chosenindexes1
+                                            },
+                                            dataType: 'json',//希望服务器返回json格式的数据
+                                            success: function (data) {
+                                                console.log(data);
+                                                market_results_t1 = data;
+                                                invest_results_t1 = data;
+                                                createTable();
+                                            }
+                                        })
+                                    }
+
+                                    function set_timepicker1(start, end) {
+                                        document.getElementById('endtime1').value = start
+                                        document.getElementById('starttime1').value = end
+                                    }
+                                    function set_time1() {
+                                        document.getElementById('endtime1').value = "1991-12-31"
+                                        document.getElementById('starttime1').value = "2016-12-31"
+                                    }
                                 </script>
+
                                 <!--复选框操作-->
                                 <script>
                                     var Chosenindexes1 = new Array();
@@ -1738,28 +1585,79 @@
                                     Chosenindexes1['tot_oper_rev'] = "#000000";
                                     $("div#mychoice1 :checkbox").change(function () {
                                         indexname1 = $(this).val();
-                                        if ($(this).is(':checked') == true) {
-                                            colorname1 = NewColor();
-                                            console.log(this);
-                                            Chosenindexes1.push(indexname1);
-                                            Chosenindexes1[indexname1] = colorname1;
-                                            $("#a_" + indexname1).css("background-color", colorname1);
-                                            console.log(Chosenindexes1);
+                                        if (param == 1) {
+                                            if ($(this).is(':checked') == true) {
+                                                colorname1 = NewColor();
+                                                console.log(this);
+                                                Chosenindexes1.push(indexname1);
+                                                Chosenindexes1[indexname1] = colorname1;
+                                                $("#a_" + indexname1).css("background-color", colorname1);
+                                                console.log(Chosenindexes1);
+                                            }
+                                            else {
+                                                Chosenindexes1.remove(indexname1);
+                                                console.log(Chosenindexes1);
+                                                $("#a_" + indexname1).css("background-color", "white");
+                                            }
+                                            RequestChart1();
+                                            RequestTable1();
                                         }
-                                        else {
-                                            Chosenindexes1.remove(indexname1);
-                                            console.log(Chosenindexes1);
-                                            $("#a_" + indexname1).css("background-color", "white");
+                                        else if (param == 2) {
+                                            if ($(this).is(':checked') == true) {
+                                                colorname1 = NewColor();
+                                                console.log(this);
+                                                Chosenindexes1.push(indexname1);
+                                                Chosenindexes1[indexname1] = colorname1;
+                                                $("#a_" + indexname1).css("background-color", colorname1);
+                                                console.log(Chosenindexes1);
+                                            }
+                                            else {
+                                                Chosenindexes1.remove(indexname1);
+                                                console.log(Chosenindexes1);
+                                                $("#a_" + indexname1).css("background-color", "white");
+                                            }
+                                            RequestChart2();
+                                            RequestTable2();
                                         }
-                                        RequestChart1();
-                                        RequestTable1()
+                                        else if (param == 3) {
+                                            if ($(this).is(':checked') == true) {
+                                                colorname1 = NewColor();
+                                                console.log(this);
+                                                Chosenindexes1.push(indexname1);
+                                                Chosenindexes1[indexname1] = colorname1;
+                                                $("#a_" + indexname1).css("background-color", colorname1);
+                                                console.log(Chosenindexes1);
+                                            }
+                                            else {
+                                                Chosenindexes1.remove(indexname1);
+                                                console.log(Chosenindexes1);
+                                                $("#a_" + indexname1).css("background-color", "white");
+                                            }
+                                            RequestChart3();
+                                            RequestTable3();
+                                        }
+                                        else if (param == 4) {
+                                            if ($(this).is(':checked') == true) {
+                                                colorname1 = NewColor();
+                                                console.log(this);
+                                                Chosenindexes1.push(indexname1);
+                                                Chosenindexes1[indexname1] = colorname1;
+                                                $("#a_" + indexname1).css("background-color", colorname1);
+                                                console.log(Chosenindexes1);
+                                            }
+                                            else {
+                                                Chosenindexes1.remove(indexname1);
+                                                console.log(Chosenindexes1);
+                                                $("#a_" + indexname1).css("background-color", "white");
+                                            }
+                                            RequestChart4();
+                                            RequestTable4();
+                                        }
                                         set_time1();
                                     });
                                 </script>
                                 <!--时间控制框-->
                                 <script>
-                                    var starttime1 = "19911231";
-                                    var endtime1 = "20161231";
                                     $(".form_datetime").datetimepicker({
                                         format: 'yyyy-mm-dd ',
                                         startView: 4,
@@ -1776,17 +1674,39 @@
                                         .datetimepicker()
                                         .on('changeDate', function (ev) {
                                             starts = ev.date.Format("yyyy年Q4");
-                                            option.dataZoom[0].startValue = starts;
-                                            myChart1.setOption(option);
-                                            RequestTable1();
+                                            options.dataZoom[0].startValue = starts;
+                                            myChart1.setOption(options);
+                                            if (param == 1) {
+                                                RequestTable1();
+                                            }
+                                            else if (param == 2) {
+                                                RequestTable2();
+                                            }
+                                            else if (param == 3) {
+                                                RequestTable3();
+                                            }
+                                            else if (param == 4) {
+                                                RequestTable4();
+                                            }
                                         });
                                     $('#endtime1')
                                         .datetimepicker()
                                         .on('changeDate', function (ev) {
                                             ends = ev.date.Format("yyyy年Q4");
-                                            option.dataZoom[0].endValue = ends;
-                                            myChart1.setOption(option);
-                                            RequestTable1();
+                                            options.dataZoom[0].endValue = ends;
+                                            myChart1.setOption(options);
+                                            if (param == 1) {
+                                                RequestTable1();
+                                            }
+                                            else if (param == 2) {
+                                                RequestTable2();
+                                            }
+                                            else if (param == 3) {
+                                                RequestTable3();
+                                            }
+                                            else if (param == 4) {
+                                                RequestTable4();
+                                            }
                                         });
                                     Date.prototype.Format = function (fmt) { //author: meizz
                                         var o = {
@@ -1821,14 +1741,34 @@
                                         flag = $(this).val();
                                         if (flag == "0") {
                                             denominator1 = 1;
-                                            RequestChart1();
-                                            CreateTable1();
+                                            if (param == 1) {
+                                                requestChart1();
+                                            }
+                                            else if (param == 2) {
+                                                requestChart2();
+                                            }
+                                            else if (param == 3) {
+                                                requestChart3();
+                                            }
+                                            else if (param == 4) {
+                                                requestChart4();
+                                            }
                                             set_time1();
                                         }
                                         if (flag == "1") {
                                             denominator1 = 1000;
-                                            RequestChart1();
-                                            CreateTable1();
+                                            if (param == 1) {
+                                                requestChart1();
+                                            }
+                                            else if (param == 2) {
+                                                requestChart2();
+                                            }
+                                            else if (param == 3) {
+                                                requestChart3();
+                                            }
+                                            else if (param == 4) {
+                                                requestChart4();
+                                            }
                                             set_time1();
                                         }
                                     });
@@ -1841,6 +1781,7 @@
                                         return newnum;
                                     }
                                 </script>
+
                                 <!--面板切换-->
                                 <script>
                                     $("#mydropdown").on("click", "[data-stopPropagation]", function (e) {
@@ -1884,9 +1825,9 @@
                     <div class="module span12">
                         <div class="module-head">
                             <a href="#compare1" aria-expanded="false" data-toggle="collapse">部门对比分析
-                                <input id="stock" list="item" type="text"
+                                <input id="stock" list="items" type="text"
                                        style="margin-top:0;margin-left:10px;height: 30px">
-                                <datalist id="item">
+                                <datalist id="items">
                                     <option>部门</option>
                                     <option>行业组</option>
                                     <option>行业</option>
@@ -5480,106 +5421,85 @@
                 legend: {
                     orient: 'horizontal',//图例的排列方向
                     x: 'left',//图例的位置
-                    {#            data:['订单量']#}
-                },
-
-                {#        visualMap: {//颜色的设置  dataRange#}
-                {#            x: 'left',#}
-                {#            y: 'center',#}
-                {#            splitList: [#}
-                {#                {start: 1500},#}
-                {#                {start: 900, end: 1500},#}
-                {#                {start: 310, end: 1000},#}
-                {#                {start: 200, end: 300},#}
-                {#                {start: 10, end: 200, label: '10 到 200（自定义label）'},#}
-                {#                {start: 5, end: 5, label: '5（自定义特殊颜色）', color: 'black'},#}
-                {#                {end: 10}#}
-                {#            ],#}
-                {#//            min: 0,#}
-                {#//            max: 2500,#}
-                {#//            calculable : true,//颜色呈条状#}
-                {#            text:['高','低'],// 文本，默认为数值文本#}
-                {#            color: ['#E0022B', '#E09107', '#A3E00B']#}
-                {#        },#}
-                toolbox: {//工具栏
-                    show: true,
-                    orient: 'vertical',//工具栏 icon 的布局朝向
-                    x: 'right',
-                    y: 'center',
-                    feature: {//各工具配置项。
-                        mark: {show: true},
-                        dataView: {show: true, readOnly: false},//数据视图工具，可以展现当前图表所用的数据，编辑后可以动态更新。
-                        restore: {show: true},//配置项还原。
-                        saveAsImage: {show: true}//保存为图片。
-                    }
-                },
-                roamController: {//控制地图的上下左右放大缩小 图上没有显示
-                    show: true,
-                    x: 'right',
-                    mapTypeControl: {
-                        'china': true
-                    }
-                },
-                series: [
-                    {
-                        {#                name: '订单量',#}
-                        type: 'map',
-                        mapType: 'china',
-                        roam: false,//是否开启鼠标缩放和平移漫游
-                        itemStyle: {//地图区域的多边形 图形样式
-                            normal: {//是图形在默认状态下的样式
-                                label: {
-                                    show: true,//是否显示标签
-                                    textStyle: {
-                                        color: "rgb(249, 249, 249)"
+                    toolbox: {//工具栏
+                        show: true,
+                        orient: 'vertical',//工具栏 icon 的布局朝向
+                        x: 'right',
+                        y: 'center',
+                        feature: {//各工具配置项。
+                            mark: {show: true},
+                            dataView: {show: true, readOnly: false},//数据视图工具，可以展现当前图表所用的数据，编辑后可以动态更新。
+                            restore: {show: true},//配置项还原。
+                            saveAsImage: {show: true}//保存为图片。
+                        }
+                    },
+                    roamController: {//控制地图的上下左右放大缩小 图上没有显示
+                        show: true,
+                        x: 'right',
+                        mapTypeControl: {
+                            'china': true
+                        }
+                    },
+                    series: [
+                        {
+                            {#                name: '订单量',#}
+                            type: 'map',
+                            mapType: 'china',
+                            roam: false,//是否开启鼠标缩放和平移漫游
+                            itemStyle: {//地图区域的多边形 图形样式
+                                normal: {//是图形在默认状态下的样式
+                                    label: {
+                                        show: true,//是否显示标签
+                                        textStyle: {
+                                            color: "rgb(249, 249, 249)"
+                                        }
                                     }
+                                },
+                                emphasis: {//是图形在高亮状态下的样式,比如在鼠标悬浮或者图例联动高亮时
+                                    label: {show: true}
                                 }
                             },
-                            emphasis: {//是图形在高亮状态下的样式,比如在鼠标悬浮或者图例联动高亮时
-                                label: {show: true}
-                            }
-                        },
-                        top: "3%",//组件距离容器的距离
-                        data: [
-                            {name: '北京'},
-                            {name: '天津'},
-                            {name: '上海'},
-                            {name: '重庆'},
-                            {name: '河北'},
-                            {name: '河南'},
-                            {name: '云南'},
-                            {name: '辽宁'},
-                            {name: '黑龙江'},
-                            {name: '湖南'},
-                            {name: '安徽'},
-                            {name: '山东'},
-                            {name: '新疆'},
-                            {name: '江苏'},
-                            {name: '浙江'},
-                            {name: '江西'},
-                            {name: '湖北'},
-                            {name: '广西'},
-                            {name: '甘肃'},
-                            {name: '山西'},
-                            {name: '内蒙古'},
-                            {name: '陕西'},
-                            {name: '吉林'},
-                            {name: '福建'},
-                            {name: '贵州'},
-                            {name: '广东'},
-                            {name: '青海'},
-                            {name: '西藏'},
-                            {name: '四川'},
-                            {name: '宁夏'},
-                            {name: '海南'},
-                            {name: '台湾'},
-                            {name: '香港'},
-                            {name: '澳门'}
-                        ]
-                    }
-                ]
-            };
-            myChart.setOption(option);
+                            top: "3%",//组件距离容器的距离
+                            data: [
+                                {name: '北京'},
+                                {name: '天津'},
+                                {name: '上海'},
+                                {name: '重庆'},
+                                {name: '河北'},
+                                {name: '河南'},
+                                {name: '云南'},
+                                {name: '辽宁'},
+                                {name: '黑龙江'},
+                                {name: '湖南'},
+                                {name: '安徽'},
+                                {name: '山东'},
+                                {name: '新疆'},
+                                {name: '江苏'},
+                                {name: '浙江'},
+                                {name: '江西'},
+                                {name: '湖北'},
+                                {name: '广西'},
+                                {name: '甘肃'},
+                                {name: '山西'},
+                                {name: '内蒙古'},
+                                {name: '陕西'},
+                                {name: '吉林'},
+                                {name: '福建'},
+                                {name: '贵州'},
+                                {name: '广东'},
+                                {name: '青海'},
+                                {name: '西藏'},
+                                {name: '四川'},
+                                {name: '宁夏'},
+                                {name: '海南'},
+                                {name: '台湾'},
+                                {name: '香港'},
+                                {name: '澳门'}
+                            ]
+                        }
+                    ]
+                },
+                myChart.setOption(option);
             myChart.on('mouseover', function (params) {
                 {#            var dataIndex = params.dataIndex;#}
                 {#            console.log(params);#}
@@ -5592,406 +5512,412 @@
             })
         }
 
-        <!--面板切换-->
-        $("#mydropdown").on("click", "[data-stopPropagation]", function (e) {
-            e.stopPropagation();
-        })
-
-        <!--复选框操作-->
-        var Chosenindexes = new Array();
-        Chosenindexes = ['tot_oper_rev'];
-        Chosenindexes['tot_oper_rev'] = "#000000";
-
-        $(document).ready(function () {
-
-        });
-        $("div#mychoice :checkbox").change(function () {
-            indexname = $(this).val();
-            if ($(this).is(':checked') == true) {
-                colorname = NewColor();
-                console.log(this);
-                Chosenindexes.push(indexname);
-                Chosenindexes[indexname] = colorname;
-                $("#i_" + indexname).css("background-color", colorname);
-                console.log(Chosenindexes);
-            }
-            else {
-                delete Chosenindexes[indexname]
-                $("#i_" + indexname).css("background-color", "white");
-                console.log(Chosenindexes);
-            }
-            $("div#unselected").empty();
-            $("div#selected").empty();
-            $("input[type=checkbox]").each(function () {//each()方法遍历所有的复选框
-                if ($(this).is(':checked') == true) {//这里就可以判断当前是否被选择了
-                    var tempspan = $("<span class=\"label label-default\" data-stopPropagation=\"true\"id =\"" + indexname + "\">" + dict[indexname] + "</span>")
-                    tempspan.appendTo($("div#unselected"));
-                    $("div#unselected").append(" ");
-                }
+            <!--面板切换-->
+            $("#mydropdown").on("click", "[data-stopPropagation]", function (e) {
+                e.stopPropagation();
             })
-            CreateChart(province);
-            CreateTable();
-            set_time();
-        });
 
-        <!--搜索事件-->
-        function selectline(linename) {
-            for (var line in option.series) {
-                l = parseInt(line);
-                if (option.series[l].name == linename) {
-                    tempcolor = NewColor();
-                    option.series[l].lineStyle.normal.color = tempcolor;
-                    option.series[l].itemStyle.normal.color = tempcolor;
-                    $("span#" + linename).css('color', tempcolor);
-                    selectedindexes.push(l);
-                    selectedindexname.push(option.series[l].name);
-                    option.legend.data = selectedindexname;
-                    myChart.setOption(option);
-                }
-            }
-        }
-        function unselectline(linename) {
-            for (var line in option.series) {
-                l = parseInt(line);
-                if (option.series[l].name == linename) {
-                    option.series[l].lineStyle.normal.color = '#C4D2DB';
-                    option.series[l].itemStyle.normal.color = '#C4D2DB';
-                    $("span#" + linename).css('color', 'white');
-                    selectedindexes.splice(selectedindexes.indexOf(l), 1);
-                    selectedindexname.splice(selectedindexname.indexOf(option.series[l].name), 1);
-                    option.legend.data = selectedindexname;
-                    myChart.setOption(option);
+            <!--复选框操作-->
+            var Chosenindexes = new Array();
+            Chosenindexes = ['tot_oper_rev'];
+            Chosenindexes['tot_oper_rev'] = "#000000";
 
-                }
-            }
+            $(document).ready(function () {
 
-        }
-
-        <!--随机生成颜色-->
-        function NewColor() {
-            var colorElements = "0,1,2,3,4,5,6,7,8,9,a,b,c,d,e,f";
-            var colorArray = colorElements.split(",");
-            var color = "#";
-            for (var i = 0; i < 6; i++) {
-                color += colorArray[Math.floor(Math.random() * 16)];
-            }
-            return color;
-        }
-
-        <!--时间控制框-->
-        var starttime = "20071231";
-        var endtime = "20161231";
-        $(".form_datetime").datetimepicker({
-            format: 'yyyy-mm-dd ',
-            startView: 4,
-            minView: 4,
-            maxView: 4,
-            autoclose: true,
-            pickerPosition: 'top-right'
-        });
-        $('#starttime').datetimepicker('setStartDate', '2007-12-31');
-        $('#starttime').datetimepicker('setEndDate', '2016-12-31');
-        $('#endtime').datetimepicker('setStartDate', '2007-12-31');
-        $('#endtime').datetimepicker('setEndDate', '2016-12-31');
-        $('#starttime')
-            .datetimepicker()
-            .on('changeDate', function (ev) {
-                starts = ev.date.Format("yyyy年Q4");
-                option.dataZoom[0].startValue = starts;
-                myChart.setOption(option);
-                RequestTable();
             });
-        $('#endtime')
-            .datetimepicker()
-            .on('changeDate', function (ev) {
-                ends = ev.date.Format("yyyy年Q4");
-                option.dataZoom[0].endValue = ends;
-                myChart.setOption(option);
-                RequestTable();
-            });
-        Date.prototype.Format = function (fmt) { //author: meizz
-            var o = {
-                "M+": this.getMonth() + 1, //月份
-                "d+": this.getDate(), //日
-                "h+": this.getHours(), //小时
-                "m+": this.getMinutes(), //分
-                "s+": this.getSeconds(), //秒
-                "q+": Math.floor((this.getMonth() + 3) / 3), //季度
-                "S": this.getMilliseconds() //毫秒
-            };
-            if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
-            for (var k in o)
-                if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
-            return fmt;
-        }
-        function dateformat(olddate) {
-            newdate = []
-            for (i = 0; i < olddate.length; i++) {
-                var str = olddate[i];
-                var reg = /1231/g;
-                str = str.replace(reg, '年Q4');
-                newdate.push(str)
-            }
-            return newdate
-        }
-        function datefor(olddate) {
-            newdate = []
-            for (i = 0; i < olddate.length; i++) {
-                var str = olddate[i];
-                var reg = /年Q4/g;
-                str = str.replace(reg, '1231');
-                newdate.push(str)
-            }
-            return newdate
-        }
-
-        <!--单位转换-->
-        denominator = 1
-        $("select#unit").change(function () {
-            flag = $(this).val();
-            if (flag == "0") {
-                denominator = 1;
-                CreateChart();
+            $("div#mychoice :checkbox").change(function () {
+                indexname = $(this).val();
+                if ($(this).is(':checked') == true) {
+                    colorname = NewColor();
+                    console.log(this);
+                    Chosenindexes.push(indexname);
+                    Chosenindexes[indexname] = colorname;
+                    $("#i_" + indexname).css("background-color", colorname);
+                    console.log(Chosenindexes);
+                }
+                else {
+                    delete Chosenindexes[indexname]
+                    $("#i_" + indexname).css("background-color", "white");
+                    console.log(Chosenindexes);
+                }
+                $("div#unselected").empty();
+                $("div#selected").empty();
+                $("input[type=checkbox]").each(function () {//each()方法遍历所有的复选框
+                    if ($(this).is(':checked') == true) {//这里就可以判断当前是否被选择了
+                        var tempspan = $("<span class=\"label label-default\" data-stopPropagation=\"true\"id =\"" + indexname + "\">" + dict[indexname] + "</span>")
+                        tempspan.appendTo($("div#unselected"));
+                        $("div#unselected").append(" ");
+                    }
+                })
+                CreateChart(province);
                 CreateTable();
                 set_time();
-            }
-            if (flag == "1") {
-                denominator = 10000;
-                CreateChart();
-                CreateTable();
-                set_time();
-            }
-        });
-        function numfilter(oldnum) {
-            newnum = []
-            for (i = 0; i < oldnum.length; i++) {
-                temp = oldnum[i] / denominator;
-                newnum.push(temp.toFixed(2))
-            }
-            return newnum;
-        }
-
-        <!--建图-->
-        var myChart = echarts.init(document.getElementById('mychart'));
-
-        function CreateChart(province) {
-
-            var market_results;
-            var dict = {
-                'tot_oper_rev': '总营业收入',
-                'net_profit_is': '净利润总和',
-                'wgsd_net_inc': '归属股东利润总和',
-                'tot_assets': '总资产总和',
-                'tot_liab': '总负债总和',
-                'net_assets': '净资产总和',
-                'wgsd_com_eq': '股东权益总和',
-                'operatecashflow_ttm2': '经营性现金流总和',
-                'investcashflow_ttm2': '投资性现金流总和',
-                'financecashflow_ttm2': '融资性现金流总和',
-                'cashflow_ttm2': '总现金流总和',
-                'free_cash_flow': '自由现金流估计',
-            };
-            $.ajax({
-                type: 'GET',
-                url: '{{ url_for("restfulapi.market_value") }}',
-                data: {
-                    province: province,
-                    starttime: '20071231',
-                    endtime: '20161231',
-                    indexes: ['tot_oper_rev', 'net_profit_is', 'wgsd_net_inc', 'tot_assets', 'tot_liab', 'net_assets', 'wgsd_com_eq', 'operatecashflow_ttm2', 'investcashflow_ttm2', 'financecashflow_ttm2', 'cashflow_ttm2', 'free_cash_flow']
-                },
-                dataType: 'json',
-                success: function (data) {
-                    console.log(data)
-                    market_results = data;
-                    dataSeries = [];
-                    for (var i = 0; i < market_results.indexes.length; i++) {
-                        if (Chosenindexes.hasOwnProperty(market_results.indexes[i])) {
-                            temp = {
-                                name: market_results.indexes[i],
-                                type: 'line',
-                                lineStyle: {normal: {width: 2}},
-                                itemStyle: {normal: {color: Chosenindexes[market_results.indexes[i]]}},
-                                symbolSize: 8,
-                                smooth: true,
-                                data: numfilter(eval("market_results." + market_results.indexes[i]))
-                            };
-                            dataSeries.push(temp);
-                        }
-                    }
-                    option = {
-                        title: {
-                            text: '财务指标分析图',
-                            left: '45%'
-                        },
-                        tooltip: {
-                            trigger: 'item',
-                            formatter: function (params) {
-                                return dict[params.seriesName] + "<br/> 时间：" + params.name + "<br/> 数据：" + params.data;
-                            }
-                        },
-                        legend: {
-                            data: [],
-                            orient: 'vertical',
-                            left: '85%',
-                            top: '10%',
-                            formatter: function (name) {
-                                return dict[name];
-                            }
-                        },
-                        grid: {
-                            left: '5%',
-                            top: '10%',
-                            containLabel: true
-                        },
-                        toolbox: {
-                            feature: {
-                                magicType: {
-                                    type: ['line', 'bar']
-                                }
-                            }
-                        },
-                        xAxis: {
-                            type: 'category',
-                            boundaryGap: false,
-                            axisTick: {
-                                show: false
-                            },
-                            data: dateformat(market_results.the_year),
-                            Interval: 5
-                        },
-                        yAxis: {
-                            type: 'value',
-                            axisTick: {
-                                show: false
-                            },
-                        },
-                        dataZoom: [
-                            {
-                                type: 'slider',
-                                xAxisIndex: [0],
-                                startValue: "2016年Q4",
-                                endValue: "2007年Q4",
-                                filterMode: 'filter',
-                            }
-                        ],
-                        series: dataSeries
-                    };
-                    myChart.setOption(option, true);
-                    myChart.on('datazoom', function (params) {
-                        option.xAxis.interval = 10 * (params.end - params.start) / 100;
-                        var ends = (2016 - Math.ceil(params.start / 100 * 9)) + '-12-31'
-                        if (Math.ceil(1 - params.end / 100)) {
-                            var starts = (2016 - Math.ceil(params.end / 100 * 9)) + '-12-31'
-                        }
-                        else {
-                            var starts = '2007-12-31'
-                        }
-                        set_timepicker(starts, ends)
-                    });
-                    function set_timepicker(start, end) {
-                        document.getElementById('endtime').value = start
-                        document.getElementById('starttime').value = end
-                    }
-                }
             });
 
-        }
-        function set_time() {
-            document.getElementById('endtime').value = "2007-12-31"
-            document.getElementById('starttime').value = "2016-12-31"
-        }
+            <!--搜索事件-->
+            function selectline(linename) {
+                for (var line in option.series) {
+                    l = parseInt(line);
+                    if (option.series[l].name == linename) {
+                        tempcolor = NewColor();
+                        option.series[l].lineStyle.normal.color = tempcolor;
+                        option.series[l].itemStyle.normal.color = tempcolor;
+                        $("span#" + linename).css('color', tempcolor);
+                        selectedindexes.push(l);
+                        selectedindexname.push(option.series[l].name);
+                        option.legend.data = selectedindexname;
+                        myChart.setOption(option);
+                    }
+                }
+            }
 
-        <!--建表-->
-        var market_results_t;
-        var invest_results_t;
-        function RequestTable() {
-            var opt = myChart.getOption();
-            var dz = opt.dataZoom[0];
-            {#            alert(province)#}
-            $.ajax({
-                type: 'GET',
-                url: '{{url_for("restfulapi.market_value")}}',
-                data: {
-                    province: '辽宁',
-                    starttime: opt.xAxis[0].data[dz.endValue],
-                    endtime: opt.xAxis[0].data[dz.startValue],
-                    indexes: ['tot_oper_rev', 'net_profit_is', 'wgsd_net_inc', 'tot_assets', 'tot_liab', 'net_assets', 'wgsd_com_eq', 'operatecashflow_ttm2', 'investcashflow_ttm2', 'financecashflow_ttm2', 'cashflow_ttm2', 'free_cash_flow']
-                },
-                dataType: 'json',//希望服务器返回json格式的数据
-                success: function (data) {
-                    console.log(data)
-                    market_results_t = data;
-                    invest_results_t = data;
+            function unselectline(linename) {
+                for (var line in option.series) {
+                    l = parseInt(line);
+                    if (option.series[l].name == linename) {
+                        option.series[l].lineStyle.normal.color = '#C4D2DB';
+                        option.series[l].itemStyle.normal.color = '#C4D2DB';
+                        $("span#" + linename).css('color', 'white');
+                        selectedindexes.splice(selectedindexes.indexOf(l), 1);
+                        selectedindexname.splice(selectedindexname.indexOf(option.series[l].name), 1);
+                        option.legend.data = selectedindexname;
+                        myChart.setOption(option);
+
+                    }
+                }
+
+            }
+
+            <!--随机生成颜色-->
+            function NewColor() {
+                var colorElements = "0,1,2,3,4,5,6,7,8,9,a,b,c,d,e,f";
+                var colorArray = colorElements.split(",");
+                var color = "#";
+                for (var i = 0; i < 6; i++) {
+                    color += colorArray[Math.floor(Math.random() * 16)];
+                }
+                return color;
+            }
+
+            <!--时间控制框-->
+            var starttime = "20071231";
+            var endtime = "20161231";
+            $(".form_datetime").datetimepicker({
+                format: 'yyyy-mm-dd ',
+                startView: 4,
+                minView: 4,
+                maxView: 4,
+                autoclose: true,
+                pickerPosition: 'top-right'
+            });
+            $('#starttime').datetimepicker('setStartDate', '2007-12-31');
+            $('#starttime').datetimepicker('setEndDate', '2016-12-31');
+            $('#endtime').datetimepicker('setStartDate', '2007-12-31');
+            $('#endtime').datetimepicker('setEndDate', '2016-12-31');
+            $('#starttime')
+                .datetimepicker()
+                .on('changeDate', function (ev) {
+                    starts = ev.date.Format("yyyy年Q4");
+                    option.dataZoom[0].startValue = starts;
+                    myChart.setOption(option);
+                    RequestTable();
+                });
+            $('#endtime')
+                .datetimepicker()
+                .on('changeDate', function (ev) {
+                    ends = ev.date.Format("yyyy年Q4");
+                    option.dataZoom[0].endValue = ends;
+                    myChart.setOption(option);
+                    RequestTable();
+                });
+            Date.prototype.Format = function (fmt) { //author: meizz
+                var o = {
+                    "M+": this.getMonth() + 1, //月份
+                    "d+": this.getDate(), //日
+                    "h+": this.getHours(), //小时
+                    "m+": this.getMinutes(), //分
+                    "s+": this.getSeconds(), //秒
+                    "q+": Math.floor((this.getMonth() + 3) / 3), //季度
+                    "S": this.getMilliseconds() //毫秒
+                };
+                if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+                for (var k in o)
+                    if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+                return fmt;
+            }
+            function dateformat(olddate) {
+                newdate = []
+                for (i = 0; i < olddate.length; i++) {
+                    var str = olddate[i];
+                    var reg = /1231/g;
+                    str = str.replace(reg, '年Q4');
+                    newdate.push(str)
+                }
+                return newdate
+            }
+
+            function datefor(olddate) {
+                newdate = []
+                for (i = 0; i < olddate.length; i++) {
+                    var str = olddate[i];
+                    var reg = /年Q4/g;
+                    str = str.replace(reg, '1231');
+                    newdate.push(str)
+                }
+                return newdate
+            }
+
+            <!--单位转换-->
+            denominator = 1
+            $("select#unit").change(function () {
+                flag = $(this).val();
+                if (flag == "0") {
+                    denominator = 1;
+                    CreateChart();
                     CreateTable();
+                    set_time();
                 }
-            })
-        }
-        function CreateTable() {
-            $("#mytable").empty();
-            var table = $("<table id=\"temptable\" style=\"text-align:center\" class=\"row-border hover order-column\" cellspacing=\"0\" width=\"100%\"  >");
-            table.appendTo($("#mytable"));
-            th = $("<thead></thead>");
-            th.appendTo(table);
-            var tr = $("<tr></tr>");
-            tr.appendTo(th);
-            var td = $("<td id=\"subject\">" + "项目" + "</td>");
-            td.appendTo(tr);
-            theyear = dateformat(market_results_t.the_year)
-            for (var j = 0; j < theyear.length; j++) {
-                var td = $("<td>" + theyear[j] + "</td>");
-                td.appendTo(tr);
-            }
-            tb = $("<tbody></tbody>");
-            tb.appendTo(table);
-            $("#mytable").append("</table>");
-            var mydatatb = $('#temptable').DataTable({
-                "info": false,
-                "processing": true,
-                "scrollX": true,
-                "searching": true,
-                "fixedColumns": { //固定列的配置项
-                    "leftColumns": 1//固定左边第一列
-                },
-                "language": {
-                    "emptyTable": "没有数据",
-                    "loadingRecords": "加载中…",
-                    "processing": "查询中…",
-                    "search": "检索:",
-                    "lengthMenu": "每页 _MENU_ 条",
-                    "zeroRecords": "没有数据",
-                    "paginate": {
-                        "first": "第一页",
-                        "last": "最后一页",
-                        "next": "",
-                        "previous": ""
-                    },
-                    "info": "第 _PAGE_ 页 / 总 _PAGES_ 页",
-                    "infoEmpty": "没有数据",
-                    "infoFiltered": "(过滤总件数 _MAX_ 条)"
+                if (flag == "1") {
+                    denominator = 10000;
+                    CreateChart();
+                    CreateTable();
+                    set_time();
                 }
             });
-            setTimeout("$(\"#subject\").trigger(\"click\")", 100);
-            for (var i = 0; i < market_results_t.indexes.length; i++) {
-                if (Chosenindexes.hasOwnProperty(market_results_t.indexes[i])) {
-                    var rowNode = mydatatb
-                        .row.add([dict[market_results_t.indexes[i]]].concat(numfilter(eval("market_results_t." + market_results_t.indexes[i]))))
-                        .draw()
-                        .node();
-                    $(rowNode)
-                        .attr('id', market_results_t.indexes[i]);
+            function numfilter(oldnum) {
+                newnum = []
+                for (i = 0; i < oldnum.length; i++) {
+                    temp = oldnum[i] / denominator;
+                    newnum.push(temp.toFixed(2))
+                }
+                return newnum;
+            }
+
+            <!--建图-->
+            var myChart = echarts.init(document.getElementById('mychart'));
+
+            function CreateChart(province) {
+
+                var market_results;
+                var dict = {
+                    'tot_oper_rev': '总营业收入',
+                    'net_profit_is': '净利润总和',
+                    'wgsd_net_inc': '归属股东利润总和',
+                    'tot_assets': '总资产总和',
+                    'tot_liab': '总负债总和',
+                    'net_assets': '净资产总和',
+                    'wgsd_com_eq': '股东权益总和',
+                    'operatecashflow_ttm2': '经营性现金流总和',
+                    'investcashflow_ttm2': '投资性现金流总和',
+                    'financecashflow_ttm2': '融资性现金流总和',
+                    'cashflow_ttm2': '总现金流总和',
+                    'free_cash_flow': '自由现金流估计',
+                };
+                $.ajax({
+                    type: 'GET',
+                    url: '{{ url_for("restfulapi.market_value") }}',
+                    data: {
+                        province: province,
+                        starttime: '20071231',
+                        endtime: '20161231',
+                        indexes: ['tot_oper_rev', 'net_profit_is', 'wgsd_net_inc', 'tot_assets', 'tot_liab', 'net_assets', 'wgsd_com_eq', 'operatecashflow_ttm2', 'investcashflow_ttm2', 'financecashflow_ttm2', 'cashflow_ttm2', 'free_cash_flow']
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        console.log(data)
+                        market_results = data;
+                        dataSeries = [];
+                        for (var i = 0; i < market_results.indexes.length; i++) {
+                            if (Chosenindexes.hasOwnProperty(market_results.indexes[i])) {
+                                temp = {
+                                    name: market_results.indexes[i],
+                                    type: 'line',
+                                    lineStyle: {normal: {width: 2}},
+                                    itemStyle: {normal: {color: Chosenindexes[market_results.indexes[i]]}},
+                                    symbolSize: 8,
+                                    smooth: true,
+                                    data: numfilter(eval("market_results." + market_results.indexes[i]))
+                                };
+                                dataSeries.push(temp);
+                            }
+                        }
+                        option = {
+                            title: {
+                                text: '财务指标分析图',
+                                left: '45%'
+                            },
+                            tooltip: {
+                                trigger: 'item',
+                                formatter: function (params) {
+                                    return dict[params.seriesName] + "<br/> 时间：" + params.name + "<br/> 数据：" + params.data;
+                                }
+                            },
+                            legend: {
+                                data: [],
+                                orient: 'vertical',
+                                left: '85%',
+                                top: '10%',
+                                formatter: function (name) {
+                                    return dict[name];
+                                }
+                            },
+                            grid: {
+                                left: '5%',
+                                top: '10%',
+                                containLabel: true
+                            },
+                            toolbox: {
+                                feature: {
+                                    magicType: {
+                                        type: ['line', 'bar']
+                                    }
+                                }
+                            },
+                            xAxis: {
+                                type: 'category',
+                                boundaryGap: false,
+                                axisTick: {
+                                    show: false
+                                },
+                                data: dateformat(market_results.the_year),
+                                Interval: 5
+                            },
+                            yAxis: {
+                                type: 'value',
+                                axisTick: {
+                                    show: false
+                                },
+                            },
+                            dataZoom: [
+                                {
+                                    type: 'slider',
+                                    xAxisIndex: [0],
+                                    startValue: "2016年Q4",
+                                    endValue: "2007年Q4",
+                                    filterMode: 'filter',
+                                }
+                            ],
+                            series: dataSeries
+                        };
+                        myChart.setOption(option, true);
+                        myChart.on('datazoom', function (params) {
+                            option.xAxis.interval = 10 * (params.end - params.start) / 100;
+                            var ends = (2016 - Math.ceil(params.start / 100 * 9)) + '-12-31'
+                            if (Math.ceil(1 - params.end / 100)) {
+                                var starts = (2016 - Math.ceil(params.end / 100 * 9)) + '-12-31'
+                            }
+                            else {
+                                var starts = '2007-12-31'
+                            }
+                            set_timepicker(starts, ends)
+                        });
+                        function set_timepicker(start, end) {
+                            document.getElementById('endtime').value = start
+                            document.getElementById('starttime').value = end
+                        }
+                    }
+                });
+
+            }
+
+            function set_time() {
+                document.getElementById('endtime').value = "2007-12-31"
+                document.getElementById('starttime').value = "2016-12-31"
+            }
+
+            <!--建表-->
+            var market_results_t;
+            var invest_results_t;
+
+            function RequestTable() {
+                var opt = myChart.getOption();
+                var dz = opt.dataZoom[0];
+                {#            alert(province)#}
+                $.ajax({
+                    type: 'GET',
+                    url: '{{url_for("restfulapi.market_value")}}',
+                    data: {
+                        province: '辽宁',
+                        starttime: opt.xAxis[0].data[dz.endValue],
+                        endtime: opt.xAxis[0].data[dz.startValue],
+                        indexes: ['tot_oper_rev', 'net_profit_is', 'wgsd_net_inc', 'tot_assets', 'tot_liab', 'net_assets', 'wgsd_com_eq', 'operatecashflow_ttm2', 'investcashflow_ttm2', 'financecashflow_ttm2', 'cashflow_ttm2', 'free_cash_flow']
+                    },
+                    dataType: 'json',//希望服务器返回json格式的数据
+                    success: function (data) {
+                        console.log(data)
+                        market_results_t = data;
+                        invest_results_t = data;
+                        CreateTable();
+                    }
+                })
+            }
+
+            function CreateTable() {
+                $("#mytable").empty();
+                var table = $("<table id=\"temptable\" style=\"text-align:center\" class=\"row-border hover order-column\" cellspacing=\"0\" width=\"100%\"  >");
+                table.appendTo($("#mytable"));
+                th = $("<thead></thead>");
+                th.appendTo(table);
+                var tr = $("<tr></tr>");
+                tr.appendTo(th);
+                var td = $("<td id=\"subject\">" + "项目" + "</td>");
+                td.appendTo(tr);
+                theyear = dateformat(market_results_t.the_year)
+                for (var j = 0; j < theyear.length; j++) {
+                    var td = $("<td>" + theyear[j] + "</td>");
+                    td.appendTo(tr);
+                }
+                tb = $("<tbody></tbody>");
+                tb.appendTo(table);
+                $("#mytable").append("</table>");
+                var mydatatb = $('#temptable').DataTable({
+                    "info": false,
+                    "processing": true,
+                    "scrollX": true,
+                    "searching": true,
+                    "fixedColumns": { //固定列的配置项
+                        "leftColumns": 1//固定左边第一列
+                    },
+                    "language": {
+                        "emptyTable": "没有数据",
+                        "loadingRecords": "加载中…",
+                        "processing": "查询中…",
+                        "search": "检索:",
+                        "lengthMenu": "每页 _MENU_ 条",
+                        "zeroRecords": "没有数据",
+                        "paginate": {
+                            "first": "第一页",
+                            "last": "最后一页",
+                            "next": "",
+                            "previous": ""
+                        },
+                        "info": "第 _PAGE_ 页 / 总 _PAGES_ 页",
+                        "infoEmpty": "没有数据",
+                        "infoFiltered": "(过滤总件数 _MAX_ 条)"
+                    }
+                });
+                setTimeout("$(\"#subject\").trigger(\"click\")", 100);
+                for (var i = 0; i < market_results_t.indexes.length; i++) {
+                    if (Chosenindexes.hasOwnProperty(market_results_t.indexes[i])) {
+                        var rowNode = mydatatb
+                            .row.add([dict[market_results_t.indexes[i]]].concat(numfilter(eval("market_results_t." + market_results_t.indexes[i]))))
+                            .draw()
+                            .node();
+                        $(rowNode)
+                            .attr('id', market_results_t.indexes[i]);
+                    }
+                }
+                for (var key in Chosenindexes) {
+                    $('tr#' + key).css('color', Chosenindexes[key])
                 }
             }
-            for (var key in Chosenindexes) {
-                $('tr#' + key).css('color', Chosenindexes[key])
-            }
-        }
 
-        function firstvisit() {
-            creatmap()
-            CreateChart(province)
-        }
-        firstvisit()
+            function firstvisit() {
+                creatmap()
+                CreateChart(province)
+            }
+
+            firstvisit()
     </script>
 {% endblock %}
 
