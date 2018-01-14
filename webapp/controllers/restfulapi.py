@@ -467,7 +467,7 @@ def market_one():
         filters = {
             stock_basics.province.like("%" + province + "%")
         }
-        results = stock_basics.query.filter(or_(*filters)).all()
+        results = stock_basics.query.filter(*filters).all()
     code_list = []
     for result in results:
         code_list.append(result.trade_code)
@@ -477,7 +477,8 @@ def market_one():
     session = Session()
 
     data_list = []
-
+    for index in indexes:
+        exec (index+"_list=[]" )
     for code in codes:
         results = session.query(func.sum(finance_basics_add.tot_oper_rev).label("tot_oper_rev"),
                                 func.sum(finance_basics_add.tot_assets).label("tot_assets"),
@@ -498,11 +499,13 @@ def market_one():
                     exec ("my" + index + "= float((result." + index + ")/100000000)")
                 else:
                     exec ("my" + index + "= 0 ")
-                exec ("data_list.append(my" + index + ")")
 
+                exec (index+"_list.append(my" + index + ")")
     data = {}
+    for index in indexes:
+        exec("data['"+index+"_list']="+index+"_list")
     data['my_code'] = codes
-    data['my_num'] = data_list
+    data['province'] = province
 
     return jsonify(data)
 
