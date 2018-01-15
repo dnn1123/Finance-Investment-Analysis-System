@@ -467,7 +467,7 @@ def market_one():
         filters = {
             stock_basics.province.like("%" + province + "%")
         }
-        results = stock_basics.query.filter(or_(*filters)).all()
+        results = stock_basics.query.filter(*filters).all()
     code_list = []
     for result in results:
         code_list.append(result.trade_code)
@@ -477,7 +477,8 @@ def market_one():
     session = Session()
 
     data_list = []
-
+    for index in indexes:
+        exec (index+"_list=[]" )
     for code in codes:
         results = session.query(func.sum(finance_basics_add.tot_oper_rev).label("tot_oper_rev"),
                                 func.sum(finance_basics_add.tot_assets).label("tot_assets"),
@@ -486,6 +487,7 @@ def market_one():
                                 cns_department_industry.industry_gics_1.label("industry_gics_1")).filter(
                 finance_basics_add.the_year == time).filter(
                 finance_basics_add.trade_code.in_(code_list)).filter(
+        finance_basics_add.trade_code == cns_stock_industry.trade_code).filter(
                 cns_stock_industry.industry_gicscode_4 == cns_sub_industry.industry_gicscode_4).filter(
                 cns_sub_industry.belong == cns_industry.industry_gicscode_3).filter(
                 cns_industry.belong == cns_group_industry.industry_gicscode_2).filter(
@@ -498,11 +500,13 @@ def market_one():
                     exec ("my" + index + "= float((result." + index + ")/100000000)")
                 else:
                     exec ("my" + index + "= 0 ")
-                exec ("data_list.append(my" + index + ")")
 
+                exec (index+"_list.append(my" + index + ")")
     data = {}
+    for index in indexes:
+        exec("data['"+index+"_list']="+index+"_list")
     data['my_code'] = codes
-    data['my_num'] = data_list
+    data['province'] = province
 
     return jsonify(data)
 
@@ -558,12 +562,23 @@ def market_bar():
 @api_blueprint.route("/market_status1/", methods=('GET', 'POST'))
 def market_status1():
     data = {}
-
     code = request.args.get('code')
+    province = request.args.get('province')
     starttime = request.args.get('starttime')
     endtime = request.args.get('endtime')
     indexes = request.args.getlist('indexes[]')
-
+     # yc
+    if province == 'all':
+        results = stock_basics.query.filter().all()
+    else:
+        filters = {
+            stock_basics.province.like("%" + province + "%")
+        }
+        results = stock_basics.query.filter(*filters).all()
+    code_list = []
+    for result in results:
+        code_list.append(result.trade_code)
+    # yc_end
     db_engine = create_engine('mysql://root:0000@localhost/test?charset=utf8')
     Session = sessionmaker(bind=db_engine)
     session = Session()
@@ -589,6 +604,7 @@ def market_status1():
                        func.sum(finance_basics_add.financecashflow_ttm2).label("financecashflow_ttm2"),
                        func.sum(finance_basics_add.cashflow_ttm2).label("cashflow_ttm2"),
                        cns_department_industry.industry_gics_1.label("industry_gics_1")).filter(
+                finance_basics_add.trade_code.in_(code_list)).filter(
         finance_basics_add.trade_code == cns_stock_industry.trade_code).filter(
         cns_stock_industry.industry_gicscode_4 == cns_sub_industry.industry_gicscode_4).filter(
         cns_sub_industry.belong == cns_industry.industry_gicscode_3).filter(
@@ -623,12 +639,23 @@ def market_status1():
 @api_blueprint.route("/market_status2/", methods=('GET', 'POST'))
 def market_status2():
     data = {}
-
+    province = request.args.get('province')
     code = request.args.get('code')
     starttime = request.args.get('starttime')
     endtime = request.args.get('endtime')
     indexes = request.args.getlist('indexes[]')
-
+     # yc
+    if province == 'all':
+        results = stock_basics.query.filter().all()
+    else:
+        filters = {
+            stock_basics.province.like("%" + province + "%")
+        }
+        results = stock_basics.query.filter(*filters).all()
+    code_list = []
+    for result in results:
+        code_list.append(result.trade_code)
+    # yc_end
     db_engine = create_engine('mysql://root:0000@localhost/test?charset=utf8')
     Session = sessionmaker(bind=db_engine)
     session = Session()
@@ -658,6 +685,7 @@ def market_status2():
                        func.sum(finance_basics_add.financecashflow_ttm2).label("financecashflow_ttm2"),
                        func.sum(finance_basics_add.cashflow_ttm2).label("cashflow_ttm2"),
                        cns_group_industry.industry_gics_2.label("industry_gics_2")).filter(
+                finance_basics_add.trade_code.in_(code_list)).filter(
         finance_basics_add.trade_code == cns_stock_industry.trade_code).filter(
         cns_stock_industry.industry_gicscode_4 == cns_sub_industry.industry_gicscode_4).filter(
         cns_sub_industry.belong == cns_industry.industry_gicscode_3).filter(
@@ -686,12 +714,23 @@ def market_status2():
 @api_blueprint.route("/market_status3/", methods=('GET', 'POST'))
 def market_status3():
     data = {}
-
+    province = request.args.get('province')
     code = request.args.get('code')
     starttime = request.args.get('starttime')
     endtime = request.args.get('endtime')
     indexes = request.args.getlist('indexes[]')
-
+      # yc
+    if province == 'all':
+        results = stock_basics.query.filter().all()
+    else:
+        filters = {
+            stock_basics.province.like("%" + province + "%")
+        }
+        results = stock_basics.query.filter(*filters).all()
+    code_list = []
+    for result in results:
+        code_list.append(result.trade_code)
+    # yc_end
     db_engine = create_engine('mysql://root:0000@localhost/test?charset=utf8')
     Session = sessionmaker(bind=db_engine)
     session = Session()
@@ -721,6 +760,7 @@ def market_status3():
                        func.sum(finance_basics_add.financecashflow_ttm2).label("financecashflow_ttm2"),
                        func.sum(finance_basics_add.cashflow_ttm2).label("cashflow_ttm2"),
                        cns_industry.industry_gics_3.label("industry_gics_3")).filter(
+                finance_basics_add.trade_code.in_(code_list)).filter(
         finance_basics_add.trade_code == cns_stock_industry.trade_code).filter(
         cns_stock_industry.industry_gicscode_4 == cns_sub_industry.industry_gicscode_4).filter(
         cns_sub_industry.belong == cns_industry.industry_gicscode_3).filter(
@@ -748,12 +788,23 @@ def market_status3():
 @api_blueprint.route("/market_status4/", methods=('GET', 'POST'))
 def market_status4():
     data = {}
-
+    province = request.args.get('province')
     code = request.args.get('code')
     starttime = request.args.get('starttime')
     endtime = request.args.get('endtime')
     indexes = request.args.getlist('indexes[]')
-
+      # yc
+    if province == 'all':
+        results = stock_basics.query.filter().all()
+    else:
+        filters = {
+            stock_basics.province.like("%" + province + "%")
+        }
+        results = stock_basics.query.filter(*filters).all()
+    code_list = []
+    for result in results:
+        code_list.append(result.trade_code)
+    # yc_end
     db_engine = create_engine('mysql://root:0000@localhost/test?charset=utf8')
     Session = sessionmaker(bind=db_engine)
     session = Session()
@@ -784,6 +835,7 @@ def market_status4():
                        func.sum(finance_basics_add.cashflow_ttm2).label("cashflow_ttm2"),
                        cns_sub_industry.industry_gicscode_4,
                        cns_sub_industry.industry_gics_4.label("industry_gics_4")).filter(
+                finance_basics_add.trade_code.in_(code_list)).filter(
         finance_basics_add.trade_code == cns_stock_industry.trade_code).filter(
         cns_stock_industry.industry_gicscode_4 == cns_sub_industry.industry_gicscode_4).filter(
         cns_sub_industry.industry_gicscode_4 == code).group_by(finance_basics_add.the_year).all()

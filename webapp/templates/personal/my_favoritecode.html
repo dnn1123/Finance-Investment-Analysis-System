@@ -17,38 +17,38 @@
                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                                 <h4 class="modal-title" id="myModalLabel">添加关注</h4>
                             </div>
-{#                            <div class="modal-body">#}
+                            {#                            <div class="modal-body">#}
                             <form id="searchform" class="navbar-search pull-left input-append" role="search"
                                   method="post"
                                   action="{{ url_for('stock_solo.basic') }}">
                                 <div class="input-group" style="margin-left:10px">
                                     <input type="text" class="span3 form-control" id="stockcode" style="height: 30px"
                                            placeholder="Search" name="stockcode">
-{#                                    <button id="submitbtn" class="btn dropdown-toggle" style="height: 30px"#}
-{#                                            data-toggle="dropdown"#}
-{#                                            type="submit"><i class="icon-search"></i></button>#}
+                                    {#                                    <button id="submitbtn" class="btn dropdown-toggle" style="height: 30px"#}
+                                    {#                                            data-toggle="dropdown"#}
+                                    {#                                            type="submit"><i class="icon-search"></i></button>#}
                                     <ul class="dropdown-menu" role="menu" style="left: 0!important;"></ul>
                                 </div>
                             </form>
-{#                               </div>#}
-{#                            <form id="searchform" class="navbar-form navbar-left" role="search" method="post"#}
-{#                                  action="{{ url_for('restfulapi.add_code') }}">#}
-{#                                <div class="modal-body">#}
-{#                                    <div calss="input-group">#}
-{#                                        <div class="form-group form-inline">#}
-{#                                            <label>股票： </label>#}
-{#                                            <input type="text" id="stockcode" name="stockcode" placeholder="Search"#}
-{#                                                   class="form-control"#}
-{#                                                   title="代码/拼音/名称"#}
-{#                                                   style="color: rgb(153, 153, 153);">#}
-{#                                        </div>#}
-{#                                    </div>#}
-{#                                </div>#}
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                                    <button type="button" class="btn btn-primary" onclick="addStock()">确认</button>
-                                </div>
-{#                            </form>#}
+                            {#                               </div>#}
+                            {#                            <form id="searchform" class="navbar-form navbar-left" role="search" method="post"#}
+                            {#                                  action="{{ url_for('restfulapi.add_code') }}">#}
+                            {#                                <div class="modal-body">#}
+                            {#                                    <div calss="input-group">#}
+                            {#                                        <div class="form-group form-inline">#}
+                            {#                                            <label>股票： </label>#}
+                            {#                                            <input type="text" id="stockcode" name="stockcode" placeholder="Search"#}
+                            {#                                                   class="form-control"#}
+                            {#                                                   title="代码/拼音/名称"#}
+                            {#                                                   style="color: rgb(153, 153, 153);">#}
+                            {#                                        </div>#}
+                            {#                                    </div>#}
+                            {#                                </div>#}
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                                <button type="button" class="btn btn-primary" onclick="addStock()">确认</button>
+                            </div>
+                            {#                            </form>#}
 
                         </div><!-- /.modal-content -->
                     </div><!-- /.modal-dialog -->
@@ -70,7 +70,7 @@
                     </div>
                     <div class="module-body" id="body1">
                         <div class="btn-box-row row-fluid">
-                            <div class="span12" style="background-color:white">
+                            <div class="span6" style="background-color:white">
                                 <div style="height:100px;">
                                     <table id="mytable1" style="text-align:center;height:100px">
                                         <thead>
@@ -100,10 +100,15 @@
                                     </table>
                                 </div>
                             </div>
+                            <div class="span6" style="background-color:white">
+                                <div style="height:300px;" id="map">
+
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-
+                {#行业状况饼状图#}
                 <div class="btn-box-row row-fluid">
                     <div class="module span12" style="background-color: transparent">
                         <div class="module-head">
@@ -489,7 +494,7 @@
             ;
 
             console.log(valueDist);
-            var myChart = echarts.init(document.getElementById('cityDist'));
+            var myChart = echarts.init(document.getElementById('map'));
             var option = {
                 backgroundColor: '#404a59',
                 title: {
