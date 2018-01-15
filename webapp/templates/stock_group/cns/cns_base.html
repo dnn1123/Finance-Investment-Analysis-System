@@ -4,24 +4,30 @@
 {% endblock %}
 {% block body %}
     <div class="span9">
-    <div>
+        {% block tab %}{% endblock %}
         {% block form %} {% endblock %}
-    </div>
-
-{% block tab %}{% endblock %}
-    <!-- 以下对应四个板块-->
-    <div id="myTabContent" class="tab-content" style="overflow: visible"> <!--style="border:1px solid #000"-->
-   {#     <div class="tab-pane fade in active" id="industry" style="height:70%;overflow-y:auto;"> <!--overflow-y:auto;限定div范围设置滚动条防止溢出-->
-            {% block industry %}{% endblock %}
-        </div>#}
-        <div class="tab-pane fade in active" id="industry" style="height:80%;"> <!--overflow-y:auto;限定div范围设置滚动条防止溢出-->
-            {% block industry %}{% endblock %}
-        </div>
-    </div>
-
+        {% block industry %}{% endblock %}
+    <div class="row">
     {% block navigation%} {% endblock %}
-    </div>>
+    </div>
+    </div>
+        <div id="loader-wrapper">
+        <div id="loader"></div>
+        <div class="loader-section section-left"></div>
+        <div class="loader-section section-right"></div>
+        <div class="load_title">Loading<br><span>V1.0</span></div>
+    </div>
+{% endblock %}
+{% block JavaScripts %}
+    <script type="text/javascript">
+        // 等待所有加载
+        $(window).load(function () {
+            $('body').addClass('loaded');
+            $('#loader-wrapper .load_title').remove();
+        });
+    </script>
+{% block scripts %}
+{% endblock %}
 {% endblock %}
 <SCRIPT Language=VBScript><!--
-
 //--></SCRIPT>

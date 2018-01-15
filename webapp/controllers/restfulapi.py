@@ -1395,3 +1395,47 @@ def stock_solo_k():
         mylist.append(indexs)
         results.append(mylist)
     return jsonify({"date": date, "k_data": results, "ma5": ma5, "ma10": ma10, "ma20": ma20, "p_change": p_change})
+
+@api_blueprint.route('/stock_group/cns_home', methods=['GET', 'POST'])
+def cns_home():
+    pie1_data=[]
+    pie2_data = []
+    pie3_data = []
+    pie4_data = []
+    pie1=db.session.query(cns_department_industry.industry_gics_1,db.func.count('*').label("dcount")).filter(
+        cns_group_industry.belong == cns_department_industry.industry_gicscode_1).filter(
+        cns_industry.belong == cns_group_industry.industry_gicscode_2).filter(
+        cns_sub_industry.belong == cns_industry.industry_gicscode_3).filter(
+        cns_stock_industry.belong == cns_sub_industry.industry_gicscode_4).filter(
+        cns_stock_industry.belong_zhengjianhui == zhengjianhui_1.industry_CSRCcode12).group_by(cns_department_industry.industry_gicscode_1).all()
+    pie2=db.session.query(cns_group_industry.industry_gics_2,db.func.count('*').label("dcount")).filter(
+        cns_group_industry.belong == cns_department_industry.industry_gicscode_1).filter(
+        cns_industry.belong == cns_group_industry.industry_gicscode_2).filter(
+        cns_sub_industry.belong == cns_industry.industry_gicscode_3).filter(
+        cns_stock_industry.belong == cns_sub_industry.industry_gicscode_4).filter(
+        cns_stock_industry.belong_zhengjianhui == zhengjianhui_1.industry_CSRCcode12).group_by(cns_group_industry.industry_gicscode_2).all()
+
+    pie3 = db.session.query(cns_industry.industry_gics_3, db.func.count('*').label("dcount")).filter(
+        cns_group_industry.belong == cns_department_industry.industry_gicscode_1).filter(
+        cns_industry.belong == cns_group_industry.industry_gicscode_2).filter(
+        cns_sub_industry.belong == cns_industry.industry_gicscode_3).filter(
+        cns_stock_industry.belong == cns_sub_industry.industry_gicscode_4).filter(
+        cns_stock_industry.belong_zhengjianhui == zhengjianhui_1.industry_CSRCcode12).group_by(
+        cns_industry.industry_gicscode_3).all()
+
+    pie4 = db.session.query(cns_sub_industry.industry_gics_4, db.func.count('*').label("dcount")).filter(
+        cns_group_industry.belong == cns_department_industry.industry_gicscode_1).filter(
+        cns_industry.belong == cns_group_industry.industry_gicscode_2).filter(
+        cns_sub_industry.belong == cns_industry.industry_gicscode_3).filter(
+        cns_stock_industry.belong == cns_sub_industry.industry_gicscode_4).filter(
+        cns_stock_industry.belong_zhengjianhui == zhengjianhui_1.industry_CSRCcode12).group_by(
+        cns_sub_industry.industry_gicscode_4).all()
+    for i in pie1:
+        pie1_data.append({'name':i[0],'value':i[1]})
+    for i in pie2:
+        pie2_data.append({'name':i[0],'value':i[1]})
+    for i in pie3:
+        pie3_data.append({'name':i[0],'value':i[1]})
+    for i in pie4:
+        pie4_data.append({'name':i[0],'value':i[1]})
+    return jsonify({"pie1",pie1_data})

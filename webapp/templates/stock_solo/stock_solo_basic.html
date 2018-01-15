@@ -160,17 +160,15 @@
                                     <table>
                                         <tr>
                                             <td><a style="width:50px;margin-left:10px;color: #0c0c0c">起始时间:</a><input
-                                                    class="form-datetime"
+                                                    class="form_datetime"
                                                     type="text"
-                                                    value="2006-01-01"
                                                     readonly
-                                                    id="starttime"
+                                                    id="starttime_picker"
                                                     style="background-color:white;width: 100px;margin-left: 10px"/></td>
                                             <td><a style="width:50px;margin-left:10px;color: #0c0c0c">结束时间:</a><input
-                                                    class="form-datetime"
+                                                    class="form_datetime"
                                                     type="text"
-                                                    id="endtime"
-                                                    value="2016-12-31"
+                                                    id="endtime_picker"
                                                     readonly
                                                     style="background-color:white;width: 100px;margin-left: 10px"/></td>
                                         </tr>
@@ -178,8 +176,9 @@
                                             <td><a style="width:50px;margin-left:10px;color: #0c0c0c">单位:</a>
                                                 <select id="unit"
                                                         style="background-color:white;width: 100px;height:20px;padding:0px;margin-left: 10px">
-                                                    <option value="100000000">亿</option>
+                                                    <option value="1000000">百万</option>
                                                     <option value="1000000000">十亿</option>
+                                                    <option value="100000000">亿</option>
                                                     <option value="10000000">千万</option>
                                                     <option value="1">元</option>
                                                 </select></td>
@@ -832,10 +831,9 @@
 
     </script>
     <script>
-        var denominator = 1
+        var myChart_option
+        var denominator = 1000000
         var orderflag = "desc"
-        var starttime = "20061231"
-        var endtime = "20161231"
         var Chosenindexes = new Array();
         var invest_results;
         var finance_results;
@@ -955,16 +953,9 @@
         })
         $("select#unit").change(function () {
             flag = $(this).val()
-            if (flag == "0") {
-                denominator = 1
-                CreateChart();
-                CreateTable();
-            }
-            if (flag == "1") {
-                denominator = 1000000
-                CreateChart();
-                CreateTable();
-            }
+            denominator = parseInt(flag)
+            CreateChart();
+            CreateTable();
         });
         $("select#yearorder").change(function () {
             flag = $(this).val()
@@ -982,25 +973,27 @@
             }
         });
         $(".form_datetime").datetimepicker({
-            format: 'yyyy-mm-dd ',
-            minView: 3,
+            format: 'yyyy年Q4',
+            startView: 4,
+            maxView: 4,
+            minView:4,
             autoclose: true,
             pickerPosition: 'top-right'
         });
-        $('#starttime')
+        $('#starttime_picker')
             .datetimepicker()
             .on('changeDate', function (ev) {
                 startime = ev.date.Format("yyyy年Q4")
-                option.dataZoom[0].startValue = startime
-                myChart.setOption(option)
+                myChart_option.dataZoom[0].startValue = startime
+                myChart.setOption(myChart_option)
                 RequestTable();
             });
-        $('#endtime')
+        $('#endtime_picker')
             .datetimepicker()
             .on('changeDate', function (ev) {
                 endtime = ev.date.Format("yyyy年Q4")
-                option.dataZoom[0].endValue = endtime
-                myChart.setOption(option)
+                myChart_option.dataZoom[0].endValue = endtime
+                myChart.setOption(myChart_option)
                 RequestTable();
 
             });
@@ -1396,7 +1389,7 @@
                 };
                 dataSeries.push(temp);
             }
-            option = {
+            myChart_option = {
                 title: {
                     text: finance_results['the_name'] + '指标数据及分析',
                     left: '0'
@@ -1453,11 +1446,11 @@
                         type: 'slider', // 这个 dataZoom 组件是 slider 型 dataZoom 组件
                         xAxisIndex: [0],
                         height: 20,
-                        {#                        startValue: "2016年Q4",#}
-                        start: 0,      // 左边在 10% 的位置。
-                        end: 50,         // 右边在 60% 的位置。
+                        startValue: "2016年Q4",
+{#                        start: 0,      // 左边在 10% 的位置。#}
+{#                        end: 50,         // 右边在 60% 的位置。#}
                         {#                            top: '93%',#}
-                        {#                        endValue: "2006年Q4",#}
+                        endValue: "2006年Q4",
                         filterMode: 'filter',
                     },
                     {   // 这个dataZoom组件，默认控制x轴。
@@ -1471,23 +1464,16 @@
                 ],
                 series: dataSeries
             };
-            myChart.setOption(option, true);
+            myChart.setOption(myChart_option, true);
+            $('#starttime_picker').val('2016年Q4');
+            $('#endtime_picker').val('2006年Q4')
             myChart.on('datazoom', function (params) {
-                option.xAxis.interval = 10 * (params.end - params.start) / 100
-            })
-            myChart.on('mouseover', function (params) {
-                oldwidth = option.series[params.seriesIndex].lineStyle.normal.width;
-                if (oldwidth == 2) {
-                    option.series[params.seriesIndex].lineStyle.normal.width = 4;
-                    myChart.setOption(option);
-                }
-            })
-            myChart.on('mouseout', function (params) {
-                oldwidth = option.series[params.seriesIndex].lineStyle.normal.width;
-                if (oldwidth == 4) {
-                    option.series[params.seriesIndex].lineStyle.normal.width = 2;
-                    myChart.setOption(option);
-                }
+                var opt = myChart.getOption();
+                var dz = opt.dataZoom[0];
+                var s = opt.xAxis[0].data[dz.startValue];
+                var e = opt.xAxis[0].data[dz.endValue];
+                $('#starttime_picker').val(s);
+                $('#endtime_picker').val(e)
             })
         }
         function RequestTable() {
