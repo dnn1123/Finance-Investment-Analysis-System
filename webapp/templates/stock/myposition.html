@@ -118,44 +118,53 @@
 
 
             <div class="btn-controls">
-                {#            datatable for trade records#}
-                <div class="btn-box-row row-fluid">
-                    <div class="module span12">
-                        <div class="module-head">
-                            {#                        <a class="collapsed" href="#mytable"  data-toggle="collapse">我的交易记录</a>#}
-                            <button id="head1" class="btn btn-primary" data-toggle="button">我的交易记录</button>
-                            <div class="span3 pull-right">
-                                <button class="btn btn-mini btn-primary" type="button" data-toggle="modal"
-                                        data-target="#buyStock">买入
-                                </button>
-                                <button class="btn btn-mini btn-primary" type="button" data-toggle="modal"
-                                        data-target="#sellStock">卖出
-                                </button>
-                                <button class="btn btn-mini btn-danger" type="button" data-toggle="modal"
-                                        data-target="#clear">清空交易记录
-                                </button>
+                <div class="row">
+                    <div class="span6">
+                        <div class="btn-box-row row-fluid">
+                            <div class="module span12">
+                                <div class="module-head">
+                                    {#                        <a class="collapsed" href="#mytable"  data-toggle="collapse">我的交易记录</a>#}
+                                    <button id="head1" class="btn btn-primary" data-toggle="button">我的交易记录</button>
+                                    <div class="span5 pull-right">
+                                        <button class="btn btn-mini btn-primary" type="button" data-toggle="modal"
+                                                data-target="#buyStock">买入
+                                        </button>
+                                        <button class="btn btn-mini btn-primary" type="button" data-toggle="modal"
+                                                data-target="#sellStock">卖出
+                                        </button>
+                                        <button class="btn btn-mini btn-danger" type="button" data-toggle="modal"
+                                                data-target="#clear">清空交易记录
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="module-body" id="body1">
+                                    <div id="mytable" style="margin: auto;width:95%"></div>
+                                    {#                        <div id="buttons" style="margin: auto;width:90%;">#}
+                                    {#                            <button class="btn btn-mini btn-primary" type="button" data-toggle="modal" data-target="#buyStock">买入</button>#}
+                                    {#                            <button class="btn btn-mini btn-primary" type="button" data-toggle="modal" data-target="#sellStock">卖出</button>#}
+                                    {#                            <button class="btn btn-mini btn-danger" type="button" data-toggle="modal" data-target="#clear">清空交易记录</button>#}
+                                    {#                        </div>#}
+                                </div>
                             </div>
-                        </div>
-                        <div class="module-body" id="body1">
-                            <div id="mytable" style="margin: auto;width:95%"></div>
-                            {#                        <div id="buttons" style="margin: auto;width:90%;">#}
-                            {#                            <button class="btn btn-mini btn-primary" type="button" data-toggle="modal" data-target="#buyStock">买入</button>#}
-                            {#                            <button class="btn btn-mini btn-primary" type="button" data-toggle="modal" data-target="#sellStock">卖出</button>#}
-                            {#                            <button class="btn btn-mini btn-danger" type="button" data-toggle="modal" data-target="#clear">清空交易记录</button>#}
-                            {#                        </div>#}
+
                         </div>
                     </div>
-
+                    <div class="span3">
+                        <div id="cityDist" style="width:100%;height:260px;margin-top: 30px">
+                        </div>
+                    </div>
                 </div>
+                {#            datatable for trade records#}
+
                 {#            chart for trade distribution#}
                 <div class="btn-box-row row-fluid">
                     <div class="module span12" style="background-color: transparent">
                         {#                        <div class="module-head">交易状况分析</div>#}
                         <div class="module-head">
-                        <button id="head2" class="btn btn-primary" data-toggle="button">交易状况分析</button>
-                            </div>
+                            <button id="head2" class="btn btn-primary" data-toggle="button">交易状况分析</button>
+                        </div>
                         <div class="modal-body" id="body2">
-{#                        <div class="row-fluid" id="body2">#}
+                            {#                        <div class="row-fluid" id="body2">#}
 
                             <div class="btn-box small span3">
                                 <div id="frequencyDist" style="width:100%;height:200px;background-color: white"></div>
@@ -192,8 +201,8 @@
                         <div class="module-head">
                             <button id="head4" class="btn btn-primary" data-toggle="button">持仓分析图表</button>
                         </div>
-<div class="modal-body" id="body4">
-{#                        <div class="row-fluid" >#}
+                        <div class="modal-body" id="body4">
+                            {#                        <div class="row-fluid" >#}
 
                             <div class="btn-box small span3">
                                 <div id="costDist" style="width:100%;height:200px;background-color: white"></div>
@@ -249,7 +258,7 @@
             $("#body3").toggle()
         })
 
-$("#head5").click(function () {
+        $("#head5").click(function () {
             $("#body5").toggle()
         })
     </script>
@@ -506,9 +515,9 @@ $("#head5").click(function () {
             for (var i = 0; i < data['traderec'].length; i++) {
 
                 var rowNode = mydatatb
-                        .row.add(data['traderec'][i])
-                        .draw()
-                        .node();
+                    .row.add(data['traderec'][i])
+                    .draw()
+                    .node();
                 if (data['traderec'][i][2] == 'buy') {
                     $(rowNode).attr('style', "color:red;");
                 }
@@ -563,9 +572,9 @@ $("#head5").click(function () {
             for (var i = 0; i < data['positionrec'].length; i++) {
                 data['positionrec'][i][5] = data['positionrec'][i][5].toFixed(2);
                 var rowNode = mydatatb
-                        .row.add(data['positionrec'][i])
-                        .draw()
-                        .node();
+                    .row.add(data['positionrec'][i])
+                    .draw()
+                    .node();
                 if (data['positionrec'][i][5] >= 0) {
                     $(rowNode).attr('style', "color:red;");
                 }
@@ -1493,10 +1502,4 @@ $("#head5").click(function () {
         }
     </script>
 {% endblock %}
-{% block map %}
 
-    <div id="cityDist" style="width:100%;height:260px">
-
-    </div>
-
-{% endblock %}
