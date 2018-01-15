@@ -1,43 +1,14 @@
 #encoding:utf-8
 from pyalgotrade import strategy,bar
-from pyalgotrade.barfeed.csvfeed import GenericBarFeed
+from pyalgotrade_custom import dataFramefeed
 import tushare as ts
 import pandas as pd
 import os
 from datetime import *
-# 服务器路径
-# path = '/var/www/wsgi-scripts/webapp/histdata'
-# 调试路径
-path = os.path.join(os.getcwd(),'webapp', 'histdata')
 def get_k_data_recent(instruement,startdate):
-    # 得到15分钟数据（股票300336,始于2016-01-01,止于2016-05-24,15分钟数据）
+    # 得到日数据（股票instruement,始于startdate,止于今天）
     data = ts.get_k_data(instruement,startdate)
-    # 数据存盘
-    filepath = os.path.join(path, instruement+'_ts.csv')
-    data.to_csv(filepath)
-    # 读出数据，DataFrame格式
-    df = pd.read_csv(filepath)
-    # 从df中选取数据段，改变段名；新段'Adj Close'使用原有段'close'的数据
-    df2 = pd.DataFrame({'Date Time': df['date'], 'Open': df['open'],
-                        'High': df['high'], 'Close': df['close'],
-                        'Low': df['low'], 'Volume': df['volume'],
-                        'Adj Close': df['close']})
-    # 按照Yahoo格式的要求，调整df2各段的顺序
-    dt = df2.pop('Date Time')
-    df2.insert(0, 'Date Time', dt)
-    o = df2.pop('Open')
-    df2.insert(1, 'Open', o)
-    h = df2.pop('High')
-    df2.insert(2, 'High', h)
-    l = df2.pop('Low')
-    df2.insert(3, 'Low', l)
-    c = df2.pop('Close')
-    df2.insert(4, 'Close', c)
-    v = df2.pop('Volume')
-    df2.insert(5, 'Volume', v)
-    # 新格式数据存盘，不保存索引编号
-    filepath = os.path.join(path, instruement + '.csv')
-    df2.to_csv(filepath, index=False)
+    return data
 class Profit_monitoring():
     mylist=[]
     __status__='null'
@@ -53,15 +24,14 @@ class Profit_monitoring():
     def getfeed(self):
         __codelist__=[]
         __time__=''
-        feed = GenericBarFeed(bar.Frequency.DAY)
-        feed.setDateTimeFormat('%Y-%m-%d')  # 日期读取
+        feed = dataFramefeed.Feed(bar.Frequency.DAY)
         for i in self.mylist:
             __time__=i['time']
             if i['code'] not in __codelist__:
                 __codelist__.append(i['code'])
         for i in __codelist__:
-            get_k_data_recent(i,__time__)
-            feed.addBarsFromCSV(i, os.path.join(path,i+'.csv'))
+            idf=get_k_data_recent(i,__time__)
+            feed.addBarsFromDataFrame(i,idf )
         return feed
     def start(self):
         if self.__status__=='null':

@@ -64,8 +64,6 @@
     <!--js的分页方法，用于industry_analysis/annual_table.html-->
     <script type="text/javascript" src="{{ url_for('static',filename='js/jquery.pagination.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static',filename='js/china.js') }}"></script>
-
-    {% block fixTable %}{% endblock %}
     <style>
         * {
             font-family: "Times New Roman";
@@ -228,11 +226,6 @@
                     </ul>
                 </div>
                 <!--/.sidebar-->
-            <div class="sidebar">
-                            {% block map %}{% endblock %}
-                        </div>
-                {% block left %}{% endblock %}
-
             </div>
             <!--/.span3-->
             {% block body %}{% endblock %}
