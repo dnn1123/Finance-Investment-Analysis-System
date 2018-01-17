@@ -57,22 +57,31 @@ def cns_home():
     cns_filterform3 = cns_filterForm3()  # 第三级 Wind 行业分类
     cns_filterform4 = cns_filterForm4()  # 第四级 Wind 行业分类
     page = request.args.get('page', 1, type=int)
-    pie1_data=[]
+    province = u""
+    area = request.args.get('area', u'全国')
+    if area != u"全国":
+        province = area
+    filters = {
+        cns_stock_industry.province.like("%" + province + "%"),
+    }
+    pie1_data = []
     pie2_data = []
     pie3_data = []
     pie4_data = []
-    pie1=db.session.query(cns_department_industry.industry_gicscode_1,db.func.count('*').label("dcount")).filter(
+    pie1 = db.session.query(cns_department_industry.industry_gicscode_1, db.func.count('*').label("dcount")).filter(
         cns_group_industry.belong == cns_department_industry.industry_gicscode_1).filter(
         cns_industry.belong == cns_group_industry.industry_gicscode_2).filter(
         cns_sub_industry.belong == cns_industry.industry_gicscode_3).filter(
         cns_stock_industry.belong == cns_sub_industry.industry_gicscode_4).filter(
-        cns_stock_industry.belong_zhengjianhui == zhengjianhui_1.industry_CSRCcode12).group_by(cns_department_industry.industry_gicscode_1).all()
-    pie2=db.session.query(cns_group_industry.industry_gicscode_2,db.func.count('*').label("dcount")).filter(
+        cns_stock_industry.belong_zhengjianhui == zhengjianhui_1.industry_CSRCcode12).group_by(
+        cns_department_industry.industry_gicscode_1).filter(*filters).all()
+    pie2 = db.session.query(cns_group_industry.industry_gicscode_2, db.func.count('*').label("dcount")).filter(
         cns_group_industry.belong == cns_department_industry.industry_gicscode_1).filter(
         cns_industry.belong == cns_group_industry.industry_gicscode_2).filter(
         cns_sub_industry.belong == cns_industry.industry_gicscode_3).filter(
         cns_stock_industry.belong == cns_sub_industry.industry_gicscode_4).filter(
-        cns_stock_industry.belong_zhengjianhui == zhengjianhui_1.industry_CSRCcode12).group_by(cns_group_industry.industry_gicscode_2).all()
+        cns_stock_industry.belong_zhengjianhui == zhengjianhui_1.industry_CSRCcode12).group_by(
+        cns_group_industry.industry_gicscode_2).filter(*filters).all()
 
     pie3 = db.session.query(cns_industry.industry_gicscode_3, db.func.count('*').label("dcount")).filter(
         cns_group_industry.belong == cns_department_industry.industry_gicscode_1).filter(
@@ -80,7 +89,7 @@ def cns_home():
         cns_sub_industry.belong == cns_industry.industry_gicscode_3).filter(
         cns_stock_industry.belong == cns_sub_industry.industry_gicscode_4).filter(
         cns_stock_industry.belong_zhengjianhui == zhengjianhui_1.industry_CSRCcode12).group_by(
-        cns_industry.industry_gicscode_3).all()
+        cns_industry.industry_gicscode_3).filter(*filters).all()
 
     pie4 = db.session.query(cns_sub_industry.industry_gicscode_4, db.func.count('*').label("dcount")).filter(
         cns_group_industry.belong == cns_department_industry.industry_gicscode_1).filter(
@@ -88,15 +97,15 @@ def cns_home():
         cns_sub_industry.belong == cns_industry.industry_gicscode_3).filter(
         cns_stock_industry.belong == cns_sub_industry.industry_gicscode_4).filter(
         cns_stock_industry.belong_zhengjianhui == zhengjianhui_1.industry_CSRCcode12).group_by(
-        cns_sub_industry.industry_gicscode_4).all()
+        cns_sub_industry.industry_gicscode_4).filter(*filters).all()
     for i in pie1:
-        pie1_data.append({'name':i[0].encode("utf-8"),'value':i[1]})
+        pie1_data.append({'name': i[0].encode("utf-8"), 'value': i[1]})
     for i in pie2:
-        pie2_data.append({'name':i[0].encode("utf-8"),'value':i[1]})
+        pie2_data.append({'name': i[0].encode("utf-8"), 'value': i[1]})
     for i in pie3:
-        pie3_data.append({'name':i[0].encode("utf-8"),'value':i[1]})
+        pie3_data.append({'name': i[0].encode("utf-8"), 'value': i[1]})
     for i in pie4:
-        pie4_data.append({'name':i[0].encode("utf-8"),'value':i[1]})
+        pie4_data.append({'name': i[0].encode("utf-8"), 'value': i[1]})
     pagination = cns_stock_industry.query.join(cns_sub_industry).add_columns(cns_sub_industry.industry_gics_4).join(
         cns_industry).add_columns(cns_industry.industry_gics_3).join(cns_group_industry).add_columns(
         cns_group_industry.industry_gics_2).join(cns_department_industry).add_columns(
@@ -107,13 +116,17 @@ def cns_home():
         cns_sub_industry.belong == cns_industry.industry_gicscode_3).filter(
         cns_stock_industry.belong == cns_sub_industry.industry_gicscode_4).filter(
         cns_stock_industry.belong_zhengjianhui == zhengjianhui_1.industry_CSRCcode12).order_by(
-        cns_stock_industry.trade_code).paginate(page, per_page=200, error_out=False)  # 共有3197条记录 此为分页功能
+        cns_stock_industry.trade_code).filter(*filters).paginate(page, per_page=200,
+                                                                      error_out=False)  # 共有3197条记录 此为分页功能
     result = pagination.items
     length = len(result)
     user = users_roles.query.filter_by(user_name=current_user.username).first()
     return render_template("stock_group/cns/cns_stock_industry.html", cns_filterform1=cns_filterform1,
                            cns_filterform2=cns_filterform2, cns_filterform3=cns_filterform3,
-                           cns_filterform4=cns_filterform4, result=result, pagination=pagination, length=length,user=user,pie1_data=pie1_data,pie2_data=pie2_data,pie3_data=pie3_data,pie4_data=pie4_data)
+                           cns_filterform4=cns_filterform4, result=result, pagination=pagination, length=length,
+                           user=user, pie1_data=pie1_data, pie2_data=pie2_data, pie3_data=pie3_data,
+                           pie4_data=pie4_data, province=area)
+
 
 # 显示“主营业务”详情
 @stockgroup_blueprint.route('/cns_business_detail/', methods=('GET', 'POST'))
@@ -126,7 +139,7 @@ def cns_business_detail(trade_code='000895'):  # 需要这个默认trade_code吗
 
 
 # cns行业筛选
-@stockgroup_blueprint.route('/cns_filter/', methods=["POST"])
+@stockgroup_blueprint.route('/cns_filter/', methods=["GET", "POST"])
 @login_required
 def cns_filter():
     cns_filterform1 = cns_filterForm1()  # 第一级 Wind 行业分类
@@ -134,66 +147,357 @@ def cns_filter():
     cns_filterform3 = cns_filterForm3()  # 第三级 Wind 行业分类
     cns_filterform4 = cns_filterForm4()  # 第四级 Wind 行业分类
     # 筛选第一级
-    if cns_filterform1.validate_on_submit():
-        gics_code = request.form.get('gics_code')
-        # industry_gics_1 = request.form.get('industry_gics_1')
+    if request.form.get("origin") == "pie":
+        gic1 = request.form.get("gic1")
+        gic2 = request.form.get("gic2")
+        gic3 = request.form.get("gic3")
+        gic4 = request.form.get("gic4")
         page = request.args.get('page', 1, type=int)
+        province = u""
+        area = request.form.get('area', u'全国')
+        if area != u"全国":
+            province = area
+        filters = {
+            cns_stock_industry.province.like("%" + province + "%"),
+            cns_department_industry.industry_gicscode_1.like(gic1),
+            cns_group_industry.industry_gicscode_2.like(gic2),
+            cns_industry.industry_gicscode_3.like(gic3),
+            cns_sub_industry.industry_gicscode_4.like(gic4)
+        }
+        pie1_data = []
+        pie2_data = []
+        pie3_data = []
+        pie4_data = []
+        pie1 = db.session.query(cns_department_industry.industry_gicscode_1, db.func.count('*').label("dcount")).filter(
+            cns_group_industry.belong == cns_department_industry.industry_gicscode_1).filter(
+            cns_industry.belong == cns_group_industry.industry_gicscode_2).filter(
+            cns_sub_industry.belong == cns_industry.industry_gicscode_3).filter(
+            cns_stock_industry.belong == cns_sub_industry.industry_gicscode_4).filter(
+            cns_stock_industry.belong_zhengjianhui == zhengjianhui_1.industry_CSRCcode12).group_by(
+            cns_department_industry.industry_gicscode_1).filter(*filters).all()
+        pie2 = db.session.query(cns_group_industry.industry_gicscode_2, db.func.count('*').label("dcount")).filter(
+            cns_group_industry.belong == cns_department_industry.industry_gicscode_1).filter(
+            cns_industry.belong == cns_group_industry.industry_gicscode_2).filter(
+            cns_sub_industry.belong == cns_industry.industry_gicscode_3).filter(
+            cns_stock_industry.belong == cns_sub_industry.industry_gicscode_4).filter(
+            cns_stock_industry.belong_zhengjianhui == zhengjianhui_1.industry_CSRCcode12).group_by(
+            cns_group_industry.industry_gicscode_2).filter(*filters).all()
+
+        pie3 = db.session.query(cns_industry.industry_gicscode_3, db.func.count('*').label("dcount")).filter(
+            cns_group_industry.belong == cns_department_industry.industry_gicscode_1).filter(
+            cns_industry.belong == cns_group_industry.industry_gicscode_2).filter(
+            cns_sub_industry.belong == cns_industry.industry_gicscode_3).filter(
+            cns_stock_industry.belong == cns_sub_industry.industry_gicscode_4).filter(
+            cns_stock_industry.belong_zhengjianhui == zhengjianhui_1.industry_CSRCcode12).group_by(
+            cns_industry.industry_gicscode_3).filter(*filters).all()
+
+        pie4 = db.session.query(cns_sub_industry.industry_gicscode_4, db.func.count('*').label("dcount")).filter(
+            cns_group_industry.belong == cns_department_industry.industry_gicscode_1).filter(
+            cns_industry.belong == cns_group_industry.industry_gicscode_2).filter(
+            cns_sub_industry.belong == cns_industry.industry_gicscode_3).filter(
+            cns_stock_industry.belong == cns_sub_industry.industry_gicscode_4).filter(
+            cns_stock_industry.belong_zhengjianhui == zhengjianhui_1.industry_CSRCcode12).group_by(
+            cns_sub_industry.industry_gicscode_4).filter(*filters).all()
+        for i in pie1:
+            pie1_data.append({'name': i[0].encode("utf-8"), 'value': i[1]})
+        for i in pie2:
+            pie2_data.append({'name': i[0].encode("utf-8"), 'value': i[1]})
+        for i in pie3:
+            pie3_data.append({'name': i[0].encode("utf-8"), 'value': i[1]})
+        for i in pie4:
+            pie4_data.append({'name': i[0].encode("utf-8"), 'value': i[1]})
         pagination = cns_stock_industry.query.join(cns_sub_industry).add_columns(cns_sub_industry.industry_gics_4).join(
             cns_industry).add_columns(cns_industry.industry_gics_3).join(cns_group_industry).add_columns(
             cns_group_industry.industry_gics_2).join(cns_department_industry).add_columns(
-            cns_department_industry.industry_gics_1).filter(
-            cns_department_industry.industry_gicscode_1 == gics_code).order_by(cns_stock_industry.trade_code).paginate(
+            cns_department_industry.industry_gics_1).filter(*filters).order_by(cns_stock_industry.trade_code).paginate(
             page, per_page=200, error_out=False)  # 300改为200
         result = pagination.items
         length = len(result)
         return render_template("stock_group/cns/cns_stock_industry_filter.html", result=result, pagination=pagination,
                                length=length, cns_filterform1=cns_filterform1, cns_filterform2=cns_filterform2,
-                               cns_filterform3=cns_filterform3, cns_filterform4=cns_filterform4)
-    # 筛选第二级
-    if cns_filterform2.validate_on_submit():
-        gics_code = request.form.get('gics_code')
-        page = request.args.get('page', 1, type=int)
-        pagination = cns_stock_industry.query.join(cns_sub_industry).add_columns(cns_sub_industry.industry_gics_4).join(
-            cns_industry).add_columns(cns_industry.industry_gics_3).join(cns_group_industry).add_columns(
-            cns_group_industry.industry_gics_2).join(cns_department_industry).add_columns(
-            cns_department_industry.industry_gics_1).filter(
-            cns_group_industry.industry_gicscode_2 == gics_code).order_by(cns_stock_industry.trade_code).paginate(page,
-                                                                                                                  per_page=200,
-                                                                                                                  error_out=False)  # 300改为200
-        result = pagination.items
-        length = len(result)
-        return render_template("stock_group/cns/cns_stock_industry_filter.html", result=result, pagination=pagination,
-                               length=length, cns_filterform1=cns_filterform1, cns_filterform2=cns_filterform2,
-                               cns_filterform3=cns_filterform3, cns_filterform4=cns_filterform4)
-    # 筛选第三级
-    if cns_filterform3.validate_on_submit():
-        gics_code = request.form.get('gics_code')
-        page = request.args.get('page', 1, type=int)
-        pagination = cns_stock_industry.query.join(cns_sub_industry).add_columns(cns_sub_industry.industry_gics_4).join(
-            cns_industry).add_columns(cns_industry.industry_gics_3).join(cns_group_industry).add_columns(
-            cns_group_industry.industry_gics_2).join(cns_department_industry).add_columns(
-            cns_department_industry.industry_gics_1).filter(cns_industry.industry_gicscode_3 == gics_code).order_by(
-            cns_stock_industry.trade_code).paginate(page, per_page=200, error_out=False)  # 300改为200
-        result = pagination.items
-        length = len(result)
-        return render_template("stock_group/cns/cns_stock_industry_filter.html", result=result, pagination=pagination,
-                               length=length, cns_filterform1=cns_filterform1, cns_filterform2=cns_filterform2,
-                               cns_filterform3=cns_filterform3, cns_filterform4=cns_filterform4)
-    # 筛选第四级
-    if cns_filterform4.validate_on_submit():
-        gics_code = request.form.get('gics_code')
-        page = request.args.get('page', 1, type=int)
-        pagination = cns_stock_industry.query.join(cns_sub_industry).add_columns(cns_sub_industry.industry_gics_4).join(
-            cns_industry).add_columns(cns_industry.industry_gics_3).join(cns_group_industry).add_columns(
-            cns_group_industry.industry_gics_2).join(cns_department_industry).add_columns(
-            cns_department_industry.industry_gics_1).filter(cns_sub_industry.industry_gicscode_4 == gics_code).order_by(
-            cns_stock_industry.trade_code).paginate(page, per_page=200, error_out=False)  # 300改为200
-        result = pagination.items
-        length = len(result)
-        return render_template("stock_group/cns/cns_stock_industry_filter.html", result=result, pagination=pagination,
-                               length=length, cns_filterform1=cns_filterform1, cns_filterform2=cns_filterform2,
-                               cns_filterform3=cns_filterform3, cns_filterform4=cns_filterform4)
-    return render_template("404.html")  # 或许可用if-elif来改写一下
+                               cns_filterform3=cns_filterform3, cns_filterform4=cns_filterform4, pie1_data=pie1_data,
+                               pie2_data=pie2_data, pie3_data=pie3_data, pie4_data=pie4_data, province=area,gic1=gic1,gic2=gic2,gic3=gic3,gic4=gic4)
+    else:
+        if cns_filterform1.validate_on_submit():
+            gics_code = request.form.get('gics_code')
+            # industry_gics_1 = request.form.get('industry_gics_1')
+            page = request.args.get('page', 1, type=int)
+            province = u""
+            area = request.form.get('area', u'全国')
+            if area != u"全国":
+                province = area
+            filters = {
+                cns_stock_industry.province.like("%" + province + "%"),
+                cns_department_industry.industry_gicscode_1.like(gics_code)
+            }
+            pie1_data = []
+            pie2_data = []
+            pie3_data = []
+            pie4_data = []
+            pie1 = db.session.query(cns_department_industry.industry_gicscode_1,
+                                    db.func.count('*').label("dcount")).filter(
+                cns_group_industry.belong == cns_department_industry.industry_gicscode_1).filter(
+                cns_industry.belong == cns_group_industry.industry_gicscode_2).filter(
+                cns_sub_industry.belong == cns_industry.industry_gicscode_3).filter(
+                cns_stock_industry.belong == cns_sub_industry.industry_gicscode_4).filter(
+                cns_stock_industry.belong_zhengjianhui == zhengjianhui_1.industry_CSRCcode12).group_by(
+                cns_department_industry.industry_gicscode_1).filter(*filters).all()
+            pie2 = db.session.query(cns_group_industry.industry_gicscode_2, db.func.count('*').label("dcount")).filter(
+                cns_group_industry.belong == cns_department_industry.industry_gicscode_1).filter(
+                cns_industry.belong == cns_group_industry.industry_gicscode_2).filter(
+                cns_sub_industry.belong == cns_industry.industry_gicscode_3).filter(
+                cns_stock_industry.belong == cns_sub_industry.industry_gicscode_4).filter(
+                cns_stock_industry.belong_zhengjianhui == zhengjianhui_1.industry_CSRCcode12).group_by(
+                cns_group_industry.industry_gicscode_2).filter(*filters).all()
+
+            pie3 = db.session.query(cns_industry.industry_gicscode_3, db.func.count('*').label("dcount")).filter(
+                cns_group_industry.belong == cns_department_industry.industry_gicscode_1).filter(
+                cns_industry.belong == cns_group_industry.industry_gicscode_2).filter(
+                cns_sub_industry.belong == cns_industry.industry_gicscode_3).filter(
+                cns_stock_industry.belong == cns_sub_industry.industry_gicscode_4).filter(
+                cns_stock_industry.belong_zhengjianhui == zhengjianhui_1.industry_CSRCcode12).group_by(
+                cns_industry.industry_gicscode_3).filter(*filters).all()
+
+            pie4 = db.session.query(cns_sub_industry.industry_gicscode_4, db.func.count('*').label("dcount")).filter(
+                cns_group_industry.belong == cns_department_industry.industry_gicscode_1).filter(
+                cns_industry.belong == cns_group_industry.industry_gicscode_2).filter(
+                cns_sub_industry.belong == cns_industry.industry_gicscode_3).filter(
+                cns_stock_industry.belong == cns_sub_industry.industry_gicscode_4).filter(
+                cns_stock_industry.belong_zhengjianhui == zhengjianhui_1.industry_CSRCcode12).group_by(
+                cns_sub_industry.industry_gicscode_4).filter(*filters).all()
+            for i in pie1:
+                pie1_data.append({'name': i[0].encode("utf-8"), 'value': i[1]})
+            for i in pie2:
+                pie2_data.append({'name': i[0].encode("utf-8"), 'value': i[1]})
+            for i in pie3:
+                pie3_data.append({'name': i[0].encode("utf-8"), 'value': i[1]})
+            for i in pie4:
+                pie4_data.append({'name': i[0].encode("utf-8"), 'value': i[1]})
+            pagination = cns_stock_industry.query.join(cns_sub_industry).add_columns(
+                cns_sub_industry.industry_gics_4).join(
+                cns_industry).add_columns(cns_industry.industry_gics_3).join(cns_group_industry).add_columns(
+                cns_group_industry.industry_gics_2).join(cns_department_industry).add_columns(
+                cns_department_industry.industry_gics_1).filter(*filters).order_by(
+                cns_stock_industry.trade_code).paginate(
+                page, per_page=200, error_out=False)  # 300改为200
+            result = pagination.items
+            length = len(result)
+            return render_template("stock_group/cns/cns_stock_industry_filter.html", result=result,
+                                   pagination=pagination,
+                                   length=length, cns_filterform1=cns_filterform1, cns_filterform2=cns_filterform2,
+                                   cns_filterform3=cns_filterform3, cns_filterform4=cns_filterform4,
+                                   pie1_data=pie1_data, pie2_data=pie2_data, pie3_data=pie3_data, pie4_data=pie4_data,
+                                   province=area,gic1=gics_code,gic2='%',gic3='%',gic4='%')
+        # 筛选第二级
+        if cns_filterform2.validate_on_submit():
+            gics_code = request.form.get('gics_code')
+            page = request.args.get('page', 1, type=int)
+            province = u""
+            area = request.args.get('area', u'全国')
+            if area != u"全国":
+                province = area
+            filters = {
+                cns_stock_industry.province.like("%" + province + "%"),
+                cns_group_industry.industry_gicscode_2.like(gics_code),
+            }
+            pie1_data = []
+            pie2_data = []
+            pie3_data = []
+            pie4_data = []
+            pie1 = db.session.query(cns_department_industry.industry_gicscode_1,
+                                    db.func.count('*').label("dcount")).filter(
+                cns_group_industry.belong == cns_department_industry.industry_gicscode_1).filter(
+                cns_industry.belong == cns_group_industry.industry_gicscode_2).filter(
+                cns_sub_industry.belong == cns_industry.industry_gicscode_3).filter(
+                cns_stock_industry.belong == cns_sub_industry.industry_gicscode_4).filter(
+                cns_stock_industry.belong_zhengjianhui == zhengjianhui_1.industry_CSRCcode12).group_by(
+                cns_department_industry.industry_gicscode_1).filter(*filters).all()
+            pie2 = db.session.query(cns_group_industry.industry_gicscode_2, db.func.count('*').label("dcount")).filter(
+                cns_group_industry.belong == cns_department_industry.industry_gicscode_1).filter(
+                cns_industry.belong == cns_group_industry.industry_gicscode_2).filter(
+                cns_sub_industry.belong == cns_industry.industry_gicscode_3).filter(
+                cns_stock_industry.belong == cns_sub_industry.industry_gicscode_4).filter(
+                cns_stock_industry.belong_zhengjianhui == zhengjianhui_1.industry_CSRCcode12).group_by(
+                cns_group_industry.industry_gicscode_2).filter(*filters).all()
+
+            pie3 = db.session.query(cns_industry.industry_gicscode_3, db.func.count('*').label("dcount")).filter(
+                cns_group_industry.belong == cns_department_industry.industry_gicscode_1).filter(
+                cns_industry.belong == cns_group_industry.industry_gicscode_2).filter(
+                cns_sub_industry.belong == cns_industry.industry_gicscode_3).filter(
+                cns_stock_industry.belong == cns_sub_industry.industry_gicscode_4).filter(
+                cns_stock_industry.belong_zhengjianhui == zhengjianhui_1.industry_CSRCcode12).group_by(
+                cns_industry.industry_gicscode_3).filter(*filters).all()
+
+            pie4 = db.session.query(cns_sub_industry.industry_gicscode_4, db.func.count('*').label("dcount")).filter(
+                cns_group_industry.belong == cns_department_industry.industry_gicscode_1).filter(
+                cns_industry.belong == cns_group_industry.industry_gicscode_2).filter(
+                cns_sub_industry.belong == cns_industry.industry_gicscode_3).filter(
+                cns_stock_industry.belong == cns_sub_industry.industry_gicscode_4).filter(
+                cns_stock_industry.belong_zhengjianhui == zhengjianhui_1.industry_CSRCcode12).group_by(
+                cns_sub_industry.industry_gicscode_4).filter(*filters).all()
+            for i in pie1:
+                pie1_data.append({'name': i[0].encode("utf-8"), 'value': i[1]})
+            for i in pie2:
+                pie2_data.append({'name': i[0].encode("utf-8"), 'value': i[1]})
+            for i in pie3:
+                pie3_data.append({'name': i[0].encode("utf-8"), 'value': i[1]})
+            for i in pie4:
+                pie4_data.append({'name': i[0].encode("utf-8"), 'value': i[1]})
+            pagination = cns_stock_industry.query.join(cns_sub_industry).add_columns(
+                cns_sub_industry.industry_gics_4).join(
+                cns_industry).add_columns(cns_industry.industry_gics_3).join(cns_group_industry).add_columns(
+                cns_group_industry.industry_gics_2).join(cns_department_industry).add_columns(
+                cns_department_industry.industry_gics_1).filter(*filters).order_by(cns_stock_industry.trade_code).paginate(
+                page,
+                per_page=200,
+                error_out=False)  # 300改为200
+            result = pagination.items
+            length = len(result)
+            return render_template("stock_group/cns/cns_stock_industry_filter.html", result=result,
+                                   pagination=pagination,
+                                   length=length, cns_filterform1=cns_filterform1, cns_filterform2=cns_filterform2,
+                                   cns_filterform3=cns_filterform3, cns_filterform4=cns_filterform4,
+                                   pie1_data=pie1_data, pie2_data=pie2_data, pie3_data=pie3_data, pie4_data=pie4_data,
+                                   province=area,gic1='%',gic2=gics_code,gic3='%',gic4='%')
+        # 筛选第三级
+        if cns_filterform3.validate_on_submit():
+            gics_code = request.form.get('gics_code')
+            page = request.args.get('page', 1, type=int)
+            province = u""
+            area = request.args.get('area', u'全国')
+            if area != u"全国":
+                province = area
+            filters = {
+                cns_stock_industry.province.like("%" + province + "%"),
+                cns_industry.industry_gicscode_3.like(gics_code),
+            }
+            pie1_data = []
+            pie2_data = []
+            pie3_data = []
+            pie4_data = []
+            pie1 = db.session.query(cns_department_industry.industry_gicscode_1,
+                                    db.func.count('*').label("dcount")).filter(
+                cns_group_industry.belong == cns_department_industry.industry_gicscode_1).filter(
+                cns_industry.belong == cns_group_industry.industry_gicscode_2).filter(
+                cns_sub_industry.belong == cns_industry.industry_gicscode_3).filter(
+                cns_stock_industry.belong == cns_sub_industry.industry_gicscode_4).filter(
+                cns_stock_industry.belong_zhengjianhui == zhengjianhui_1.industry_CSRCcode12).group_by(
+                cns_department_industry.industry_gicscode_1).filter(*filters).all()
+            pie2 = db.session.query(cns_group_industry.industry_gicscode_2, db.func.count('*').label("dcount")).filter(
+                cns_group_industry.belong == cns_department_industry.industry_gicscode_1).filter(
+                cns_industry.belong == cns_group_industry.industry_gicscode_2).filter(
+                cns_sub_industry.belong == cns_industry.industry_gicscode_3).filter(
+                cns_stock_industry.belong == cns_sub_industry.industry_gicscode_4).filter(
+                cns_stock_industry.belong_zhengjianhui == zhengjianhui_1.industry_CSRCcode12).group_by(
+                cns_group_industry.industry_gicscode_2).filter(*filters).all()
+
+            pie3 = db.session.query(cns_industry.industry_gicscode_3, db.func.count('*').label("dcount")).filter(
+                cns_group_industry.belong == cns_department_industry.industry_gicscode_1).filter(
+                cns_industry.belong == cns_group_industry.industry_gicscode_2).filter(
+                cns_sub_industry.belong == cns_industry.industry_gicscode_3).filter(
+                cns_stock_industry.belong == cns_sub_industry.industry_gicscode_4).filter(
+                cns_stock_industry.belong_zhengjianhui == zhengjianhui_1.industry_CSRCcode12).group_by(
+                cns_industry.industry_gicscode_3).filter(*filters).all()
+
+            pie4 = db.session.query(cns_sub_industry.industry_gicscode_4, db.func.count('*').label("dcount")).filter(
+                cns_group_industry.belong == cns_department_industry.industry_gicscode_1).filter(
+                cns_industry.belong == cns_group_industry.industry_gicscode_2).filter(
+                cns_sub_industry.belong == cns_industry.industry_gicscode_3).filter(
+                cns_stock_industry.belong == cns_sub_industry.industry_gicscode_4).filter(
+                cns_stock_industry.belong_zhengjianhui == zhengjianhui_1.industry_CSRCcode12).group_by(
+                cns_sub_industry.industry_gicscode_4).filter(*filters).all()
+            for i in pie1:
+                pie1_data.append({'name': i[0].encode("utf-8"), 'value': i[1]})
+            for i in pie2:
+                pie2_data.append({'name': i[0].encode("utf-8"), 'value': i[1]})
+            for i in pie3:
+                pie3_data.append({'name': i[0].encode("utf-8"), 'value': i[1]})
+            for i in pie4:
+                pie4_data.append({'name': i[0].encode("utf-8"), 'value': i[1]})
+            pagination = cns_stock_industry.query.join(cns_sub_industry).add_columns(
+                cns_sub_industry.industry_gics_4).join(
+                cns_industry).add_columns(cns_industry.industry_gics_3).join(cns_group_industry).add_columns(
+                cns_group_industry.industry_gics_2).join(cns_department_industry).add_columns(
+                cns_department_industry.industry_gics_1).filter(*filters).order_by(
+                cns_stock_industry.trade_code).paginate(page, per_page=200, error_out=False)  # 300改为200
+            result = pagination.items
+            length = len(result)
+            return render_template("stock_group/cns/cns_stock_industry_filter.html", result=result,
+                                   pagination=pagination,
+                                   length=length, cns_filterform1=cns_filterform1, cns_filterform2=cns_filterform2,
+                                   cns_filterform3=cns_filterform3, cns_filterform4=cns_filterform4,
+                                   pie1_data=pie1_data, pie2_data=pie2_data, pie3_data=pie3_data, pie4_data=pie4_data,
+                                   province=area,gic1='%',gic2='%',gic3=gics_code,gic4='%')
+        # 筛选第四级
+        if cns_filterform4.validate_on_submit():
+            gics_code = request.form.get('gics_code')
+            page = request.args.get('page', 1, type=int)
+            province = u""
+            area = request.args.get('area', u'全国')
+            if area != u"全国":
+                province = area
+            filters = {
+                cns_stock_industry.province.like("%" + province + "%"),
+                cns_sub_industry.industry_gicscode_4.like(gics_code)
+            }
+            pie1_data = []
+            pie2_data = []
+            pie3_data = []
+            pie4_data = []
+            pie1 = db.session.query(cns_department_industry.industry_gicscode_1,
+                                    db.func.count('*').label("dcount")).filter(
+                cns_group_industry.belong == cns_department_industry.industry_gicscode_1).filter(
+                cns_industry.belong == cns_group_industry.industry_gicscode_2).filter(
+                cns_sub_industry.belong == cns_industry.industry_gicscode_3).filter(
+                cns_stock_industry.belong == cns_sub_industry.industry_gicscode_4).filter(
+                cns_stock_industry.belong_zhengjianhui == zhengjianhui_1.industry_CSRCcode12).group_by(
+                cns_department_industry.industry_gicscode_1).filter(*filters).all()
+            pie2 = db.session.query(cns_group_industry.industry_gicscode_2, db.func.count('*').label("dcount")).filter(
+                cns_group_industry.belong == cns_department_industry.industry_gicscode_1).filter(
+                cns_industry.belong == cns_group_industry.industry_gicscode_2).filter(
+                cns_sub_industry.belong == cns_industry.industry_gicscode_3).filter(
+                cns_stock_industry.belong == cns_sub_industry.industry_gicscode_4).filter(
+                cns_stock_industry.belong_zhengjianhui == zhengjianhui_1.industry_CSRCcode12).group_by(
+                cns_group_industry.industry_gicscode_2).filter(*filters).all()
+
+            pie3 = db.session.query(cns_industry.industry_gicscode_3, db.func.count('*').label("dcount")).filter(
+                cns_group_industry.belong == cns_department_industry.industry_gicscode_1).filter(
+                cns_industry.belong == cns_group_industry.industry_gicscode_2).filter(
+                cns_sub_industry.belong == cns_industry.industry_gicscode_3).filter(
+                cns_stock_industry.belong == cns_sub_industry.industry_gicscode_4).filter(
+                cns_stock_industry.belong_zhengjianhui == zhengjianhui_1.industry_CSRCcode12).group_by(
+                cns_industry.industry_gicscode_3).filter(*filters).all()
+
+            pie4 = db.session.query(cns_sub_industry.industry_gicscode_4, db.func.count('*').label("dcount")).filter(
+                cns_group_industry.belong == cns_department_industry.industry_gicscode_1).filter(
+                cns_industry.belong == cns_group_industry.industry_gicscode_2).filter(
+                cns_sub_industry.belong == cns_industry.industry_gicscode_3).filter(
+                cns_stock_industry.belong == cns_sub_industry.industry_gicscode_4).filter(
+                cns_stock_industry.belong_zhengjianhui == zhengjianhui_1.industry_CSRCcode12).group_by(
+                cns_sub_industry.industry_gicscode_4).filter(*filters).all()
+            for i in pie1:
+                pie1_data.append({'name': i[0].encode("utf-8"), 'value': i[1]})
+            for i in pie2:
+                pie2_data.append({'name': i[0].encode("utf-8"), 'value': i[1]})
+            for i in pie3:
+                pie3_data.append({'name': i[0].encode("utf-8"), 'value': i[1]})
+            for i in pie4:
+                pie4_data.append({'name': i[0].encode("utf-8"), 'value': i[1]})
+            pagination = cns_stock_industry.query.join(cns_sub_industry).add_columns(
+                cns_sub_industry.industry_gics_4).join(
+                cns_industry).add_columns(cns_industry.industry_gics_3).join(cns_group_industry).add_columns(
+                cns_group_industry.industry_gics_2).join(cns_department_industry).add_columns(
+                cns_department_industry.industry_gics_1).filter(*filters).order_by(
+                cns_stock_industry.trade_code).paginate(page, per_page=200, error_out=False)  # 300改为200
+            result = pagination.items
+            length = len(result)
+            return render_template("stock_group/cns/cns_stock_industry_filter.html", result=result,
+                                   pagination=pagination,
+                                   length=length, cns_filterform1=cns_filterform1, cns_filterform2=cns_filterform2,
+                                   cns_filterform3=cns_filterform3, cns_filterform4=cns_filterform4,
+                                   pie1_data=pie1_data, pie2_data=pie2_data, pie3_data=pie3_data, pie4_data=pie4_data,
+                                   province=area,gic1='%',gic2='%',gic3='%',gic4=gics_code)
+        return render_template("404.html")  # 或许可用if-elif来改写一下
 
 
 # 修改“子行业”信息
@@ -223,6 +527,56 @@ def update_gics_4(trade_code='000001'):  # 疑问：这一行是什么意思？
 @login_required
 def hushen_300():
     page = request.args.get('page', 1, type=int)
+    province = u""
+    area = request.args.get('area', u'全国')
+    if area != u"全国":
+        province = area
+    filters = {
+        cns_stock_industry.province.like("%" + province + "%"),
+        cns_stock_industry.hushen_300 == '是'
+    }
+    pie1_data = []
+    pie2_data = []
+    pie3_data = []
+    pie4_data = []
+    pie1 = db.session.query(cns_department_industry.industry_gicscode_1, db.func.count('*').label("dcount")).filter(
+        cns_group_industry.belong == cns_department_industry.industry_gicscode_1).filter(
+        cns_industry.belong == cns_group_industry.industry_gicscode_2).filter(
+        cns_sub_industry.belong == cns_industry.industry_gicscode_3).filter(
+        cns_stock_industry.belong == cns_sub_industry.industry_gicscode_4).filter(
+        cns_stock_industry.belong_zhengjianhui == zhengjianhui_1.industry_CSRCcode12).group_by(
+        cns_department_industry.industry_gicscode_1).filter(*filters).all()
+    pie2 = db.session.query(cns_group_industry.industry_gicscode_2, db.func.count('*').label("dcount")).filter(
+        cns_group_industry.belong == cns_department_industry.industry_gicscode_1).filter(
+        cns_industry.belong == cns_group_industry.industry_gicscode_2).filter(
+        cns_sub_industry.belong == cns_industry.industry_gicscode_3).filter(
+        cns_stock_industry.belong == cns_sub_industry.industry_gicscode_4).filter(
+        cns_stock_industry.belong_zhengjianhui == zhengjianhui_1.industry_CSRCcode12).group_by(
+        cns_group_industry.industry_gicscode_2).filter(*filters).all()
+
+    pie3 = db.session.query(cns_industry.industry_gicscode_3, db.func.count('*').label("dcount")).filter(
+        cns_group_industry.belong == cns_department_industry.industry_gicscode_1).filter(
+        cns_industry.belong == cns_group_industry.industry_gicscode_2).filter(
+        cns_sub_industry.belong == cns_industry.industry_gicscode_3).filter(
+        cns_stock_industry.belong == cns_sub_industry.industry_gicscode_4).filter(
+        cns_stock_industry.belong_zhengjianhui == zhengjianhui_1.industry_CSRCcode12).group_by(
+        cns_industry.industry_gicscode_3).filter(*filters).all()
+
+    pie4 = db.session.query(cns_sub_industry.industry_gicscode_4, db.func.count('*').label("dcount")).filter(
+        cns_group_industry.belong == cns_department_industry.industry_gicscode_1).filter(
+        cns_industry.belong == cns_group_industry.industry_gicscode_2).filter(
+        cns_sub_industry.belong == cns_industry.industry_gicscode_3).filter(
+        cns_stock_industry.belong == cns_sub_industry.industry_gicscode_4).filter(
+        cns_stock_industry.belong_zhengjianhui == zhengjianhui_1.industry_CSRCcode12).group_by(
+        cns_sub_industry.industry_gicscode_4).filter(*filters).all()
+    for i in pie1:
+        pie1_data.append({'name': i[0].encode("utf-8"), 'value': i[1]})
+    for i in pie2:
+        pie2_data.append({'name': i[0].encode("utf-8"), 'value': i[1]})
+    for i in pie3:
+        pie3_data.append({'name': i[0].encode("utf-8"), 'value': i[1]})
+    for i in pie4:
+        pie4_data.append({'name': i[0].encode("utf-8"), 'value': i[1]})
     pagination = cns_stock_industry.query.join(cns_sub_industry).add_columns(cns_sub_industry.industry_gics_4).join(
         cns_industry).add_columns(cns_industry.industry_gics_3).join(cns_group_industry).add_columns(
         cns_group_industry.industry_gics_2).join(cns_department_industry).add_columns(
@@ -239,7 +593,8 @@ def hushen_300():
     v_stock_industry = cns_stock_industry.query.all()  # 以下是获取数据总共有多少个
 
     return render_template("stock_group/cns/cns_hushen_300.html", result=result, pagination=pagination,
-                           v_stock_industry=v_stock_industry, length=length)
+                           v_stock_industry=v_stock_industry, length=length,pie1_data=pie1_data, pie2_data=pie2_data, pie3_data=pie3_data,
+                           pie4_data=pie4_data, province=area)
 
 
 # 上证50指数筛选
@@ -248,6 +603,56 @@ def hushen_300():
 @login_required
 def shangzheng_50():
     page = request.args.get('page', 1, type=int)
+    province = u""
+    area = request.args.get('area', u'全国')
+    if area != u"全国":
+        province = area
+    filters = {
+        cns_stock_industry.province.like("%" + province + "%"),
+        cns_stock_industry.shangzheng_50 == '是'
+    }
+    pie1_data = []
+    pie2_data = []
+    pie3_data = []
+    pie4_data = []
+    pie1 = db.session.query(cns_department_industry.industry_gicscode_1, db.func.count('*').label("dcount")).filter(
+        cns_group_industry.belong == cns_department_industry.industry_gicscode_1).filter(
+        cns_industry.belong == cns_group_industry.industry_gicscode_2).filter(
+        cns_sub_industry.belong == cns_industry.industry_gicscode_3).filter(
+        cns_stock_industry.belong == cns_sub_industry.industry_gicscode_4).filter(
+        cns_stock_industry.belong_zhengjianhui == zhengjianhui_1.industry_CSRCcode12).group_by(
+        cns_department_industry.industry_gicscode_1).filter(*filters).all()
+    pie2 = db.session.query(cns_group_industry.industry_gicscode_2, db.func.count('*').label("dcount")).filter(
+        cns_group_industry.belong == cns_department_industry.industry_gicscode_1).filter(
+        cns_industry.belong == cns_group_industry.industry_gicscode_2).filter(
+        cns_sub_industry.belong == cns_industry.industry_gicscode_3).filter(
+        cns_stock_industry.belong == cns_sub_industry.industry_gicscode_4).filter(
+        cns_stock_industry.belong_zhengjianhui == zhengjianhui_1.industry_CSRCcode12).group_by(
+        cns_group_industry.industry_gicscode_2).filter(*filters).all()
+
+    pie3 = db.session.query(cns_industry.industry_gicscode_3, db.func.count('*').label("dcount")).filter(
+        cns_group_industry.belong == cns_department_industry.industry_gicscode_1).filter(
+        cns_industry.belong == cns_group_industry.industry_gicscode_2).filter(
+        cns_sub_industry.belong == cns_industry.industry_gicscode_3).filter(
+        cns_stock_industry.belong == cns_sub_industry.industry_gicscode_4).filter(
+        cns_stock_industry.belong_zhengjianhui == zhengjianhui_1.industry_CSRCcode12).group_by(
+        cns_industry.industry_gicscode_3).filter(*filters).all()
+
+    pie4 = db.session.query(cns_sub_industry.industry_gicscode_4, db.func.count('*').label("dcount")).filter(
+        cns_group_industry.belong == cns_department_industry.industry_gicscode_1).filter(
+        cns_industry.belong == cns_group_industry.industry_gicscode_2).filter(
+        cns_sub_industry.belong == cns_industry.industry_gicscode_3).filter(
+        cns_stock_industry.belong == cns_sub_industry.industry_gicscode_4).filter(
+        cns_stock_industry.belong_zhengjianhui == zhengjianhui_1.industry_CSRCcode12).group_by(
+        cns_sub_industry.industry_gicscode_4).filter(*filters).all()
+    for i in pie1:
+        pie1_data.append({'name': i[0].encode("utf-8"), 'value': i[1]})
+    for i in pie2:
+        pie2_data.append({'name': i[0].encode("utf-8"), 'value': i[1]})
+    for i in pie3:
+        pie3_data.append({'name': i[0].encode("utf-8"), 'value': i[1]})
+    for i in pie4:
+        pie4_data.append({'name': i[0].encode("utf-8"), 'value': i[1]})
     pagination = cns_stock_industry.query.join(cns_sub_industry).add_columns(cns_sub_industry.industry_gics_4).join(
         cns_industry).add_columns(cns_industry.industry_gics_3).join(cns_group_industry).add_columns(
         cns_group_industry.industry_gics_2).join(cns_department_industry).add_columns(
@@ -255,8 +660,7 @@ def shangzheng_50():
         cns_group_industry.belong == cns_department_industry.industry_gicscode_1).filter(
         cns_industry.belong == cns_group_industry.industry_gicscode_2).filter(
         cns_sub_industry.belong == cns_industry.industry_gicscode_3).filter(
-        cns_stock_industry.belong == cns_sub_industry.industry_gicscode_4).filter(
-        cns_stock_industry.shangzheng_50 == '是').order_by(
+        cns_stock_industry.belong == cns_sub_industry.industry_gicscode_4).filter(*filters).order_by(
         cns_stock_industry.trade_code).paginate(page, per_page=200, error_out=False)  # 共有3197条记录 此为分页功能
     result = pagination.items
     length = len(result)
@@ -264,7 +668,8 @@ def shangzheng_50():
     v_stock_industry = cns_stock_industry.query.all()  # 以下是获取数据总共有多少个
     # stock_length = len(v_stock_industry)
     return render_template("stock_group/cns/cns_shangzheng_50.html", result=result, pagination=pagination,
-                           v_stock_industry=v_stock_industry, length=length)
+                           v_stock_industry=v_stock_industry, length=length,pie1_data=pie1_data, pie2_data=pie2_data, pie3_data=pie3_data,
+                           pie4_data=pie4_data, province=area)
 
 
 # 陆股通指数筛选
@@ -274,6 +679,56 @@ def shangzheng_50():
 # @finance_analyst_permission.require(http_exception=403)
 def lugutong():
     page = request.args.get('page', 1, type=int)
+    province = u""
+    area = request.args.get('area', u'全国')
+    if area != u"全国":
+        province = area
+    filters = {
+        cns_stock_industry.province.like("%" + province + "%"),
+        or_(cns_stock_industry.SHSC == '是',cns_stock_industry.SHSC2 == '是')
+    }
+    pie1_data = []
+    pie2_data = []
+    pie3_data = []
+    pie4_data = []
+    pie1 = db.session.query(cns_department_industry.industry_gicscode_1, db.func.count('*').label("dcount")).filter(
+        cns_group_industry.belong == cns_department_industry.industry_gicscode_1).filter(
+        cns_industry.belong == cns_group_industry.industry_gicscode_2).filter(
+        cns_sub_industry.belong == cns_industry.industry_gicscode_3).filter(
+        cns_stock_industry.belong == cns_sub_industry.industry_gicscode_4).filter(
+        cns_stock_industry.belong_zhengjianhui == zhengjianhui_1.industry_CSRCcode12).group_by(
+        cns_department_industry.industry_gicscode_1).filter(*filters).all()
+    pie2 = db.session.query(cns_group_industry.industry_gicscode_2, db.func.count('*').label("dcount")).filter(
+        cns_group_industry.belong == cns_department_industry.industry_gicscode_1).filter(
+        cns_industry.belong == cns_group_industry.industry_gicscode_2).filter(
+        cns_sub_industry.belong == cns_industry.industry_gicscode_3).filter(
+        cns_stock_industry.belong == cns_sub_industry.industry_gicscode_4).filter(
+        cns_stock_industry.belong_zhengjianhui == zhengjianhui_1.industry_CSRCcode12).group_by(
+        cns_group_industry.industry_gicscode_2).filter(*filters).all()
+
+    pie3 = db.session.query(cns_industry.industry_gicscode_3, db.func.count('*').label("dcount")).filter(
+        cns_group_industry.belong == cns_department_industry.industry_gicscode_1).filter(
+        cns_industry.belong == cns_group_industry.industry_gicscode_2).filter(
+        cns_sub_industry.belong == cns_industry.industry_gicscode_3).filter(
+        cns_stock_industry.belong == cns_sub_industry.industry_gicscode_4).filter(
+        cns_stock_industry.belong_zhengjianhui == zhengjianhui_1.industry_CSRCcode12).group_by(
+        cns_industry.industry_gicscode_3).filter(*filters).all()
+
+    pie4 = db.session.query(cns_sub_industry.industry_gicscode_4, db.func.count('*').label("dcount")).filter(
+        cns_group_industry.belong == cns_department_industry.industry_gicscode_1).filter(
+        cns_industry.belong == cns_group_industry.industry_gicscode_2).filter(
+        cns_sub_industry.belong == cns_industry.industry_gicscode_3).filter(
+        cns_stock_industry.belong == cns_sub_industry.industry_gicscode_4).filter(
+        cns_stock_industry.belong_zhengjianhui == zhengjianhui_1.industry_CSRCcode12).group_by(
+        cns_sub_industry.industry_gicscode_4).filter(*filters).all()
+    for i in pie1:
+        pie1_data.append({'name': i[0].encode("utf-8"), 'value': i[1]})
+    for i in pie2:
+        pie2_data.append({'name': i[0].encode("utf-8"), 'value': i[1]})
+    for i in pie3:
+        pie3_data.append({'name': i[0].encode("utf-8"), 'value': i[1]})
+    for i in pie4:
+        pie4_data.append({'name': i[0].encode("utf-8"), 'value': i[1]})
     pagination = cns_stock_industry.query.join(cns_sub_industry).add_columns(cns_sub_industry.industry_gics_4).join(
         cns_industry).add_columns(cns_industry.industry_gics_3).join(cns_group_industry).add_columns(
         cns_group_industry.industry_gics_2).join(cns_department_industry).add_columns(
@@ -281,15 +736,15 @@ def lugutong():
         cns_group_industry.belong == cns_department_industry.industry_gicscode_1).filter(
         cns_industry.belong == cns_group_industry.industry_gicscode_2).filter(
         cns_sub_industry.belong == cns_industry.industry_gicscode_3).filter(
-        cns_stock_industry.belong == cns_sub_industry.industry_gicscode_4).filter(
-        or_(cns_stock_industry.SHSC == '是', cns_stock_industry.SHSC2 == '是')).order_by(
+        cns_stock_industry.belong == cns_sub_industry.industry_gicscode_4).filter(*filters).order_by(
         cns_stock_industry.trade_code).paginate(page, per_page=200, error_out=False)  # 共有3197条记录 此为分页功能
     result = pagination.items
     length = len(result)
     # or_要从sqlalchemy中加载
     v_stock_industry = cns_stock_industry.query.all()  # 以下是获取数据总共有多少个
     return render_template("stock_group/cns/cns_lugutong.html", result=result, pagination=pagination,
-                           v_stock_industry=v_stock_industry, length=length)
+                           v_stock_industry=v_stock_industry, length=length,pie1_data=pie1_data, pie2_data=pie2_data, pie3_data=pie3_data,
+                           pie4_data=pie4_data, province=area)
 
 
 # cnsb 沪深交易所B股公司
@@ -302,6 +757,44 @@ def cnsb_home():
     cnsb_filterform3 = cnsb_filterForm3()
     cnsb_filterform4 = cnsb_filterForm4()
     page = request.args.get('page', 1, type=int)
+    pie1_data = []
+    pie2_data = []
+    pie3_data = []
+    pie4_data = []
+    pie1 = db.session.query(cnsb_department_industry.industry_gicscode_1, db.func.count('*').label("dcount")).filter(
+        cnsb_group_industry.belong == cnsb_department_industry.industry_gicscode_1).filter(
+        cnsb_industry.belong == cnsb_group_industry.industry_gicscode_2).filter(
+        cnsb_sub_industry.belong == cnsb_industry.industry_gicscode_3).filter(
+        cnsb_stock_industry.industry_gicscode_4 == cnsb_sub_industry.industry_gicscode_4).group_by(
+        cnsb_department_industry.industry_gicscode_1).all()
+    pie2 = db.session.query(cnsb_group_industry.industry_gicscode_2, db.func.count('*').label("dcount")).filter(
+        cnsb_group_industry.belong == cnsb_department_industry.industry_gicscode_1).filter(
+        cnsb_industry.belong == cnsb_group_industry.industry_gicscode_2).filter(
+        cnsb_sub_industry.belong == cnsb_industry.industry_gicscode_3).filter(
+        cnsb_stock_industry.industry_gicscode_4 == cnsb_sub_industry.industry_gicscode_4).group_by(
+        cnsb_group_industry.industry_gicscode_2).all()
+
+    pie3 = db.session.query(cnsb_industry.industry_gicscode_3, db.func.count('*').label("dcount")).filter(
+        cnsb_group_industry.belong == cnsb_department_industry.industry_gicscode_1).filter(
+        cnsb_industry.belong == cnsb_group_industry.industry_gicscode_2).filter(
+        cnsb_sub_industry.belong == cnsb_industry.industry_gicscode_3).filter(
+        cnsb_stock_industry.industry_gicscode_4 == cnsb_sub_industry.industry_gicscode_4).group_by(
+        cnsb_industry.industry_gicscode_3).all()
+
+    pie4 = db.session.query(cnsb_sub_industry.industry_gicscode_4, db.func.count('*').label("dcount")).filter(
+        cnsb_group_industry.belong == cnsb_department_industry.industry_gicscode_1).filter(
+        cnsb_industry.belong == cnsb_group_industry.industry_gicscode_2).filter(
+        cnsb_sub_industry.belong == cnsb_industry.industry_gicscode_3).filter(
+        cnsb_stock_industry.industry_gicscode_4 == cnsb_sub_industry.industry_gicscode_4).group_by(
+        cnsb_sub_industry.industry_gicscode_4).all()
+    for i in pie1:
+        pie1_data.append({'name': i[0].encode("utf-8"), 'value': i[1]})
+    for i in pie2:
+        pie2_data.append({'name': i[0].encode("utf-8"), 'value': i[1]})
+    for i in pie3:
+        pie3_data.append({'name': i[0].encode("utf-8"), 'value': i[1]})
+    for i in pie4:
+        pie4_data.append({'name': i[0].encode("utf-8"), 'value': i[1]})
     pagination = cnsb_stock_industry.query.join(cnsb_sub_industry).add_columns(cnsb_sub_industry.industry_gics_4).join(
         cnsb_industry).add_columns(cnsb_industry.industry_gics_3).join(cnsb_group_industry).add_columns(
         cnsb_group_industry.industry_gics_2).join(cnsb_department_industry).add_columns(
@@ -314,7 +807,9 @@ def cnsb_home():
     user = users_roles.query.filter_by(user_name=current_user.username).first()
     return render_template("stock_group/cns/cnsb_stock_industry.html", cnsb_filterform1=cnsb_filterform1,
                            cnsb_filterform2=cnsb_filterform2, cnsb_filterform3=cnsb_filterform3,
-                           cnsb_filterform4=cnsb_filterform4, result=result, pagination=pagination, length=length,user=user)
+                           cnsb_filterform4=cnsb_filterform4, result=result, pagination=pagination, length=length,
+                           user=user,pie1_data=pie1_data, pie2_data=pie2_data, pie3_data=pie3_data,
+                           pie4_data=pie4_data)
 
 
 # usa美国市场
@@ -338,7 +833,8 @@ def usa_home():
     user = users_roles.query.filter_by(user_name=current_user.username).first()
     return render_template("stock_group/usa/usa_stock_industry.html", usa_filterform1=usa_filterform1,
                            usa_filterform2=usa_filterform2, usa_filterform3=usa_filterform3,
-                           usa_filterform4=usa_filterform4, result=result, pagination=pagination, length=length,user=user)
+                           usa_filterform4=usa_filterform4, result=result, pagination=pagination, length=length,
+                           user=user)
 
 
 # usa-显示“主营业务”详情
@@ -509,7 +1005,7 @@ def usa_djia():
     # stock_length = len(v_stock_industry)
     user = users_roles.query.filter_by(user_name=current_user.username).first()
     return render_template("stock_group/usa/usa_djia.html", result=result, pagination=pagination,
-                           v_stock_industry=v_stock_industry, length=length,user=user)
+                           v_stock_industry=v_stock_industry, length=length, user=user)
 
 
 # 标准普尔500成份股
@@ -541,7 +1037,7 @@ def usa_sp500():
     v_stock_industry = usa_stock_industry.query.all()  # 以下是获取数据总共有多少个
     user = users_roles.query.filter_by(user_name=current_user.username).first()
     return render_template("stock_group/usa/usa_sp500.html", result=result, pagination=pagination,
-                           v_stock_industry=v_stock_industry, length=length,user=user)
+                           v_stock_industry=v_stock_industry, length=length, user=user)
 
 
 # hks 香港市场

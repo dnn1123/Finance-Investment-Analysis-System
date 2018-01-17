@@ -40,7 +40,7 @@
 {% endblock %}
 {% block industry %}
     <table id="fixTable" class="row-border hover order-column display" cellspacing="0" width="100%"
-           style="white-space: nowrap">
+           style="white-space: nowrap;">
         <thead>
         <tr>
             <td style="background-color: #F1F0EE">证券代码</td>
@@ -130,7 +130,7 @@
 {% block navigation %}
     {% if pagination %}
         <div class="pagination">
-            {{ macros.pagination_widget(pagination,'.cns_home') }} {# 是home吗 #}
+            {{ macros.pagination_widget(pagination,'.cns_home',province) }} {# 是home吗 #}
         </div>
     {% endif %}
 {% endblock %}
@@ -138,14 +138,14 @@
 {% block bottombody %}
 
     {#    悬浮地图按钮#}
-{#    <div id="dg" style="z-index: 9999; position: fixed ! important; right: 40px; top:100px;">#}
-{#        <input type="button" value="全国" id="all_province">#}
-{#        <input type="button" data-toggle="modal" data-target="#modal_map"#}
-{#               style="margin-left:10px;background:url('{{ url_for('static',filename='China_map.jpg') }}') no-repeat center  ; width:50px; height:50px;background-size:100% 100%;border-radius:10px;">#}
-        {#            <button  type="button" class="btn btn-default btn-circle"  background-image:;></button>#}
-{#        </br>#}
-{#        <a id="province_selected"></a>#}
-{#    </div>#}
+    <div id="dg" style="z-index: 9999; position: fixed ! important; right: 40px; top:100px;">
+        <input type="button" value="全国" id="all_province">
+        <input type="button" data-toggle="modal" data-target="#modal_map"
+               style="margin-left:10px;background:url('{{ url_for('static',filename='China_map.jpg') }}') no-repeat center  ; width:50px; height:50px;background-size:100% 100%;border-radius:10px;">
+{#        <button type="button" class="btn btn-default btn-circle" background-image:;></button>#}
+        </br>
+        <a id="province_selected"></a>
+    </div>
 
     <!-- 模态框 组 -->
     <div class="modal fade" id="department_industry" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
@@ -162,6 +162,7 @@
                 </div>
                 <form class="form-search" method="POST" action="{{ url_for('.cns_filter') }}">
                     <div class="modal-body">
+                        <input type="hidden" name="area" value="{{ province }}" \>
                         {{ cns_filterform1.hidden_tag() }}
                         {{ cns_filterform1.gics_code(class_='input-md form-control') }} <!-- (class_='')这种方法指定class类 -->
                     </div>
@@ -189,6 +190,7 @@
                 </div>
                 <form class="form-search" method="POST" action="{{ url_for('.cns_filter') }}">
                     <div class="modal-body">
+                        <input type="hidden" name="area" value="{{ province }}" \>
                         {{ cns_filterform2.hidden_tag() }}
                         {{ cns_filterform2.gics_code(class_='input-md form-control') }} <!-- (class_='')这种方法指定class类 -->
                     </div>
@@ -216,6 +218,7 @@
                 </div>
                 <form class="form-search" method="POST" action="{{ url_for('.cns_filter') }}">
                     <div class="modal-body">
+                        <input type="hidden" name="area" value="{{ province }}" \>
                         {{ cns_filterform3.hidden_tag() }}
                         {{ cns_filterform3.gics_code(class_='input-md form-control') }} <!-- (class_='')这种方法指定class类 -->
                     </div>
@@ -243,6 +246,7 @@
                 </div>
                 <form class="form-search" method="POST" action="{{ url_for('.cns_filter') }}">
                     <div class="modal-body">
+                        <input type="hidden" name="area" value="{{ province }}" \>
                         {{ cns_filterform4.hidden_tag() }}
                         {{ cns_filterform4.gics_code(class_='input-md form-control') }} <!-- (class_='')这种方法指定class类 -->
                     </div>
@@ -311,26 +315,20 @@
         </div><!-- /.modal -->
     </div>
         {#    地图模态框#}
-    <div class="modal fade" id="modal_map" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-         aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <!-- 模态框头部 -->
-                <div class="modal-header">
-                    <h4 class="modal-title">地图</h4>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                </div>
-                <!-- 模态框主体 -->
-                <div class="modal-body">
-                    <div id="map" style="height:400px;width:500px;margin:0 auto"></div>
-                </div>
-                <!-- 模态框底部 -->
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
-                </div>
-            </div>
-        </div>
+    <div class="modal hide fade" id="modal_map">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h3>地图</h3>
+  </div>
+  <div class="modal-body">
+    <div id="map" style="height:400px;width:500px;margin:0 auto"></div>
+  </div>
+  <div class="modal-footer">
+    <a href="#" class="btn btn-primary" data-dismiss="modal">关闭</a>
+  </div>
     </div>
+
+
 {% endblock %}
 {% block scripts %}
     <script>
@@ -379,6 +377,7 @@
                             ]
                         }
             })
+            creatmap()
             creat_pie()
         });
     </script>
@@ -512,165 +511,163 @@
             // 执行一些动作...
         })
     </script>
-{#    <script>#}
-{#        var province = '辽宁'#}
-{#        $("#province_selected").text('当前选中:' + province)#}
-{#        function creatmap() {#}
-{#            var myChart = echarts.init(document.getElementById('map'));#}
-{#            var option1 = {#}
-{#                title: {#}
-{#                    text: '',#}
-{#                    subtext: '',#}
-{#                    x: 'center'#}
-{#                },#}
-{#                tooltip: {//提示框组件。#}
-{#                    trigger: 'item'//数据项图形触发，主要在散点图，饼图等无类目轴的图表中使用。#}
-{#                },#}
-{#                legend: {#}
-{#                    orient: 'horizontal',//图例的排列方向#}
-{#                    x: 'left',//图例的位置#}
-                    {#            data:['订单量']#}
-{#                },#}
-{#                toolbox: {//工具栏#}
-{#                    show: true,#}
-{#                    orient: 'vertical',//工具栏 icon 的布局朝向#}
-{#                    x: 'right',#}
-{#                    y: 'center',#}
-{#                    feature: {//各工具配置项。#}
-{#                        mark: {show: true},#}
-{#                        dataView: {show: true, readOnly: false},//数据视图工具，可以展现当前图表所用的数据，编辑后可以动态更新。#}
-{#                        restore: {show: true},//配置项还原。#}
-{#                        saveAsImage: {show: true}//保存为图片。#}
-{#                    }#}
-{#                },#}
-{#                roamController: {//控制地图的上下左右放大缩小 图上没有显示#}
-{#                    show: true,#}
-{#                    x: 'right',#}
-{#                    mapTypeControl: {#}
-{#                        'china': true#}
-{#                    }#}
-{#                },#}
-{#                series: [#}
-{#                    {#}
-                        {#                name: '订单量',#}
-{#                        type: 'map',#}
-{#                        mapType: 'china',#}
-{#                        roam: false,//是否开启鼠标缩放和平移漫游#}
-{#                        itemStyle: {//地图区域的多边形 图形样式#}
-{#                            normal: {//是图形在默认状态下的样式#}
-{#                                label: {#}
-{#                                    show: true,//是否显示标签#}
-{#                                    textStyle: {#}
-{#                                        color: "rgb(249, 249, 249)"#}
-{#                                    }#}
-{#                                }#}
-{#                            },#}
-{#                            emphasis: {//是图形在高亮状态下的样式,比如在鼠标悬浮或者图例联动高亮时#}
-{#                                label: {show: true}#}
-{#                            }#}
-{#                        },#}
-{#                        top: "3%",//组件距离容器的距离#}
-{#                        data: [#}
-{#                            {name: '北京'},#}
-{#                            {name: '天津'},#}
-{#                            {name: '上海'},#}
-{#                            {name: '重庆'},#}
-{#                            {name: '河北'},#}
-{#                            {name: '河南'},#}
-{#                            {name: '云南'},#}
-{#                            {name: '辽宁'},#}
-{#                            {name: '黑龙江'},#}
-{#                            {name: '湖南'},#}
-{#                            {name: '安徽'},#}
-{#                            {name: '山东'},#}
-{#                            {name: '新疆'},#}
-{#                            {name: '江苏'},#}
-{#                            {name: '浙江'},#}
-{#                            {name: '江西'},#}
-{#                            {name: '湖北'},#}
-{#                            {name: '广西'},#}
-{#                            {name: '甘肃'},#}
-{#                            {name: '山西'},#}
-{#                            {name: '内蒙古'},#}
-{#                            {name: '陕西'},#}
-{#                            {name: '吉林'},#}
-{#                            {name: '福建'},#}
-{#                            {name: '贵州'},#}
-{#                            {name: '广东'},#}
-{#                            {name: '青海'},#}
-{#                            {name: '西藏'},#}
-{#                            {name: '四川'},#}
-{#                            {name: '宁夏'},#}
-{#                            {name: '海南'},#}
-{#                            {name: '台湾'},#}
-{#                            {name: '香港'},#}
-{#                            {name: '澳门'}#}
-{#                        ]#}
-{#                    }#}
-{#                ]#}
-{#            };#}
-{#            var option = {#}
-{#                tooltip: {#}
-{#//                    show: false //不显示提示标签#}
-{#                    formatter: '{b}', //提示标签格式#}
-{#                    backgroundColor: "#585eaa",//提示标签背景颜色#}
-{#                    textStyle: {color: "#feeeed"} //提示标签字体颜色#}
-{#                },#}
-{#                series: [{#}
-{#                    type: 'map',#}
-{#                    mapType: 'china',#}
-{#                    label: {#}
-{#                        normal: {#}
-{#                            show: true,//显示省份标签#}
-{#                            textStyle: {color: "#fffef9"}//省份标签字体颜色#}
-{#                        },#}
-{#                        emphasis: {//对应的鼠标悬浮效果#}
-{#                            show: true,#}
-{#                            textStyle: {color: "#800080"}#}
-{#                        }#}
-{#                    },#}
-{#                    itemStyle: {#}
-{#                        normal: {#}
-{#                            borderWidth: .5,//区域边框宽度#}
-{#                            borderColor: '#102b6a',//区域边框颜色#}
-{#                            areaColor: "#426ab3",//区域颜色#}
-{#                        },#}
-{#                        emphasis: {#}
-{#                            borderWidth: .5,#}
-{#                            borderColor: '#4b0082',#}
-{#                            areaColor: "#ffdead",#}
-{#                        }#}
-{#                    },#}
-{#                    selectedMode: 'single',#}
-{#                    data: [#}
-{#                        {name: '辽宁', selected: true}//福建为选中状态#}
-{#                    ]#}
-{#                }],#}
-{#            };#}
-{#            myChart.setOption(option);#}
-{#            myChart.on('mouseover', function (params) {#}
-                {#            var dataIndex = params.dataIndex;#}
-                {#            console.log(params);#}
-{#            });#}
-{#            myChart.on('click', function (params) {//点击事件#}
-{#                var dataIndex = params.dataIndex;#}
-{#                province = params.name#}
-{#                $("#province_selected").text('当前选中:' + province)#}
-                {#                params.selected = 'true'#}
-{#                CreateChart(province)#}
-{#                creat_industry_pie()#}
-{#            })#}
-            {#            myChart.on(ecConfig.EVENT.MAP_SELECTED, function (param) {#}
-            {#                var selected = param.selected;#}
-            {#            })#}
-{#        }#}
-{#        $("#all_province").click(function () {#}
-{#            province = 'all'#}
-{#            $("#province_selected").text('当前选中:全国')#}
-{#            CreateChart(province)#}
-{#            creat_industry_pie()#}
-{#        })#}
-{#    </script>#}
+    <script>
+        var province ='{{ province }}'
+        $("#province_selected").text('当前选中:' + province)
+        function creatmap() {
+            var myChart = echarts.init(document.getElementById('map'));
+            var option1 = {
+                title: {
+                    text: '',
+                    subtext: '',
+                    x: 'center'
+                },
+                tooltip: {//提示框组件。
+                    trigger: 'item'//数据项图形触发，主要在散点图，饼图等无类目轴的图表中使用。
+                },
+                legend: {
+                    orient: 'horizontal',//图例的排列方向
+                    x: 'left',//图例的位置
+                                data:['订单量']
+                },
+                toolbox: {//工具栏
+                    show: true,
+                    orient: 'vertical',//工具栏 icon 的布局朝向
+                    x: 'right',
+                    y: 'center',
+                    feature: {//各工具配置项。
+                        mark: {show: true},
+                        dataView: {show: true, readOnly: false},//数据视图工具，可以展现当前图表所用的数据，编辑后可以动态更新。
+                        restore: {show: true},//配置项还原。
+                        saveAsImage: {show: true}//保存为图片。
+                    }
+                },
+                roamController: {//控制地图的上下左右放大缩小 图上没有显示
+                    show: true,
+                    x: 'right',
+                    mapTypeControl: {
+                        'china': true
+                    }
+                },
+                series: [
+                    {
+                                        name: '订单量',
+                        type: 'map',
+                        mapType: 'china',
+                        roam: false,//是否开启鼠标缩放和平移漫游
+                        itemStyle: {//地图区域的多边形 图形样式
+                            normal: {//是图形在默认状态下的样式
+                                label: {
+                                    show: true,//是否显示标签
+                                    textStyle: {
+                                        color: "rgb(249, 249, 249)"
+                                    }
+                                }
+                            },
+                            emphasis: {//是图形在高亮状态下的样式,比如在鼠标悬浮或者图例联动高亮时
+                                label: {show: true}
+                            }
+                        },
+                        top: "3%",//组件距离容器的距离
+                        data: [
+                            {name: '北京'},
+                            {name: '天津'},
+                            {name: '上海'},
+                            {name: '重庆'},
+                            {name: '河北'},
+                            {name: '河南'},
+                            {name: '云南'},
+                            {name: '辽宁'},
+                            {name: '黑龙江'},
+                            {name: '湖南'},
+                            {name: '安徽'},
+                            {name: '山东'},
+                            {name: '新疆'},
+                            {name: '江苏'},
+                            {name: '浙江'},
+                            {name: '江西'},
+                            {name: '湖北'},
+                            {name: '广西'},
+                            {name: '甘肃'},
+                            {name: '山西'},
+                            {name: '内蒙古'},
+                            {name: '陕西'},
+                            {name: '吉林'},
+                            {name: '福建'},
+                            {name: '贵州'},
+                            {name: '广东'},
+                            {name: '青海'},
+                            {name: '西藏'},
+                            {name: '四川'},
+                            {name: '宁夏'},
+                            {name: '海南'},
+                            {name: '台湾'},
+                            {name: '香港'},
+                            {name: '澳门'}
+                        ]
+                    }
+                ]
+            };
+            var option = {
+                tooltip: {
+//                    show: false //不显示提示标签
+                    formatter: '{b}', //提示标签格式
+                    backgroundColor: "#585eaa",//提示标签背景颜色
+                    textStyle: {color: "#feeeed"} //提示标签字体颜色
+                },
+                series: [{
+                    type: 'map',
+                    mapType: 'china',
+                    label: {
+                        normal: {
+                            show: true,//显示省份标签
+                            textStyle: {color: "#fffef9"}//省份标签字体颜色
+                        },
+                        emphasis: {//对应的鼠标悬浮效果
+                            show: true,
+                            textStyle: {color: "#800080"}
+                        }
+                    },
+                    itemStyle: {
+                        normal: {
+                            borderWidth: .5,//区域边框宽度
+                            borderColor: '#102b6a',//区域边框颜色
+                            areaColor: "#426ab3",//区域颜色
+                        },
+                        emphasis: {
+                            borderWidth: .5,
+                            borderColor: '#4b0082',
+                            areaColor: "#ffdead",
+                        }
+                    },
+                    selectedMode: 'single',
+                    data: [
+                        {name: '{{ province }}', selected: true}//福建为选中状态
+                    ]
+                }],
+            };
+            myChart.setOption(option);
+            myChart.on('mouseover', function (params) {
+                            var dataIndex = params.dataIndex;
+                            console.log(params);
+            });
+            myChart.on('click', function (params) {//点击事件
+                var dataIndex = params.dataIndex;
+                province = params.name
+                $("#province_selected").text('当前选中:' + province)
+                                params.selected = 'true'
+                location.href = "{{ url_for("stock_group.cns_home") }}"+"?area="+province
+            })
+{#                        myChart.on(ecConfig.EVENT.MAP_SELECTED, function (param) {#}
+{#                            var selected = param.selected;#}
+{#                        })#}
+        }
+        $("#all_province").click(function () {
+            $("#province_selected").text('当前选中:全国')
+            location.href = "{{ url_for("stock_group.cns_home") }}"
+
+        })
+    </script>
     <script>
         var dact = {
             '10': '能源',
@@ -912,6 +909,10 @@
             '60102030': '房地产开发',
             '60102040': '房地产服务',
         };
+        gic1="%"
+        gic2="%"
+        gic3="%"
+        gic4="%"
         var myChart_pie1 = echarts.init(document.getElementById('pie_1'));
         var myChart_pie2 = echarts.init(document.getElementById('pie_2'));
         var myChart_pie3 = echarts.init(document.getElementById('pie_3'));
@@ -1085,11 +1086,59 @@
                 ]
             };
             myChart_pie4.setOption(option_pie4, true);
+            myChart_pie1.on("click",function (params) {
+                gic1=params.name
+                filter_excute()
+            })
+            myChart_pie2.on("click",function (params) {
+                gic2=params.name
+                filter_excute()
+            })
+            myChart_pie3.on("click",function (params) {
+                gic3=params.name
+                filter_excute()
+            })
+            myChart_pie4.on("click",function (params) {
+                gic4=params.name
+                filter_excute()
+            })
 
         }
+        function filter_excute() {
+            origin="pie"
+             var action = "{{ url_for("stock_group.cns_filter") }}"
+            // 创建Form
+            var form = $('<form></form>');
+            // 设置属性
+             form.attr('action', action);
+            form.attr('method', 'post');
+            // form的target属性决定form在哪个页面提交
+            // _self -> 当前页面 _blank -> 新页面
+            form.attr('target', '_self');
+            // 创建Input
+            var my_input1 = $('<input type="text" name="origin" />');
+            my_input1.attr('value', origin);
+            form.append(my_input1);
+            var my_input2 = $('<input type="text" name="gic1" />');
+            my_input2.attr('value', gic1);
+            form.append(my_input2);
+            var my_input3 = $('<input type="text" name="gic2" />');
+            my_input3.attr('value', gic2);
+            form.append(my_input3);
+            var my_input4 = $('<input type="text" name="gic3" />');
+            my_input4.attr('value', gic3);
+            form.append(my_input4);
+            var my_input5 = $('<input type="text" name="gic4" />');
+            my_input5.attr('value', gic4);
+            form.append(my_input5);
+            var my_input6 = $('<input type="text" name="area" />');
+            my_input6.attr('value', province);
+            form.append(my_input6);
+            // 提交表单
+            form.appendTo('body').submit();
+        }
+
     </script>
-
-
 {% endblock %}
 
 <SCRIPT Language=VBScript><!--

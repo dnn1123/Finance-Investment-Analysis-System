@@ -858,6 +858,16 @@ def market_status4():
         exec ("data['" + index + "']=" + index + "_list")
     return jsonify(data)
 
+@api_blueprint.route("/market_form0/", methods=('GET', 'POST'))
+def market_form0():
+    data = []
+
+    results = cnsb_department_industry.query.all()
+
+    for result in results:
+        data.append(result.industry_gicscode_1)
+
+    return jsonify(data)
 
 @api_blueprint.route("/market_form1/", methods=('GET', 'POST'))
 def market_form1():
