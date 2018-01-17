@@ -9,15 +9,58 @@
             background-color: #a5b2cb;
             border-radius: 8px;
             text-align: center;
-            white-space:nowrap; overflow:hidden; text-overflow:ellipsis
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis
         }
 
         .thedivs {
             background-color: #d3d3d3;
             border-radius: 8px;
             text-align: center;
-            white-space:nowrap; overflow:hidden; text-overflow:ellipsis
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis
         }
+
+        .myshow {
+            font-size: 12px;
+            font-weight: 500;
+            font-color: #FF3300;
+        }
+
+        #temptable th {
+            white-space: nowrap;
+        }
+
+        #temptable td {
+            white-space: nowrap;
+        }
+
+        #temptable1 th {
+            white-space: nowrap;
+        }
+
+        #temptable1 td {
+            white-space: nowrap;
+        }
+
+        #temptables1 th, #temptables1 td {
+            white-space: nowrap;
+        }
+
+        #temptables2 th, #temptables2 td {
+            white-space: nowrap;
+        }
+
+        #temptables3 th, #temptables3 td {
+            white-space: nowrap;
+        }
+
+        #temptables4 th, #temptables4 td {
+            white-space: nowrap;
+        }
+
     </style>
 
     {#    地图模态框#}
@@ -217,7 +260,7 @@
                 <!--行业状况-->
                 <div class="btn-box-row row-fluid">
                     <div class="module span12" style="background-color: transparent">
-                        <div class="module-head">行业状况</div>
+                        <div class="module-head">行业状况:</div>
                         <div class="row-fluid">
                             <div class="btn-box small span3">
                                 <div id="one" style="width:100%;height:200px;background-color: white">
@@ -254,60 +297,37 @@
                 <!--行业分析-->
                 <div class="btn-box-row row-fluid">
                     <div class="module span12">
-                        <div class="module-head">
-                            <a href="#postgroup1" aria - expanded="false" data - toggle="collapse"> 行业分析 </a>
+                        <div class="module-head" style="height:20px;">
+                            <a href="#postgroup1" aria - expanded="false" data - toggle="collapse" style="float:left;">
+                                行业分析 </a>
+                            <div id="show" style="float:left;margin-left:10px;">
+                            </div>
                         </div>
-                        <div class="modal-body">
+                        <div class="module-body" style="height:390px;">
                             <div id="postgroup1" style="margin: auto;width:95%;height:auto">
                                 <div class="form-search" id="form1">
                                     <div style="height:50px" class="input-group">
-                                        <input id="stockcode1" list="itemlist1" name="stockcode" type="text"
-                                               style="margin-top:0;margin-left:10px;height: 30px;width:100px;">
                                         <ul class="dropdown-menu dropdown-menu-right" role="menu"></ul>
-                                        <datalist id="itemlist1">
-                                            <option value="10">能源</option>
-                                            <option value="15">材料</option>
-                                            <option value="20">工业</option>
-                                            <option value="25">可选消费</option>
-                                            <option value="30">日常消费</option>
-                                            <option value="35">医疗保健</option>
-                                            <option value="40">金融</option>
-                                            <option value="45">信息技术</option>
-                                            <option value="50">电信服务</option>
-                                            <option value="55">公共事业</option>
-                                            <option value="60">房地产</option>
-                                        </datalist>
+                                        <select id="stockcode1"
+                                                style="margin-top:0;margin-left:10px;height: 30px;width:100px;"
+                                                onchange="param=1">
+                                        </select>
+
+                                        <ul class="dropdown-menu dropdown-menu-right" role="menu"></ul>
+                                        <select id="stockcode2"
+                                                style="margin-top:0;margin-left:10px;height: 30px;width:100px;"
+                                                onchange="param=2"></select>
+
+                                        <ul class="dropdown-menu dropdown-menu-right" role="menu"></ul>
+                                        <select id="stockcode3"
+                                                style="margin-top:0;margin-left:10px;height: 30px;width:100px;"
+                                                onchange="param=3"></select>
+
+                                        <ul class="dropdown-menu dropdown-menu-right" role="menu"></ul>
+                                        <select id="stockcode4"
+                                                style="margin-top:0;margin-left:10px;height: 30px;width:100px;"
+                                                onchange="param=4"></select>
                                         <button id="submit1" type="submit" class="btn btn-default"
-                                                style="margin-top:0;margin-left:10px;width:60px;height: 30px"
-                                                data-toggle="tooltip"
-                                                data-placement="right">搜索
-                                        </button>
-
-                                        <input id="stockcode2" list="itemlist22" name="stockcode" type="text"
-                                               style="margin-top:0;margin-left:10px;height: 30px;width:100px;">
-                                        <ul class="dropdown-menu dropdown-menu-right" role="menu"></ul>
-                                        <datalist id="itemlist22"></datalist>
-                                        <button id="submit2" type="submit" class="btn btn-default"
-                                                style="margin-top:0;margin-left:10px;width:60px;height: 30px"
-                                                data-toggle="tooltip"
-                                                data-placement="right">搜索
-                                        </button>
-
-                                        <input id="stockcode3" list="itemlist33" name="stockcode" type="text"
-                                               style="margin-top:0;margin-left:10px;height: 30px;width:100px;">
-                                        <ul class="dropdown-menu dropdown-menu-right" role="menu"></ul>
-                                        <datalist id="itemlist33"></datalist>
-                                        <button id="submit3" type="submit" class="btn btn-default"
-                                                style="margin-top:0;margin-left:10px;width:60px;height: 30px"
-                                                data-toggle="tooltip"
-                                                data-placement="right">搜索
-                                        </button>
-
-                                        <input id="stockcode4" list="itemlist44" name="stockcode" type="text"
-                                               style="margin-top:0;margin-left:10px;height: 30px;width:100px;">
-                                        <ul class="dropdown-menu dropdown-menu-right" role="menu"></ul>
-                                        <datalist id="itemlist44"></datalist>
-                                        <button id="submit4" type="submit" class="btn btn-default"
                                                 style="margin-top:0;margin-left:10px;width:60px;height: 30px"
                                                 data-toggle="tooltip"
                                                 data-placement="right">搜索
@@ -463,7 +483,6 @@
                                         </select>
                                     </div>
                                 </div>
-
 
                             </div>
                         </div>
@@ -1940,6 +1959,7 @@
                 $('tr#' + key).css('color', Chosenindexes[key])
             }
         }
+
         {#行业状况建图#}
         var myChart11 = echarts.init(document.getElementById('one'));
         var myChart12 = echarts.init(document.getElementById('two'));
@@ -2160,14 +2180,12 @@
                     myChart14.setOption(option, true);
                 }
             });
-
-
         }
 
 
-        {#                zyq行业分析#}
-        <!--级联菜单1-->
+        {#zyq行业分析#}
 
+        <!--级联菜单-->
         var mytest = '能源'
         var mynum = '10';
         var dact = {
@@ -2200,7 +2218,7 @@
             '3510': '医疗保健设备与服务',
             '3520': '制药、生物科技与生命科学',
             '4010': '银行',
-            '4020': '多元金融<',
+            '4020': '多元金融',
             '4030': '保险Ⅱ',
             '4510': '软件与服务',
             '4520': '技术硬件与设备',
@@ -2209,47 +2227,6 @@
             '5510': '公用事业Ⅱ',
             '6010': '房地产Ⅱ'
         };
-        $("#submit1").click(function () {
-            param = 1;
-            thiscode1 = $("#stockcode1").val();
-            mynum = thiscode1;
-            mytest = dact[thiscode1];
-            Chosenindexes1 = [];
-            Chosenindexes1 = ['tot_oper_rev'];
-            Chosenindexes1['tot_oper_rev'] = "#000000";
-            $('#itemlist22').empty();
-            $('#itemlist33').empty();
-            $('#itemlist44').empty();
-            $.ajax({
-                type: 'GET',
-                url: '{{ url_for("restfulapi.market_form1") }}',
-                data: {
-                    code: thiscode1,
-                },
-                dataType: 'json',
-                success: function (data) {
-                    for (var i = 0; i < data.length; i++) {
-                        $('#itemlist22').append("<option value='" + data[i] + "'>" + dbct[data[i]] + "</option>")
-                    }
-                    requestChart1();
-                    set_time1();
-                    $("div#mychoice1 :checkbox").each(function () {//each()方法遍历所有的复选框
-                        a = $(this).val();
-                        if ($(this).is(':checked') == true) {//这里就可以判断当前是否被选择了
-                            if (a != 'tot_oper_rev') {
-                                $(this).removeAttr("checked");
-                                $("#a_" + a).css("background-color", "white");
-                            }
-                        }
-                    });
-                    $("#thefirst1").prop("checked", true);
-                    $("#a_tot_oper_rev").css("background-color", "#000000");
-                }
-            });
-        });
-
-        <!--级联菜单2-->
-
         var dcct = {
             '101010': '能源设备与服务',
             '101020': '石油、天然气与供消费用燃料',
@@ -2315,47 +2292,6 @@
             '551050': '独立电力生产商与能源贸易商Ⅲ',
             '601020': '房地产管理和开发',
         };
-        $("#submit2").click(function () {
-            param = 2;
-            thiscode2 = $("#stockcode2").val();
-            mynum = thiscode2;
-            mytest = dbct[thiscode2];
-            myChart1.clear();
-            Chosenindexes1 = [];
-            Chosenindexes1 = ['tot_oper_rev'];
-            Chosenindexes1['tot_oper_rev'] = "#000000";
-            $('#itemlist33').empty();
-            $('#itemlist44').empty();
-            $.ajax({
-                type: 'GET',
-                url: '{{ url_for("restfulapi.market_form2") }}',
-                data: {
-                    code: thiscode2,
-                },
-                dataType: 'json',
-                success: function (data) {
-                    for (var i = 0; i < data.length; i++) {
-                        $('#itemlist33').append("<option value='" + data[i] + "'>" + dcct[data[i]] + "</option>")
-                    }
-                    requestChart2();
-                    set_time1();
-                    $("div#mychoice1 :checkbox").each(function () {//each()方法遍历所有的复选框
-                        a = $(this).val();
-                        if ($(this).is(':checked') == true) {//这里就可以判断当前是否被选择了
-                            if (a != 'tot_oper_rev') {
-                                $(this).removeAttr("checked");
-                                $("#a_" + a).css("background-color", "white");
-                            }
-                        }
-                    });
-                    $("#thefirst1").prop("checked", true);
-                    $("#a_tot_oper_rev").css("background-color", "#000000");
-                }
-            });
-        });
-
-        <!--级联菜单3-->
-
         var ddct = {
             '10101010': '石油天然气钻井',
             '10101020': '石油天然气设备与服务',
@@ -2493,71 +2429,152 @@
             '60102030': '房地产开发',
             '60102040': '房地产服务',
         };
-        $("#submit3").click(function () {
-            param = 3;
-            thiscode3 = $("#stockcode3").val();
-            mynum = thiscode3;
-            mytest = dcct[thiscode3];
-            myChart1.clear();
-            Chosenindexes1 = [];
-            Chosenindexes1 = ['tot_oper_rev'];
-            Chosenindexes1['tot_oper_rev'] = "#000000";
-            $('#itemlist44').empty();
-            $.ajax({
-                type: 'GET',
-                url: '{{ url_for("restfulapi.market_form3") }}',
-                data: {
-                    code: thiscode3,
-                },
-                dataType: 'json',
-                success: function (data) {
-                    for (var i = 0; i < data.length; i++) {
-                        $('#itemlist44').append("<option value='" + data[i] + "'>" + ddct[data[i]] + "</option>")
-                    }
-                    requestChart3();
-                    set_time1();
-                    $("div#mychoice1 :checkbox").each(function () {//each()方法遍历所有的复选框
-                        a = $(this).val();
-                        if ($(this).is(':checked') == true) {//这里就可以判断当前是否被选择了
-                            if (a != 'tot_oper_rev') {
-                                $(this).removeAttr("checked");
-                                $("#a_" + a).css("background-color", "white");
-                            }
+        $("#submit1").click(function () {
+            if (param == 1) {
+                thiscode1 = $("#stockcode1").val();
+                mynum = thiscode1;
+                mytest = dact[thiscode1];
+                Chosenindexes1 = [];
+                Chosenindexes1 = ['tot_oper_rev'];
+                Chosenindexes1['tot_oper_rev'] = "#000000";
+                $('#stockcode2').empty();
+                $('#stockcode3').empty();
+                $('#stockcode4').empty();
+                $.ajax({
+                    type: 'GET',
+                    url: '{{ url_for("restfulapi.market_form1") }}',
+                    data: {
+                        code: thiscode1,
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        for (var i = 0; i < data.length; i++) {
+                            $('#stockcode2').append("<option value='" + data[i] + "'>" + dbct[data[i]] + "</option>")
                         }
-                    });
-                    $("#thefirst1").prop("checked", true);
-                    $("#a_tot_oper_rev").css("background-color", "#000000");
-                }
-            });
-        });
-
-        <!--级联菜单4-->
-
-        $("#submit4").click(function () {
-            param = 4;
-            thiscode4 = $("#stockcode4").val();
-            mynum = thiscode4;
-            mytest = ddct[thiscode4];
-            $("#mytable1").empty();
-            myChart1.clear();
-            Chosenindexes1 = [];
-            Chosenindexes1 = ['tot_oper_rev'];
-            Chosenindexes1['tot_oper_rev'] = "#000000";
-            requestChart4();
-            set_time1();
-            $("div#mychoice1 :checkbox").each(function () {//each()方法遍历所有的复选框
-                a = $(this).val();
-                if ($(this).is(':checked') == true) {//这里就可以判断当前是否被选择了
-                    if (a != 'tot_oper_rev') {
-                        $(this).removeAttr("checked");
-                        $("#a_" + a).css("background-color", "white");
+                        $('#stockcode2').append("<option selected = 'selected'> -行业组- </option>")
+                        requestChart1();
+                        set_time1();
+                        $("div#mychoice1 :checkbox").each(function () {//each()方法遍历所有的复选框
+                            a = $(this).val();
+                            if ($(this).is(':checked') == true) {//这里就可以判断当前是否被选择了
+                                if (a != 'tot_oper_rev') {
+                                    $(this).removeAttr("checked");
+                                    $("#a_" + a).css("background-color", "white");
+                                }
+                            }
+                        });
+                        $("#thefirst1").prop("checked", true);
+                        $("#a_tot_oper_rev").css("background-color", "#000000");
                     }
-                }
-            });
-            $("#thefirst1").prop("checked", true);
-            $("#a_tot_oper_rev").css("background-color", "#000000");
+                });
+                $('#show').empty();
+                $('#show').append("<span class='myshow'>" + dact[thiscode1] + "</span>")
+            }
+            else if (param == 2) {
+                thiscode2 = $("#stockcode2").val();
+                mynum = thiscode2;
+                mytest = dbct[thiscode2];
+                myChart1.clear();
+                Chosenindexes1 = [];
+                Chosenindexes1 = ['tot_oper_rev'];
+                Chosenindexes1['tot_oper_rev'] = "#000000";
+                $('#stockcode3').empty();
+                $('#stockcode4').empty();
+                $.ajax({
+                    type: 'GET',
+                    url: '{{ url_for("restfulapi.market_form2") }}',
+                    data: {
+                        code: thiscode2,
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        for (var i = 0; i < data.length; i++) {
+                            $('#stockcode3').append("<option value='" + data[i] + "'>" + dcct[data[i]] + "</option>")
+                        }
+                        $('#stockcode3').append("<option selected = 'selected'> -行业- </option>")
+                        requestChart2();
+                        set_time1();
+                        $("div#mychoice1 :checkbox").each(function () {//each()方法遍历所有的复选框
+                            a = $(this).val();
+                            if ($(this).is(':checked') == true) {//这里就可以判断当前是否被选择了
+                                if (a != 'tot_oper_rev') {
+                                    $(this).removeAttr("checked");
+                                    $("#a_" + a).css("background-color", "white");
+                                }
+                            }
+                        });
+                        $("#thefirst1").prop("checked", true);
+                        $("#a_tot_oper_rev").css("background-color", "#000000");
+                    }
+                });
+                $('#show').empty();
+                $('#show').append("<span class='myshow'>" + dact[thiscode1] + " + " + dbct[thiscode2] + "</span>")
+            }
+            else if (param == 3) {
+                thiscode3 = $("#stockcode3").val();
+                mynum = thiscode3;
+                mytest = dcct[thiscode3];
+                myChart1.clear();
+                Chosenindexes1 = [];
+                Chosenindexes1 = ['tot_oper_rev'];
+                Chosenindexes1['tot_oper_rev'] = "#000000";
+                $('#stockcode4').empty();
+                $.ajax({
+                    type: 'GET',
+                    url: '{{ url_for("restfulapi.market_form3") }}',
+                    data: {
+                        code: thiscode3,
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        for (var i = 0; i < data.length; i++) {
+                            $('#stockcode4').append("<option value='" + data[i] + "'>" + ddct[data[i]] + "</option>")
+                        }
+                        $('#stockcode4').append("<option selected = 'selected'> -子行业- </option>")
+                        requestChart3();
+                        set_time1();
+                        $("div#mychoice1 :checkbox").each(function () {//each()方法遍历所有的复选框
+                            a = $(this).val();
+                            if ($(this).is(':checked') == true) {//这里就可以判断当前是否被选择了
+                                if (a != 'tot_oper_rev') {
+                                    $(this).removeAttr("checked");
+                                    $("#a_" + a).css("background-color", "white");
+                                }
+                            }
+                        });
+                        $("#thefirst1").prop("checked", true);
+                        $("#a_tot_oper_rev").css("background-color", "#000000");
+                    }
+                });
+                $('#show').empty();
+                $('#show').append("<span class='myshow'>" + dact[thiscode1] + " + " + dbct[thiscode2] + " + " + dcct[thiscode3] + "</span>")
+            }
+            else if (param == 4) {
+                thiscode4 = $("#stockcode4").val();
+                mynum = thiscode4;
+                mytest = ddct[thiscode4];
+                $("#mytable1").empty();
+                myChart1.clear();
+                Chosenindexes1 = [];
+                Chosenindexes1 = ['tot_oper_rev'];
+                Chosenindexes1['tot_oper_rev'] = "#000000";
+                requestChart4();
+                set_time1();
+                $("div#mychoice1 :checkbox").each(function () {//each()方法遍历所有的复选框
+                    a = $(this).val();
+                    if ($(this).is(':checked') == true) {//这里就可以判断当前是否被选择了
+                        if (a != 'tot_oper_rev') {
+                            $(this).removeAttr("checked");
+                            $("#a_" + a).css("background-color", "white");
+                        }
+                    }
+                });
+                $("#thefirst1").prop("checked", true);
+                $("#a_tot_oper_rev").css("background-color", "#000000");
+                $('#show').empty();
+                $('#show').append("<span class='myshow'>" + dact[thiscode1] + " + " + dbct[thiscode2] + " + " + dcct[thiscode3] + " + " + ddct[thiscode4] + "</span>")
+            }
         });
-
 
         <!--图表-->
 
@@ -2589,6 +2606,18 @@
             'roe_holder': '平均净资产收益率（股东）'
         };
         function creat_echart_industry_analysis(province) {
+            $('#stockcode1').empty();
+            $.ajax({
+                type: 'GET',
+                url: '{{ url_for("restfulapi.market_form0") }}',
+                dataType: 'json',
+                success: function (data) {
+                    for (var i = 0; i < data.length; i++) {
+                        $('#stockcode1').append("<option value='" + data[i] + "'>" + dact[data[i]] + "</option>")
+                    }
+                    $('#stockcode1').append("<option selected = 'selected'>-部门-</option>")
+                }
+            });
             $.ajax({
                 type: 'GET',
                 url: '{{ url_for("restfulapi.market_status1") }}',
@@ -2791,7 +2820,7 @@
             td.appendTo(tr);
             theyear = dateformat(market_results_t1.the_year)
             for (var j = 0; j < theyear.length; j++) {
-                var td = $("<td>" + theyear[j] + "</td>");
+                var td = $("<td noWrap>" + theyear[j] + "</td>");
                 td.appendTo(tr);
             }
             tb = $("<tbody></tbody>");
@@ -3098,7 +3127,6 @@
 
 
         <!--复选框操作-->
-
         var Chosenindexes1 = new Array();
         Chosenindexes1 = ['tot_oper_rev'];
         Chosenindexes1['tot_oper_rev'] = "#000000";
@@ -3176,7 +3204,6 @@
         });
 
         <!--时间控制框-->
-
         $(".form_datetime").datetimepicker({
             format: 'yyyy-mm-dd ',
             startView: 4,
@@ -3254,7 +3281,6 @@
         }
 
         <!--单位转换-->
-
         denominator1 = 1
         $("select#unit1").change(function () {
             flag = $(this).val();
@@ -3302,13 +3328,11 @@
 
 
         <!--面板切换-->
-
         $("#mydropdown").on("click", "[data-stopPropagation]", function (e) {
             e.stopPropagation();
         })
 
         <!--随机生成颜色-->
-
         function NewColor() {
             var colorElements = "0,1,2,3,4,5,6,7,8,9,a,b,c,d,e,f";
             var colorArray = colorElements.split(",");
@@ -3320,7 +3344,6 @@
         }
 
         <!--删除函数-->
-
         Array.prototype.indexOf = function (val) {
             for (var i = 0; i < this.length; i++) {
                 if (this[i] == val) return i;
@@ -3361,7 +3384,6 @@
 
 
         <!--图表-->
-
         var myCharts1 = echarts.init(document.getElementById('mycharts1'));
         var adict = {
             '10': '能源',
