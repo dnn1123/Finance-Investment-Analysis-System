@@ -284,7 +284,14 @@
                 "info": "第 _PAGE_ 页 / 总 _PAGES_ 页",
                 "infoEmpty": "没有数据",
                 "infoFiltered": "(过滤总件数 _MAX_ 条)"
-            }
+            },
+             dom: 'Bfrtip',
+                        buttons: {
+                            buttons: [
+                                {extend: 'copy', 'text': '复制', 'className': 'btn btn-default btn-xs',},
+                                {extend: 'excel', 'text': '导出Excel', 'className': 'btn btn-default btn-xs',}
+                            ]
+                        }
         });
         var data = [
             {name: '{{ stock.city }}', value: 100}
@@ -1563,7 +1570,14 @@
                     "info": "第 _PAGE_ 页 / 总 _PAGES_ 页",
                     "infoEmpty": "没有数据",
                     "infoFiltered": "(过滤总件数 _MAX_ 条)"
-                }
+                },
+                 dom: 'Bfrtip',
+                        buttons: {
+                            buttons: [
+                                {extend: 'copy', 'text': '复制', 'className': 'btn btn-default btn-xs',},
+                                {extend: 'excel', 'text': '导出Excel', 'className': 'btn btn-default btn-xs',}
+                            ]
+                        }
             });
             setTimeout("$(\"#subject\").trigger(\"click\")", 100);
             for (var i = 0; i < finance_results_t.indexes.length; i++) {
