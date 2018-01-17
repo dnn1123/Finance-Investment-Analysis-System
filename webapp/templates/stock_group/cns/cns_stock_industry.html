@@ -369,6 +369,13 @@
                     "infoEmpty": "没有数据",
                     "infoFiltered": "(过滤总件数 _MAX_ 条)"
                 },
+                 dom: 'Bfrtip',
+                        buttons: {
+                            buttons: [
+                                {extend: 'copy', 'text': '复制', 'className': 'btn btn-default btn-xs',},
+                                {extend: 'excel', 'text': '导出Excel', 'className': 'btn btn-default btn-xs',}
+                            ]
+                        }
             })
             creatmap()
             creat_pie()

@@ -64,10 +64,12 @@
     </style>
 
     {#    地图模态框#}
-    <div class="modal fade" id="modal_map">
+
+    <div class="modal hide fade in" style="display: none; " id="modal_map" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                <!-- 模态框头部 -->
+               <!-- 模态框头部 -->
                 <div class="modal-header">
                     <h4 class="modal-title">地图</h4>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -80,8 +82,8 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
                 </div>
-            </div>
-        </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
     </div>
     {#    悬浮地图按钮#}
     <div id="dg" style="z-index: 9999; position: fixed ! important; right: 40px; top:100px;">
@@ -295,7 +297,6 @@
                 </div>
 
                 <!--行业分析-->
-                <div class="btn-box-row row-fluid">
                     <div class="module span12">
                         <div class="module-head" style="height:20px;">
                             <a href="#postgroup1" aria - expanded="false" data - toggle="collapse" style="float:left;">
@@ -1942,7 +1943,14 @@
                     "info": "第 _PAGE_ 页 / 总 _PAGES_ 页",
                     "infoEmpty": "没有数据",
                     "infoFiltered": "(过滤总件数 _MAX_ 条)"
-                }
+                },
+                 dom: 'Bfrtip',
+                        buttons: {
+                            buttons: [
+                                {extend: 'copy', 'text': '复制', 'className': 'btn btn-default btn-xs',},
+                                {extend: 'excel', 'text': '导出Excel', 'className': 'btn btn-default btn-xs',}
+                            ]
+                        }
             });
             setTimeout("$(\"#subject\").trigger(\"click\")", 100);
             for (var i = 0; i < market_results_t.indexes.length; i++) {
@@ -2850,7 +2858,14 @@
                     "info": "第 _PAGE_ 页 / 总 _PAGES_ 页",
                     "infoEmpty": "没有数据",
                     "infoFiltered": "(过滤总件数 _MAX_ 条)"
-                }
+                },
+                 dom: 'Bfrtip',
+                        buttons: {
+                            buttons: [
+                                {extend: 'copy', 'text': '复制', 'className': 'btn btn-default btn-xs',},
+                                {extend: 'excel', 'text': '导出Excel', 'className': 'btn btn-default btn-xs',}
+                            ]
+                        }
             });
             setTimeout("$(\"#subject\").trigger(\"click\")", 100);
             for (var i = 0; i < market_results_t1.indexes.length; i++) {
@@ -3698,6 +3713,13 @@
                             "info": "第 _PAGE_ 页 / 总 _PAGES_ 页",
                             "infoEmpty": "没有数据",
                             "infoFiltered": "(过滤总件数 _MAX_ 条)"
+                        },
+                 dom: 'Bfrtip',
+                        buttons: {
+                            buttons: [
+                                {extend: 'copy', 'text': '复制', 'className': 'btn btn-default btn-xs',},
+                                {extend: 'excel', 'text': '导出Excel', 'className': 'btn btn-default btn-xs',}
+                            ]
                         }
                     });
                     setTimeout("$(\"#subject\").trigger(\"click\")", 100);
@@ -3788,6 +3810,13 @@
                             "info": "第 _PAGE_ 页 / 总 _PAGES_ 页",
                             "infoEmpty": "没有数据",
                             "infoFiltered": "(过滤总件数 _MAX_ 条)"
+                        },
+                 dom: 'Bfrtip',
+                        buttons: {
+                            buttons: [
+                                {extend: 'copy', 'text': '复制', 'className': 'btn btn-default btn-xs',},
+                                {extend: 'excel', 'text': '导出Excel', 'className': 'btn btn-default btn-xs',}
+                            ]
                         }
                     });
                     setTimeout("$(\"#subject\").trigger(\"click\")", 100);
@@ -4302,6 +4331,13 @@
                             "info": "第 _PAGE_ 页 / 总 _PAGES_ 页",
                             "infoEmpty": "没有数据",
                             "infoFiltered": "(过滤总件数 _MAX_ 条)"
+                        },
+                 dom: 'Bfrtip',
+                        buttons: {
+                            buttons: [
+                                {extend: 'copy', 'text': '复制', 'className': 'btn btn-default btn-xs',},
+                                {extend: 'excel', 'text': '导出Excel', 'className': 'btn btn-default btn-xs',}
+                            ]
                         }
                     });
                     setTimeout("$(\"#subject\").trigger(\"click\")", 100);
@@ -4392,6 +4428,13 @@
                             "info": "第 _PAGE_ 页 / 总 _PAGES_ 页",
                             "infoEmpty": "没有数据",
                             "infoFiltered": "(过滤总件数 _MAX_ 条)"
+                        },
+                 dom: 'Bfrtip',
+                        buttons: {
+                            buttons: [
+                                {extend: 'copy', 'text': '复制', 'className': 'btn btn-default btn-xs',},
+                                {extend: 'excel', 'text': '导出Excel', 'className': 'btn btn-default btn-xs',}
+                            ]
                         }
                     });
                     setTimeout("$(\"#subject\").trigger(\"click\")", 100);
@@ -4946,6 +4989,13 @@
                             "info": "第 _PAGE_ 页 / 总 _PAGES_ 页",
                             "infoEmpty": "没有数据",
                             "infoFiltered": "(过滤总件数 _MAX_ 条)"
+                        },
+                 dom: 'Bfrtip',
+                        buttons: {
+                            buttons: [
+                                {extend: 'copy', 'text': '复制', 'className': 'btn btn-default btn-xs',},
+                                {extend: 'excel', 'text': '导出Excel', 'className': 'btn btn-default btn-xs',}
+                            ]
                         }
                     });
                     setTimeout("$(\"#subject\").trigger(\"click\")", 100);
@@ -5036,6 +5086,13 @@
                             "info": "第 _PAGE_ 页 / 总 _PAGES_ 页",
                             "infoEmpty": "没有数据",
                             "infoFiltered": "(过滤总件数 _MAX_ 条)"
+                        },
+                 dom: 'Bfrtip',
+                        buttons: {
+                            buttons: [
+                                {extend: 'copy', 'text': '复制', 'className': 'btn btn-default btn-xs',},
+                                {extend: 'excel', 'text': '导出Excel', 'className': 'btn btn-default btn-xs',}
+                            ]
                         }
                     });
                     setTimeout("$(\"#subject\").trigger(\"click\")", 100);
@@ -5658,6 +5715,13 @@
                             "info": "第 _PAGE_ 页 / 总 _PAGES_ 页",
                             "infoEmpty": "没有数据",
                             "infoFiltered": "(过滤总件数 _MAX_ 条)"
+                        },
+                 dom: 'Bfrtip',
+                        buttons: {
+                            buttons: [
+                                {extend: 'copy', 'text': '复制', 'className': 'btn btn-default btn-xs',},
+                                {extend: 'excel', 'text': '导出Excel', 'className': 'btn btn-default btn-xs',}
+                            ]
                         }
                     });
                     setTimeout("$(\"#subject\").trigger(\"click\")", 100);
@@ -5748,6 +5812,13 @@
                             "info": "第 _PAGE_ 页 / 总 _PAGES_ 页",
                             "infoEmpty": "没有数据",
                             "infoFiltered": "(过滤总件数 _MAX_ 条)"
+                        },
+                 dom: 'Bfrtip',
+                        buttons: {
+                            buttons: [
+                                {extend: 'copy', 'text': '复制', 'className': 'btn btn-default btn-xs',},
+                                {extend: 'excel', 'text': '导出Excel', 'className': 'btn btn-default btn-xs',}
+                            ]
                         }
                     });
                     setTimeout("$(\"#subject\").trigger(\"click\")", 100);
