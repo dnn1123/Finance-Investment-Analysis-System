@@ -102,14 +102,18 @@
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">x</button>
                         <ul class="nav nav-pills nav-tabs" role="tablist">
                             <li id="signin-li"><a href="#signin-tab" role="tab" data-toggle="tab">登陆</a></li>
-                            <li id="signup-li"><a href="#signup-tab" role="tab" data-toggle="tab">注册</a></li>
+                            <li id="signup-li"><a href="#register_number" role="tab" data-toggle="tab">账号密码注册</a></li>
+                            <li id="signup-li2"><a href="#register_phone" role="tab" data-toggle="tab">手机快速注册</a></li>
                         </ul>
                         <div class="tab-content" id="signin-signup-tab">
-                            <div class="tab-pane" id="signup-tab">
-                                {% block register_form %}{% endblock %}
+                            <div class="tab-pane" id="register_number">
+                                {% block register_number %}{% endblock %}
                             </div>
                             <div class="tab-pane" id="signin-tab">
                                 {% block form %}{% endblock %}
+                            </div>
+                            <div class="tab-pane" id="register_phone">
+                                {% block register_phone %}{% endblock %}
                             </div>
                         </div>
                     </div>
@@ -129,6 +133,7 @@
                 $('#signup-button').click(function () {
                     $('#signin-li').removeClass('active');
                     $('#signin-tab').removeClass('active');
+
                     $('#signup-li').addClass('active');
                     $('#signup-tab').addClass('active');
                 });
@@ -146,4 +151,5 @@
 <SCRIPT Language=VBScript><!--
 
 //-->
+
 </SCRIPT>
