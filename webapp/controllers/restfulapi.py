@@ -20,6 +20,7 @@ api_blueprint = Blueprint(
     url_prefix='/api'
 )
 
+
 @api_blueprint.route("/admin/", methods=('GET', 'POST'))
 def admin():
     stockcode = request.args.get('code')
@@ -30,10 +31,11 @@ def admin():
         name_list.append(result.user_name)
         permission_list.append(result.permissions)
     data = {
-        'name_list':name_list,
-        "permission_list":permission_list
+        'name_list': name_list,
+        "permission_list": permission_list
     }
     return jsonify(data)
+
 
 # 数据库查询api 用于Ajax数据返回 json格式数据
 @api_blueprint.route("/finance_data/", methods=('GET', 'POST'))
@@ -82,51 +84,26 @@ def code_wind():
 
     return jsonify(data)
 
-    # user_name = current_user.username
-    # codelist = []
-    # results = favorite_code.query.filter_by(user_name=user_name).all()
-    # for result in results:
-    #     code_list.append(result.code)
-
-    # wind_4 = []
-    # wind_3 = []
-    # wind_2 = []
-    # wind_1 = []
-    # for code in codelist:
-    #     result = cns_stock_industry.query.filter_by(trade_code=code).first_or_404()
-    #     wind_4.push(result.industry_gics_4)
-    #     result4 = cns_sub_industry.query.filter_by(industry_gicscode_4=result.industry_gicscode_4).first_or_404()
-    #     result3 = cns_industry.query.filter_by(industry_gicscode_3=result4.belong).first_or_404()
-    #     wind_3.push(result3.industry_gics_3)
-    #     result2 = cns_group_industry.query.filter_by(industry_gicscode_2=result3.belong).first_or_404()
-    #     wind_2.push(result2.industry_gics_2)
-    #     result1 = cns_department_industry.query.filter_by(industry_gicscode_1=result2.belong).first_or_404()
-    #     wind_1.push(result1.industry_gics_1)
-
-    # 'wind_4': wind_4,
-    # 'wind_3': wind_3,
-    # 'wind_2': wind_2,
-    # 'wind_1': wind_1,
-    # 'codelist':stockcode
 
 @api_blueprint.route('/change_permission', methods=('GET', 'POST'))
 def change_permission():
     name = request.form.get('name')
     permission = request.form.get('permission')
 
-    old_users_roles =  users_roles.query.filter_by(user_name=name).first()
+    old_users_roles = users_roles.query.filter_by(user_name=name).first()
     db.session.delete(old_users_roles)
     db.session.commit()
 
-    n_users_roles =  users_roles(user_name=name)
+    n_users_roles = users_roles(user_name=name)
     n_users_roles.permissions = permission
     db.session.add(n_users_roles)
     db.session.commit()
-    data={
-        'name':name,
-        'permission':permission
+    data = {
+        'name': name,
+        'permission': permission
     }
     return jsonify(data)
+
 
 @api_blueprint.route('/get_ajax_compare', methods=('GET', 'POST'))
 def get_ajax_compare():
@@ -403,7 +380,7 @@ def market_value():
                            func.sum(finance_basics_add.cashflow_ttm2).label("cashflow_ttm2"),
                            func.sum(finance_basics_add.free_cash_flow).label("free_cash_flow"),
                            finance_basics_add.the_year.label("the_year")).filter(
-                finance_basics_add.trade_code.in_(code_list)).group_by(finance_basics_add.the_year).all()
+            finance_basics_add.trade_code.in_(code_list)).group_by(finance_basics_add.the_year).all()
 
         # yc_end
 
@@ -478,21 +455,21 @@ def market_one():
 
     data_list = []
     for index in indexes:
-        exec (index+"_list=[]" )
+        exec (index + "_list=[]")
     for code in codes:
         results = session.query(func.sum(finance_basics_add.tot_oper_rev).label("tot_oper_rev"),
                                 func.sum(finance_basics_add.tot_assets).label("tot_assets"),
                                 func.sum(finance_basics_add.tot_liab).label("tot_liab"),
                                 func.sum(finance_basics_add.wgsd_com_eq).label("wgsd_com_eq"),
                                 cns_department_industry.industry_gics_1.label("industry_gics_1")).filter(
-                finance_basics_add.the_year == time).filter(
-                finance_basics_add.trade_code.in_(code_list)).filter(
-        finance_basics_add.trade_code == cns_stock_industry.trade_code).filter(
-                cns_stock_industry.industry_gicscode_4 == cns_sub_industry.industry_gicscode_4).filter(
-                cns_sub_industry.belong == cns_industry.industry_gicscode_3).filter(
-                cns_industry.belong == cns_group_industry.industry_gicscode_2).filter(
-                cns_group_industry.belong == cns_department_industry.industry_gicscode_1).filter(
-                cns_department_industry.industry_gicscode_1 == code).all()
+            finance_basics_add.the_year == time).filter(
+            finance_basics_add.trade_code.in_(code_list)).filter(
+            finance_basics_add.trade_code == cns_stock_industry.trade_code).filter(
+            cns_stock_industry.industry_gicscode_4 == cns_sub_industry.industry_gicscode_4).filter(
+            cns_sub_industry.belong == cns_industry.industry_gicscode_3).filter(
+            cns_industry.belong == cns_group_industry.industry_gicscode_2).filter(
+            cns_group_industry.belong == cns_department_industry.industry_gicscode_1).filter(
+            cns_department_industry.industry_gicscode_1 == code).all()
 
         for result in results:
             for index in indexes:
@@ -501,10 +478,10 @@ def market_one():
                 else:
                     exec ("my" + index + "= 0 ")
 
-                exec (index+"_list.append(my" + index + ")")
+                exec (index + "_list.append(my" + index + ")")
     data = {}
     for index in indexes:
-        exec("data['"+index+"_list']="+index+"_list")
+        exec ("data['" + index + "_list']=" + index + "_list")
     data['my_code'] = codes
     data['province'] = province
 
@@ -567,7 +544,7 @@ def market_status1():
     starttime = request.args.get('starttime')
     endtime = request.args.get('endtime')
     indexes = request.args.getlist('indexes[]')
-     # yc
+    # yc
     if province == 'all':
         results = stock_basics.query.filter().all()
     else:
@@ -604,7 +581,7 @@ def market_status1():
                        func.sum(finance_basics_add.financecashflow_ttm2).label("financecashflow_ttm2"),
                        func.sum(finance_basics_add.cashflow_ttm2).label("cashflow_ttm2"),
                        cns_department_industry.industry_gics_1.label("industry_gics_1")).filter(
-                finance_basics_add.trade_code.in_(code_list)).filter(
+        finance_basics_add.trade_code.in_(code_list)).filter(
         finance_basics_add.trade_code == cns_stock_industry.trade_code).filter(
         cns_stock_industry.industry_gicscode_4 == cns_sub_industry.industry_gicscode_4).filter(
         cns_sub_industry.belong == cns_industry.industry_gicscode_3).filter(
@@ -644,7 +621,7 @@ def market_status2():
     starttime = request.args.get('starttime')
     endtime = request.args.get('endtime')
     indexes = request.args.getlist('indexes[]')
-     # yc
+    # yc
     if province == 'all':
         results = stock_basics.query.filter().all()
     else:
@@ -685,7 +662,7 @@ def market_status2():
                        func.sum(finance_basics_add.financecashflow_ttm2).label("financecashflow_ttm2"),
                        func.sum(finance_basics_add.cashflow_ttm2).label("cashflow_ttm2"),
                        cns_group_industry.industry_gics_2.label("industry_gics_2")).filter(
-                finance_basics_add.trade_code.in_(code_list)).filter(
+        finance_basics_add.trade_code.in_(code_list)).filter(
         finance_basics_add.trade_code == cns_stock_industry.trade_code).filter(
         cns_stock_industry.industry_gicscode_4 == cns_sub_industry.industry_gicscode_4).filter(
         cns_sub_industry.belong == cns_industry.industry_gicscode_3).filter(
@@ -719,7 +696,7 @@ def market_status3():
     starttime = request.args.get('starttime')
     endtime = request.args.get('endtime')
     indexes = request.args.getlist('indexes[]')
-      # yc
+    # yc
     if province == 'all':
         results = stock_basics.query.filter().all()
     else:
@@ -760,7 +737,7 @@ def market_status3():
                        func.sum(finance_basics_add.financecashflow_ttm2).label("financecashflow_ttm2"),
                        func.sum(finance_basics_add.cashflow_ttm2).label("cashflow_ttm2"),
                        cns_industry.industry_gics_3.label("industry_gics_3")).filter(
-                finance_basics_add.trade_code.in_(code_list)).filter(
+        finance_basics_add.trade_code.in_(code_list)).filter(
         finance_basics_add.trade_code == cns_stock_industry.trade_code).filter(
         cns_stock_industry.industry_gicscode_4 == cns_sub_industry.industry_gicscode_4).filter(
         cns_sub_industry.belong == cns_industry.industry_gicscode_3).filter(
@@ -793,7 +770,7 @@ def market_status4():
     starttime = request.args.get('starttime')
     endtime = request.args.get('endtime')
     indexes = request.args.getlist('indexes[]')
-      # yc
+    # yc
     if province == 'all':
         results = stock_basics.query.filter().all()
     else:
@@ -835,7 +812,7 @@ def market_status4():
                        func.sum(finance_basics_add.cashflow_ttm2).label("cashflow_ttm2"),
                        cns_sub_industry.industry_gicscode_4,
                        cns_sub_industry.industry_gics_4.label("industry_gics_4")).filter(
-                finance_basics_add.trade_code.in_(code_list)).filter(
+        finance_basics_add.trade_code.in_(code_list)).filter(
         finance_basics_add.trade_code == cns_stock_industry.trade_code).filter(
         cns_stock_industry.industry_gicscode_4 == cns_sub_industry.industry_gicscode_4).filter(
         cns_sub_industry.industry_gicscode_4 == code).group_by(finance_basics_add.the_year).all()
@@ -858,20 +835,85 @@ def market_status4():
         exec ("data['" + index + "']=" + index + "_list")
     return jsonify(data)
 
+
+@api_blueprint.route("/market_hangyezu/", methods=('GET', 'POST'))
+def market_hangyezu():
+    data = {}
+    value = []
+    index = []
+
+    results = cns_group_industry.query.all()
+
+    for result in results:
+        value.append(result.industry_gicscode_2)
+        index.append(result.industry_gics_2)
+
+    data['my_value'] = value
+    data['my_index'] = index
+
+    return jsonify(data)
+
+
+@api_blueprint.route("/market_hangye/", methods=('GET', 'POST'))
+def market_hangye():
+    data = {}
+    value = []
+    index = []
+
+    results = cnsb_industry.query.all()
+
+    for result in results:
+        value.append(result.industry_gicscode_3)
+        index.append(result.industry_gics_3)
+
+    data['my_value'] = value
+    data['my_index'] = index
+
+    return jsonify(data)
+
+
+@api_blueprint.route("/market_zihangye/", methods=('GET', 'POST'))
+def market_zihangye():
+    data = {}
+    value = []
+    index = []
+
+    results = hks_sub_industry.query.all()
+
+    for result in results:
+        value.append(result.industry_gicscode_4)
+        index.append(result.industry_gics_4)
+
+    data['my_value'] = value
+    data['my_index'] = index
+
+    return jsonify(data)
+
+
 @api_blueprint.route("/market_form0/", methods=('GET', 'POST'))
 def market_form0():
-    data = []
+    data = {}
+    value = []
+    index = []
 
     results = cnsb_department_industry.query.all()
 
     for result in results:
-        data.append(result.industry_gicscode_1)
+        value.append(result.industry_gicscode_1)
+        index.append(result.industry_gics_1)
+
+    data['my_value'] = value
+    data['my_index'] = index
 
     return jsonify(data)
 
+
 @api_blueprint.route("/market_form1/", methods=('GET', 'POST'))
 def market_form1():
-    data = []
+    data = {}
+    value = []
+    index = []
+
     code = request.args.get('code')
 
     Filters = {
@@ -880,14 +922,21 @@ def market_form1():
     results = cns_group_industry.query.filter(*Filters).all()
 
     for result in results:
-        data.append(result.industry_gicscode_2)
+        value.append(result.industry_gicscode_2)
+        index.append(result.industry_gics_2)
+
+    data['my_value'] = value
+    data['my_index'] = index
 
     return jsonify(data)
 
 
 @api_blueprint.route("/market_form2/", methods=('GET', 'POST'))
 def market_form2():
-    data = []
+    data = {}
+    value = []
+    index = []
+
     code = request.args.get('code')
 
     Filters = {
@@ -896,14 +945,21 @@ def market_form2():
     results = cnsb_industry.query.filter(*Filters).all()
 
     for result in results:
-        data.append(result.industry_gicscode_3)
+        value.append(result.industry_gicscode_3)
+        index.append(result.industry_gics_3)
+
+    data['my_value'] = value
+    data['my_index'] = index
 
     return jsonify(data)
 
 
 @api_blueprint.route("/market_form3/", methods=('GET', 'POST'))
 def market_form3():
-    data = []
+    data = {}
+    value = []
+    index = []
+
     code = request.args.get('code')
 
     Filters = {
@@ -912,7 +968,11 @@ def market_form3():
     results = hks_sub_industry.query.filter(*Filters).all()
 
     for result in results:
-        data.append(result.industry_gicscode_4)
+        value.append(result.industry_gicscode_4)
+        index.append(result.industry_gics_4)
+
+    data['my_value'] = value
+    data['my_index'] = index
 
     return jsonify(data)
 
@@ -1458,24 +1518,27 @@ def stock_solo_k():
         results.append(mylist)
     return jsonify({"date": date, "k_data": results, "ma5": ma5, "ma10": ma10, "ma20": ma20, "p_change": p_change})
 
+
 @api_blueprint.route('/stock_group/cns_home', methods=['GET', 'POST'])
 def cns_home():
-    pie1_data=[]
+    pie1_data = []
     pie2_data = []
     pie3_data = []
     pie4_data = []
-    pie1=db.session.query(cns_department_industry.industry_gics_1,db.func.count('*').label("dcount")).filter(
+    pie1 = db.session.query(cns_department_industry.industry_gics_1, db.func.count('*').label("dcount")).filter(
         cns_group_industry.belong == cns_department_industry.industry_gicscode_1).filter(
         cns_industry.belong == cns_group_industry.industry_gicscode_2).filter(
         cns_sub_industry.belong == cns_industry.industry_gicscode_3).filter(
         cns_stock_industry.belong == cns_sub_industry.industry_gicscode_4).filter(
-        cns_stock_industry.belong_zhengjianhui == zhengjianhui_1.industry_CSRCcode12).group_by(cns_department_industry.industry_gicscode_1).all()
-    pie2=db.session.query(cns_group_industry.industry_gics_2,db.func.count('*').label("dcount")).filter(
+        cns_stock_industry.belong_zhengjianhui == zhengjianhui_1.industry_CSRCcode12).group_by(
+        cns_department_industry.industry_gicscode_1).all()
+    pie2 = db.session.query(cns_group_industry.industry_gics_2, db.func.count('*').label("dcount")).filter(
         cns_group_industry.belong == cns_department_industry.industry_gicscode_1).filter(
         cns_industry.belong == cns_group_industry.industry_gicscode_2).filter(
         cns_sub_industry.belong == cns_industry.industry_gicscode_3).filter(
         cns_stock_industry.belong == cns_sub_industry.industry_gicscode_4).filter(
-        cns_stock_industry.belong_zhengjianhui == zhengjianhui_1.industry_CSRCcode12).group_by(cns_group_industry.industry_gicscode_2).all()
+        cns_stock_industry.belong_zhengjianhui == zhengjianhui_1.industry_CSRCcode12).group_by(
+        cns_group_industry.industry_gicscode_2).all()
 
     pie3 = db.session.query(cns_industry.industry_gics_3, db.func.count('*').label("dcount")).filter(
         cns_group_industry.belong == cns_department_industry.industry_gicscode_1).filter(
@@ -1493,11 +1556,11 @@ def cns_home():
         cns_stock_industry.belong_zhengjianhui == zhengjianhui_1.industry_CSRCcode12).group_by(
         cns_sub_industry.industry_gicscode_4).all()
     for i in pie1:
-        pie1_data.append({'name':i[0],'value':i[1]})
+        pie1_data.append({'name': i[0], 'value': i[1]})
     for i in pie2:
-        pie2_data.append({'name':i[0],'value':i[1]})
+        pie2_data.append({'name': i[0], 'value': i[1]})
     for i in pie3:
-        pie3_data.append({'name':i[0],'value':i[1]})
+        pie3_data.append({'name': i[0], 'value': i[1]})
     for i in pie4:
-        pie4_data.append({'name':i[0],'value':i[1]})
-    return jsonify({"pie1",pie1_data})
+        pie4_data.append({'name': i[0], 'value': i[1]})
+    return jsonify({"pie1", pie1_data})
