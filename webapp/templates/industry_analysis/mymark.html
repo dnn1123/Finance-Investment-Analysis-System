@@ -64,12 +64,12 @@
     </style>
 
     {#    地图模态框#}
-
-    <div class="modal hide fade in" style="display: none; " id="modal_map" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+    <div class="modal hide fade in" style="display: none; " id="modal_map" tabindex="-1" role="dialog"
+         aria-labelledby="myModalLabel"
          aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-               <!-- 模态框头部 -->
+                <!-- 模态框头部 -->
                 <div class="modal-header">
                     <h4 class="modal-title">地图</h4>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -94,6 +94,7 @@
         </br>
         <a id="province_selected"></a>
     </div>
+    {#    图表分析#}
     <div class="span9">
         <div class="content">
             <div class="btn-controls">
@@ -236,7 +237,7 @@
                                     <div style="float: left;margin-left:0;margin-top:10px">
                                         <a style="width:20px;margin-left:5px;color: #0c0c0c;">起始时间:</a><input size="10"
                                                                                                               type="text"
-                                                                                                              value="2007-12-31"
+                                                                                                              value="1991-12-31"
                                                                                                               id="endtime"
                                                                                                               readonly
                                                                                                               class="form_datetime">
@@ -297,6 +298,7 @@
                 </div>
 
                 <!--行业分析-->
+                <div class="btn-box-row row-fluid">
                     <div class="module span12">
                         <div class="module-head" style="height:20px;">
                             <a href="#postgroup1" aria - expanded="false" data - toggle="collapse" style="float:left;">
@@ -311,28 +313,23 @@
                                         <ul class="dropdown-menu dropdown-menu-right" role="menu"></ul>
                                         <select id="stockcode1"
                                                 style="margin-top:0;margin-left:10px;height: 30px;width:100px;"
-                                                onchange="param=1">
+                                                onchange="bumen()">
                                         </select>
 
                                         <ul class="dropdown-menu dropdown-menu-right" role="menu"></ul>
                                         <select id="stockcode2"
                                                 style="margin-top:0;margin-left:10px;height: 30px;width:100px;"
-                                                onchange="param=2"></select>
+                                                onchange="hangyezu()"></select>
 
                                         <ul class="dropdown-menu dropdown-menu-right" role="menu"></ul>
                                         <select id="stockcode3"
                                                 style="margin-top:0;margin-left:10px;height: 30px;width:100px;"
-                                                onchange="param=3"></select>
+                                                onchange="hangye()"></select>
 
                                         <ul class="dropdown-menu dropdown-menu-right" role="menu"></ul>
                                         <select id="stockcode4"
                                                 style="margin-top:0;margin-left:10px;height: 30px;width:100px;"
-                                                onchange="param=4"></select>
-                                        <button id="submit1" type="submit" class="btn btn-default"
-                                                style="margin-top:0;margin-left:10px;width:60px;height: 30px"
-                                                data-toggle="tooltip"
-                                                data-placement="right">搜索
-                                        </button>
+                                                onchange="zihangye()"></select>
 
                                     </div>
                                 </div>
@@ -484,7 +481,6 @@
                                         </select>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
                     </div>
@@ -512,22 +508,9 @@
                                 <div id="compare1" class="tab-pane fade in active" style="margin: auto;width:95%">
                                     <div class="form-search" id="forms1">
                                         <div style="height:50px" class="input-group">
-                                            <input id="stockcodes1" list="itemlists1" type="text"
-                                                   style="margin-top:0;margin-left:5px;height: 30px">
                                             <ul class="dropdown-menu dropdown-menu-right" role="menu"></ul>
-                                            <datalist id="itemlists1">
-                                                <option value="10">能源</option>
-                                                <option value="15">材料</option>
-                                                <option value="20">工业</option>
-                                                <option value="25">可选消费</option>
-                                                <option value="30">日常消费</option>
-                                                <option value="35">医疗保健</option>
-                                                <option value="40">金融</option>
-                                                <option value="45">信息技术</option>
-                                                <option value="50">电信服务</option>
-                                                <option value="55">公共事业</option>
-                                                <option value="60">房地产</option>
-                                            </datalist>
+                                            <select id="stockcodes1"
+                                                    style="margin-top:0;margin-left:5px;height: 30px"></select>
                                             <button id="submits1" type="submit" class="btn btn-default"
                                                     style="margin-top:0;margin-left:20px;width:150px;height: 30px"
                                                     data-toggle="tooltip"
@@ -686,35 +669,9 @@
                                 <div id="compare2" class="tab-pane fade" style="margin: auto;width:95%">
                                     <div class="form-search" id="forms2">
                                         <div style="height:50px" class="input-group">
-                                            <input id="stockcodes2" list="itemlists2" type="text"
-                                                   style="margin-top:0;margin-left:0;height: 30px">
                                             <ul class="dropdown-menu dropdown-menu-right" role="menu"></ul>
-                                            <datalist id="itemlists2">
-                                                <option value="1010">能源Ⅱ</option>
-                                                <option value="1510">材料Ⅱ</option>
-                                                <option value="2010">资本货物</option>
-                                                <option value="2020">商业和专业服务</option>
-                                                <option value="2030">运输</option>
-                                                <option value="2510">汽车与汽车零部件</option>
-                                                <option value="2520">耐用消费品与服装</option>
-                                                <option value="2530">消费者服务Ⅱ</option>
-                                                <option value="2540">媒体Ⅱ</option>
-                                                <option value="2550">零售业</option>
-                                                <option value="3010">食品与主要用品零售Ⅱ</option>
-                                                <option value="3020">食品、饮料与烟草</option>
-                                                <option value="3030">家庭与个人用品</option>
-                                                <option value="3510">医疗保健设备与服务</option>
-                                                <option value="3520">制药、生物科技与生命科学</option>
-                                                <option value="4010">银行</option>
-                                                <option value="4020">多元金融</option>
-                                                <option value="4030">保险Ⅱ</option>
-                                                <option value="4510">软件与服务</option>
-                                                <option value="4520">技术硬件与设备</option>
-                                                <option value="4530">半导体与半导体生产设备</option>
-                                                <option value="5010">电信服务Ⅱ</option>
-                                                <option value="5510">公用事业Ⅱ</option>
-                                                <option value="6010">房地产Ⅱ</option>
-                                            </datalist>
+                                            <select id="stockcodes2"
+                                                    style="margin-top:0;margin-left:0;height: 30px"></select>
                                             <button id="submits2" type="submit" class="btn btn-default"
                                                     style="margin-top:0;margin-left:20px;width:150px;height: 30px"
                                                     data-toggle="tooltip"
@@ -875,74 +832,9 @@
                                 <div id="compare3" class="tab-pane fade" style="margin: auto;width:95%">
                                     <div class="form-search" id="forms3">
                                         <div style="height:50px" class="input-group">
-                                            <input id="stockcodes3" list="itemlists3" type="text"
-                                                   style="margin-top:0;margin-left:0;height: 30px">
                                             <ul class="dropdown-menu dropdown-menu-right" role="menu"></ul>
-                                            <datalist id="itemlists3">
-                                                <option value="101010">能源设备与服务</option>
-                                                <option value="101020">石油、天然气与供消费用燃料</option>
-                                                <option value="151010">化工</option>
-                                                <option value="151020">建材Ⅲ</option>
-                                                <option value="151030">容器与包装</option>
-                                                <option value="151040">金属、非金属与采矿</option>
-                                                <option value="151050">纸与林木产品</option>
-                                                <option value="201010">航空航天与国防Ⅲ</option>
-                                                <option value="201020">建筑产品Ⅲ</option>
-                                                <option value="201030">建筑与工程Ⅲ</option>
-                                                <option value="201040">电气设备</option>
-                                                <option value="201050">综合类Ⅲ</option>
-                                                <option value="201060">机械</option>
-                                                <option value="201070">贸易公司与工业品经销商Ⅲ</option>
-                                                <option value="202010">商业服务与用品</option>
-                                                <option value="202020">专业服务</option>
-                                                <option value="203010">航空货运与物流Ⅲ</option>
-                                                <option value="203020">航空Ⅲ</option>
-                                                <option value="203030">海运Ⅲ</option>
-                                                <option value="203040">公路与铁路运输</option>
-                                                <option value="203050">交通基础设施</option>
-                                                <option value="251010">汽车零配件</option>
-                                                <option value="251020">汽车</option>
-                                                <option value="252010">家庭耐用消费品</option>
-                                                <option value="252020">休闲设备与用品</option>
-                                                <option value="252030">纺织品、服装与奢侈品</option>
-                                                <option value="253010">酒店、餐馆与休闲Ⅲ</option>
-                                                <option value="253020">综合消费者服务Ⅲ</option>
-                                                <option value="254010">媒体Ⅲ</option>
-                                                <option value="255010">消费品经销商Ⅲ</option>
-                                                <option value="255020">互联网与售货目录零售</option>
-                                                <option value="255030">多元化零售</option>
-                                                <option value="255040">专营零售</option>
-                                                <option value="301010">食品与主要用品零售Ⅲ</option>
-                                                <option value="302010">饮料</option>
-                                                <option value="302020">食品</option>
-                                                <option value="303010">家庭用品Ⅲ</option>
-                                                <option value="303020">个人用品Ⅲ</option>
-                                                <option value="351010">医疗保健设备与用品</option>
-                                                <option value="351020">医疗保健提供商与服务</option>
-                                                <option value="351030">医疗保健技术Ⅲ</option>
-                                                <option value="352010">生物科技Ⅲ</option>
-                                                <option value="352020">制药</option>
-                                                <option value="352030">生命科学工具和服务Ⅲ</option>
-                                                <option value="401010">商业银行</option>
-                                                <option value="402010">多元金融服务</option>
-                                                <option value="402030">资本市场</option>
-                                                <option value="403010">保险Ⅲ</option>
-                                                <option value="451010">互联网软件与服务Ⅲ</option>
-                                                <option value="451020">信息技术服务</option>
-                                                <option value="451030">软件</option>
-                                                <option value="452010">通信设备Ⅲ</option>
-                                                <option value="452020">电脑与外围设备</option>
-                                                <option value="452030">电子设备、仪器和元件</option>
-                                                <option value="453010">半导体产品与半导体设备</option>
-                                                <option value="501010">多元电信服务</option>
-                                                <option value="501020">无线电信业务Ⅲ</option>
-                                                <option value="551010">电力Ⅲ</option>
-                                                <option value="551020">燃气Ⅲ</option>
-                                                <option value="551030">复合型公用事业Ⅲ</option>
-                                                <option value="551040">水务Ⅲ</option>
-                                                <option value="551050">独立电力生产商与能源贸易商Ⅲ</option>
-                                                <option value="601020">房地产管理和开发</option>
-                                            </datalist>
+                                            <select id="stockcodes3"
+                                                    style="margin-top:0;margin-left:0;height: 30px"></select>
                                             <button id="submits3" type="submit" class="btn btn-default"
                                                     style="margin-top:0;margin-left:20px;width:150px;height: 30px"
                                                     data-toggle="tooltip"
@@ -1103,145 +995,9 @@
                                 <div id="compare4" class="tab-pane fade" style="margin: auto;width:95%">
                                     <div class="form-search" id="forms4">
                                         <div style="height:50px" class="input-group">
-                                            <input id="stockcodes4" list="itemlists4" type="text"
-                                                   style="margin-top:0;margin-left:0;height: 30px">
                                             <ul class="dropdown-menu dropdown-menu-right" role="menu"></ul>
-                                            <datalist id="itemlists4">
-                                                <option value="10101010">石油天然气钻井</option>
-                                                <option value="10101020">石油天然气设备与服务</option>
-                                                <option value="10102010">综合性石油天然气</option>
-                                                <option value="10102020">石油天然气勘探与生产</option>
-                                                <option value="10102030">石油与天然气的炼制和销售</option>
-                                                <option value="10102040">石油与天然气的储存和运输</option>
-                                                <option value="10102050">煤炭与消费用燃料</option>
-                                                <option value="15101010">基础化工</option>
-                                                <option value="15101011">化纤</option>
-                                                <option value="15101020">多元化工</option>
-                                                <option value="15101030">化肥与农用化工</option>
-                                                <option value="15101040">工业气体</option>
-                                                <option value="15101050">特种化工</option>
-                                                <option value="15102010">建材</option>
-                                                <option value="15103010">金属与玻璃容器</option>
-                                                <option value="15103020">纸包装</option>
-                                                <option value="15104010">铝</option>
-                                                <option value="15104020">金属非金属</option>
-                                                <option value="15104030">黄金</option>
-                                                <option value="15104040">贵金属与矿石</option>
-                                                <option value="15104045">白银</option>
-                                                <option value="15104050">钢铁</option>
-                                                <option value="15105010">林木产品</option>
-                                                <option value="15105020">纸制品</option>
-                                                <option value="20101010">航天航空与国防</option>
-                                                <option value="20102010">建筑产品</option>
-                                                <option value="20103010">建筑与工程</option>
-                                                <option value="20104010">电气部件与设备</option>
-                                                <option value="20104020">重型电气设备</option>
-                                                <option value="20105010">综合类行业</option>
-                                                <option value="20106010">建筑机械与重型卡车</option>
-                                                <option value="20106015">农用农业机械</option>
-                                                <option value="20106020">工业机械</option>
-                                                <option value="20107010">贸易公司与工业品经销商</option>
-                                                <option value="20201010">商业印刷</option>
-                                                <option value="20201050">环境与设施服务</option>
-                                                <option value="20201060">办公服务与用品</option>
-                                                <option value="20201070">综合支持服务</option>
-                                                <option value="20202020">调查和咨询服务</option>
-                                                <option value="20301010">航空货运与物流</option>
-                                                <option value="20302010">航空</option>
-                                                <option value="20303010">海运</option>
-                                                <option value="20304010">铁路运输</option>
-                                                <option value="20304020">公路运输</option>
-                                                <option value="20305010">机场服务</option>
-                                                <option value="20305020">公路与铁路</option>
-                                                <option value="20305030">海港与服务</option>
-                                                <option value="25101010">汽车零配件</option>
-                                                <option value="25101020">轮胎与橡胶</option>
-                                                <option value="25102010">汽车制造</option>
-                                                <option value="25102020">摩托车制造</option>
-                                                <option value="25201010">消费电子产品</option>
-                                                <option value="25201020">家庭装饰品</option>
-                                                <option value="25201030">住宅建筑</option>
-                                                <option value="25201040">家用电器</option>
-                                                <option value="25201050">家用器具与特殊消费品</option>
-                                                <option value="25202010">休闲用品</option>
-                                                <option value="25202020">摄影用品</option>
-                                                <option value="25203010">服装、服饰与奢侈品</option>
-                                                <option value="25203020">鞋类</option>
-                                                <option value="25203030">纺织品</option>
-                                                <option value="25301020">酒店、度假村与豪华游轮</option>
-                                                <option value="25301030">休闲设施</option>
-                                                <option value="25301040">餐馆</option>
-                                                <option value="25302010">教育服务</option>
-                                                <option value="25401010">广告</option>
-                                                <option value="25401020">有线和卫星电视</option>
-                                                <option value="25401030">电影与娱乐</option>
-                                                <option value="25401040">出版</option>
-                                                <option value="25501010">消费品经销商</option>
-                                                <option value="25502010">售货目录零售</option>
-                                                <option value="25502020">互联网零售</option>
-                                                <option value="25503010">百货商店</option>
-                                                <option value="25503020">综合货品商店</option>
-                                                <option value="25504020">电脑与电子产品零售</option>
-                                                <option value="25504040">专卖店</option>
-                                                <option value="25504050">汽车零售</option>
-                                                <option value="30101010">药品零售</option>
-                                                <option value="30101020">食品分销商</option>
-                                                <option value="30101030">食品零售</option>
-                                                <option value="30101040">大卖场与超市</option>
-                                                <option value="30201010">啤酒</option>
-                                                <option value="30201020">白酒与葡萄酒</option>
-                                                <option value="30201030">软饮料</option>
-                                                <option value="30201010">农产品</option>
-                                                <option value="30201030">食品加工与肉类</option>
-                                                <option value="30301010">家庭用品</option>
-                                                <option value="30302010">个人用品</option>
-                                                <option value="35101010">医疗保健设备</option>
-                                                <option value="35101020">医疗保健用品</option>
-                                                <option value="35102015">保健护理服务</option>
-                                                <option value="35102020">保健护理设施</option>
-                                                <option value="35103010">医疗保健技术</option>
-                                                <option value="35201010">生物科技</option>
-                                                <option value="35202010">西药</option>
-                                                <option value="35202011">中药</option>
-                                                <option value="35203010">生命科学工具和服务</option>
-                                                <option value="40101010">多元化银行</option>
-                                                <option value="40101015">区域性银行</option>
-                                                <option value="40201020">其他多元金融服务</option>
-                                                <option value="40201030">多领域控股</option>
-                                                <option value="40203010">资产管理与托管银行</option>
-                                                <option value="40203020">投资银行业与经纪业</option>
-                                                <option value="40203030">多元资本市场</option>
-                                                <option value="40301020">人寿与健康保险</option>
-                                                <option value="40301030">多元化保险</option>
-                                                <option value="40301040">财产与意外伤害保险</option>
-                                                <option value="45101010">互联网软件与服务</option>
-                                                <option value="45102010">信息科技咨询与其它服务</option>
-                                                <option value="45102020">数据处理与外包服务</option>
-                                                <option value="45103010">应用软件</option>
-                                                <option value="45103020">系统软件</option>
-                                                <option value="45103030">家庭娱乐软件</option>
-                                                <option value="45201020">通信设备</option>
-                                                <option value="45202010">电脑硬件</option>
-                                                <option value="45202020">电脑存储与外围设备</option>
-                                                <option value="45203010">电子元件</option>
-                                                <option value="45203015">电子设备和仪器</option>
-                                                <option value="45203020">电子制造服务</option>
-                                                <option value="45303030">技术产品经销商</option>
-                                                <option value="45301010">半导体设备</option>
-                                                <option value="45301020">半导体产品</option>
-                                                <option value="50101010">非传统电信运营商</option>
-                                                <option value="50101020">综合电信服务</option>
-                                                <option value="50102010">无线电信业务</option>
-                                                <option value="55101010">电力</option>
-                                                <option value="55102010">燃气</option>
-                                                <option value="55103010">复合型公用事业</option>
-                                                <option value="55104010">水务</option>
-                                                <option value="55105010">独立电力生产商与能源贸易商</option>
-                                                <option value="55105020">新能源发电业者</option>
-                                                <option value="60102020">房地产经营公司</option>
-                                                <option value="60102030">房地产开发</option>
-                                                <option value="60102040">房地产服务</option>
-                                            </datalist>
+                                            <select id="stockcodes4"
+                                                    style="margin-top:0;margin-left:0;height: 30px"></select>
                                             <button id="submits4" type="submit" class="btn btn-default"
                                                     style="margin-top:0;margin-left:20px;width:150px;height: 30px"
                                                     data-toggle="tooltip"
@@ -1404,13 +1160,14 @@
                     </div>
                 </div>
 
-
             </div>
         </div>
     </div>
+
     <script>
-        var province = '辽宁'
-        $("#province_selected").text('当前选中:' + province)
+        {#地图事件！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！#}
+        var province = '辽宁';
+        $("#province_selected").text('当前选中:' + province);
         function creatmap() {
             var myChart = echarts.init(document.getElementById('map'));
             var option1 = {
@@ -1545,15 +1302,13 @@
             };
             myChart.setOption(option);
             myChart.on('mouseover', function (params) {
-                {#            var dataIndex = params.dataIndex;#}
-                {#            console.log(params);#}
+
             });
             myChart.on('click', function (params) {//点击事件
                 var dataIndex = params.dataIndex;
                 console.log(params.name);
                 province = params.name
                 $("#province_selected").text('当前选中:' + province)
-                {#                params.selected = 'true'#}
                 CreateChart(province)
                 creat_industry_pie()
                 creat_echart_industry_analysis(province)
@@ -1562,239 +1317,66 @@
                 creat_echart_compare_3()
                 creat_echart_compare_4()
             })
-            {#            myChart.on(ecConfig.EVENT.MAP_SELECTED, function (param) {#}
-            {#                var selected = param.selected;#}
-            {#            })#}
         }
         $("#all_province").click(function () {
             province = 'all'
             $("#province_selected").text('当前选中:全国')
             CreateChart(province)
             creat_industry_pie()
-        })
-        <!--面板切换-->
-        $("#mydropdown").on("click", "[data-stopPropagation]", function (e) {
-            e.stopPropagation();
-        })
-
-        <!--复选框操作-->
-        var Chosenindexes = new Array();
-        Chosenindexes = ['tot_oper_rev'];
-        Chosenindexes['tot_oper_rev'] = "#000000";
-
-        $("div#mychoice :checkbox").change(function () {
-            indexname = $(this).val();
-            if ($(this).is(':checked') == true) {
-                colorname = NewColor();
-                console.log(this);
-                Chosenindexes.push(indexname);
-                Chosenindexes[indexname] = colorname;
-                $("#i_" + indexname).css("background-color", colorname);
-                console.log(Chosenindexes);
-            }
-            else {
-                delete Chosenindexes[indexname]
-                $("#i_" + indexname).css("background-color", "white");
-                console.log(Chosenindexes);
-            }
-            $("div#unselected").empty();
-            $("div#selected").empty();
-            $("input[type=checkbox]").each(function () {//each()方法遍历所有的复选框
-                if ($(this).is(':checked') == true) {//这里就可以判断当前是否被选择了
-                    var tempspan = $("<span class=\"label label-default\" data-stopPropagation=\"true\"id =\"" + indexname + "\">" + dict[indexname] + "</span>")
-                    tempspan.appendTo($("div#unselected"));
-                    $("div#unselected").append(" ");
-                }
-            })
-            CreateChart(province);
-            CreateTable();
-            set_time();
+            $('#show').empty();
         });
 
-        <!--搜索事件-->
-        function selectline(linename) {
-            for (var line in option.series) {
-                l = parseInt(line);
-                if (option.series[l].name == linename) {
-                    tempcolor = NewColor();
-                    option.series[l].lineStyle.normal.color = tempcolor;
-                    option.series[l].itemStyle.normal.color = tempcolor;
-                    $("span#" + linename).css('color', tempcolor);
-                    selectedindexes.push(l);
-                    selectedindexname.push(option.series[l].name);
-                    option.legend.data = selectedindexname;
-                    myChart.setOption(option);
-                }
-            }
-        }
-        function unselectline(linename) {
-            for (var line in option.series) {
-                l = parseInt(line);
-                if (option.series[l].name == linename) {
-                    option.series[l].lineStyle.normal.color = '#C4D2DB';
-                    option.series[l].itemStyle.normal.color = '#C4D2DB';
-                    $("span#" + linename).css('color', 'white');
-                    selectedindexes.splice(selectedindexes.indexOf(l), 1);
-                    selectedindexname.splice(selectedindexname.indexOf(option.series[l].name), 1);
-                    option.legend.data = selectedindexname;
-                    myChart.setOption(option);
 
-                }
-            }
+        {#市场分析！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！#}
 
-        }
-
-        <!--随机生成颜色-->
-        function NewColor() {
-            var colorElements = "0,1,2,3,4,5,6,7,8,9,a,b,c,d,e,f";
-            var colorArray = colorElements.split(",");
-            var color = "#";
-            for (var i = 0; i < 6; i++) {
-                color += colorArray[Math.floor(Math.random() * 16)];
-            }
-            return color;
-        }
-
-        <!--时间控制框-->
-        var starttime = "20071231";
-        var endtime = "20161231";
-        $(".form_datetime").datetimepicker({
-            format: 'yyyy-mm-dd ',
-            startView: 4,
-            minView: 4,
-            maxView: 4,
-            autoclose: true,
-            pickerPosition: 'top-right'
-        });
-        $('#starttime').datetimepicker('setStartDate', '2007-12-31');
-        $('#starttime').datetimepicker('setEndDate', '2016-12-31');
-        $('#endtime').datetimepicker('setStartDate', '2007-12-31');
-        $('#endtime').datetimepicker('setEndDate', '2016-12-31');
-        $('#starttime')
-            .datetimepicker()
-            .on('changeDate', function (ev) {
-                starts = ev.date.Format("yyyy年Q4");
-                option.dataZoom[0].startValue = starts;
-                myChart.setOption(option);
-                RequestTable();
-            });
-        $('#endtime')
-            .datetimepicker()
-            .on('changeDate', function (ev) {
-                ends = ev.date.Format("yyyy年Q4");
-                option.dataZoom[0].endValue = ends;
-                myChart.setOption(option);
-                RequestTable();
-            });
-        Date.prototype.Format = function (fmt) { //author: meizz
-            var o = {
-                "M+": this.getMonth() + 1, //月份
-                "d+": this.getDate(), //日
-                "h+": this.getHours(), //小时
-                "m+": this.getMinutes(), //分
-                "s+": this.getSeconds(), //秒
-                "q+": Math.floor((this.getMonth() + 3) / 3), //季度
-                "S": this.getMilliseconds() //毫秒
-            };
-            if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
-            for (var k in o)
-                if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
-            return fmt;
-        }
-        function dateformat(olddate) {
-            newdate = []
-            for (i = 0; i < olddate.length; i++) {
-                var str = olddate[i];
-                var reg = /1231/g;
-                str = str.replace(reg, '年Q4');
-                newdate.push(str)
-            }
-            return newdate
-        }
-        function datefor(olddate) {
-            newdate = []
-            for (i = 0; i < olddate.length; i++) {
-                var str = olddate[i];
-                var reg = /年Q4/g;
-                str = str.replace(reg, '1231');
-                newdate.push(str)
-            }
-            return newdate
-        }
-
-        <!--单位转换-->
-        denominator = 1
-        $("select#unit").change(function () {
-            flag = $(this).val();
-            if (flag == "0") {
-                denominator = 1;
-                CreateChart(province);
-                CreateTable();
-                set_time();
-            }
-            if (flag == "1") {
-                denominator = 10000;
-                CreateChart(province);
-                CreateTable();
-                set_time();
-            }
-        });
-        function numfilter(oldnum) {
-            newnum = []
-            for (i = 0; i < oldnum.length; i++) {
-                temp = oldnum[i] / denominator;
-                newnum.push(temp.toFixed(2))
-            }
-            return newnum;
-        }
-
-        <!--建图-->
+        <!--建图建表-->
         var myChart = echarts.init(document.getElementById('mychart'));
-
+        var market_results_t;
+        var invest_results_t;
+        var market_results;
+        var startid = 'starttime';
+        var endid = 'endtime';
+        var dict = {
+            'tot_oper_rev': '总营业收入',
+            'net_profit_is': '净利润总和',
+            'wgsd_net_inc': '归属股东利润总和',
+            'tot_assets': '总资产总和',
+            'tot_liab': '总负债总和',
+            'net_assets': '净资产总和',
+            'wgsd_com_eq': '股东权益总和',
+            'operatecashflow_ttm2': '经营性现金流总和',
+            'investcashflow_ttm2': '投资性现金流总和',
+            'financecashflow_ttm2': '融资性现金流总和',
+            'cashflow_ttm2': '总现金流总和',
+            'free_cash_flow': '自由现金流估计',
+        };
         function CreateChart(province) {
-            var market_results;
-            var dict = {
-                'tot_oper_rev': '总营业收入',
-                'net_profit_is': '净利润总和',
-                'wgsd_net_inc': '归属股东利润总和',
-                'tot_assets': '总资产总和',
-                'tot_liab': '总负债总和',
-                'net_assets': '净资产总和',
-                'wgsd_com_eq': '股东权益总和',
-                'operatecashflow_ttm2': '经营性现金流总和',
-                'investcashflow_ttm2': '投资性现金流总和',
-                'financecashflow_ttm2': '融资性现金流总和',
-                'cashflow_ttm2': '总现金流总和',
-                'free_cash_flow': '自由现金流估计',
-            };
             $.ajax({
                 type: 'GET',
                 url: '{{ url_for("restfulapi.market_value") }}',
                 data: {
                     province: province,
-                    starttime: '20071231',
+                    starttime: '19911231',
                     endtime: '20161231',
                     indexes: ['tot_oper_rev', 'net_profit_is', 'wgsd_net_inc', 'tot_assets', 'tot_liab', 'net_assets', 'wgsd_com_eq', 'operatecashflow_ttm2', 'investcashflow_ttm2', 'financecashflow_ttm2', 'cashflow_ttm2', 'free_cash_flow']
                 },
                 dataType: 'json',
                 success: function (data) {
                     market_results = data;
-                    dataSeries = [];
+                    mydataSeries = [];
                     for (var i = 0; i < market_results.indexes.length; i++) {
                         if (Chosenindexes.hasOwnProperty(market_results.indexes[i])) {
-                            temp = {
+                            mytemp = {
                                 name: market_results.indexes[i],
                                 type: 'bar',
-
                                 itemStyle: {normal: {color: Chosenindexes[market_results.indexes[i]]}},
-
                                 smooth: true,
                                 data: numfilter(eval("market_results." + market_results.indexes[i]))
                             };
-                            dataSeries.push(temp);
+                            mydataSeries.push(mytemp);
                         }
                     }
-                    option = {
+                    myoption = {
                         title: {
                             text: '财务指标分析图',
                             left: '45%'
@@ -1846,44 +1428,31 @@
                                 type: 'slider',
                                 xAxisIndex: [0],
                                 startValue: "2016年Q4",
-                                endValue: "2007年Q4",
+                                endValue: "1991年Q4",
                                 filterMode: 'filter',
                             }
                         ],
-                        series: dataSeries
+                        series: mydataSeries
                     };
-                    myChart.setOption(option, true);
+                    myChart.setOption(myoption, true);
                     myChart.on('datazoom', function (params) {
-                        option.xAxis.interval = 10 * (params.end - params.start) / 100;
-                        var ends = (2016 - Math.ceil(params.start / 100 * 9)) + '-12-31'
+                        myoption.xAxis.interval = 10 * (params.end - params.start) / 100;
+                        var ends = (2016 - Math.ceil(params.start / 100 * 25)) + '-12-31'
                         if (Math.ceil(1 - params.end / 100)) {
-                            var starts = (2016 - Math.ceil(params.end / 100 * 9)) + '-12-31'
+                            var starts = (1991 + Math.ceil((1 - params.end / 100) * 25) - 1) + '-12-31'
                         }
                         else {
-                            var starts = '2007-12-31'
+                            var starts = '1991-12-31'
                         }
-                        set_timepicker(starts, ends)
+                        set_timepicker(starts, ends, startid, endid)
                     });
-                    function set_timepicker(start, end) {
-                        document.getElementById('endtime').value = start
-                        document.getElementById('starttime').value = end
-                    }
                 }
             });
+        }//建图
 
-        }
-        function set_time() {
-            document.getElementById('endtime').value = "2007-12-31"
-            document.getElementById('starttime').value = "2016-12-31"
-        }
-
-        <!--建表-->
-        var market_results_t;
-        var invest_results_t;
         function RequestTable() {
             var opt = myChart.getOption();
             var dz = opt.dataZoom[0];
-            {#            alert(province)#}
             $.ajax({
                 type: 'GET',
                 url: '{{url_for("restfulapi.market_value")}}',
@@ -1900,7 +1469,7 @@
                     CreateTable();
                 }
             })
-        }
+        }//获取表数据
         function CreateTable() {
             $("#mytable").empty();
             var table = $("<table id=\"temptable\" style=\"text-align:center\" class=\"row-border hover order-column\" cellspacing=\"0\" width=\"100%\"  >");
@@ -1944,13 +1513,13 @@
                     "infoEmpty": "没有数据",
                     "infoFiltered": "(过滤总件数 _MAX_ 条)"
                 },
-                 dom: 'Bfrtip',
-                        buttons: {
-                            buttons: [
-                                {extend: 'copy', 'text': '复制', 'className': 'btn btn-default btn-xs',},
-                                {extend: 'excel', 'text': '导出Excel', 'className': 'btn btn-default btn-xs',}
-                            ]
-                        }
+                dom: 'Bfrtip',
+                buttons: {
+                    buttons: [
+                        {extend: 'copy', 'text': '复制', 'className': 'btn btn-default btn-xs',},
+                        {extend: 'excel', 'text': '导出Excel', 'className': 'btn btn-default btn-xs',}
+                    ]
+                }
             });
             setTimeout("$(\"#subject\").trigger(\"click\")", 100);
             for (var i = 0; i < market_results_t.indexes.length; i++) {
@@ -1966,30 +1535,123 @@
             for (var key in Chosenindexes) {
                 $('tr#' + key).css('color', Chosenindexes[key])
             }
+        }//建表
+
+        <!--复选框操作div#mychoice:checkbox-->
+        var Chosenindexes = new Array();
+        Chosenindexes = ['tot_oper_rev'];
+        Chosenindexes['tot_oper_rev'] = "#000000";//初始状态图表只显示总营业收入指标
+
+        $("div#mychoice :checkbox").change(function () {
+            indexname = $(this).val();
+            if ($(this).is(':checked') == true) {
+                colorname = NewColor();
+                console.log(this);
+                Chosenindexes.push(indexname);
+                Chosenindexes[indexname] = colorname;
+                $("#i_" + indexname).css("background-color", colorname);
+                console.log(Chosenindexes);
+            }
+            else {
+                delete Chosenindexes[indexname]
+                $("#i_" + indexname).css("background-color", "white");
+                console.log(Chosenindexes);
+            }
+            $("div#unselected").empty();
+            $("div#selected").empty();
+            $("input[type=checkbox]").each(function () {//each()方法遍历所有的复选框
+                if ($(this).is(':checked') == true) {//这里就可以判断当前是否被选择了
+                    var tempspan = $("<span class=\"label label-default\" data-stopPropagation=\"true\"id =\"" + indexname + "\">" + dict[indexname] + "</span>")
+                    tempspan.appendTo($("div#unselected"));
+                    $("div#unselected").append(" ");
+                }
+            })
+            CreateChart(province);
+            CreateTable();
+            set_time(startid, endid);
+        });//市场分析模块复选框操作<div id="mychoice"></div>
+
+        <!--时间控制框#starttime&#endtime-->
+        var starttime = "19911231";
+        var endtime = "20161231";
+        $(".form_datetime").datetimepicker({
+            format: 'yyyy-mm-dd ',
+            startView: 4,
+            minView: 4,
+            maxView: 4,
+            autoclose: true,
+            pickerPosition: 'top-right'
+        });
+        $('#starttime').datetimepicker('setStartDate', '1991-12-31');
+        $('#starttime').datetimepicker('setEndDate', '2016-12-31');
+        $('#endtime').datetimepicker('setStartDate', '1991-12-31');
+        $('#endtime').datetimepicker('setEndDate', '2016-12-31');
+        $('#starttime')
+            .datetimepicker()
+            .on('changeDate', function (ev) {
+                starts = ev.date.Format("yyyy年Q4");
+                myoption.dataZoom[0].startValue = starts;
+                myChart.setOption(myoption);
+                RequestTable();
+            });
+        $('#endtime')
+            .datetimepicker()
+            .on('changeDate', function (ev) {
+                ends = ev.date.Format("yyyy年Q4");
+                myoption.dataZoom[0].endValue = ends;
+                myChart.setOption(myoption);
+                RequestTable();
+            });
+        Date.prototype.Format = function (fmt) { //author: meizz
+            var o = {
+                "M+": this.getMonth() + 1, //月份
+                "d+": this.getDate(), //日
+                "h+": this.getHours(), //小时
+                "m+": this.getMinutes(), //分
+                "s+": this.getSeconds(), //秒
+                "q+": Math.floor((this.getMonth() + 3) / 3), //季度
+                "S": this.getMilliseconds() //毫秒
+            };
+            if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+            for (var k in o)
+                if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+            return fmt;
         }
 
-        {#行业状况建图#}
+        <!--单位转换#unit-->
+        denominator = 1;
+        $("select#unit").change(function () {
+            flag = $(this).val();
+            if (flag == "0") {
+                denominator = 1;
+                CreateChart(province);
+                CreateTable();
+                set_time(startid, endid);
+            }
+            if (flag == "1") {
+                denominator = 10000;
+                CreateChart(province);
+                CreateTable();
+                set_time(startid, endid);
+            }
+        });
+        function numfilter(oldnum) {
+            newnum = []
+            for (i = 0; i < oldnum.length; i++) {
+                temp = oldnum[i] / denominator;
+                newnum.push(temp.toFixed(2))
+            }
+            return newnum;
+        }//获取单位变化后各指标的数值
+
+
+        {#行业状况！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！#}
         var myChart11 = echarts.init(document.getElementById('one'));
         var myChart12 = echarts.init(document.getElementById('two'));
         var myChart13 = echarts.init(document.getElementById('three'));
         var myChart14 = echarts.init(document.getElementById('four'));
-
-
         function creat_industry_pie() {
-
             indexes = ['tot_oper_rev', 'tot_assets', 'tot_liab', 'wgsd_com_eq']
-            var dact = {
-                '10': '能源',
-                '15': '材料',
-                '20': '工业',
-                '25': '可选消费',
-                '30': '日常消费',
-                '35': '医疗保健',
-                '40': '金融',
-                '45': '信息技术',
-                '55': '公用事业',
-                '60': '房地产',
-            };
             $.ajax({
                 type: 'GET',
                 url: '{{ url_for("restfulapi.market_one") }}',
@@ -2001,7 +1663,7 @@
                 dataType: 'json',
                 async: false,
                 success: function (data) {
-                    console.log(data)
+                    console.log(data);
                     var dataSeries = [];
                     var option = {}
                     for (var i = 0; i < data.my_code.length; i++) {
@@ -2047,8 +1709,8 @@
                             }
                         ]
                     };
-                    myChart11.setOption(option, true);
-                    {#                    2#}
+                    myChart11.setOption(option, true);//营业收入
+
                     var dataSeries = [];
                     var option = {}
                     for (var i = 0; i < data.my_code.length; i++) {
@@ -2093,8 +1755,8 @@
                             }
                         ]
                     };
-                    myChart12.setOption(option, true);
-                    {#3#}
+                    myChart12.setOption(option, true);//总资产
+
                     var dataSeries = [];
                     var option = {}
                     for (var i = 0; i < data.my_code.length; i++) {
@@ -2139,8 +1801,8 @@
                             }
                         ]
                     };
-                    myChart13.setOption(option, true);
-                    {#4#}
+                    myChart13.setOption(option, true);//总负债
+
                     var dataSeries = [];
                     var option = {}
                     for (var i = 0; i < data.my_code.length; i++) {
@@ -2185,17 +1847,17 @@
                             }
                         ]
                     };
-                    myChart14.setOption(option, true);
+                    myChart14.setOption(option, true);//股东权益
                 }
             });
-        }
+        }//画饼图
 
 
-        {#zyq行业分析#}
+        {#行业分析！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！#}
 
         <!--级联菜单-->
         var mytest = '能源'
-        var mynum = '10';
+        var mynum = '10';//用于建图时标题显示
         var dact = {
             '10': '能源',
             '15': '材料',
@@ -2437,156 +2099,162 @@
             '60102030': '房地产开发',
             '60102040': '房地产服务',
         };
-        $("#submit1").click(function () {
-            if (param == 1) {
-                thiscode1 = $("#stockcode1").val();
-                mynum = thiscode1;
-                mytest = dact[thiscode1];
-                Chosenindexes1 = [];
-                Chosenindexes1 = ['tot_oper_rev'];
-                Chosenindexes1['tot_oper_rev'] = "#000000";
-                $('#stockcode2').empty();
-                $('#stockcode3').empty();
-                $('#stockcode4').empty();
-                $.ajax({
-                    type: 'GET',
-                    url: '{{ url_for("restfulapi.market_form1") }}',
-                    data: {
-                        code: thiscode1,
-                    },
-                    dataType: 'json',
-                    success: function (data) {
-                        for (var i = 0; i < data.length; i++) {
-                            $('#stockcode2').append("<option value='" + data[i] + "'>" + dbct[data[i]] + "</option>")
-                        }
-                        $('#stockcode2').append("<option selected = 'selected'> -行业组- </option>")
-                        requestChart1();
-                        set_time1();
-                        $("div#mychoice1 :checkbox").each(function () {//each()方法遍历所有的复选框
-                            a = $(this).val();
-                            if ($(this).is(':checked') == true) {//这里就可以判断当前是否被选择了
-                                if (a != 'tot_oper_rev') {
-                                    $(this).removeAttr("checked");
-                                    $("#a_" + a).css("background-color", "white");
-                                }
+        function bumen() {
+            param = 1;
+            thiscode1 = $("#stockcode1").val();
+            mynum = thiscode1;
+            mytest = dact[thiscode1];
+            Chosenindexes1 = [];
+            Chosenindexes1 = ['tot_oper_rev'];
+            Chosenindexes1['tot_oper_rev'] = "#000000";
+            $('#stockcode2').empty();
+            $('#stockcode3').empty();
+            $('#stockcode4').empty();
+            $.ajax({
+                type: 'GET',
+                url: '{{ url_for("restfulapi.market_form1") }}',
+                data: {
+                    code: thiscode1,
+                },
+                dataType: 'json',
+                success: function (data) {
+                    for (var i = 0; i < data.my_value.length; i++) {
+                        $('#stockcode2').append("<option value='" + data.my_value[i] + "'>" + data.my_index[i] + "</option>")
+                    }
+                    $('#stockcode2').append("<option selected = 'selected'> -行业组- </option>")
+                    $('#stockcode3').append("<option selected = 'selected'> -行业- </option>")
+                    $('#stockcode4').append("<option selected = 'selected'> -子行业- </option>")
+                    requestChart1();
+                    set_time(hangyefenxi_startid, hangyefenxi_endid);
+                    $("div#mychoice1 :checkbox").each(function () {//each()方法遍历所有的复选框
+                        a = $(this).val();
+                        if ($(this).is(':checked') == true) {//这里就可以判断当前是否被选择了
+                            if (a != 'tot_oper_rev') {
+                                $(this).removeAttr("checked");
+                                $("#a_" + a).css("background-color", "white");
                             }
-                        });
-                        $("#thefirst1").prop("checked", true);
-                        $("#a_tot_oper_rev").css("background-color", "#000000");
-                    }
-                });
-                $('#show').empty();
-                $('#show').append("<span class='myshow'>" + dact[thiscode1] + "</span>")
-            }
-            else if (param == 2) {
-                thiscode2 = $("#stockcode2").val();
-                mynum = thiscode2;
-                mytest = dbct[thiscode2];
-                myChart1.clear();
-                Chosenindexes1 = [];
-                Chosenindexes1 = ['tot_oper_rev'];
-                Chosenindexes1['tot_oper_rev'] = "#000000";
-                $('#stockcode3').empty();
-                $('#stockcode4').empty();
-                $.ajax({
-                    type: 'GET',
-                    url: '{{ url_for("restfulapi.market_form2") }}',
-                    data: {
-                        code: thiscode2,
-                    },
-                    dataType: 'json',
-                    success: function (data) {
-                        for (var i = 0; i < data.length; i++) {
-                            $('#stockcode3').append("<option value='" + data[i] + "'>" + dcct[data[i]] + "</option>")
                         }
-                        $('#stockcode3').append("<option selected = 'selected'> -行业- </option>")
-                        requestChart2();
-                        set_time1();
-                        $("div#mychoice1 :checkbox").each(function () {//each()方法遍历所有的复选框
-                            a = $(this).val();
-                            if ($(this).is(':checked') == true) {//这里就可以判断当前是否被选择了
-                                if (a != 'tot_oper_rev') {
-                                    $(this).removeAttr("checked");
-                                    $("#a_" + a).css("background-color", "white");
-                                }
+                    });
+                    $("#thefirst1").prop("checked", true);
+                    $("#a_tot_oper_rev").css("background-color", "#000000");
+                }
+            });
+            $('#show').empty();
+            $('#show').append("<span class='myshow'>" + dact[thiscode1] + "</span>")
+        }//级联菜单部门调用函数
+        function hangyezu() {
+            param = 2;
+            thiscode2 = $("#stockcode2").val();
+            mynum = thiscode2;
+            mytest = dbct[thiscode2];
+            myChart1.clear();
+            Chosenindexes1 = [];
+            Chosenindexes1 = ['tot_oper_rev'];
+            Chosenindexes1['tot_oper_rev'] = "#000000";
+            $('#stockcode3').empty();
+            $('#stockcode4').empty();
+            $.ajax({
+                type: 'GET',
+                url: '{{ url_for("restfulapi.market_form2") }}',
+                data: {
+                    code: thiscode2,
+                },
+                dataType: 'json',
+                success: function (data) {
+                    for (var i = 0; i < data.my_value.length; i++) {
+                        $('#stockcode3').append("<option value='" + data.my_value[i] + "'>" + data.my_index[i] + "</option>")
+                    }
+                    $('#stockcode3').append("<option selected = 'selected'> -行业- </option>")
+                    $('#stockcode4').append("<option selected = 'selected'> -子行业- </option>")
+                    requestChart2();
+                    set_time(hangyefenxi_startid, hangyefenxi_endid);
+                    $("div#mychoice1 :checkbox").each(function () {//each()方法遍历所有的复选框
+                        a = $(this).val();
+                        if ($(this).is(':checked') == true) {//这里就可以判断当前是否被选择了
+                            if (a != 'tot_oper_rev') {
+                                $(this).removeAttr("checked");
+                                $("#a_" + a).css("background-color", "white");
                             }
-                        });
-                        $("#thefirst1").prop("checked", true);
-                        $("#a_tot_oper_rev").css("background-color", "#000000");
-                    }
-                });
-                $('#show').empty();
-                $('#show').append("<span class='myshow'>" + dact[thiscode1] + " + " + dbct[thiscode2] + "</span>")
-            }
-            else if (param == 3) {
-                thiscode3 = $("#stockcode3").val();
-                mynum = thiscode3;
-                mytest = dcct[thiscode3];
-                myChart1.clear();
-                Chosenindexes1 = [];
-                Chosenindexes1 = ['tot_oper_rev'];
-                Chosenindexes1['tot_oper_rev'] = "#000000";
-                $('#stockcode4').empty();
-                $.ajax({
-                    type: 'GET',
-                    url: '{{ url_for("restfulapi.market_form3") }}',
-                    data: {
-                        code: thiscode3,
-                    },
-                    dataType: 'json',
-                    success: function (data) {
-                        for (var i = 0; i < data.length; i++) {
-                            $('#stockcode4').append("<option value='" + data[i] + "'>" + ddct[data[i]] + "</option>")
                         }
-                        $('#stockcode4').append("<option selected = 'selected'> -子行业- </option>")
-                        requestChart3();
-                        set_time1();
-                        $("div#mychoice1 :checkbox").each(function () {//each()方法遍历所有的复选框
-                            a = $(this).val();
-                            if ($(this).is(':checked') == true) {//这里就可以判断当前是否被选择了
-                                if (a != 'tot_oper_rev') {
-                                    $(this).removeAttr("checked");
-                                    $("#a_" + a).css("background-color", "white");
-                                }
+                    });
+                    $("#thefirst1").prop("checked", true);
+                    $("#a_tot_oper_rev").css("background-color", "#000000");
+                }
+            });
+            $('#show').empty();
+            $('#show').append("<span class='myshow'>" + dact[thiscode1] + " + " + dbct[thiscode2] + "</span>")
+        }//级联菜单行业组调用函数
+        function hangye() {
+            param = 3;
+            thiscode3 = $("#stockcode3").val();
+            mynum = thiscode3;
+            mytest = dcct[thiscode3];
+            myChart1.clear();
+            Chosenindexes1 = [];
+            Chosenindexes1 = ['tot_oper_rev'];
+            Chosenindexes1['tot_oper_rev'] = "#000000";
+            $('#stockcode4').empty();
+            $.ajax({
+                type: 'GET',
+                url: '{{ url_for("restfulapi.market_form3") }}',
+                data: {
+                    code: thiscode3,
+                },
+                dataType: 'json',
+                success: function (data) {
+                    for (var i = 0; i < data.my_value.length; i++) {
+                        $('#stockcode4').append("<option value='" + data.my_value[i] + "'>" + data.my_index[i] + "</option>")
+                    }
+                    $('#stockcode4').append("<option selected = 'selected'> -子行业- </option>")
+                    requestChart3();
+                    set_time(hangyefenxi_startid, hangyefenxi_endid);
+                    $("div#mychoice1 :checkbox").each(function () {//each()方法遍历所有的复选框
+                        a = $(this).val();
+                        if ($(this).is(':checked') == true) {//这里就可以判断当前是否被选择了
+                            if (a != 'tot_oper_rev') {
+                                $(this).removeAttr("checked");
+                                $("#a_" + a).css("background-color", "white");
                             }
-                        });
-                        $("#thefirst1").prop("checked", true);
-                        $("#a_tot_oper_rev").css("background-color", "#000000");
-                    }
-                });
-                $('#show').empty();
-                $('#show').append("<span class='myshow'>" + dact[thiscode1] + " + " + dbct[thiscode2] + " + " + dcct[thiscode3] + "</span>")
-            }
-            else if (param == 4) {
-                thiscode4 = $("#stockcode4").val();
-                mynum = thiscode4;
-                mytest = ddct[thiscode4];
-                $("#mytable1").empty();
-                myChart1.clear();
-                Chosenindexes1 = [];
-                Chosenindexes1 = ['tot_oper_rev'];
-                Chosenindexes1['tot_oper_rev'] = "#000000";
-                requestChart4();
-                set_time1();
-                $("div#mychoice1 :checkbox").each(function () {//each()方法遍历所有的复选框
-                    a = $(this).val();
-                    if ($(this).is(':checked') == true) {//这里就可以判断当前是否被选择了
-                        if (a != 'tot_oper_rev') {
-                            $(this).removeAttr("checked");
-                            $("#a_" + a).css("background-color", "white");
                         }
+                    });
+                    $("#thefirst1").prop("checked", true);
+                    $("#a_tot_oper_rev").css("background-color", "#000000");
+                }
+            });
+            $('#show').empty();
+            $('#show').append("<span class='myshow'>" + dact[thiscode1] + " + " + dbct[thiscode2] + " + " + dcct[thiscode3] + "</span>")
+        }//级联菜单行业调用函数
+        function zihangye() {
+            param = 4;
+            thiscode4 = $("#stockcode4").val();
+            mynum = thiscode4;
+            mytest = ddct[thiscode4];
+            $("#mytable1").empty();
+            myChart1.clear();
+            Chosenindexes1 = [];
+            Chosenindexes1 = ['tot_oper_rev'];
+            Chosenindexes1['tot_oper_rev'] = "#000000";
+            requestChart4();
+            set_time(hangyefenxi_startid, hangyefenxi_endid);
+            $("div#mychoice1 :checkbox").each(function () {//each()方法遍历所有的复选框
+                a = $(this).val();
+                if ($(this).is(':checked') == true) {//这里就可以判断当前是否被选择了
+                    if (a != 'tot_oper_rev') {
+                        $(this).removeAttr("checked");
+                        $("#a_" + a).css("background-color", "white");
                     }
-                });
-                $("#thefirst1").prop("checked", true);
-                $("#a_tot_oper_rev").css("background-color", "#000000");
-                $('#show').empty();
-                $('#show').append("<span class='myshow'>" + dact[thiscode1] + " + " + dbct[thiscode2] + " + " + dcct[thiscode3] + " + " + ddct[thiscode4] + "</span>")
-            }
-        });
+                }
+            });
+            $("#thefirst1").prop("checked", true);
+            $("#a_tot_oper_rev").css("background-color", "#000000");
+            $('#show').empty();
+            $('#show').append("<span class='myshow'>" + dact[thiscode1] + " + " + dbct[thiscode2] + " + " + dcct[thiscode3] + " + " + ddct[thiscode4] + "</span>")
+        }//级联菜单子行业调用函数
 
-        <!--图表-->
-
+        <!--初始图表-->
         var myChart1 = echarts.init(document.getElementById('mychart1'));
+        var hangyefenxi_startid = 'starttime1';
+        var hangyefenxi_endid = 'endtime1';
         var market_results1;
         var market_results_t1;
         var invest_results_t1;
@@ -2594,36 +2262,21 @@
         var param = 1;
         var starttime1 = "19911231";
         var endtime1 = "20161231";
-        var dict = {
-            'tot_oper_rev': '总营业收入',
-            'net_profit_is': '净利润总和',
-            'wgsd_net_inc': '归属股东利润总和',
-            'tot_assets': '总资产总和',
-            'tot_liab': '总负债总和',
-            'net_assets': '净资产总和',
-            'wgsd_com_eq': '股东权益总和',
-            'operatecashflow_ttm2': '经营性现金流总和',
-            'investcashflow_ttm2': '投资性现金流总和',
-            'financecashflow_ttm2': '融资性现金流总和',
-            'cashflow_ttm2': '总现金流总和',
-            'free_cash_flow': '自由现金流估计',
-            'net_profit_rate': '平均净利润率',
-            'tot_assets_turnover': '平均总资产周转率',
-            'equ_multi': '平均权益乘数',
-            'roe_tot': '平均净资产收益率',
-            'roe_holder': '平均净资产收益率（股东）'
-        };
         function creat_echart_industry_analysis(province) {
-            $('#stockcode1').empty();
+            $('#show').empty();//条件显示div
+            $('#stockcode1').empty();//部门选择框
             $.ajax({
                 type: 'GET',
                 url: '{{ url_for("restfulapi.market_form0") }}',
                 dataType: 'json',
                 success: function (data) {
-                    for (var i = 0; i < data.length; i++) {
-                        $('#stockcode1').append("<option value='" + data[i] + "'>" + dact[data[i]] + "</option>")
+                    for (var i = 0; i < data.my_value.length; i++) {
+                        $('#stockcode1').append("<option value='" + data.my_value[i] + "'>" + data.my_index[i] + "</option>")
                     }
-                    $('#stockcode1').append("<option selected = 'selected'>-部门-</option>")
+                    $('#stockcode1').append("<option selected = 'selected'> -部门- </option>")//部门选择框
+                    $('#stockcode2').append("<option selected = 'selected'> -行业组- </option>")//行业组选择框
+                    $('#stockcode3').append("<option selected = 'selected'> -行业- </option>")//行业选择框
+                    $('#stockcode4').append("<option selected = 'selected'> -子行业- </option>")//子行业选择框
                 }
             });
             $.ajax({
@@ -2717,15 +2370,14 @@
                         else {
                             var starts = '1991-12-31'
                         }
-                        set_timepicker1(starts, ends)
+                        set_timepicker(starts, ends, hangyefenxi_startid, hangyefenxi_endid)
                     });
                     createTable();
                 }
-            });
-        }
+            });//firstvist建图建表
+        }//firstvisit
 
-
-        <!--初始状态for frstvisit&&单位转换-->
+        <!--图表操作for级联搜索&&单位转换-->
         function requestChart1() {
             $.ajax({
                 type: 'GET',
@@ -2816,6 +2468,88 @@
                 }
             });
         }
+        function createChart() {
+            dataSeries = [];
+            for (var i = 0; i < market_results1.indexes.length; i++) {
+                temp = {
+                    name: market_results1.indexes[i],
+                    type: 'bar',
+                    itemStyle: {normal: {color: Chosenindexes1[market_results1.indexes[i]]}},
+                    smooth: true,
+                    data: numfilter1(eval("market_results1." + market_results1.indexes[i]))
+                };
+                dataSeries.push(temp);
+            }
+            options = {
+                title: {
+                    text: mynum + '-' + mytest,
+                    left: '45%'
+                },
+                tooltip: {
+                    trigger: 'item',
+                    formatter: function (params) {
+                        return dict[params.seriesName] + "<br/> 时间：" + params.name + "<br/> 数据：" + params.data;
+                    }
+                },
+                legend: {
+                    data: [],
+                    orient: 'vertical',
+                    left: '85%',
+                    top: '10%',
+                    formatter: function (name) {
+                        return dict[name];
+                    }
+                },
+                grid: {
+                    left: '5%',
+                    top: '10%',
+                    containLabel: true
+                },
+                toolbox: {
+                    feature: {
+                        magicType: {
+                            type: ['line', 'bar']
+                        }
+                    }
+                },
+                xAxis: {
+                    type: 'category',
+                    axisTick: {
+                        show: false
+                    },
+                    data: dateformat(market_results1.the_year),
+                    Interval: 5
+                },
+                yAxis: {
+                    type: 'value',
+                    axisTick: {
+                        show: false
+                    },
+                },
+                dataZoom: [
+                    {
+                        type: 'slider',
+                        xAxisIndex: [0],
+                        startValue: "2016年Q4",
+                        endValue: "1991年Q4",
+                        filterMode: 'filter',
+                    }
+                ],
+                series: dataSeries
+            };
+            myChart1.setOption(options, true);
+            myChart1.on('datazoom', function (params) {
+                options.xAxis.interval = 10 * (params.end - params.start) / 100;
+                var ends = (2016 - Math.ceil(params.start / 100 * 25)) + '-12-31'
+                if (Math.ceil(1 - params.end / 100)) {
+                    var starts = (1991 + Math.ceil((1 - params.end / 100) * 25) - 1) + '-12-31'
+                }
+                else {
+                    var starts = '1991-12-31'
+                }
+                set_timepicker(starts, ends, hangyefenxi_startid, hangyefenxi_endid)
+            });
+        }
         function createTable() {
             $("#mytable1").empty();
             var table = $("<table id=\"temptable1\" style=\"text-align:center\" class=\"row-border hover order-column\" cellspacing=\"0\" width=\"100%\"  >");
@@ -2859,13 +2593,13 @@
                     "infoEmpty": "没有数据",
                     "infoFiltered": "(过滤总件数 _MAX_ 条)"
                 },
-                 dom: 'Bfrtip',
-                        buttons: {
-                            buttons: [
-                                {extend: 'copy', 'text': '复制', 'className': 'btn btn-default btn-xs',},
-                                {extend: 'excel', 'text': '导出Excel', 'className': 'btn btn-default btn-xs',}
-                            ]
-                        }
+                dom: 'Bfrtip',
+                buttons: {
+                    buttons: [
+                        {extend: 'copy', 'text': '复制', 'className': 'btn btn-default btn-xs',},
+                        {extend: 'excel', 'text': '导出Excel', 'className': 'btn btn-default btn-xs',}
+                    ]
+                }
             });
             setTimeout("$(\"#subject\").trigger(\"click\")", 100);
             for (var i = 0; i < market_results_t1.indexes.length; i++) {
@@ -2953,92 +2687,6 @@
                     createChart();
                 }
             });
-        }
-        function createChart() {
-            dataSeries = [];
-            for (var i = 0; i < market_results1.indexes.length; i++) {
-                temp = {
-                    name: market_results1.indexes[i],
-                    type: 'bar',
-                    itemStyle: {normal: {color: Chosenindexes1[market_results1.indexes[i]]}},
-                    smooth: true,
-                    data: numfilter1(eval("market_results1." + market_results1.indexes[i]))
-                };
-                dataSeries.push(temp);
-            }
-            options = {
-                title: {
-                    text: mynum + '-' + mytest,
-                    left: '45%'
-                },
-                tooltip: {
-                    trigger: 'item',
-                    formatter: function (params) {
-                        return dict[params.seriesName] + "<br/> 时间：" + params.name + "<br/> 数据：" + params.data;
-                    }
-                },
-                legend: {
-                    data: [],
-                    orient: 'vertical',
-                    left: '85%',
-                    top: '10%',
-                    formatter: function (name) {
-                        return dict[name];
-                    }
-                },
-                grid: {
-                    left: '5%',
-                    top: '10%',
-                    containLabel: true
-                },
-                toolbox: {
-                    feature: {
-                        magicType: {
-                            type: ['line', 'bar']
-                        }
-                    }
-                },
-                xAxis: {
-                    type: 'category',
-                    axisTick: {
-                        show: false
-                    },
-                    data: dateformat(market_results1.the_year),
-                    Interval: 5
-                },
-                yAxis: {
-                    type: 'value',
-                    axisTick: {
-                        show: false
-                    },
-                },
-                dataZoom: [
-                    {
-                        type: 'slider',
-                        xAxisIndex: [0],
-                        startValue: "2016年Q4",
-                        endValue: "1991年Q4",
-                        filterMode: 'filter',
-                    }
-                ],
-                series: dataSeries
-            };
-            myChart1.setOption(options, true);
-            myChart1.on('datazoom', function (params) {
-                options.xAxis.interval = 10 * (params.end - params.start) / 100;
-                var ends = (2016 - Math.ceil(params.start / 100 * 25)) + '-12-31'
-                if (Math.ceil(1 - params.end / 100)) {
-                    var starts = (1991 + Math.ceil((1 - params.end / 100) * 25) - 1) + '-12-31'
-                }
-                else {
-                    var starts = '1991-12-31'
-                }
-                set_timepicker1(starts, ends)
-            });
-            function set_timepicker1(start, end) {
-                document.getElementById('endtime1').value = start
-                document.getElementById('starttime1').value = end
-            }
         }
 
         <!--表操作for复选框&&时间控制框变化-->
@@ -3131,17 +2779,7 @@
             })
         }
 
-        function set_timepicker1(start, end) {
-            document.getElementById('endtime1').value = start
-            document.getElementById('starttime1').value = end
-        }
-        function set_time1() {
-            document.getElementById('endtime1').value = "1991-12-31"
-            document.getElementById('starttime1').value = "2016-12-31"
-        }
-
-
-        <!--复选框操作-->
+        <!--复选框操作div#mychoice1 :checkbox-->
         var Chosenindexes1 = new Array();
         Chosenindexes1 = ['tot_oper_rev'];
         Chosenindexes1['tot_oper_rev'] = "#000000";
@@ -3215,10 +2853,10 @@
                 RequestChart4();
                 RequestTable4();
             }
-            set_time1();
+            set_time(hangyefenxi_startid, hangyefenxi_endid);
         });
 
-        <!--时间控制框-->
+        <!--时间控制框#starttime1&#endtime1-->
         $(".form_datetime").datetimepicker({
             format: 'yyyy-mm-dd ',
             startView: 4,
@@ -3295,7 +2933,7 @@
             return newdate
         }
 
-        <!--单位转换-->
+        <!--单位转换#unit1-->
         denominator1 = 1
         $("select#unit1").change(function () {
             flag = $(this).val();
@@ -3313,7 +2951,7 @@
                 else if (param == 4) {
                     requestChart4();
                 }
-                set_time1();
+                set_time(hangyefenxi_startid, hangyefenxi_endid);
             }
             if (flag == "1") {
                 denominator1 = 1000;
@@ -3329,7 +2967,7 @@
                 else if (param == 4) {
                     requestChart4();
                 }
-                set_time1();
+                set_time(hangyefenxi_startid, hangyefenxi_endid);
             }
         });
         function numfilter1(oldnum) {
@@ -3342,36 +2980,10 @@
         }
 
 
-        <!--面板切换-->
-        $("#mydropdown").on("click", "[data-stopPropagation]", function (e) {
-            e.stopPropagation();
-        })
+        {#对比分析！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！#}
 
-        <!--随机生成颜色-->
-        function NewColor() {
-            var colorElements = "0,1,2,3,4,5,6,7,8,9,a,b,c,d,e,f";
-            var colorArray = colorElements.split(",");
-            var color = "#";
-            for (var i = 0; i < 6; i++) {
-                color += colorArray[Math.floor(Math.random() * 16)];
-            }
-            return color;
-        }
-
-        <!--删除函数-->
-        Array.prototype.indexOf = function (val) {
-            for (var i = 0; i < this.length; i++) {
-                if (this[i] == val) return i;
-            }
-            return -1;
-        };
-        Array.prototype.remove = function (val) {
-            var index = this.indexOf(val);
-            if (index > -1) {
-                this.splice(index, 1);
-            }
-        };
-
+        {#部门对比！！！！！！！！！！！！！！！#}
+        <!--搜索&&清空-->
         $("#submits1").click(function () {
             thiscodes1 = $("#stockcodes1").val();
             var a1 = 1;
@@ -3397,22 +3009,10 @@
             myCharts1.clear();
         });
 
-
         <!--图表-->
         var myCharts1 = echarts.init(document.getElementById('mycharts1'));
-        var adict = {
-            '10': '能源',
-            '15': '材料',
-            '20': '工业',
-            '25': '可选消费',
-            '30': '日常消费',
-            '35': '医疗保健',
-            '40': '金融',
-            '45': '信息技术',
-            '50': '电信服务',
-            '55': '公共事业',
-            '60': '房地产',
-        };
+        var bumen_startid = 'starttimes1'
+        var bumen_endid = 'endtimes1'
         var Chosenindexe1 = new Array();
         Chosenindexe1 = ['tot_oper_rev'];
         var colorlists1 = {};
@@ -3424,7 +3024,17 @@
 
         function creat_echart_compare_1() {
             $('#div_compare1').empty();
-            dataSeries1 = []
+            $.ajax({
+                type: 'GET',
+                url: '{{ url_for("restfulapi.market_form0") }}',
+                dataType: 'json',
+                success: function (data) {
+                    for (var i = 0; i < data.my_value.length; i++) {
+                        $('#stockcodes1').append("<option value='" + data.my_value[i] + "'>" + data.my_index[i] + "</option>")
+                    }
+                }
+            });//部门选择框
+            dataSeries1 = [];
             $.ajax({
                 type: 'GET',
                 url: '{{ url_for("restfulapi.market_status1") }}',
@@ -3439,7 +3049,7 @@
                 success: function (data) {
                     $('#div_compare1').empty();
                     $('#div_compare1').append("<div style='width:45%;height:20px;float:left;margin-top:5px;margin-left:2%'><div id='div_" + data.the_code + "' style='height: 10px;width: 10px;float:right;margin-right:5px;margin-top:5px;background-color:" + colorlists1[data.the_code] + "'></div><div class='thedivs' style='width:42px;float:left;overflow:hidden'><span class='options' id='" + data.the_code + "'>"
-                        + adict[data.the_code] + "</span></div></div>")
+                        + dact[data.the_code] + "</span></div></div>")
                     for (var i = 0; i < data.indexes.length; i++) {
                         temp = {
                             name: data.the_code,
@@ -3464,7 +3074,7 @@
                         dataType: 'json',
                         success: function (data) {
                             $('#div_compare1').append("<div style='width:45%;height:20px;float:left;margin-top:5px;margin-left:2%'><div  id='div_" + data.the_code + "' style='height: 10px;width: 10px;float:right;margin-right:5px;margin-top:5px;background-color:" + colorlists1[data.the_code] + "'></div><div class='thedivs' style='width:42px;float:left;overflow:hidden'><span class='options' id='" + data.the_code + "'>"
-                                + adict[data.the_code] + "</span></div></div>")
+                                + dact[data.the_code] + "</span></div></div>")
                             for (var i = 0; i < data.indexes.length; i++) {
                                 temp = {
                                     name: data.the_code,
@@ -3484,7 +3094,7 @@
                                 tooltip: {
                                     trigger: 'item',
                                     formatter: function (params) {
-                                        return adict[params.seriesName] + "<br/> 时间：" + params.name + "<br/> 数据：" + params.data;
+                                        return dact[params.seriesName] + "<br/> 时间：" + params.name + "<br/> 数据：" + params.data;
                                     }
                                 },
                                 legend: {
@@ -3493,7 +3103,7 @@
                                     left: '85%',
                                     top: '10%',
                                     formatter: function (name) {
-                                        return adict[name];
+                                        return dact[name];
                                     }
                                 },
                                 grid: {
@@ -3543,12 +3153,12 @@
                                 else {
                                     var starts = '1991-12-31'
                                 }
-                                set_timepickers1(starts, ends)
+                                set_timepicker(starts, ends, bumen_startid, bumen_endid)
                             });
                         }
                     });
                 }
-            });
+            });//建图
             CreateTables1(codelists1);
         }
 
@@ -3586,7 +3196,7 @@
                             tooltip: {
                                 trigger: 'item',
                                 formatter: function (params) {
-                                    return adict[params.seriesName] + "<br/> 时间：" + params.name + "<br/> 数据：" + params.data;
+                                    return dact[params.seriesName] + "<br/> 时间：" + params.name + "<br/> 数据：" + params.data;
                                 }
                             },
                             legend: {
@@ -3595,7 +3205,7 @@
                                 left: '85%',
                                 top: '10%',
                                 formatter: function (name) {
-                                    return adict[name];
+                                    return dact[name];
                                 }
                             },
                             grid: {
@@ -3645,12 +3255,8 @@
                             else {
                                 var starts = '1991-12-31'
                             }
-                            set_timepickers1(starts, ends)
+                            set_timepicker(starts, ends, bumen_startid, bumen_endid)
                         });
-                        function set_timepickers1(start, end) {
-                            document.getElementById('endtimes1').value = start
-                            document.getElementById('starttimes1').value = end
-                        }
                     }
                 })
             }
@@ -3714,7 +3320,7 @@
                             "infoEmpty": "没有数据",
                             "infoFiltered": "(过滤总件数 _MAX_ 条)"
                         },
-                 dom: 'Bfrtip',
+                        dom: 'Bfrtip',
                         buttons: {
                             buttons: [
                                 {extend: 'copy', 'text': '复制', 'className': 'btn btn-default btn-xs',},
@@ -3740,7 +3346,7 @@
                                 invest_results_ts1 = data;
                                 for (var i = 0; i < invest_results_ts1.indexes.length; i++) {
                                     var rowNode = mydatatb
-                                        .row.add([adict[invest_results_ts1.the_code]].concat(numfilters1(eval("invest_results_ts1." + invest_results_ts1.indexes[i]))))
+                                        .row.add([dact[invest_results_ts1.the_code]].concat(numfilters1(eval("invest_results_ts1." + invest_results_ts1.indexes[i]))))
                                         .draw()
                                         .node();
                                     $(rowNode)
@@ -3811,7 +3417,7 @@
                             "infoEmpty": "没有数据",
                             "infoFiltered": "(过滤总件数 _MAX_ 条)"
                         },
-                 dom: 'Bfrtip',
+                        dom: 'Bfrtip',
                         buttons: {
                             buttons: [
                                 {extend: 'copy', 'text': '复制', 'className': 'btn btn-default btn-xs',},
@@ -3837,7 +3443,7 @@
                                 invest_results_ts1 = data;
                                 for (var i = 0; i < invest_results_ts1.indexes.length; i++) {
                                     var rowNode = mydatatb
-                                        .row.add([adict[invest_results_ts1.the_code]].concat(numfilters1(eval("invest_results_ts1." + invest_results_ts1.indexes[i]))))
+                                        .row.add([dact[invest_results_ts1.the_code]].concat(numfilters1(eval("invest_results_ts1." + invest_results_ts1.indexes[i]))))
                                         .draw()
                                         .node();
                                     $(rowNode)
@@ -3866,21 +3472,12 @@
                 dataType: 'json',
                 success: function (data) {
                     $('#div_compare1').append("<div style='width:45%;height:20px;float:left;margin-top:5px;margin-left:2%'><div id='div_" + data.the_code + "' style='height: 10px;width: 10px;float:right;margin-right:5px;margin-top:5px;background-color:" + colorlists1[data.the_code] + "'></div><div class='thedivs' style='width:42px;float:left;overflow:hidden'><span class='options' id='" + data.the_code + "'>"
-                        + adict[data.the_code] + "</span></div>")
+                        + dact[data.the_code] + "</span></div>")
                 }
             });
         }
-        function set_times1() {
-            document.getElementById('endtimes1').value = "1991-12-31"
-            document.getElementById('starttimes1').value = "2016-12-31"
-        }
-        function set_timepickers1(start, end) {
-            document.getElementById('endtimes1').value = start
-            document.getElementById('starttimes1').value = end
-        }
 
         <!--复选框操作-->
-
         $("div#mychoices1 :radio").change(function () {
             indexnames1 = $(this).val();
             if ($(this).is(':checked') == true) {
@@ -3895,11 +3492,10 @@
             }
             RequestCharts1(codelists1);
             RequestTables1(codelists1);
-            set_times1();
+            set_time(bumen_startid, bumen_endid);
         });
 
         <!--时间控制框-->
-
         var starttimes1 = "19911231";
         var endtimes1 = "20161231";
         $(".form_datetime").datetimepicker({
@@ -3945,19 +3541,8 @@
                 if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
             return fmt;
         }
-        function dateformat(olddate) {
-            newdate = []
-            for (i = 0; i < olddate.length; i++) {
-                var str = olddate[i];
-                var reg = /1231/g;
-                str = str.replace(reg, '年Q4');
-                newdate.push(str)
-            }
-            return newdate
-        }
 
         <!--单位转换-->
-
         denominators1 = 1
         $("select#units1").change(function () {
             flag = $(this).val();
@@ -3965,13 +3550,13 @@
                 denominators1 = 1;
                 RequestCharts1(codelists1);
                 CreateTables1(codelists1);
-                set_times1();
+                set_time(bumen_startid, bumen_endid);
             }
             if (flag == "1") {
                 denominators1 = 1000;
                 RequestCharts1(codelists1);
                 CreateTables1(codelists1);
-                set_times1();
+                set_time(bumen_startid, bumen_endid);
             }
         });
         function numfilters1(oldnum) {
@@ -3984,6 +3569,8 @@
         }
 
 
+        {#行业组对比！！！！！！！！！！！！！！！#}
+        <!--搜索&&清空-->
         $("#submits2").click(function () {
             thiscodes2 = $("#stockcodes2").val();
             var a2 = 1;
@@ -4010,34 +3597,9 @@
         });
 
         <!--图表-->
-
         var myCharts2 = echarts.init(document.getElementById('mycharts2'));
-        var bdict = {
-            '1010': '能源Ⅱ',
-            '1510': '材料Ⅱ',
-            '2010': '资本货物',
-            '2020': '商业和专业服务',
-            '2030': '运输',
-            '2510': '汽车与汽车零部件',
-            '2520': '耐用消费品与服装',
-            '2530': '消费者服务Ⅱ',
-            '2540': '媒体Ⅱ',
-            '2550': '零售业',
-            '3010': '食品与主要用品零售Ⅱ',
-            '3020': '食品、饮料与烟草',
-            '3030': '家庭与个人用品',
-            '3510': '医疗保健设备与服务',
-            '3520': '制药、生物科技与生命科学',
-            '4010': '银行',
-            '4020': '多元金融<',
-            '4030': '保险Ⅱ',
-            '4510': '软件与服务',
-            '4520': '技术硬件与设备',
-            '4530': '半导体与半导体生产设备',
-            '5010': '电信服务Ⅱ',
-            '5510': '公用事业Ⅱ',
-            '6010': '房地产Ⅱ'
-        };
+        var hangyezu_startid = 'starttimes2'
+        var hangyezu_endid = 'endtimes2'
         var Chosenindexe2 = new Array();
         Chosenindexe2 = ['tot_oper_rev'];
         var colorlists2 = {};
@@ -4047,6 +3609,16 @@
         var market_results_ts2;
         var invest_results_ts2;
         function creat_echart_compare_2() {
+            $.ajax({
+                type: 'GET',
+                url: '{{ url_for("restfulapi.market_hangyezu") }}',
+                dataType: 'json',
+                success: function (data) {
+                    for (var i = 0; i < data.my_value.length; i++) {
+                        $('#stockcodes2').append("<option value='" + data.my_value[i] + "'>" + data.my_index[i] + "</option>")
+                    }
+                }
+            });
             dataSeries2 = []
             $.ajax({
                 type: 'GET',
@@ -4062,7 +3634,7 @@
                 success: function (data) {
                     $('#div_compare2').empty();
                     $('#div_compare2').append("<div style='width:45%;height:20px;float:left;margin-top:5px;margin-left:2%'><div  id='div_" + data.the_code + "' style='height: 10px;width: 10px;float:right;margin-right:5px;margin-top:5px;background-color:" + colorlists2[data.the_code] + "'></div><div class='thedivs' style='width:42px;float:left;overflow:hidden'><span class='options' id='" + data.the_code + "'>"
-                        + bdict[data.the_code] + "</span></div></div>")
+                        + dbct[data.the_code] + "</span></div></div>")
                     for (var i = 0; i < data.indexes.length; i++) {
                         temp = {
                             name: data.the_code,
@@ -4087,7 +3659,7 @@
                         dataType: 'json',
                         success: function (data) {
                             $('#div_compare2').append("<div style='width:45%;height:20px;float:left;margin-top:5px;margin-left:2%'><div  id='div_" + data.the_code + "' style='height: 10px;width: 10px;float:right;margin-right:5px;margin-top:5px;background-color:" + colorlists2[data.the_code] + "'></div><div class='thedivs' style='width:42px;float:left;overflow:hidden'><span class='options' id='" + data.the_code + "'>"
-                                + bdict[data.the_code] + "</span></div></div>")
+                                + dbct[data.the_code] + "</span></div></div>")
                             for (var i = 0; i < data.indexes.length; i++) {
                                 temp = {
                                     name: data.the_code,
@@ -4107,7 +3679,7 @@
                                 tooltip: {
                                     trigger: 'item',
                                     formatter: function (params) {
-                                        return bdict[params.seriesName] + "<br/> 时间：" + params.name + "<br/> 数据：" + params.data;
+                                        return dbct[params.seriesName] + "<br/> 时间：" + params.name + "<br/> 数据：" + params.data;
                                     }
                                 },
                                 legend: {
@@ -4116,7 +3688,7 @@
                                     left: '85%',
                                     top: '10%',
                                     formatter: function (name) {
-                                        return bdict[name];
+                                        return dbct[name];
                                     }
                                 },
                                 grid: {
@@ -4166,7 +3738,7 @@
                                 else {
                                     var starts = '1991-12-31'
                                 }
-                                set_timepickers2(starts, ends)
+                                set_timepicker(starts, ends, hangyezu_startid, hangyezu_endid)
                             });
                         }
                     });
@@ -4208,7 +3780,7 @@
                             tooltip: {
                                 trigger: 'item',
                                 formatter: function (params) {
-                                    return bdict[params.seriesName] + "<br/> 时间：" + params.name + "<br/> 数据：" + params.data;
+                                    return dbct[params.seriesName] + "<br/> 时间：" + params.name + "<br/> 数据：" + params.data;
                                 }
                             },
                             legend: {
@@ -4217,7 +3789,7 @@
                                 left: '85%',
                                 top: '10%',
                                 formatter: function (name) {
-                                    return bdict[name];
+                                    return dbct[name];
                                 }
                             },
                             grid: {
@@ -4267,7 +3839,7 @@
                             else {
                                 var starts = '1991-12-31'
                             }
-                            set_timepickers2(starts, ends)
+                            set_timepicker(starts, ends, hangyezu_startid, hangyezu_endid)
                         });
                     }
                 })
@@ -4332,7 +3904,7 @@
                             "infoEmpty": "没有数据",
                             "infoFiltered": "(过滤总件数 _MAX_ 条)"
                         },
-                 dom: 'Bfrtip',
+                        dom: 'Bfrtip',
                         buttons: {
                             buttons: [
                                 {extend: 'copy', 'text': '复制', 'className': 'btn btn-default btn-xs',},
@@ -4358,7 +3930,7 @@
                                 invest_results_ts2 = data;
                                 for (var i = 0; i < invest_results_ts2.indexes.length; i++) {
                                     var rowNode = mydatatb
-                                        .row.add([bdict[invest_results_ts2.the_code]].concat(numfilters2(eval("invest_results_ts2." + invest_results_ts2.indexes[i]))))
+                                        .row.add([dbct[invest_results_ts2.the_code]].concat(numfilters2(eval("invest_results_ts2." + invest_results_ts2.indexes[i]))))
                                         .draw()
                                         .node();
                                     $(rowNode)
@@ -4429,7 +4001,7 @@
                             "infoEmpty": "没有数据",
                             "infoFiltered": "(过滤总件数 _MAX_ 条)"
                         },
-                 dom: 'Bfrtip',
+                        dom: 'Bfrtip',
                         buttons: {
                             buttons: [
                                 {extend: 'copy', 'text': '复制', 'className': 'btn btn-default btn-xs',},
@@ -4455,7 +4027,7 @@
                                 invest_results_ts2 = data;
                                 for (var i = 0; i < invest_results_ts2.indexes.length; i++) {
                                     var rowNode = mydatatb
-                                        .row.add([bdict[invest_results_ts2.the_code]].concat(numfilters2(eval("invest_results_ts2." + invest_results_ts2.indexes[i]))))
+                                        .row.add([dbct[invest_results_ts2.the_code]].concat(numfilters2(eval("invest_results_ts2." + invest_results_ts2.indexes[i]))))
                                         .draw()
                                         .node();
                                     $(rowNode)
@@ -4484,21 +4056,12 @@
                 dataType: 'json',
                 success: function (data) {
                     $('#div_compare2').append("<div style='width:45%;height:20px;float:left;margin-top:5px;margin-left:2%'><div  id='div_" + data.the_code + "' style='height: 10px;width: 10px;float:right;margin-right:5px;margin-top:5px;background-color:" + colorlists2[data.the_code] + "'></div><div class='thedivs' style='width:42px;float:left;overflow:hidden'><span class='options' id='" + data.the_code + "'>"
-                        + bdict[data.the_code] + "</span></div></div>")
+                        + dbct[data.the_code] + "</span></div></div>")
                 }
             });
         }
-        function set_times2() {
-            document.getElementById('endtimes2').value = "1991-12-31"
-            document.getElementById('starttimes2').value = "2016-12-31"
-        }
-        function set_timepickers2(start, end) {
-            document.getElementById('endtimes2').value = start
-            document.getElementById('starttimes2').value = end
-        }
 
         <!--复选框操作-->
-
         $("div#mychoices2 :radio").change(function () {
             indexnames2 = $(this).val();
             if ($(this).is(':checked') == true) {
@@ -4513,11 +4076,10 @@
             }
             RequestCharts2(codelists2);
             RequestTables2(codelists2);
-            set_times2();
+            set_time(hangyezu_startid, hangyezu_endid)
         });
 
         <!--时间控制框-->
-
         var starttimes2 = "19911231";
         var endtimes2 = "20161231";
         $(".form_datetime").datetimepicker({
@@ -4577,7 +4139,6 @@
         }
 
         <!--单位转换-->
-
         denominators2 = 1
         $("select#units2").change(function () {
             flag = $(this).val();
@@ -4585,13 +4146,13 @@
                 denominators2 = 1;
                 RequestCharts2(codelists2);
                 CreateTables2(codelists2)
-                set_times2();
+                set_time(hangyezu_startid, hangyezu_endid);
             }
             if (flag == "1") {
                 denominators2 = 1000;
                 RequestCharts2(codelists2);
                 CreateTables2(codelists2)
-                set_times2();
+                set_time(hangyezu_startid, hangyezu_endid);
             }
         });
         function numfilters2(oldnum) {
@@ -4603,6 +4164,9 @@
             return newnum;
         }
 
+
+        {#行业对比！！！！！！！！！！！！！！！#}
+        <!--搜索&&清空-->
         $("#submits3").click(function () {
             thiscodes3 = $("#stockcodes3").val();
             var a3 = 1;
@@ -4629,73 +4193,9 @@
         });
 
         <!--图表-->
-
         var myCharts3 = echarts.init(document.getElementById('mycharts3'));
-        var cdict = {
-            '101010': '能源设备与服务',
-            '101020': '石油、天然气与供消费用燃料',
-            '151010': '化工',
-            '151020': '建材Ⅲ',
-            '151030': '容器与包装',
-            '151040': '金属、非金属与采矿',
-            '151050': '纸与林木产品',
-            '201010': '航空航天与国防Ⅲ',
-            '201020': '建筑产品Ⅲ',
-            '201030': '建筑与工程Ⅲ',
-            '201040': '电气设备',
-            '201050': '综合类Ⅲ',
-            '201060': '机械',
-            '201070': '贸易公司与工业品经销商Ⅲ ',
-            '202010': '商业服务与用品',
-            '202020': '专业服务',
-            '203010': '航空货运与物流Ⅲ',
-            '203020': '航空Ⅲ',
-            '203030': '海运Ⅲ',
-            '203040': '公路与铁路运输',
-            '203050': '交通基础设施',
-            '251010': '汽车零配件',
-            '251020': '汽车',
-            '252010': '家庭耐用消费品',
-            '252020': '休闲设备与用品',
-            '252030': '纺织品、服装与奢侈品',
-            '253010': '酒店、餐馆与休闲Ⅲ',
-            '253020': '综合消费者服务Ⅲ',
-            '254010': '媒体Ⅲ',
-            '255010': '消费品经销商Ⅲ',
-            '255020': '互联网与售货目录零售',
-            '255030': '多元化零售',
-            '255040': '专营零售',
-            '301010': '食品与主要用品零售Ⅲ',
-            '302010': '饮料',
-            '302020': '食品',
-            '303010': '家庭用品Ⅲ',
-            '303020': '个人用品Ⅲ ',
-            '351010': '医疗保健设备与用品',
-            '351020': '医疗保健提供商与服务',
-            '351030': '医疗保健技术Ⅲ',
-            '352010': '生物科技Ⅲ',
-            '352020': '制药',
-            '352030': '生命科学工具和服务Ⅲ',
-            '401010': '商业银行',
-            '402010': '多元金融服务',
-            '402030': '资本市场',
-            '403010': '保险Ⅲ',
-            '451010': '互联网软件与服务Ⅲ',
-            '451020': '信息技术服务',
-            '451030': '软件',
-            '452010': '通信设备Ⅲ',
-            '452020': '电脑与外围设备',
-            '452030': '电子设备、仪器和元件',
-            '453010': '半导体产品与半导体设备',
-            '501010': '多元电信服务',
-            '501020': '无线电信业务Ⅲ',
-            '551010': '电力Ⅲ',
-            '551020': '燃气Ⅲ',
-            '551030': '复合型公用事业Ⅲ ',
-            '551040': '水务Ⅲ',
-            '551050': '独立电力生产商与能源贸易商Ⅲ',
-            '601020': '房地产管理和开发',
-        };
+        var hangye_startid = 'starttimes3'
+        var hangye_endid = 'endtimes3'
         var Chosenindexe3 = new Array();
         Chosenindexe3 = ['tot_oper_rev'];
         var colorlists3 = {};
@@ -4705,6 +4205,16 @@
         var market_results_ts3;
         var invest_results_ts3;
         function creat_echart_compare_3() {
+            $.ajax({
+                type: 'GET',
+                url: '{{ url_for("restfulapi.market_hangye") }}',
+                dataType: 'json',
+                success: function (data) {
+                    for (var i = 0; i < data.my_value.length; i++) {
+                        $('#stockcodes3').append("<option value='" + data.my_value[i] + "'>" + data.my_index[i] + "</option>")
+                    }
+                }
+            });
             dataSeries3 = []
             $.ajax({
                 type: 'GET',
@@ -4720,7 +4230,7 @@
                 success: function (data) {
                     $('#div_compare3').empty();
                     $('#div_compare3').append("<div style='width:100%;height:20px;margin-top:5px'><div  id='div_" + data.the_code + "' style='height: 10px;width: 10px;float:right;margin-right:5px;margin-top:5px;background-color:" + colorlists3[data.the_code] + "'></div><div class='thedivs' style='width:110px;float:left;overflow:hidden'><span class='options' id='" + data.the_code + "'>"
-                        + cdict[data.the_code] + "</span></div></div>")
+                        + dcct[data.the_code] + "</span></div></div>")
                     for (var i = 0; i < data.indexes.length; i++) {
                         temp = {
                             name: data.the_code,
@@ -4745,7 +4255,7 @@
                         dataType: 'json',
                         success: function (data) {
                             $('#div_compare3').append("<div style='width:100%;height:20px;margin-top:5px'><div  id='div_" + data.the_code + "' style='height: 10px;width: 10px;float:right;margin-right:5px;margin-top:5px;background-color:" + colorlists3[data.the_code] + "'></div><div class='thedivs' style='width:110px;float:left;overflow:hidden'><span class='options' id='" + data.the_code + "'>"
-                                + cdict[data.the_code] + "</span></div></div>")
+                                + dcct[data.the_code] + "</span></div></div>")
                             for (var i = 0; i < data.indexes.length; i++) {
                                 temp = {
                                     name: data.the_code,
@@ -4765,7 +4275,7 @@
                                 tooltip: {
                                     trigger: 'item',
                                     formatter: function (params) {
-                                        return cdict[params.seriesName] + "<br/> 时间：" + params.name + "<br/> 数据：" + params.data;
+                                        return dcct[params.seriesName] + "<br/> 时间：" + params.name + "<br/> 数据：" + params.data;
                                     }
                                 },
                                 legend: {
@@ -4774,7 +4284,7 @@
                                     left: '85%',
                                     top: '10%',
                                     formatter: function (name) {
-                                        return cdict[name];
+                                        return dcct[name];
                                     }
                                 },
                                 grid: {
@@ -4824,7 +4334,7 @@
                                 else {
                                     var starts = '1991-12-31'
                                 }
-                                set_timepickers3(starts, ends)
+                                set_timepicker(starts, ends, hangye_startid, hangye_endid)
                             });
                         }
                     });
@@ -4866,7 +4376,7 @@
                             tooltip: {
                                 trigger: 'item',
                                 formatter: function (params) {
-                                    return cdict[params.seriesName] + "<br/> 时间：" + params.name + "<br/> 数据：" + params.data;
+                                    return dcct[params.seriesName] + "<br/> 时间：" + params.name + "<br/> 数据：" + params.data;
                                 }
                             },
                             legend: {
@@ -4875,7 +4385,7 @@
                                 left: '85%',
                                 top: '10%',
                                 formatter: function (name) {
-                                    return cdict[name];
+                                    return dcct[name];
                                 }
                             },
                             grid: {
@@ -4925,7 +4435,7 @@
                             else {
                                 var starts = '1991-12-31'
                             }
-                            set_timepickers3(starts, ends)
+                            set_timepicker(starts, ends, hangye_startid, hangye_endid)
                         });
                     }
                 })
@@ -4990,7 +4500,7 @@
                             "infoEmpty": "没有数据",
                             "infoFiltered": "(过滤总件数 _MAX_ 条)"
                         },
-                 dom: 'Bfrtip',
+                        dom: 'Bfrtip',
                         buttons: {
                             buttons: [
                                 {extend: 'copy', 'text': '复制', 'className': 'btn btn-default btn-xs',},
@@ -5016,7 +4526,7 @@
                                 invest_results_ts3 = data;
                                 for (var i = 0; i < invest_results_ts3.indexes.length; i++) {
                                     var rowNode = mydatatb
-                                        .row.add([cdict[invest_results_ts3.the_code]].concat(numfilters3(eval("invest_results_ts3." + invest_results_ts3.indexes[i]))))
+                                        .row.add([dcct[invest_results_ts3.the_code]].concat(numfilters3(eval("invest_results_ts3." + invest_results_ts3.indexes[i]))))
                                         .draw()
                                         .node();
                                     $(rowNode)
@@ -5087,7 +4597,7 @@
                             "infoEmpty": "没有数据",
                             "infoFiltered": "(过滤总件数 _MAX_ 条)"
                         },
-                 dom: 'Bfrtip',
+                        dom: 'Bfrtip',
                         buttons: {
                             buttons: [
                                 {extend: 'copy', 'text': '复制', 'className': 'btn btn-default btn-xs',},
@@ -5113,7 +4623,7 @@
                                 invest_results_ts3 = data;
                                 for (var i = 0; i < invest_results_ts3.indexes.length; i++) {
                                     var rowNode = mydatatb
-                                        .row.add([cdict[invest_results_ts3.the_code]].concat(numfilters3(eval("invest_results_ts3." + invest_results_ts3.indexes[i]))))
+                                        .row.add([dcct[invest_results_ts3.the_code]].concat(numfilters3(eval("invest_results_ts3." + invest_results_ts3.indexes[i]))))
                                         .draw()
                                         .node();
                                     $(rowNode)
@@ -5142,21 +4652,12 @@
                 dataType: 'json',
                 success: function (data) {
                     $('#div_compare3').append("<div style='width:100%;height:20px;margin-top:5px'><div  id='div_" + data.the_code + "' style='height: 10px;width: 10px;float:right;margin-right:5px;margin-top:5px;background-color:" + colorlists3[data.the_code] + "'></div><div class='thedivs' style='width:110px;float:left;overflow:hidden'><span class='options' id='" + data.the_code + "'>"
-                        + cdict[data.the_code] + "</span></div></div>")
+                        + dcct[data.the_code] + "</span></div></div>")
                 }
             });
         }
-        function set_times3() {
-            document.getElementById('endtimes3').value = "1991-12-31"
-            document.getElementById('starttimes3').value = "2016-12-31"
-        }
-        function set_timepickers3(start, end) {
-            document.getElementById('endtimes3').value = start
-            document.getElementById('starttimes3').value = end
-        }
 
         <!--复选框操作-->
-
         $("div#mychoices3 :radio").change(function () {
             indexnames3 = $(this).val();
             if ($(this).is(':checked') == true) {
@@ -5171,11 +4672,10 @@
             }
             RequestCharts3(codelists3);
             RequestTables3(codelists3);
-            set_times3();
+            set_time(hangye_startid, hangye_endid);
         });
 
         <!--时间控制框-->
-
         var starttimes3 = "19911231";
         var endtimes3 = "20161231";
         $(".form_datetime").datetimepicker({
@@ -5235,7 +4735,6 @@
         }
 
         <!--单位转换-->
-
         denominators3 = 1
         $("select#units3").change(function () {
             flag = $(this).val();
@@ -5243,13 +4742,13 @@
                 denominators3 = 1;
                 RequestCharts3(codelists3);
                 CreateTables3(codelists3);
-                set_times3();
+                set_time(hangye_startid, hangye_endid);
             }
             if (flag == "1") {
                 denominators3 = 1000;
                 RequestCharts3(codelists3);
                 CreateTables3(codelists3);
-                set_times3();
+                set_time(hangye_startid, hangye_endid);
             }
         });
         function numfilters3(oldnum) {
@@ -5261,6 +4760,9 @@
             return newnum;
         }
 
+
+        {#子行业对比！！！！！！！！！！！！！！！#}
+        <!--搜索&&清空-->
         $("#submits4").click(function () {
             thiscodes4 = $("#stockcodes4").val();
             var a4 = 1;
@@ -5287,141 +4789,9 @@
         });
 
         <!--图表-->
-
         var myCharts4 = echarts.init(document.getElementById('mycharts4'));
-        var ddict = {
-            '10101010': '石油天然气钻井',
-            '10101020': '石油天然气设备与服务',
-            '10102010': '综合性石油天然气',
-            '10102020': '石油天然气勘探与生产',
-            '10102030': '石油与天然气的炼制和销售',
-            '10102040': '石油与天然气的储存和运输',
-            '10102050': '煤炭与消费用燃料',
-            '15101010': '基础化工',
-            '15101011': '化纤',
-            '15101020': '多元化工',
-            '15101030': '化肥与农用化工',
-            '15101040': '工业气体',
-            '15101050': '特种化工',
-            '15102010': '建材 ',
-            '15103010': '金属与玻璃容器',
-            '15103020': '纸包装',
-            '15104010': '铝',
-            '15104020': '金属非金属',
-            '15104030': '黄金',
-            '15104040': '贵金属与矿石',
-            '15104045': '白银',
-            '15104050': '钢铁',
-            '15105010': '林木产品',
-            '15105020': '纸制品',
-            '20101010': '航天航空与国防',
-            '20102010': '建筑产品',
-            '20103010': '建筑与工程',
-            '20104010': '电气部件与设备',
-            '20104020': '重型电气设备',
-            '20105010': '综合类行业',
-            '20106010': '建筑机械与重型卡车',
-            '20106015': '农用农业机械',
-            '20106020': '工业机械',
-            '20107010': '贸易公司与工业品经销商',
-            '20201070': '综合支持服务',
-            '20202020': '调查和咨询服务',
-            '20301010': '航空货运与物流',
-            '20302010': '航空 ',
-            '20303010': '海运',
-            '20304010': '铁路运输',
-            '20304020': '公路运输',
-            '20305010': '机场服务',
-            '20305020': '公路与铁路',
-            '20305030': '海港与服务',
-            '25101010': '汽车零配件',
-            '25101020': '轮胎与橡胶',
-            '25102010': '汽车制造',
-            '25102020': '摩托车制造',
-            '25201010': '消费电子产品',
-            '25201020': '家庭装饰品',
-            '25201030': '住宅建筑',
-            '25201040': '家用电器',
-            '25201050': '家用器具与特殊消费品',
-            '25202010': '休闲用品',
-            '25202020': '摄影用品',
-            '25203010': '服装、服饰与奢侈品',
-            '25203020': '鞋类',
-            '25203030': '纺织品',
-            '25301020': '酒店、度假村与豪华游轮',
-            '25301030': '休闲设施',
-            '25301040': '餐馆',
-            '25302010': '教育服务',
-            '25401010': '广告',
-            '25401020': '有线和卫星电视',
-            '25401030': '电影与娱乐',
-            '25401040': '出版',
-            '25501010': '消费品经销商',
-            '25502010': '售货目录零售',
-            '25502020': '互联网零售',
-            '25503010': '百货商店',
-            '25503020': '综合货品商店',
-            '25504020': '电脑与电子产品零售',
-            '25504030': '专卖店',
-            '25504050': '汽车零售',
-            '30101010': '药品零售',
-            '30101020': '食品分销商',
-            '30101030': '食品零售',
-            '30101040': '大卖场与超市',
-            '30201010': '啤酒',
-            '30201020': '白酒与葡萄酒',
-            '30201030': '软饮料',
-            '30202010': '农产品',
-            '30202030': '食品加工与肉类',
-            '30301010': '家庭用品',
-            '30302010': '个人用品',
-            '35101010': '医疗保健设备',
-            '35101020': '医疗保健用品',
-            '35102015': '保健护理服务',
-            '35102020': '保健护理设施',
-            '35103010': '医疗保健技术',
-            '35201010': '生物科技',
-            '35202010': '西药',
-            '35202011': '中药',
-            '35203010': '生命科学工具和服务',
-            '40101010': '多元化银行',
-            '40101015': '区域性银行',
-            '40201020': '其他多元金融服务',
-            '40201030': '多领域控股',
-            '40203010': '资产管理与托管银行',
-            '40203020': '投资银行业与经纪业',
-            '40203030': '多元资本市场',
-            '40301020': '人寿与健康保险',
-            '40301030': '多元化保险',
-            '40301040': '财产与意外伤害保险',
-            '45101010': '互联网软件与服务',
-            '45102010': '信息科技咨询与其它服务',
-            '45102020': '数据处理与外包服务',
-            '45103010': '应用软件',
-            '45103020': '系统软件',
-            '45103030': '家庭娱乐软件',
-            '45202010': '通信设备',
-            '45201020': '电脑硬件',
-            '45202020': '电脑存储与外围设备',
-            '45203010': '电子元件',
-            '45203015': '电子设备和仪器',
-            '45203020': '电子制造服务',
-            '45303030': '技术产品经销商',
-            '45301010': '半导体设备',
-            '45301020': '半导体产品',
-            '50101010': '非传统电信运营商',
-            '50101020': '综合电信服务',
-            '50102010': '无线电信业务',
-            '55101010': '电力',
-            '55102010': '燃气',
-            '55103010': '复合型公用事业',
-            '55104010': '水务',
-            '55105010': '独立电力生产商与能源贸易商',
-            '55105020': '新能源发电业者',
-            '60102020': '房地产经营公司',
-            '60102030': '房地产开发',
-            '60102040': '房地产服务',
-        };
+        var zihangye_startid = 'starttimes4'
+        var zihangye_endid = 'endtimes4'
         var Chosenindexe4 = new Array();
         Chosenindexe4 = ['tot_oper_rev'];
         var colorlists4 = {};
@@ -5431,6 +4801,16 @@
         var market_results_ts4;
         var invest_results_ts4;
         function creat_echart_compare_4() {
+            $.ajax({
+                type: 'GET',
+                url: '{{ url_for("restfulapi.market_zihangye") }}',
+                dataType: 'json',
+                success: function (data) {
+                    for (var i = 0; i < data.my_value.length; i++) {
+                        $('#stockcodes4').append("<option value='" + data.my_value[i] + "'>" + data.my_index[i] + "</option>")
+                    }
+                }
+            });
             dataSeries4 = []
             $.ajax({
                 type: 'GET',
@@ -5446,7 +4826,7 @@
                 success: function (data) {
                     $('#div_compare4').empty();
                     $('#div_compare4').append("<div style='width:100%;height:20px;margin-top:5px'><div  id='div_" + data.the_code + "' style='height: 10px;width: 10px;float:right;margin-right:5px;margin-top:5px;background-color:" + colorlists4[data.the_code] + "'></div><div class='thedivs' style='width:110px;float:left; text-overflow: ellipsis;'><span class='options' id='" + data.the_code + "'>"
-                        + ddict[data.the_code] + "</span></div></div>")
+                        + ddct[data.the_code] + "</span></div></div>")
                     for (var i = 0; i < data.indexes.length; i++) {
                         temp = {
                             name: data.the_code,
@@ -5471,7 +4851,7 @@
                         dataType: 'json',
                         success: function (data) {
                             $('#div_compare4').append("<div style='width:100%;height:20px;margin-top:5px'><div  id='div_" + data.the_code + "' style='height: 10px;width: 10px;float:right;margin-right:5px;margin-top:5px;background-color:" + colorlists4[data.the_code] + "'></div><div class='thedivs' style='width:110px;float:left; text-overflow: ellipsis;'><span class='options' id='" + data.the_code + "'>"
-                                + ddict[data.the_code] + "</span></div></div>")
+                                + ddct[data.the_code] + "</span></div></div>")
                             for (var i = 0; i < data.indexes.length; i++) {
                                 temp = {
                                     name: data.the_code,
@@ -5491,7 +4871,7 @@
                                 tooltip: {
                                     trigger: 'item',
                                     formatter: function (params) {
-                                        return ddict[params.seriesName] + "<br/> 时间：" + params.name + "<br/> 数据：" + params.data;
+                                        return ddct[params.seriesName] + "<br/> 时间：" + params.name + "<br/> 数据：" + params.data;
                                     }
                                 },
                                 legend: {
@@ -5500,7 +4880,7 @@
                                     left: '85%',
                                     top: '10%',
                                     formatter: function (name) {
-                                        return ddict[name];
+                                        return ddct[name];
                                     }
                                 },
                                 grid: {
@@ -5550,7 +4930,7 @@
                                 else {
                                     var starts = '1991-12-31'
                                 }
-                                set_timepickers4(starts, ends)
+                                set_timepicker(starts, ends, zihangye_startid, zihangye_endid)
                             });
                         }
                     });
@@ -5592,7 +4972,7 @@
                             tooltip: {
                                 trigger: 'item',
                                 formatter: function (params) {
-                                    return ddict[params.seriesName] + "<br/> 时间：" + params.name + "<br/> 数据：" + params.data;
+                                    return ddct[params.seriesName] + "<br/> 时间：" + params.name + "<br/> 数据：" + params.data;
                                 }
                             },
                             legend: {
@@ -5601,7 +4981,7 @@
                                 left: '85%',
                                 top: '10%',
                                 formatter: function (name) {
-                                    return ddict[name];
+                                    return ddct[name];
                                 }
                             },
                             grid: {
@@ -5651,7 +5031,7 @@
                             else {
                                 var starts = '1991-12-31'
                             }
-                            set_timepickers4(starts, ends)
+                            set_timepicker(starts, ends, zihangye_startid, zihangye_endid)
                         });
                     }
                 })
@@ -5716,7 +5096,7 @@
                             "infoEmpty": "没有数据",
                             "infoFiltered": "(过滤总件数 _MAX_ 条)"
                         },
-                 dom: 'Bfrtip',
+                        dom: 'Bfrtip',
                         buttons: {
                             buttons: [
                                 {extend: 'copy', 'text': '复制', 'className': 'btn btn-default btn-xs',},
@@ -5742,7 +5122,7 @@
                                 invest_results_ts4 = data;
                                 for (var i = 0; i < invest_results_ts4.indexes.length; i++) {
                                     var rowNode = mydatatb
-                                        .row.add([ddict[invest_results_ts4.the_code]].concat(numfilters4(eval("invest_results_ts4." + invest_results_ts4.indexes[i]))))
+                                        .row.add([ddct[invest_results_ts4.the_code]].concat(numfilters4(eval("invest_results_ts4." + invest_results_ts4.indexes[i]))))
                                         .draw()
                                         .node();
                                     $(rowNode)
@@ -5813,7 +5193,7 @@
                             "infoEmpty": "没有数据",
                             "infoFiltered": "(过滤总件数 _MAX_ 条)"
                         },
-                 dom: 'Bfrtip',
+                        dom: 'Bfrtip',
                         buttons: {
                             buttons: [
                                 {extend: 'copy', 'text': '复制', 'className': 'btn btn-default btn-xs',},
@@ -5839,7 +5219,7 @@
                                 invest_results_ts4 = data;
                                 for (var i = 0; i < invest_results_ts4.indexes.length; i++) {
                                     var rowNode = mydatatb
-                                        .row.add([ddict[invest_results_ts4.the_code]].concat(numfilters4(eval("invest_results_ts4." + invest_results_ts4.indexes[i]))))
+                                        .row.add([ddct[invest_results_ts4.the_code]].concat(numfilters4(eval("invest_results_ts4." + invest_results_ts4.indexes[i]))))
                                         .draw()
                                         .node();
                                     $(rowNode)
@@ -5868,21 +5248,12 @@
                 dataType: 'json',
                 success: function (data) {
                     $('#div_compare4').append("<div style='width:100%;height:20px;margin-top:5px'><div  id='div_" + data.the_code + "' style='height: 10px;width: 10px;float:right;margin-right:5px;margin-top:5px;background-color:" + colorlists4[data.the_code] + "'></div><div class='thedivs' style='width:110px;float:left; text-overflow: ellipsis;'><span class='options' id='" + data.the_code + "'>"
-                        + ddict[data.the_code] + "</span></div></div>")
+                        + ddct[data.the_code] + "</span></div></div>")
                 }
             });
         }
-        function set_times4() {
-            document.getElementById('endtimes4').value = "1991-12-31"
-            document.getElementById('starttimes4').value = "2016-12-31"
-        }
-        function set_timepickers4(start, end) {
-            document.getElementById('endtimes4').value = start
-            document.getElementById('starttimes4').value = end
-        }
 
         <!--复选框操作-->
-
         $("div#mychoices4 :radio").change(function () {
             indexnames4 = $(this).val();
             if ($(this).is(':checked') == true) {
@@ -5897,11 +5268,10 @@
             }
             RequestCharts4(codelists4);
             RequestTables4(codelists4);
-            set_times4();
+            set_time(zihangye_startid, zihangye_endid);
         });
 
         <!--时间控制框-->
-
         var starttimes4 = "19911231";
         var endtimes4 = "20161231";
         $(".form_datetime").datetimepicker({
@@ -5969,13 +5339,13 @@
                 denominators4 = 1;
                 RequestCharts4(codelists4);
                 CreateTables4(codelists4);
-                set_times4();
+                set_time(zihangye_startid, zihangye_endid);
             }
             if (flag == "1") {
                 denominators4 = 1000;
                 RequestCharts4(codelists4);
                 CreateTables4(codelists4);
-                set_times4();
+                set_time(zihangye_startid, zihangye_endid);
             }
         });
         function numfilters4(oldnum) {
@@ -5986,7 +5356,6 @@
             }
             return newnum;
         }
-
 
         function firstvisit() {
             creatmap()
@@ -6000,6 +5369,56 @@
         }
         $.fn.dataTable.ext.errMode = 'none';
         firstvisit()
+
+
+        {#通用函数！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！#}
+
+        $("#mydropdown").on("click", "[data-stopPropagation]", function (e) {
+            e.stopPropagation();
+        });
+
+        <!--删除函数-->
+        Array.prototype.indexOf = function (val) {
+            for (var i = 0; i < this.length; i++) {
+                if (this[i] == val) return i;
+            }
+            return -1;
+        };
+        Array.prototype.remove = function (val) {
+            var index = this.indexOf(val);
+            if (index > -1) {
+                this.splice(index, 1);
+            }
+        };
+
+        function set_timepicker(start, end, startid, endid) {
+            document.getElementById(endid).value = start;
+            document.getElementById(startid).value = end;
+        }//时间控制框随时间轴变动
+        function set_time(startid, endid) {
+            document.getElementById(endid).value = "1991-12-31";
+            document.getElementById(startid).value = "2016-12-31";
+        }//时间控制框复原
+        function NewColor() {
+            var colorElements = "0,1,2,3,4,5,6,7,8,9,a,b,c,d,e,f";
+            var colorArray = colorElements.split(",");
+            var color = "#";
+            for (var i = 0; i < 6; i++) {
+                color += colorArray[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }//随机生成颜色
+        function dateformat(olddate) {
+            newdate = []
+            for (i = 0; i < olddate.length; i++) {
+                var str = olddate[i];
+                var reg = /1231/g;
+                str = str.replace(reg, '年Q4');
+                newdate.push(str)
+            }
+            return newdate
+        }//1231--年Q4
+
     </script>
 {% endblock %}
 
