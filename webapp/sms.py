@@ -7,7 +7,7 @@ import httplib
 import urllib
 import json
 #请求地址请登录253云通讯自助通平台查看或者询问您的商务负责人获取
-host = ""
+host = "smssh1.253.com"
 
 #端口号
 port = 80
@@ -22,10 +22,10 @@ balance_get_uri = "/msg/balance/json"
 sms_send_uri = "/msg/send/json"
 
 #创蓝账号
-account  = "N9994784"
+account  = "CN4742325"
 
 #创蓝密码
-password = "Jiubugaosuni10"
+password = "helTf1UECp169d"
 
 def get_user_balance():
     """
@@ -33,7 +33,6 @@ def get_user_balance():
     """
     params = {'account': account, 'password' : password}
     params=json.dumps(params)
-
     headers = {"Content-type": "application/json"}
     conn = httplib.HTTPConnection(host, port=port)
     conn.request('POST', balance_get_uri, params, headers)
@@ -58,13 +57,13 @@ def send_sms(text, phone):
     conn.close()
     return response_str
 
-if __name__ == '__main__':
-
-    phone = "18721755342"
-    text = "【253云通讯】您的验证码是1234"
-
-    #查账户余额
-    print(get_user_balance())
-
-    #调用智能匹配模版接口发短信
-    print(send_sms(text, phone))
+# if __name__ == '__main__':
+#
+#     phone = "13234045805"
+#     text = "【253云通讯】您的验证码是1234"
+#
+#     #查账户余额
+#     print(get_user_balance())
+#
+#     #调用智能匹配模版接口发短信
+#     print(send_sms(text, phone))
