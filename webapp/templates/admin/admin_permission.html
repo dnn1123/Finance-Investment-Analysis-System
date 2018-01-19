@@ -33,6 +33,7 @@
                         </div><!-- /.modal-content -->
                     </div><!-- /.modal -->
                 </div>
+{#                用户列表#}
                 <div class="module">
                     <div class="module-head">
                         <button id="head1" class="btn btn-primary" data-toggle="button">用户列表</button>
@@ -41,7 +42,7 @@
                         <div class="btn-box-row row-fluid">
                             <div class="span12" style="background-color:white">
                                 <div style="height:100px;">
-                                    <table id="mytable1" style="text-align:center;height:100px">
+                                    <table id="mytable_for_users" style="text-align:center;height:100px">
                                         <thead>
                                         <tr>
                                             <th>
@@ -60,7 +61,34 @@
                         </div>
                     </div>
                 </div>
-
+{#                分类列表#}
+                <div class="module">
+                    <div class="module-head">
+                        <button id="head2" class="btn btn-primary" data-toggle="button">分类列表</button>
+                    </div>
+                    <div class="module-body" id="body2">
+                        <div class="btn-box-row row-fluid">
+                            <div class="span12" style="background-color:white">
+                                <div style="height:100px;">
+                                    <table id="mytable_for_wind" style="text-align:center;height:100px">
+                                        <thead>
+                                        <tr>
+                                            <th>
+                                                用户名
+                                            </th>
+                                            <th>
+                                                权限
+                                            </th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="tbody">
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -97,7 +125,7 @@
                                 "修改</a></td></tr>"
                         $("#tbody").append(str)
                     }
-                    var table = $('#mytable1').DataTable({
+                    var table = $('#mytable_for_users').DataTable({
                         "lengthChange": false,
                         "pageLength": 5,
                         "searching": false,
