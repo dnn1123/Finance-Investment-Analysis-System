@@ -1166,6 +1166,7 @@
 
     <script>
         {#地图事件！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！#}
+
         var province = '辽宁';
         $("#province_selected").text('当前选中:' + province);
         function creatmap() {
@@ -1331,11 +1332,11 @@
 
         <!--建图建表-->
         var myChart = echarts.init(document.getElementById('mychart'));
+        var startid = 'starttime';
+        var endid = 'endtime';
         var market_results_t;
         var invest_results_t;
         var market_results;
-        var startid = 'starttime';
-        var endid = 'endtime';
         var dict = {
             'tot_oper_rev': '总营业收入',
             'net_profit_is': '净利润总和',
@@ -1371,7 +1372,7 @@
                                 type: 'bar',
                                 itemStyle: {normal: {color: Chosenindexes[market_results.indexes[i]]}},
                                 smooth: true,
-                                data: numfilter(eval("market_results." + market_results.indexes[i]))
+                                data: numfilter(eval("market_results." + market_results.indexes[i]), denominator)
                             };
                             mydataSeries.push(mytemp);
                         }
@@ -1405,7 +1406,8 @@
                             feature: {
                                 magicType: {
                                     type: ['line', 'bar']
-                                }
+                                },
+                                saveAsImage: {show: true}
                             }
                         },
                         xAxis: {
@@ -1449,7 +1451,6 @@
                 }
             });
         }//建图
-
         function RequestTable() {
             var opt = myChart.getOption();
             var dz = opt.dataZoom[0];
@@ -1525,7 +1526,7 @@
             for (var i = 0; i < market_results_t.indexes.length; i++) {
                 if (Chosenindexes.hasOwnProperty(market_results_t.indexes[i])) {
                     var rowNode = mydatatb
-                        .row.add([dict[market_results_t.indexes[i]]].concat(numfilter(eval("market_results_t." + market_results_t.indexes[i]))))
+                        .row.add([dict[market_results_t.indexes[i]]].concat(numfilter(eval("market_results_t." + market_results_t.indexes[i]), denominator)))
                         .draw()
                         .node();
                     $(rowNode)
@@ -1535,13 +1536,12 @@
             for (var key in Chosenindexes) {
                 $('tr#' + key).css('color', Chosenindexes[key])
             }
-        }//建表
+        }//建表for单位转换，不必再读取数据
 
         <!--复选框操作div#mychoice:checkbox-->
         var Chosenindexes = new Array();
         Chosenindexes = ['tot_oper_rev'];
         Chosenindexes['tot_oper_rev'] = "#000000";//初始状态图表只显示总营业收入指标
-
         $("div#mychoice :checkbox").change(function () {
             indexname = $(this).val();
             if ($(this).is(':checked') == true) {
@@ -1602,24 +1602,9 @@
                 myChart.setOption(myoption);
                 RequestTable();
             });
-        Date.prototype.Format = function (fmt) { //author: meizz
-            var o = {
-                "M+": this.getMonth() + 1, //月份
-                "d+": this.getDate(), //日
-                "h+": this.getHours(), //小时
-                "m+": this.getMinutes(), //分
-                "s+": this.getSeconds(), //秒
-                "q+": Math.floor((this.getMonth() + 3) / 3), //季度
-                "S": this.getMilliseconds() //毫秒
-            };
-            if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
-            for (var k in o)
-                if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
-            return fmt;
-        }
 
         <!--单位转换#unit-->
-        denominator = 1;
+        var denominator = 1;
         $("select#unit").change(function () {
             flag = $(this).val();
             if (flag == "0") {
@@ -1635,14 +1620,6 @@
                 set_time(startid, endid);
             }
         });
-        function numfilter(oldnum) {
-            newnum = []
-            for (i = 0; i < oldnum.length; i++) {
-                temp = oldnum[i] / denominator;
-                newnum.push(temp.toFixed(2))
-            }
-            return newnum;
-        }//获取单位变化后各指标的数值
 
 
         {#行业状况！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！#}
@@ -1850,7 +1827,7 @@
                     myChart14.setOption(option, true);//股东权益
                 }
             });
-        }//画饼图
+        }//饼图
 
 
         {#行业分析！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！#}
@@ -2300,7 +2277,7 @@
                         type: 'bar',
                         itemStyle: {normal: {color: '#000000'}},
                         smooth: true,
-                        data: numfilter1(eval("data." + data.indexes))
+                        data: numfilter(eval("data." + data.indexes), denominator1)
                     };
                     dataSeries.push(temp);
                     options = {
@@ -2332,7 +2309,8 @@
                             feature: {
                                 magicType: {
                                     type: ['line', 'bar']
-                                }
+                                },
+                                saveAsImage: {show: true}
                             }
                         },
                         xAxis: {
@@ -2476,7 +2454,7 @@
                     type: 'bar',
                     itemStyle: {normal: {color: Chosenindexes1[market_results1.indexes[i]]}},
                     smooth: true,
-                    data: numfilter1(eval("market_results1." + market_results1.indexes[i]))
+                    data: numfilter(eval("market_results1." + market_results1.indexes[i]), denominator1)
                 };
                 dataSeries.push(temp);
             }
@@ -2509,7 +2487,8 @@
                     feature: {
                         magicType: {
                             type: ['line', 'bar']
-                        }
+                        },
+                        saveAsImage: {show: true}
                     }
                 },
                 xAxis: {
@@ -2604,7 +2583,7 @@
             setTimeout("$(\"#subject\").trigger(\"click\")", 100);
             for (var i = 0; i < market_results_t1.indexes.length; i++) {
                 var rowNode = mydatatb
-                    .row.add([dict[market_results_t1.indexes[i]]].concat(numfilter1(eval("market_results_t1." + market_results_t1.indexes[i]))))
+                    .row.add([dict[market_results_t1.indexes[i]]].concat(numfilter(eval("market_results_t1." + market_results_t1.indexes[i]), denominator1)))
                     .draw()
                     .node();
                 $(rowNode)
@@ -2907,31 +2886,6 @@
                     RequestTable4();
                 }
             });
-        Date.prototype.Format = function (fmt) { //author: meizz
-            var o = {
-                "M+": this.getMonth() + 1, //月份
-                "d+": this.getDate(), //日
-                "h+": this.getHours(), //小时
-                "m+": this.getMinutes(), //分
-                "s+": this.getSeconds(), //秒
-                "q+": Math.floor((this.getMonth() + 3) / 3), //季度
-                "S": this.getMilliseconds() //毫秒
-            };
-            if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
-            for (var k in o)
-                if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
-            return fmt;
-        }
-        function dateformat(olddate) {
-            newdate = []
-            for (i = 0; i < olddate.length; i++) {
-                var str = olddate[i];
-                var reg = /1231/g;
-                str = str.replace(reg, '年Q4');
-                newdate.push(str)
-            }
-            return newdate
-        }
 
         <!--单位转换#unit1-->
         denominator1 = 1
@@ -2970,14 +2924,6 @@
                 set_time(hangyefenxi_startid, hangyefenxi_endid);
             }
         });
-        function numfilter1(oldnum) {
-            newnum = []
-            for (i = 0; i < oldnum.length; i++) {
-                temp = oldnum[i] / denominator1;
-                newnum.push(temp.toFixed(2))
-            }
-            return newnum;
-        }
 
 
         {#对比分析！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！#}
@@ -3057,7 +3003,7 @@
                             itemStyle: {normal: {color: colorlists1[data.the_code]}},
                             symbolSize: 8,
                             smooth: true,
-                            data: numfilters1(eval("data." + data.indexes[i])),
+                            data: numfilter(eval("data." + data.indexes[i]), denominators1),
                         };
                         dataSeries1.push(temp);
                     }
@@ -3082,7 +3028,7 @@
                                     itemStyle: {normal: {color: colorlists1[data.the_code]}},
                                     symbolSize: 8,
                                     smooth: true,
-                                    data: numfilters1(eval("data." + data.indexes[i])),
+                                    data: numfilter(eval("data." + data.indexes[i]), denominators1),
                                 };
                                 dataSeries1.push(temp);
                             }
@@ -3115,7 +3061,8 @@
                                     feature: {
                                         magicType: {
                                             type: ['line', 'bar']
-                                        }
+                                        },
+                                        saveAsImage: {show: true}
                                     }
                                 },
                                 xAxis: {
@@ -3160,7 +3107,7 @@
                 }
             });//建图
             CreateTables1(codelists1);
-        }
+        }//初始状态
 
         function RequestCharts1(codelists1) {
             dataSeries = [];
@@ -3184,7 +3131,7 @@
                                 itemStyle: {normal: {color: colorlists1[data.the_code]}},
                                 symbolSize: 8,
                                 smooth: true,
-                                data: numfilters1(eval("data." + data.indexes[i])),
+                                data: numfilter(eval("data." + data.indexes[i]), denominators1),
                             };
                             dataSeries.push(temp);
                         }
@@ -3217,7 +3164,8 @@
                                 feature: {
                                     magicType: {
                                         type: ['line', 'bar']
-                                    }
+                                    },
+                                    saveAsImage: {show: true}
                                 }
                             },
                             xAxis: {
@@ -3260,7 +3208,7 @@
                     }
                 })
             }
-        }
+        }//建图
         function RequestTables1(codelists1) {
             var opt = myCharts1.getOption();
             var dz = opt.dataZoom[0];
@@ -3346,7 +3294,7 @@
                                 invest_results_ts1 = data;
                                 for (var i = 0; i < invest_results_ts1.indexes.length; i++) {
                                     var rowNode = mydatatb
-                                        .row.add([dact[invest_results_ts1.the_code]].concat(numfilters1(eval("invest_results_ts1." + invest_results_ts1.indexes[i]))))
+                                        .row.add([dact[invest_results_ts1.the_code]].concat(numfilter(eval("invest_results_ts1." + invest_results_ts1.indexes[i]), denominators1)))
                                         .draw()
                                         .node();
                                     $(rowNode)
@@ -3359,7 +3307,7 @@
                     }
                 }
             });
-        }
+        }//获取表数据
         function CreateTables1(codelists1) {
             $.ajax({
                 type: 'GET',
@@ -3443,7 +3391,7 @@
                                 invest_results_ts1 = data;
                                 for (var i = 0; i < invest_results_ts1.indexes.length; i++) {
                                     var rowNode = mydatatb
-                                        .row.add([dact[invest_results_ts1.the_code]].concat(numfilters1(eval("invest_results_ts1." + invest_results_ts1.indexes[i]))))
+                                        .row.add([dact[invest_results_ts1.the_code]].concat(numfilter(eval("invest_results_ts1." + invest_results_ts1.indexes[i]), denominators1)))
                                         .draw()
                                         .node();
                                     $(rowNode)
@@ -3456,7 +3404,7 @@
                     }
                 }
             });
-        }
+        }//建表
 
         function creat_compares1(thiscodes1) {
             $.ajax({
@@ -3475,7 +3423,7 @@
                         + dact[data.the_code] + "</span></div>")
                 }
             });
-        }
+        }//生成对比标签
 
         <!--复选框操作-->
         $("div#mychoices1 :radio").change(function () {
@@ -3526,21 +3474,6 @@
                 myCharts1.setOption(option);
                 RequestTables1(codelists1);
             });
-        Date.prototype.Format = function (fmt) { //author: meizz
-            var o = {
-                "M+": this.getMonth() + 1, //月份
-                "d+": this.getDate(), //日
-                "h+": this.getHours(), //小时
-                "m+": this.getMinutes(), //分
-                "s+": this.getSeconds(), //秒
-                "q+": Math.floor((this.getMonth() + 3) / 3), //季度
-                "S": this.getMilliseconds() //毫秒
-            };
-            if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
-            for (var k in o)
-                if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
-            return fmt;
-        }
 
         <!--单位转换-->
         denominators1 = 1
@@ -3559,14 +3492,6 @@
                 set_time(bumen_startid, bumen_endid);
             }
         });
-        function numfilters1(oldnum) {
-            newnum = []
-            for (i = 0; i < oldnum.length; i++) {
-                temp = oldnum[i] / denominators1;
-                newnum.push(temp.toFixed(2))
-            }
-            return newnum;
-        }
 
 
         {#行业组对比！！！！！！！！！！！！！！！#}
@@ -3642,7 +3567,7 @@
                             itemStyle: {normal: {color: colorlists2[data.the_code]}},
                             symbolSize: 8,
                             smooth: true,
-                            data: numfilters2(eval("data." + data.indexes[i])),
+                            data: numfilter(eval("data." + data.indexes[i]), denominators2),
                         };
                         dataSeries2.push(temp);
                     }
@@ -3667,7 +3592,7 @@
                                     itemStyle: {normal: {color: colorlists2[data.the_code]}},
                                     symbolSize: 8,
                                     smooth: true,
-                                    data: numfilters2(eval("data." + data.indexes[i])),
+                                    data: numfilter(eval("data." + data.indexes[i]), denominators2),
                                 };
                                 dataSeries2.push(temp);
                             }
@@ -3700,7 +3625,8 @@
                                     feature: {
                                         magicType: {
                                             type: ['line', 'bar']
-                                        }
+                                        },
+                                        saveAsImage: {show: true}
                                     }
                                 },
                                 xAxis: {
@@ -3745,7 +3671,7 @@
                 }
             });
             CreateTables2(codelists2);
-        }
+        }//初始状态
         function RequestCharts2(codelists2) {
             dataSeries = [];
             for (var k = 0; k < codelists2.length; k++) {
@@ -3768,7 +3694,7 @@
                                 itemStyle: {normal: {color: colorlists2[data.the_code]}},
                                 symbolSize: 8,
                                 smooth: true,
-                                data: numfilters2(eval("data." + data.indexes[i])),
+                                data: numfilter(eval("data." + data.indexes[i]), denominators2),
                             };
                             dataSeries.push(temp);
                         }
@@ -3801,7 +3727,8 @@
                                 feature: {
                                     magicType: {
                                         type: ['line', 'bar']
-                                    }
+                                    },
+                                    saveAsImage: {show: true}
                                 }
                             },
                             xAxis: {
@@ -3844,7 +3771,7 @@
                     }
                 })
             }
-        }
+        }//建图
         function RequestTables2(codelists2) {
             var opt = myCharts2.getOption();
             var dz = opt.dataZoom[0];
@@ -3930,7 +3857,7 @@
                                 invest_results_ts2 = data;
                                 for (var i = 0; i < invest_results_ts2.indexes.length; i++) {
                                     var rowNode = mydatatb
-                                        .row.add([dbct[invest_results_ts2.the_code]].concat(numfilters2(eval("invest_results_ts2." + invest_results_ts2.indexes[i]))))
+                                        .row.add([dbct[invest_results_ts2.the_code]].concat(numfilter(eval("invest_results_ts2." + invest_results_ts2.indexes[i]), denominators2)))
                                         .draw()
                                         .node();
                                     $(rowNode)
@@ -3943,7 +3870,7 @@
                     }
                 }
             });
-        }
+        }//获取表数据
         function CreateTables2(codelists2) {
             $.ajax({
                 type: 'GET',
@@ -4027,7 +3954,7 @@
                                 invest_results_ts2 = data;
                                 for (var i = 0; i < invest_results_ts2.indexes.length; i++) {
                                     var rowNode = mydatatb
-                                        .row.add([dbct[invest_results_ts2.the_code]].concat(numfilters2(eval("invest_results_ts2." + invest_results_ts2.indexes[i]))))
+                                        .row.add([dbct[invest_results_ts2.the_code]].concat(numfilter(eval("invest_results_ts2." + invest_results_ts2.indexes[i]), denominators2)))
                                         .draw()
                                         .node();
                                     $(rowNode)
@@ -4040,7 +3967,7 @@
                     }
                 }
             });
-        }
+        }//建表
 
         function creat_compares2(thiscodes2) {
             $.ajax({
@@ -4059,7 +3986,7 @@
                         + dbct[data.the_code] + "</span></div></div>")
                 }
             });
-        }
+        }//生成比较标签
 
         <!--复选框操作-->
         $("div#mychoices2 :radio").change(function () {
@@ -4110,33 +4037,6 @@
                 myCharts2.setOption(option);
                 RequestTables2(codelists2);
             });
-        Date.prototype.Format = function (fmt) { //author: meizz
-            var o = {
-                "M+": this.getMonth() + 1, //月份
-                "d+": this.getDate(), //日
-                "h+": this.getHours(), //小时
-                "m+": this.getMinutes(), //分
-                "s+": this.getSeconds(), //秒
-                "q+": Math.floor((this.getMonth() + 3) / 3), //季度
-                "S": this.getMilliseconds() //毫秒
-            };
-            if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 -
-                RegExp.$1.length));
-            for (var k in o)
-                if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length
-                == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
-            return fmt;
-        }
-        function dateformat(olddate) {
-            newdate = []
-            for (i = 0; i < olddate.length; i++) {
-                var str = olddate[i];
-                var reg = /1231/g;
-                str = str.replace(reg, '年Q4');
-                newdate.push(str)
-            }
-            return newdate
-        }
 
         <!--单位转换-->
         denominators2 = 1
@@ -4155,15 +4055,6 @@
                 set_time(hangyezu_startid, hangyezu_endid);
             }
         });
-        function numfilters2(oldnum) {
-            newnum = []
-            for (i = 0; i < oldnum.length; i++) {
-                temp = oldnum[i] / denominators2;
-                newnum.push(temp.toFixed(2))
-            }
-            return newnum;
-        }
-
 
         {#行业对比！！！！！！！！！！！！！！！#}
         <!--搜索&&清空-->
@@ -4238,7 +4129,7 @@
                             itemStyle: {normal: {color: colorlists3[data.the_code]}},
                             symbolSize: 8,
                             smooth: true,
-                            data: numfilters3(eval("data." + data.indexes[i])),
+                            data: numfilter(eval("data." + data.indexes[i]), denominators3),
                         };
                         dataSeries3.push(temp);
                     }
@@ -4263,7 +4154,7 @@
                                     itemStyle: {normal: {color: colorlists3[data.the_code]}},
                                     symbolSize: 8,
                                     smooth: true,
-                                    data: numfilters3(eval("data." + data.indexes[i])),
+                                    data: numfilter(eval("data." + data.indexes[i]), denominators3),
                                 };
                                 dataSeries3.push(temp);
                             }
@@ -4296,7 +4187,8 @@
                                     feature: {
                                         magicType: {
                                             type: ['line', 'bar']
-                                        }
+                                        },
+                                        saveAsImage: {show: true}
                                     }
                                 },
                                 xAxis: {
@@ -4341,7 +4233,7 @@
                 }
             });
             CreateTables3(codelists3);
-        }
+        }//初始状态
         function RequestCharts3(codelists3) {
             dataSeries = [];
             for (var k = 0; k < codelists3.length; k++) {
@@ -4364,7 +4256,7 @@
                                 itemStyle: {normal: {color: colorlists3[data.the_code]}},
                                 symbolSize: 8,
                                 smooth: true,
-                                data: numfilters3(eval("data." + data.indexes[i])),
+                                data: numfilter(eval("data." + data.indexes[i]), denominators3),
                             };
                             dataSeries.push(temp);
                         }
@@ -4397,7 +4289,8 @@
                                 feature: {
                                     magicType: {
                                         type: ['line', 'bar']
-                                    }
+                                    },
+                                    saveAsImage: {show: true}
                                 }
                             },
                             xAxis: {
@@ -4440,7 +4333,7 @@
                     }
                 })
             }
-        }
+        }//建图
         function RequestTables3(codelists3) {
             var opt = myCharts3.getOption();
             var dz = opt.dataZoom[0];
@@ -4526,7 +4419,7 @@
                                 invest_results_ts3 = data;
                                 for (var i = 0; i < invest_results_ts3.indexes.length; i++) {
                                     var rowNode = mydatatb
-                                        .row.add([dcct[invest_results_ts3.the_code]].concat(numfilters3(eval("invest_results_ts3." + invest_results_ts3.indexes[i]))))
+                                        .row.add([dcct[invest_results_ts3.the_code]].concat(numfilter(eval("invest_results_ts3." + invest_results_ts3.indexes[i]), denominators3)))
                                         .draw()
                                         .node();
                                     $(rowNode)
@@ -4539,7 +4432,7 @@
                     }
                 }
             });
-        }
+        }//获取表数据
         function CreateTables3(codelists3) {
             $.ajax({
                 type: 'GET',
@@ -4623,7 +4516,7 @@
                                 invest_results_ts3 = data;
                                 for (var i = 0; i < invest_results_ts3.indexes.length; i++) {
                                     var rowNode = mydatatb
-                                        .row.add([dcct[invest_results_ts3.the_code]].concat(numfilters3(eval("invest_results_ts3." + invest_results_ts3.indexes[i]))))
+                                        .row.add([dcct[invest_results_ts3.the_code]].concat(numfilter(eval("invest_results_ts3." + invest_results_ts3.indexes[i]), denominators3)))
                                         .draw()
                                         .node();
                                     $(rowNode)
@@ -4636,7 +4529,7 @@
                     }
                 }
             });
-        }
+        }//建表
 
         function creat_compares3(thiscodes3) {
             $.ajax({
@@ -4655,7 +4548,7 @@
                         + dcct[data.the_code] + "</span></div></div>")
                 }
             });
-        }
+        }//生成比较标签
 
         <!--复选框操作-->
         $("div#mychoices3 :radio").change(function () {
@@ -4706,33 +4599,6 @@
                 myCharts3.setOption(option);
                 RequestTables3(codelists3);
             });
-        Date.prototype.Format = function (fmt) { //author: meizz
-            var o = {
-                "M+": this.getMonth() + 1, //月份
-                "d+": this.getDate(), //日
-                "h+": this.getHours(), //小时
-                "m+": this.getMinutes(), //分
-                "s+": this.getSeconds(), //秒
-                "q+": Math.floor((this.getMonth() + 3) / 3), //季度
-                "S": this.getMilliseconds() //毫秒
-            };
-            if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 -
-                RegExp.$1.length));
-            for (var k in o)
-                if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length
-                == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
-            return fmt;
-        }
-        function dateformat(olddate) {
-            newdate = []
-            for (i = 0; i < olddate.length; i++) {
-                var str = olddate[i];
-                var reg = /1231/g;
-                str = str.replace(reg, '年Q4');
-                newdate.push(str)
-            }
-            return newdate
-        }
 
         <!--单位转换-->
         denominators3 = 1
@@ -4751,14 +4617,6 @@
                 set_time(hangye_startid, hangye_endid);
             }
         });
-        function numfilters3(oldnum) {
-            newnum = []
-            for (i = 0; i < oldnum.length; i++) {
-                temp = oldnum[i] / denominators3;
-                newnum.push(temp.toFixed(2))
-            }
-            return newnum;
-        }
 
 
         {#子行业对比！！！！！！！！！！！！！！！#}
@@ -4834,7 +4692,7 @@
                             itemStyle: {normal: {color: colorlists4[data.the_code]}},
                             symbolSize: 8,
                             smooth: true,
-                            data: numfilters4(eval("data." + data.indexes[i])),
+                            data: numfilter(eval("data." + data.indexes[i]), denominators4),
                         };
                         dataSeries4.push(temp);
                     }
@@ -4859,7 +4717,7 @@
                                     itemStyle: {normal: {color: colorlists4[data.the_code]}},
                                     symbolSize: 8,
                                     smooth: true,
-                                    data: numfilters4(eval("data." + data.indexes[i])),
+                                    data: numfilter(eval("data." + data.indexes[i]), denominators4),
                                 };
                                 dataSeries4.push(temp);
                             }
@@ -4892,7 +4750,8 @@
                                     feature: {
                                         magicType: {
                                             type: ['line', 'bar']
-                                        }
+                                        },
+                                        saveAsImage: {show: true}
                                     }
                                 },
                                 xAxis: {
@@ -4937,7 +4796,7 @@
                 }
             });
             CreateTables4(codelists4);
-        }
+        }//初始状态
         function RequestCharts4(codelists4) {
             dataSeries = [];
             for (var k = 0; k < codelists4.length; k++) {
@@ -4960,7 +4819,7 @@
                                 itemStyle: {normal: {color: colorlists4[data.the_code]}},
                                 symbolSize: 8,
                                 smooth: true,
-                                data: numfilters4(eval("data." + data.indexes[i])),
+                                data: numfilter(eval("data." + data.indexes[i]), denominators4),
                             };
                             dataSeries.push(temp);
                         }
@@ -4993,7 +4852,8 @@
                                 feature: {
                                     magicType: {
                                         type: ['line', 'bar']
-                                    }
+                                    },
+                                    saveAsImage: {show: true}
                                 }
                             },
                             xAxis: {
@@ -5036,7 +4896,7 @@
                     }
                 })
             }
-        }
+        }//建图
         function RequestTables4(codelists4) {
             var opt = myCharts4.getOption();
             var dz = opt.dataZoom[0];
@@ -5122,7 +4982,7 @@
                                 invest_results_ts4 = data;
                                 for (var i = 0; i < invest_results_ts4.indexes.length; i++) {
                                     var rowNode = mydatatb
-                                        .row.add([ddct[invest_results_ts4.the_code]].concat(numfilters4(eval("invest_results_ts4." + invest_results_ts4.indexes[i]))))
+                                        .row.add([ddct[invest_results_ts4.the_code]].concat(numfilter(eval("invest_results_ts4." + invest_results_ts4.indexes[i]), denominators4)))
                                         .draw()
                                         .node();
                                     $(rowNode)
@@ -5135,7 +4995,7 @@
                     }
                 }
             });
-        }
+        }//获取表数据
         function CreateTables4(codelists4) {
             $.ajax({
                 type: 'GET',
@@ -5219,7 +5079,7 @@
                                 invest_results_ts4 = data;
                                 for (var i = 0; i < invest_results_ts4.indexes.length; i++) {
                                     var rowNode = mydatatb
-                                        .row.add([ddct[invest_results_ts4.the_code]].concat(numfilters4(eval("invest_results_ts4." + invest_results_ts4.indexes[i]))))
+                                        .row.add([ddct[invest_results_ts4.the_code]].concat(numfilter(eval("invest_results_ts4." + invest_results_ts4.indexes[i]), denominators4)))
                                         .draw()
                                         .node();
                                     $(rowNode)
@@ -5232,7 +5092,7 @@
                     }
                 }
             });
-        }
+        }//建表
 
         function creat_compares4(thiscodes4) {
             $.ajax({
@@ -5251,7 +5111,7 @@
                         + ddct[data.the_code] + "</span></div></div>")
                 }
             });
-        }
+        }//生成比较标签
 
         <!--复选框操作-->
         $("div#mychoices4 :radio").change(function () {
@@ -5302,36 +5162,8 @@
                 myCharts4.setOption(option);
                 RequestTables4(codelists4);
             });
-        Date.prototype.Format = function (fmt) { //author: meizz
-            var o = {
-                "M+": this.getMonth() + 1, //月份
-                "d+": this.getDate(), //日
-                "h+": this.getHours(), //小时
-                "m+": this.getMinutes(), //分
-                "s+": this.getSeconds(), //秒
-                "q+": Math.floor((this.getMonth() + 3) / 3), //季度
-                "S": this.getMilliseconds() //毫秒
-            };
-            if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 -
-                RegExp.$1.length));
-            for (var k in o)
-                if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length
-                == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
-            return fmt;
-        }
-        function dateformat(olddate) {
-            newdate = []
-            for (i = 0; i < olddate.length; i++) {
-                var str = olddate[i];
-                var reg = /1231/g;
-                str = str.replace(reg, '年Q4');
-                newdate.push(str)
-            }
-            return newdate
-        }
 
         <!--单位转换-->
-
         denominators4 = 1
         $("select#units4").change(function () {
             flag = $(this).val();
@@ -5348,15 +5180,9 @@
                 set_time(zihangye_startid, zihangye_endid);
             }
         });
-        function numfilters4(oldnum) {
-            newnum = []
-            for (i = 0; i < oldnum.length; i++) {
-                temp = oldnum[i] / denominators4;
-                newnum.push(temp.toFixed(2))
-            }
-            return newnum;
-        }
 
+
+        {#初始函数！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！#}
         function firstvisit() {
             creatmap()
             CreateChart(province)
@@ -5376,6 +5202,21 @@
         $("#mydropdown").on("click", "[data-stopPropagation]", function (e) {
             e.stopPropagation();
         });
+        Date.prototype.Format = function (fmt) { //author: meizz
+            var o = {
+                "M+": this.getMonth() + 1, //月份
+                "d+": this.getDate(), //日
+                "h+": this.getHours(), //小时
+                "m+": this.getMinutes(), //分
+                "s+": this.getSeconds(), //秒
+                "q+": Math.floor((this.getMonth() + 3) / 3), //季度
+                "S": this.getMilliseconds() //毫秒
+            };
+            if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+            for (var k in o)
+                if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+            return fmt;
+        }
 
         <!--删除函数-->
         Array.prototype.indexOf = function (val) {
@@ -5399,15 +5240,14 @@
             document.getElementById(endid).value = "1991-12-31";
             document.getElementById(startid).value = "2016-12-31";
         }//时间控制框复原
-        function NewColor() {
-            var colorElements = "0,1,2,3,4,5,6,7,8,9,a,b,c,d,e,f";
-            var colorArray = colorElements.split(",");
-            var color = "#";
-            for (var i = 0; i < 6; i++) {
-                color += colorArray[Math.floor(Math.random() * 16)];
+        function numfilter(oldnum, denominator) {
+            newnum = []
+            for (i = 0; i < oldnum.length; i++) {
+                temp = oldnum[i] / denominator;
+                newnum.push(temp.toFixed(2))
             }
-            return color;
-        }//随机生成颜色
+            return newnum;
+        }//获取单位变化后各指标的数值
         function dateformat(olddate) {
             newdate = []
             for (i = 0; i < olddate.length; i++) {
@@ -5418,6 +5258,15 @@
             }
             return newdate
         }//1231--年Q4
+        function NewColor() {
+            var colorElements = "0,1,2,3,4,5,6,7,8,9,a,b,c,d,e,f";
+            var colorArray = colorElements.split(",");
+            var color = "#";
+            for (var i = 0; i < 6; i++) {
+                color += colorArray[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }//随机生成颜色
 
     </script>
 {% endblock %}
