@@ -87,7 +87,7 @@
 {% block navigation%}
     {% if pagination %}
         <div class="pagination">
-            {{ macros.pagination_widget(pagination,'.lugutong') }} {# 是home吗 #}
+            {{ macros.pagination_widget(pagination,'.lugutong',province) }} {# 是home吗 #}
         </div>
     {% endif %}
 {% endblock %}
