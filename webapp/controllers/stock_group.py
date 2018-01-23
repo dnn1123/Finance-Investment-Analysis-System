@@ -11,10 +11,10 @@ from sqlalchemy.orm import sessionmaker  # me
 import MySQLdb, time
 
 stockgroup_blueprint = Blueprint(
-    'stock_group',
+    'stock_group_old',
     __name__,
     template_folder=path.join(path.pardir, 'templates', 'stock_group'),
-    url_prefix="/stock_group"
+    url_prefix="/stock_group_old"
 )
 
 

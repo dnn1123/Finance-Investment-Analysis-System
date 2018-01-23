@@ -15,3 +15,4 @@ class DevConfig(Config):
     'users_info':        'mysql+pymysql://root:0000@localhost:3306/users_info',
     }
     SECRET_KEY = 'you-will-never-guess'
+
