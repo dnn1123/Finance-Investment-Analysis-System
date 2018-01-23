@@ -1,16 +1,13 @@
-{% extends "stock_group/cns/cns_base.html" %}
-{# 添加分页模板宏 #}
-{% import "_macros.html" as macros %}
-
+{% extends "stock_group_base.html" %}
 {% block tab %}
     <ul class="nav nav-pills">
         <li class="active"><a href="{{ url_for('stock_group.cns_home') }}">沪深交易所A股上市公司</a></li>
         <li><a href="{{ url_for('stock_group.cnsb_home') }}">沪深交易所B股上市公司</a></li>
         <li><a href="{{ url_for('stock_group.hushen_300') }}">附表1.沪深300成分股</a></li>
-        <li><a href="{{ url_for('stock_group.hushen_300') }}">附表2.上证50成分股</a></li>
+        <li><a href="{{ url_for('stock_group.shangzheng_50') }}">附表2.上证50成分股</a></li>
         <li><a href="{{ url_for('stock_group.lugutong') }}">附表3.陆股通</a></li>
-        <li><a>附表A.行业分类</a></li>
-        <li><a>附表B.证监会行业分类</a></li>
+{#        <li><a>附表A.行业分类</a></li>#}
+{#        <li><a>附表B.证监会行业分类</a></li>#}
     </ul>
 {% endblock %}
 {% block form %}
