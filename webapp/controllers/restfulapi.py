@@ -1044,43 +1044,6 @@ def gics_4():
         list.append({"gicscode4": result.industry_gicscode_4, "gics4": result.industry_gics_4})
     return jsonify(list)
 
-
-@api_blueprint.route("/update_gics/", methods=('GET', 'POST'))
-def update_gics():
-    trade_code = request.values.get("trade_code")
-    gics_4 = request.values.get('gics_4')
-    gics_name = request.values.get('gics_name')
-    db_engine = create_engine('mysql://root:0000@localhost/test?charset=utf8')
-    Session = sessionmaker(bind=db_engine)
-    session = Session()
-    session.query(cns_stock_industry).filter(cns_stock_industry.trade_code == trade_code).update(
-        {'belong': gics_4, 'industry_gicscode_4': gics_4, 'industry_gics_4': gics_name})  # 改为belong
-    session.commit()  # 少写了这一行，所以修改没成功
-    return "true"
-
-
-@api_blueprint.route("/update_gicsb/", methods=('GET', 'POST'))
-def update_gicsb():
-    trade_code = request.values.get("trade_code")
-    gics_4 = request.values.get('gics_4')
-    gics_name = request.values.get('gics_name')
-    db_engine = create_engine('mysql://root:0000@localhost/test?charset=utf8')
-    Session = sessionmaker(bind=db_engine)
-    session = Session()
-    session.query(cnsb_stock_industry).filter(cnsb_stock_industry.trade_code == trade_code).update(
-        {'industry_gicscode_4': gics_4, 'industry_gics_4': gics_name})  # 改为belong
-    session.commit()  # 少写了这一行，所以修改没成功
-    return "true"
-
-
-# 显示“主营业务”详情
-@api_blueprint.route('/cns_business_detail/', methods=('GET', 'POST'))
-def cns_business_detail():  # 需要这个默认trade_code吗？
-    trade_code = request.args.get("trade_code")  # 哈哈，成功了！！
-    result = cns_stock_industry.query.filter_by(trade_code=trade_code).first()
-    return result.business
-
-
 @api_blueprint.route('/personal/add_code', methods=['GET', 'POST'])
 def add_code():
     if (request.method == 'POST'):
@@ -1564,3 +1527,4 @@ def cns_home():
     for i in pie4:
         pie4_data.append({'name': i[0], 'value': i[1]})
     return jsonify({"pie1", pie1_data})
+
