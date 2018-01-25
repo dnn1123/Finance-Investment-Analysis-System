@@ -1,11 +1,4 @@
-{% extends "stock_group/cns/cns_base.html" %}
-
-{# 添加分页模板宏 #}
-{% import "_macros.html" as macros %}
-
-
-
- 
+{% extends "stock_group_base.html" %}
 {% block tab %}
         <ul class="nav nav-pills">
             <li><a href="{{ url_for('stock_group.cns_home') }}">沪深交易所A股上市公司</a></li>
@@ -13,14 +6,15 @@
             <li class="active"><a href="{{ url_for('stock_group.hushen_300') }}">附表1.沪深300成分股</a></li>
             <li><a href="{{ url_for('stock_group.shangzheng_50') }}">附表2.上证50成分股</a></li>
             <li><a href="{{ url_for('stock_group.lugutong') }}">附表3.陆股通</a></li>
-            <li><a>附表A.行业分类</a></li>
-            <li><a>附表B.证监会行业分类</a></li>
         </ul>
 {% endblock %}
 {% block form %}
     <div class="btn-box-row row-fluid">
         <div class="module span12" style="background-color: transparent">
-            <div class="module-head">行业状况</div>
+            <div class="module-head">行业状况（筛选条件：<span id="condition"></span>&nbsp;&nbsp;&nbsp;&nbsp;共有记录<span
+                    id="sumcount"></span>条）
+                <button class="btn btn-primary" style="float: right" onclick="reinitpages()">清空筛选条件</button>
+            </div>
             <div class="row-fluid">
                 <div class="btn-box small span3">
                     <div id="pie_1" style="width:100%;height:200px;background-color: white">
@@ -43,107 +37,250 @@
     </div>
 {% endblock %}
 {% block industry %}
-<table  id="fixTable" class="row-border hover order-column display" style="border-color:#000;white-space: nowrap;">
-    <thead>
+    <table id="fixTable" class="row-border hover order-column display" cellspacing="0" width="100%"
+           style="white-space: nowrap;">
+        <thead>
         <tr>
             <td style="background-color: #F1F0EE">证券代码</td>
             <td style="background-color: #F1F0EE">证券名称</td>
             <td style="background-color: #F1F0EE">上市时间</td>
-            <td>部门</td>
-            <td>行业组</td>
-            <td>行业</td>
-            <td>子行业</td>
+            <td id="c1">
+                部门
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#department_industry">
+                    <span class="caret"></span>
+                </button>
+            </td>
+            <td>
+                行业组
+                <button type="button" class="btn btn-primary " data-toggle="modal" data-target="#group_industry">
+                    <span class="caret"></span>
+                </button>
+            </td>
+            <td>
+                行业
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#industry_why">
+                    <span class="caret"></span>
+                </button>
+            </td>
+            <td>
+                子行业
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#sub_industry">
+                    <span class="caret"></span>
+                </button>
+            </td>
             <td>主营业务</td>
             <td>所在区域</td>
             <td>注册城市</td>
             <td>交易所</td>
             <td>所属国家</td>
             <td>交易币种</td>
+            <td>证监会一级行业分类</td>
+            <td>证监会二级行业分类</td>
             <td>公司属性</td>
-            <td>检验</td>
+            <td>沪深300行业指数</td>
         </tr>
-    </thead>
-    <tbody>
-        {% for x in range(length) %}
-            <tr>
-                <td style="border: none;">{{ result[x][0].trade_code }}</td>
-                <td style="border: none;">{{ result[x][0].sec_name }}</td>
-                <td style="border: none;">{{ result[x][0].ipo_date }}</td>
-                <td style="border: none;">{{ result[x].industry_gics_1 }}</td>
-                <td style="border: none;">{{ result[x].industry_gics_2 }}</td>
-                <td style="border: none;">{{ result[x].industry_gics_3 }}</td>
-                <td style="border: none;">{{ result[x].industry_gics_4 }}</td>
-                <td style="border: none;">
-                    {{ result[x][0].business[:40] }}
-                    <a href="{{ url_for('stock_group.cns_business_detail',trade_code=result[x][0].trade_code) }}"> 更多 </a> <!--跳转显示详情-->
-                </td>
-                <td style="border: none;">{{ result[x][0].province }}</td>
-                <td style="border: none;">{{ result[x][0].city }}</td>
-                <td style="border: none;">{{ result[x][0].exch_city }}</td>
-                <td style="border: none;">{{ result[x][0].country }}</td>
-                <td style="border: none;">{{ result[x][0].curr }}</td>
-                <td style="border: none;">{{ result[x][0].nature }}</td>
-                <td style="border: none;">
-                    {% if result[x][0].hushen_300 == "是" %}
-                        300{{ result[x].industry_gics_1 }}
-                    {% else %}
-                    {% endif %}
-                </td>
-            </tr>
-        {% endfor %}
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
 {% endblock %}
 
-{% block navigation%}
-    {% if pagination %}
-        <div class="pagination">
-            {{ macros.pagination_widget(pagination,'.hushen_300') }} {# 是home吗 #}
-        </div>
-    {% endif %}
-{% endblock %}
 {% block bottombody %}
-     <div id="dg" style="z-index: 9999; position: fixed ! important; right: 40px; top:100px;">
+
+    {#    悬浮地图按钮#}
+    <div id="dg" style="z-index: 9999; position: fixed ! important; right: 40px; top:100px;">
         <input type="button" value="全国" id="all_province">
         <input type="button" data-toggle="modal" data-target="#modal_map"
                style="margin-left:10px;background:url('{{ url_for('static',filename='China_map.jpg') }}') no-repeat center  ; width:50px; height:50px;background-size:100% 100%;border-radius:10px;">
-{#        <button type="button" class="btn btn-default btn-circle" background-image:;></button>#}
         </br>
         <a id="province_selected"></a>
     </div>
-     <div class="modal hide fade" id="modal_map">
-  <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-    <h3>地图</h3>
-  </div>
-  <div class="modal-body">
-    <div id="map" style="height:400px;width:500px;margin:0 auto"></div>
-  </div>
-  <div class="modal-footer">
-    <a href="#" class="btn btn-primary" data-dismiss="modal">关闭</a>
-  </div>
+
+    <!-- 模态框 组 -->
+    <div class="modal fade" id="department_industry" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        筛选：部门
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <select id="gic1_select"></select>
+                </div>
+                <div class="modal-footer">
+                    <input type="button" class="btn btn-default" value="重置" onclick="reinitpages()"
+                           contenteditable="true">
+                    <input type="submit" class="btn btn-primary" value="筛选" onclick="gic1_select_commit()"
+                           contenteditable="true">
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
     </div>
+    <div class="modal fade" id="group_industry" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        筛选：行业组
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <select id="gic2_select"></select>
+                </div>
+                <div class="modal-footer">
+                    <input type="button" class="btn btn-default" value="重置" onclick="reinitpages()"
+                           contenteditable="true">
+                    <input type="submit" class="btn btn-primary" value="筛选" onclick="gic2_select_commit()"
+                           contenteditable="true">
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+    <div class="modal fade" id="industry_why" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        筛选：行业
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <select id="gic3_select"></select>
+                </div>
+                <div class="modal-footer">
+                    <input type="button" class="btn btn-default" value="重置" onclick="reinitpages()"
+                           contenteditable="true">
+                    <input type="submit" class="btn btn-primary" value="筛选" onclick="gic3_select_commit()"
+                           contenteditable="true">
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+    <div class="modal fade" id="sub_industry" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        筛选：子行业
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <select id="gic4_select"></select>
+                </div>
+                <div class="modal-footer">
+                    <input type="button" class="btn btn-default" value="重置" onclick="reinitpages()"
+                           contenteditable="true">
+                    <input type="submit" class="btn btn-primary" value="筛选" onclick="gic4_select_commit()"
+                           contenteditable="true">
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        修改
+                    </h4>
+                </div>
+
+                <div class="modal-body" style="height: auto;">
+                    <form id="Myform" role="form" method="post" action="#">
+                        <select class="form-control" id="gics_1" style="margin-bottom: 10px">
+                        </select>
+                        <select class="form-control" id="gics_2" style="margin-bottom: 10px">
+                        </select>
+                        <select class="form-control" id="gics_3" style="margin-bottom: 10px">
+                        </select>
+                        <select class="form-control" id="gics_4" style="margin-bottom: 10px">
+                        </select>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                    </button>
+                    <button type="button" class="btn btn-primary" id="commit">
+                        提交更改
+                    </button>
+                </div>
+
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+    {#    地图模态框#}
+    <div class="modal hide fade" id="modal_map">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h3>地图</h3>
+        </div>
+        <div class="modal-body">
+            <div id="map" style="height:400px;width:500px;margin:0 auto"></div>
+        </div>
+        <div class="modal-footer">
+            <a href="#" class="btn btn-primary" data-dismiss="modal">关闭</a>
+        </div>
+    </div>
+
+
 {% endblock %}
 {% block scripts %}
-     <script>
+    <script>
         $(document).ready(function () {
-            $("#fixTable").DataTable({
+            mytable = $("#fixTable").DataTable({
                 "info": false,
                 "ordering": false,
                 "processing": true,
-                "scrollY": "95%",
+                "scrollY": true,
                 "scrollX": true,
                 "searching": true,
-                "paging": false,
+                "paging": true,
+                "pageLength": 15,
                 "fixedColumns": { //固定列的配置项
                     "leftColumns": 3//固定左边第一列
                 },
                 "columnDefs": [{
                     "targets": 1,
                     "render": function (data, type, row) {
-                        html =
-                        {{ url_for('stock_solo.basic') }}
+                        html ={{ url_for('stock_solo.basic') }};
                         return '<a href="' + html + row[0] + '">' + data + '</a>';
+                    }
+                }, {
+                    "targets": 6,
+                    "render": function (data, type, row) {
+                        return data + '<a href="#" class="small-box-footer updatelink" id="' + row[0] + '"data-toggle="modal" data-target="#myModal" onclick="selectedcode=this.id;" >修改</a>'
+                    }
+                }, {
+                    "targets": 7,
+                    "render": function (data, type, row) {
+                        return '<div id="a" style="width:100px;overflow: hidden;text-overflow: ellipsis;" ' + 'title="' + detailFormat(data) + '">' + data + '</div>';
+                    }
+                }, {
+                    "targets": 16,
+                    "render": function (data, type, row) {
+                        if (data == "是")
+                            return '300' + row[3]
+                        else
+                            return ""
                     }
                 }],
                 "language": {
@@ -163,108 +300,158 @@
                     "infoEmpty": "没有数据",
                     "infoFiltered": "(过滤总件数 _MAX_ 条)"
                 },
+                dom: 'Bfrtip',
+                buttons: {
+                    buttons: [
+                        {extend: 'copy', 'text': '复制', 'className': 'btn btn-default btn-xs',},
+                        {extend: 'excel', 'text': '导出Excel', 'className': 'btn btn-default btn-xs',}
+                    ]
+                }
             })
+            area = "%"
+            gic1 = "%"
+            gic2 = "%"
+            gic3 = "%"
+            gic4 = "%"
+            initpage()
             creatmap()
-            creat_pie()
-        });
+        })
     </script>
-        <script>
-        var province ='{{ province }}'
-        $("#province_selected").text('当前选中:' + province)
+    <script>
+        var selectedcode;
+        $('#myModal').on('show.bs.modal', function () {
+            showgics1()
+            // 执行一些动作...
+        })
+        $("#commit").click(function () {
+            changegics($("#gics_4").val(), $("#gics_4").text())
+        })
+
+        function showgics1() {
+            $.ajax({
+                url: '{{url_for("restfulapi.gics_1")}}', //所需要的列表接口地址
+                type: "get",
+                dataType: "json",
+                success: function (result) {
+                    var h = "";
+                    $.each(result, function (key, value) {
+                        h += "<option value='" + value.gicscode1 + "'>" + value.gics1 //下拉框序言的循环数据
+                            + "</option>";
+                    });
+                    $("#gics_1").append(h);//append 添加进去并展示
+                    $("#gics_1").on(
+                        "change",
+                        function (a, b, c) {
+                            showgics2($("#gics_1").val())
+                        })
+                    showgics2($("#gics_1").val())
+                }
+            });
+        }
+
+        function showgics2(data) {
+            $.ajax({
+                url: '{{url_for("restfulapi.gics_2")}}', //所需要的列表接口地址
+                type: "get",
+                dataType: "json",
+                data: {"code": data},
+                success: function (result) {
+                    var h = "";
+                    $.each(result, function (key, value) {
+                        h += "<option value='" + value.gicscode2 + "'>" + value.gics2 //下拉框序言的循环数据
+                            + "</option>";
+                    });
+                    var obj = document.getElementById('gics_2');
+                    obj.options.length = 0;
+                    $("#gics_2").append(h);//append 添加进去并展示
+                    $("#gics_2").on(
+                        "change",
+                        function (a, b, c) {
+                            showgics3($("#gics_2").val())
+                        })
+                    showgics3($("#gics_2").val())
+                }
+            });
+        }
+
+        function showgics3(data) {
+            $.ajax({
+                url: '{{url_for("restfulapi.gics_3")}}', //所需要的列表接口地址
+                type: "get",
+                dataType: "json",
+                data: {"code": data},
+                success: function (result) {
+                    var h = "";
+                    $.each(result, function (key, value) {
+                        h += "<option value='" + value.gicscode3 + "'>" + value.gics3 //下拉框序言的循环数据
+                            + "</option>";
+                    });
+                    var obj = document.getElementById('gics_3');
+                    obj.options.length = 0;
+                    $("#gics_3").append(h);//append 添加进去并展示
+                    $("#gics_3").on(
+                        "change",
+                        function (a, b, c) {
+                            showgics4($("#gics_3").val())
+                        })
+                    showgics4($("#gics_3").val())
+
+                }
+            });
+        }
+
+        function showgics4(data) {
+            $.ajax({
+                url: '{{url_for("restfulapi.gics_4")}}', //所需要的列表接口地址
+                type: "get",
+                dataType: "json",
+                data: {"code": data},
+                success: function (result) {
+                    var h = "";
+                    $.each(result, function (key, value) {
+                        h += "<option value='" + value.gicscode4 + "'>" + value.gics4 //下拉框序言的循环数据
+                            + "</option>";
+                    });
+                    var obj = document.getElementById('gics_4');
+                    obj.options.length = 0;
+                    $("#gics_4").append(h);//append 添加进去并展示
+                }
+            });
+        }
+
+        function changegics(code, name) {
+            $.ajax({
+                url: '{{url_for("stock_group_api.update_gics")}}', //所需要的列表接口地址
+                type: "post",
+                dataType: "html",
+                data: {
+                    "trade_code": selectedcode,
+                    "gics_4": code,
+                    "gics_name": name
+                },
+                success: function (result) {
+                    window.location.reload()
+                }
+            });
+
+        }
+
+        function detailFormat(str) {
+            var t = str.length / 40
+            var newstr = ""
+            for (i = 0; i < t - 1; i++) {
+                newstr += str.substring(40 * i, 40 * (i + 1)) + "&#10;"
+            }
+            newstr += str.substring(40 * i)
+            return newstr
+        }
+    </script>
+    <script>
+        var area = ""
+        $("#province_selected").text('当前选中:全国')
+
         function creatmap() {
             var myChart = echarts.init(document.getElementById('map'));
-            var option1 = {
-                title: {
-                    text: '',
-                    subtext: '',
-                    x: 'center'
-                },
-                tooltip: {//提示框组件。
-                    trigger: 'item'//数据项图形触发，主要在散点图，饼图等无类目轴的图表中使用。
-                },
-                legend: {
-                    orient: 'horizontal',//图例的排列方向
-                    x: 'left',//图例的位置
-                                data:['订单量']
-                },
-                toolbox: {//工具栏
-                    show: true,
-                    orient: 'vertical',//工具栏 icon 的布局朝向
-                    x: 'right',
-                    y: 'center',
-                    feature: {//各工具配置项。
-                        mark: {show: true},
-                        dataView: {show: true, readOnly: false},//数据视图工具，可以展现当前图表所用的数据，编辑后可以动态更新。
-                        restore: {show: true},//配置项还原。
-                        saveAsImage: {show: true}//保存为图片。
-                    }
-                },
-                roamController: {//控制地图的上下左右放大缩小 图上没有显示
-                    show: true,
-                    x: 'right',
-                    mapTypeControl: {
-                        'china': true
-                    }
-                },
-                series: [
-                    {
-                                        name: '订单量',
-                        type: 'map',
-                        mapType: 'china',
-                        roam: false,//是否开启鼠标缩放和平移漫游
-                        itemStyle: {//地图区域的多边形 图形样式
-                            normal: {//是图形在默认状态下的样式
-                                label: {
-                                    show: true,//是否显示标签
-                                    textStyle: {
-                                        color: "rgb(249, 249, 249)"
-                                    }
-                                }
-                            },
-                            emphasis: {//是图形在高亮状态下的样式,比如在鼠标悬浮或者图例联动高亮时
-                                label: {show: true}
-                            }
-                        },
-                        top: "3%",//组件距离容器的距离
-                        data: [
-                            {name: '北京'},
-                            {name: '天津'},
-                            {name: '上海'},
-                            {name: '重庆'},
-                            {name: '河北'},
-                            {name: '河南'},
-                            {name: '云南'},
-                            {name: '辽宁'},
-                            {name: '黑龙江'},
-                            {name: '湖南'},
-                            {name: '安徽'},
-                            {name: '山东'},
-                            {name: '新疆'},
-                            {name: '江苏'},
-                            {name: '浙江'},
-                            {name: '江西'},
-                            {name: '湖北'},
-                            {name: '广西'},
-                            {name: '甘肃'},
-                            {name: '山西'},
-                            {name: '内蒙古'},
-                            {name: '陕西'},
-                            {name: '吉林'},
-                            {name: '福建'},
-                            {name: '贵州'},
-                            {name: '广东'},
-                            {name: '青海'},
-                            {name: '西藏'},
-                            {name: '四川'},
-                            {name: '宁夏'},
-                            {name: '海南'},
-                            {name: '台湾'},
-                            {name: '香港'},
-                            {name: '澳门'}
-                        ]
-                    }
-                ]
-            };
             var option = {
                 tooltip: {
 //                    show: false //不显示提示标签
@@ -299,33 +486,27 @@
                     },
                     selectedMode: 'single',
                     data: [
-                        {name: '{{ province }}', selected: true}//福建为选中状态
+                        {name: area, selected: true}//福建为选中状态
                     ]
                 }],
             };
             myChart.setOption(option);
-            myChart.on('mouseover', function (params) {
-                            var dataIndex = params.dataIndex;
-                            console.log(params);
-            });
             myChart.on('click', function (params) {//点击事件
                 var dataIndex = params.dataIndex;
-                province = params.name
-                $("#province_selected").text('当前选中:' + province)
-                                params.selected = 'true'
-                location.href = "{{ url_for("stock_group.hushen_300") }}"+"?area="+province
+                area = params.name
+                $("#province_selected").text('当前选中:' + area)
+                params.selected = 'true'
+                initpage()
             })
-{#                        myChart.on(ecConfig.EVENT.MAP_SELECTED, function (param) {#}
-{#                            var selected = param.selected;#}
-{#                        })#}
         }
-        $("#all_province").click(function () {
-            $("#province_selected").text('当前选中:全国')
-            location.href = "{{ url_for("stock_group.hushen_300") }}"
 
+        $("#all_province").click(function () {
+            area = "%"
+            $("#province_selected").text('当前选中:全国')
+            initpage()
         })
     </script>
-        <script>
+    <script>
         var dact = {
             '10': '能源',
             '15': '材料',
@@ -566,10 +747,19 @@
             '60102030': '房地产开发',
             '60102040': '房地产服务',
         };
+        var gic1 = ""
+        var gic2 = ""
+        var gic3 = ""
+        var gic4 = ""
+        var pie1_data
+        var pie2_data
+        var pie3_data
+        var pie4_data
         var myChart_pie1 = echarts.init(document.getElementById('pie_1'));
         var myChart_pie2 = echarts.init(document.getElementById('pie_2'));
         var myChart_pie3 = echarts.init(document.getElementById('pie_3'));
         var myChart_pie4 = echarts.init(document.getElementById('pie_4'));
+
         function creat_pie() {
             option_pie1 = {
                 title: {
@@ -598,7 +788,7 @@
                                     fontSize: '25',
                                     fontWeight: 'bold'
                                 },
-                                formatter:function (params) {
+                                formatter: function (params) {
                                     return dact[params.name]
                                 }
                             }
@@ -608,7 +798,7 @@
                                 show: false
                             }
                         },
-                        data: {{ pie1_data|safe }}
+                        data: pie1_data
                     }
                 ]
             };
@@ -640,7 +830,7 @@
                                     fontSize: '25',
                                     fontWeight: 'bold'
                                 },
-                                formatter:function (params) {
+                                formatter: function (params) {
                                     return dbct[params.name]
                                 }
                             }
@@ -650,7 +840,7 @@
                                 show: false
                             }
                         },
-                        data: {{ pie2_data|safe }}
+                        data: pie2_data
                     }
                 ]
             };
@@ -682,7 +872,7 @@
                                     fontSize: '25',
                                     fontWeight: 'bold'
                                 },
-                                formatter:function (params) {
+                                formatter: function (params) {
                                     return dcct[params.name]
                                 }
                             }
@@ -692,7 +882,7 @@
                                 show: false
                             }
                         },
-                        data: {{ pie3_data|safe }}
+                        data: pie3_data
                     }
                 ]
             };
@@ -724,7 +914,7 @@
                                     fontSize: '25',
                                     fontWeight: 'bold'
                                 },
-                                formatter:function (params) {
+                                formatter: function (params) {
                                     return ddct[params.name]
                                 }
                             }
@@ -734,19 +924,156 @@
                                 show: false
                             }
                         },
-                        data: {{ pie4_data|safe }}
+                        data: pie4_data
                     }
                 ]
             };
             myChart_pie4.setOption(option_pie4, true);
+            myChart_pie1.on("click", function (params) {
+                gic1 = params.name
+                gic2 = "%"
+                gic3 = "%"
+                gic4 = "%"
+                initpage()
+            })
+            myChart_pie2.on("click", function (params) {
+                gic2 = params.name
+                gic1 = "%"
+                gic3 = "%"
+                gic4 = "%"
+                initpage()
+            })
+            myChart_pie3.on("click", function (params) {
+                gic3 = params.name
+                gic1 = "%"
+                gic2 = "%"
+                gic4 = "%"
+                initpage()
+            })
+            myChart_pie4.on("click", function (params) {
+                gic4 = params.name
+                gic1 = "%"
+                gic2 = "%"
+                gic3 = "%"
+                initpage()
+            })
 
+        }
+
+        function showcondition(sumcount) {
+            if (area == "%")
+                condition_message = "全国"
+            else
+                condition_message = area
+            condition_message += "&nbsp;&nbsp;&nbsp;&nbsp;"
+            if (gic1 != "%")
+                condition_message += dact[gic1]
+            if (gic2 != "%")
+                condition_message += dbct[gic2]
+            if (gic3 != "%")
+                condition_message += dcct[gic3]
+            if (gic4 != "%")
+                condition_message += ddct[gic4]
+            $("#condition").html(condition_message)
+            $("#sumcount").html(sumcount)
+        }
+
+        function initpage() {
+            $.ajax({
+                url: '{{url_for("stock_group_api.get_hushen_300_data")}}', //所需要的列表接口地址
+                type: "get",
+                data: {
+                    "area": area,
+                    "gic1": gic1,
+                    "gic2": gic2,
+                    "gic3": gic3,
+                    "gic4": gic4
+                },
+                dataType: "json",
+                success: function (result) {
+                    pie1_data = result.pie1_data
+                    pie2_data = result.pie2_data
+                    pie3_data = result.pie3_data
+                    pie4_data = result.pie4_data
+                    creat_pie()
+                    mytable.clear()
+                    mytable.rows.add(result.stockinfo).draw()
+                    showcondition(result.stockinfo.length)
+                }
+            });
+        }
+
+        function reinitpages() {
+            area = "%"
+            gic1 = "%"
+            gic2 = "%"
+            gic3 = "%"
+            gic4 = "%"
+            initpage()
+        }
+    </script>
+    <script>
+        for (var key in dact) {
+            var opt = $("<option></option>").text(dact[key]).val(key);
+            $("#gic1_select").append(opt)
+        }
+        for (var key in dbct) {
+            var opt = $("<option></option>").text(dbct[key]).val(key);
+            $("#gic2_select").append(opt)
+        }
+        for (var key in dcct) {
+            var opt = $("<option></option>").text(dcct[key]).val(key);
+            $("#gic3_select").append(opt)
+        }
+        for (var key in ddct) {
+            var opt = $("<option></option>").text(ddct[key]).val(key);
+            $("#gic4_select").append(opt)
+        }
+
+        function gic1_select_commit() {
+            gic1 = $("#gic1_select").val()
+            gic2 = "%"
+            gic3 = "%"
+            gic4 = "%"
+            $('#department_industry').modal('hide')
+            initpage()
+
+        }
+
+        function gic2_select_commit() {
+            gic2 = $("#gic2_select").val()
+            gic1 = "%"
+            gic3 = "%"
+            gic4 = "%"
+            $('#group_industry').modal('hide')
+            initpage()
+        }
+
+        function gic3_select_commit() {
+            gic3 = $("#gic3_select").val()
+            gic1 = "%"
+            gic2 = "%"
+            gic4 = "%"
+            $('#industry_why').modal('hide')
+            initpage()
+        }
+
+        function gic4_select_commit() {
+            gic4 = $("#gic4_select").val()
+            gic1 = "%"
+            gic2 = "%"
+            gic3 = "%"
+            $('#sub_industry').modal('hide')
+            initpage()
         }
 
 
     </script>
 {% endblock %}
 
-{# 这是分页导航栏 #}
 <SCRIPT Language=VBScript><!--
 
-//--></SCRIPT>
+//-->
+
+
+</SCRIPT>

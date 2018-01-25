@@ -17,6 +17,7 @@ from flask_login import current_user
 from controllers.restfulapi import api_blueprint
 # from webapp.admin import create_admin
 from Controller.stock_group.view import stockgroup_view
+from Controller.stock_group.api import stockgroup_api
 
 def create_app(object_name):
     app = Flask(__name__)
@@ -35,6 +36,7 @@ def create_app(object_name):
     app.register_blueprint(investenv_blueprint)
     app.register_blueprint(api_blueprint)
     app.register_blueprint(stockgroup_view)
+    app.register_blueprint(stockgroup_api)
 
     @identity_loaded.connect_via(app)
     def on_identity_loaded(sender, identity):
