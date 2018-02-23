@@ -4,14 +4,14 @@ from webapp.models import *
 from sqlalchemy import create_engine,or_
 from sqlalchemy.orm import sessionmaker
 
-stockgroup_api = Blueprint(
+stock_group_api = Blueprint(
     'stock_group_api',
     __name__,
     url_prefix="/stock_group_api"
 )
 
 
-@stockgroup_api.route('/cns_home', methods=('GET', 'POST'))
+@stock_group_api.route('/cns_home', methods=('GET', 'POST'))
 def get_cns_home_data():
     area = request.args.get('area')
     gic1 = request.args.get("gic1")
@@ -80,7 +80,7 @@ def get_cns_home_data():
              result[0].nature, result[0].hushen_300])
     return jsonify({"stockinfo":stockinfo,"pie1_data":pie1_data,"pie2_data":pie2_data,"pie3_data":pie3_data,"pie4_data":pie4_data})
 
-@stockgroup_api.route('/hushen_300', methods=('GET', 'POST'))
+@stock_group_api.route('/hushen_300', methods=('GET', 'POST'))
 def get_hushen_300_data():
     area = request.args.get('area')
     gic1 = request.args.get("gic1")
@@ -153,7 +153,7 @@ def get_hushen_300_data():
     return jsonify({"stockinfo": stockinfo, "pie1_data": pie1_data, "pie2_data": pie2_data, "pie3_data": pie3_data,
                     "pie4_data": pie4_data})
 
-@stockgroup_api.route('/shangzheng_50', methods=('GET', 'POST'))
+@stock_group_api.route('/shangzheng_50', methods=('GET', 'POST'))
 def get_shangzheng_50_data():
     area = request.args.get('area')
     gic1 = request.args.get("gic1")
@@ -226,7 +226,7 @@ def get_shangzheng_50_data():
     return jsonify({"stockinfo": stockinfo, "pie1_data": pie1_data, "pie2_data": pie2_data, "pie3_data": pie3_data,
                     "pie4_data": pie4_data})
 
-@stockgroup_api.route('/lugutong', methods=('GET', 'POST'))
+@stock_group_api.route('/lugutong', methods=('GET', 'POST'))
 def get_lugutong_data():
     area = request.args.get('area')
     gic1 = request.args.get("gic1")
@@ -299,7 +299,7 @@ def get_lugutong_data():
     return jsonify({"stockinfo": stockinfo, "pie1_data": pie1_data, "pie2_data": pie2_data, "pie3_data": pie3_data,
                     "pie4_data": pie4_data})
 
-@stockgroup_api.route('/cnsb_home', methods=('GET', 'POST'))
+@stock_group_api.route('/cnsb_home', methods=('GET', 'POST'))
 def get_cnsb_home_data():
     gic1 = request.args.get("gic1")
     gic2 = request.args.get("gic2")
@@ -365,7 +365,7 @@ def get_cnsb_home_data():
     return jsonify({"stockinfo": stockinfo, "pie1_data": pie1_data, "pie2_data": pie2_data, "pie3_data": pie3_data,
                     "pie4_data": pie4_data})
 
-@stockgroup_api.route("/update_gics/", methods=('GET', 'POST'))
+@stock_group_api.route("/update_gics/", methods=('GET', 'POST'))
 def update_gics():
     trade_code = request.values.get("trade_code")
     gics_4 = request.values.get('gics_4')
@@ -379,7 +379,7 @@ def update_gics():
     return "true"
 
 
-@stockgroup_api.route("/update_gicsb/", methods=('GET', 'POST'))
+@stock_group_api.route("/update_gicsb/", methods=('GET', 'POST'))
 def update_gicsb():
     trade_code = request.values.get("trade_code")
     gics_4 = request.values.get('gics_4')

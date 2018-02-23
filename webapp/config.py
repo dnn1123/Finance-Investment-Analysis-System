@@ -13,6 +13,7 @@ class DevConfig(Config):
     SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:0000@localhost:3306/test'
     SQLALCHEMY_BINDS = {
     'users_info':        'mysql+pymysql://root:0000@localhost:3306/users_info',
+        'quant':          'mysql+pymysql://root:0000@localhost:3306/quant',
     }
     SECRET_KEY = 'you-will-never-guess'
 

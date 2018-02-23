@@ -18,7 +18,7 @@ main_blueprint = Blueprint(
 Verification_code_list = {}
 
 # 登录界面
-@main_blueprint.route('/')
+@main_blueprint.route('/oldpage')
 def index():
     return redirect(url_for('main.login'))
 
