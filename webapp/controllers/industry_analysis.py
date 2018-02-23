@@ -12,10 +12,10 @@ from sqlalchemy.orm import sessionmaker  # me
 import MySQLdb, time, datetime, re  # re用于判断是否含中文
 
 industryanalysis_blueprint = Blueprint(
-    'industry_analysis',
+    'industry_analysis_old',
     __name__,
     template_folder=path.join(path.pardir, 'templates', 'industry_analysis'),
-    url_prefix="/industry_analysis"
+    url_prefix="/industry_analysis_old"
 )
 
 
@@ -423,9 +423,3 @@ def annual_table_b(year='20151231', parameter=4):  # 默认是2015年
 @login_required
 def market_value():
     return render_template('industry_analysis/market_value.html')
-
-
-@industryanalysis_blueprint.route('/mymark', methods=('GET', 'POST'))  # 太慢了！！！
-@login_required
-def mymark():
-    return render_template('industry_analysis/mymark.html')
