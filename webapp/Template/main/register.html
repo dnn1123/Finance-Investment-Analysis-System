@@ -12,35 +12,31 @@
 <body class="login_bj" >
 
 <div class="zhuce_body">
-	<div class="logo"><a href="#"><img src="images/logo.png" width="114" height="54" border="0"></a></div>
+	<div class="logo"><a href="#"><img src="{{ url_for('static',filename='logo_white.png') }}" width="114" height="54" border="0"></a></div>
     <div class="zhuce_kong">
     	<div class="zc">
         	<div class="bj_bai">
             <h3>欢迎注册</h3>
-       	  	  <form action="" method="get">
-                <input name="" type="text" class="kuang_txt phone" placeholder="手机号">
-                <input name="" type="text" class="kuang_txt email" placeholder="邮箱">
-                <input name="" type="password" class="kuang_txt possword" placeholder="密码">
-                <input name="" type="password" class="kuang_txt possword" placeholder="确认密码">
-                <input name="" type="text" class="kuang_txt yanzm" placeholder="验证码">
-                <div>
-                	<div class="hui_kuang"><img src="images/zc_22.jpg" width="92" height="31"></div>
-                	<div class="shuaxin"><a href="#"><img src="images/zc_25.jpg" width="13" height="14"></a></div>
-                </div>
+       	  	  <form action="{{ url_for('main_api.register') }}" method="post">
+                <input name="user" type="text" class="kuang_txt phone" placeholder="用户名">
+                <input name="pwd" type="password" class="kuang_txt possword" placeholder="密码">
+                <input name="cpwd" type="password" class="kuang_txt possword" placeholder="确认密码">
+                 <div style="color: red">{{ error }}</div>
                 <div>
                		<input name="" type="checkbox" value=""><span>已阅读并同意<a href="#" target="_blank"><span class="lan">《魔法金融使用协议》</span></a></span>
                 </div>
-                <input name="注册" type="button" class="btn_zhuce" value="注册">
-                
+                <input name="注册" type="submit" class="btn_zhuce" value="注册">
                 </form>
             </div>
-        	<div class="bj_right">
+        	<div class="bj_right" style="position: relative">
             	<p>使用以下账号直接登录</p>
                 <a href="#" class="zhuce_qq">QQ注册</a>
                 <a href="#" class="zhuce_wb">微博注册</a>
                 <a href="#" class="zhuce_wx">微信注册</a>
-                <p>已有账号？<a href="{{ url_for("main_new.index") }}">立即登录</a></p>
-            
+                <p>已有账号？<a href="{{ url_for("main.index") }}">立即登录</a></p>
+                <div style="position: absolute;bottom: 10px;right: 10px">
+                    <a href="{{ url_for("main.register_phone") }}" style="color: #37b5f9">使用手机号注册</a>
+                </div>
             </div>
         </div>
         <P>欢迎您使用魔法金融</P>

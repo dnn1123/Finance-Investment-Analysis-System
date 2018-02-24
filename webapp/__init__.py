@@ -3,7 +3,6 @@ from flask import Flask, redirect, url_for, render_template
 from flask_principal import identity_loaded, UserNeed, RoleNeed
 from config import DevConfig
 from controllers.stock import stock_blueprint
-from controllers.main import main_blueprint
 from controllers.stock_solo import stocksolo_blueprint
 from controllers.stock_group import stockgroup_blueprint  # me
 from controllers.global_industry import globalindustry_blueprint  # me
@@ -27,12 +26,13 @@ def create_app(object_name):
     app = Flask(__name__)
     app.config.from_object(DevConfig)
     # create_admin(app)
+    login_manager.session_protection='strong'
+    login_manager.login_view='/'
     login_manager.init_app(app)
     principals.init_app(app)
     db.init_app(app)
     #模块注册
     app.register_blueprint(stock_blueprint)
-    app.register_blueprint(main_blueprint)
     app.register_blueprint(stocksolo_blueprint)
     app.register_blueprint(stockgroup_blueprint)
     app.register_blueprint(globalindustry_blueprint)
