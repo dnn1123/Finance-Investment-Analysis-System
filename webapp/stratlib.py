@@ -1,9 +1,7 @@
 #encoding:utf-8
 from pyalgotrade import strategy,bar
-from pyalgotrade_custom import dataFramefeed
+from webapp.Library.pyalgotrade_custom import dataFramefeed
 import tushare as ts
-import pandas as pd
-import os
 from datetime import *
 def get_k_data_recent(instruement,startdate):
     # 得到日数据（股票instruement,始于startdate,止于今天）
@@ -71,7 +69,6 @@ class Profit_monitoring_strategy(strategy.BacktestingStrategy):
     def onBars(self, bars):
         # 1.判断日期符合 是否买入卖出
         __value=0
-
         t=self.__handlelist__[self.__order__]['time']
         d = datetime.strptime(t, '%Y-%m-%d')
         if bars.getDateTime() == d:

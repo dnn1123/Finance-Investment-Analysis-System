@@ -1,0 +1,40 @@
+{% extends "quant_base.html" %}
+{% block content %}
+<div class="module">
+<div class="module-head">
+    <h2>1号策略</h2>
+</div>
+<div class="module-body">
+    <div class="row-fluid">
+        <div class="span9">
+            策略类型
+            构建参数
+            股票 手续费率 估算区间 滑点 仓位 投入资金  创建日期
+        </div>
+        <div class="span3">
+            <h3>运行中</h3>
+            <h4>运行时间</h4>
+            <button>暂停</button><button class="disabled">已运行</button><button>删除策略</button>
+        </div>
+    </div>
+</div>
+</div>
+<div class="module">
+    <div class="module-head">最近动态</div>
+    <div class="module-body">
+        买入 100卖出 （可用现金10 持仓89）
+    </div>
+
+</div>
+
+
+<div class="module">
+<div class="module-head">策略详情</div>
+<div class="module-body">
+    各种收益率
+    图表
+    持仓情况分析（根据交易记录）
+</div>
+
+</div>
+{% endblock %}

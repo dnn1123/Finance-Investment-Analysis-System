@@ -21,6 +21,11 @@ roles = db.Table(
 #     user_name = db.Column(db.String(80), db.ForeignKey('users.username'))
 #     role_id = db.Column(db.Integer, db.ForeignKey('role.id'))
 #     permissions = db.Column(db.Integer)
+class strategy(db.Model):
+    __bind_key__ = 'quant'
+    __tablename__ = 'strategy'
+    id=db.Column(db.String(255), primary_key=True)
+    base64=db.Column(db.String(255))
 
 
 class users_roles(db.Model):

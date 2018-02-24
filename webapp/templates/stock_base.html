@@ -239,8 +239,15 @@
                         </li>
                         <li><a href="ui-button-icon.html"><i class="menu-icon icon-bold"></i> 财务分析 </a></li>
 
-                        <li><a href="ui-typography.html"><i class="menu-icon icon-book"></i> 量化模型 </a></li>
-
+                        <li><a class="collapsed" data-toggle="collapse" href="#togglePages_quant">
+                            <i class="icon-chevron-down pull-right"></i><i class="menu-icon icon-book">
+                        </i>量化模型 </a>
+                            <ul id="togglePages_quant" class="collapse unstyled">
+                                <li><a href="#"><i class="icon-inbox"></i>量化模型 </a></li>
+                                <li><a href="{{ url_for("quant.backtest") }}"><i class="icon-inbox"></i>历史回测 </a></li>
+                                <li><a href="{{ url_for("quant.realtime_simulation") }}"><i class="icon-inbox"></i>实时模拟 </a></li>
+                            </ul>
+                        </li>
                         <li><a href="table.html"><i class="menu-icon icon-table"></i>交易模型 </a></li>
                         <!--<li><a href="charts.html"><i class="menu-icon icon-bar-chart"></i>Charts </a></li>-->
                     </ul>
