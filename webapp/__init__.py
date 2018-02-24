@@ -21,6 +21,10 @@ from Controller.stock_group.view import stock_group_view
 from Controller.stock_group.api import stock_group_api
 from Controller.quant.view import quant_view
 from Controller.quant.api import quant_api
+from Controller.industry_analysis.view import industry_analysis_view
+from Controller.industry_analysis.api import industry_analysis_api
+from Controller.message.view import message_view
+from Controller.message.api import message_api
 
 def create_app(object_name):
     app = Flask(__name__)
@@ -45,7 +49,10 @@ def create_app(object_name):
     app.register_blueprint(stock_group_api)
     app.register_blueprint(quant_view)
     app.register_blueprint(quant_api)
-
+    app.register_blueprint(industry_analysis_view)
+    app.register_blueprint(industry_analysis_api)
+    app.register_blueprint(message_view)
+    app.register_blueprint(message_api)
     @identity_loaded.connect_via(app)
     def on_identity_loaded(sender, identity):
         identity.user = current_user
