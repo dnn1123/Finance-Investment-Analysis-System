@@ -6,27 +6,28 @@
     <script type="text/javascript" src="{{ url_for('static',filename='js/jquery-ui') }}"></script>
     <script type="text/javascript" src="{{ url_for('static',filename='js/echarts.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static',filename='js/china.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static',filename='js/jquery.pagination.js') }}"></script>
     <script type="text/javascript"
             src="{{ url_for('static',filename='DataTables-1.10.15/media/js/jquery.dataTables.js') }}"></script>
     <script type="text/javascript"
             src="{{ url_for('static',filename='DataTables-1.10.15/fixedcolumns/js/dataTables.fixedColumns.js') }}"></script>
-{#excel#}
-{#dataTables.bootstrap.min.js#}
-<script type="text/javascript"
+    {#excel#}
+    {#dataTables.bootstrap.min.js#}
+    <script type="text/javascript"
             src="{{ url_for('static',filename='DataTables-1.10.15/dataTables.bootstrap.min.js') }}"></script>
-{#dataTables.responsive.min.js#}
-<script type="text/javascript"
+    {#dataTables.responsive.min.js#}
+    <script type="text/javascript"
             src="{{ url_for('static',filename='DataTables-1.10.15/extensions/Responsive/js/dataTables.responsive.min.js') }}"></script>
-{#dataTables.buttons.min.js#}
-<script type="text/javascript"
+    {#dataTables.buttons.min.js#}
+    <script type="text/javascript"
             src="{{ url_for('static',filename='DataTables-1.10.15/extensions/Buttons/js/dataTables.buttons.min.js') }}"></script>
-{#jszip.min.js#}
-<script type="text/javascript"
+    {#jszip.min.js#}
+    <script type="text/javascript"
             src="{{ url_for('static',filename='DataTables-1.10.15/JSZip-2.5.0/jszip.min.js') }}"></script>
-{#buttons.html5.min.js#}
-<script type="text/javascript"
+    {#buttons.html5.min.js#}
+    <script type="text/javascript"
             src="{{ url_for('static',filename='DataTables-1.10.15/extensions/Buttons/js/buttons.html5.min.js') }}"></script>
-{#end excel#}
+    {#end excel#}
     <script type="text/javascript" src="{{ url_for('static',filename='icheck/icheck.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static',filename='js/bootstrap.min.js') }}"></script>
     <script type="text/javascript"
@@ -39,6 +40,7 @@
 
     <link href="{{ url_for('static',filename='bootstrap_select/css/bootstrap-select.css') }}" rel="stylesheet"
           type="text/css">
+    <link href="{{ url_for('static',filename='css/pagination.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ url_for('static',filename='bootstrap_datetimepicker/css/bootstrap-datetimepicker.css') }}"
           rel="stylesheet" type="text/css">
     <link href="{{ url_for('static',filename='icheck/skins/minimal/blue.css') }}" rel="stylesheet" type="text/css">
@@ -172,14 +174,14 @@
                     <li><a href="{{ url_for('stock.home') }}">返回主页 </a></li>
                     <li class="nav-user dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <img src="{{ url_for('static',filename='images/user.png') }}" class="nav-avatar"/>
-                    {% block current_user %}{% endblock %}
+                        {% block current_user %}{% endblock %}
                         <b class="caret"></b></a>
                         <ul class="dropdown-menu">
                             <li><a href="{{ url_for('main.personal') }}">个人信息</a></li>
                             <li><a href="#">编辑资料</a></li>
                             <li><a href="#">账户设置</a></li>
 
-                            <li><a href= {{url_for('main.admin') }}>用户权限管理</a></li>
+                            <li><a href= {{ url_for('main.admin') }}>用户权限管理</a></li>
 
                             <li class="divider"></li>
                             <li><a href={{ url_for('main.logout') }}>退出登录</a></li>
@@ -209,7 +211,7 @@
                         </li>
                         <li><a href="{{ url_for('stock.myposition') }}"><i class="menu-icon icon-paste"></i>当前持仓 </a>
                         </li>
-                        <li><a href="message.html"><i class="menu-icon icon-inbox"></i>我的消息 <b
+                        <li><a href="{{ url_for('message.my_message') }}"><i class="menu-icon icon-inbox"></i>我的消息 <b
                                 class="label green pull-right">
                             11</b> </a></li>
                         <li><a href="task.html"><i class="menu-icon icon-tasks"></i>系统消息 <b
@@ -225,10 +227,14 @@
                         </i><i class="icon-chevron-down pull-right"></i><i class="icon-chevron-up pull-right">
                         </i>财务分析 </a>
                             <ul id="togglePages" class="collapse unstyled">
-                                <li><a href="{{ url_for('stock_solo.basic') }}"><i class="icon-inbox"></i>股票个体分析 </a></li>
-                                <li><a href="{{ url_for('stock_group.navigation') }}"><i class="icon-inbox"></i>股票总体概览 </a></li>
-                                <li><a href="{{ url_for('industry_analysis.mymark') }}"><i class="icon-inbox"></i>整体行业状况分析 </a></li>
-                                <li><a href="{{ url_for('global_industry.basic') }}"><i class="icon-inbox"></i>投资分类评级 </a></li>
+                                <li><a href="{{ url_for('stock_solo.basic') }}"><i class="icon-inbox"></i>股票个体分析 </a>
+                                </li>
+                                <li><a href="{{ url_for('stock_group.navigation') }}"><i class="icon-inbox"></i>股票总体概览
+                                </a></li>
+                                <li><a href="{{ url_for('industry_analysis.mymark') }}"><i class="icon-inbox"></i>整体行业状况分析
+                                </a></li>
+                                <li><a href="{{ url_for('global_industry.basic') }}"><i class="icon-inbox"></i>投资分类评级
+                                </a></li>
                             </ul>
                         </li>
                         <li><a href="ui-button-icon.html"><i class="menu-icon icon-bold"></i> 财务分析 </a></li>
@@ -257,8 +263,8 @@
 </body>
 <script>
     $(document).ready(function () {
-        var navheight=$("div.navbar").height();
-        $("#container").css("margin-top",navheight);
+        var navheight = $("div.navbar").height();
+        $("#container").css("margin-top", navheight);
     })
 </script>
 {% block JavaScripts %}{% endblock %}
