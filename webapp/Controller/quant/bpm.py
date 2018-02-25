@@ -10,7 +10,7 @@ from pyalgotrade.technical import cross
 from enum import Enum, unique
 from webapp.Library.pyalgotrade_custom import dataFramefeed,plotter
 import tushare as ts
-
+import base64
 def handle_form(form):
     type=form.get('type')
     if type=="Pair_Strategy_Based_Bank":
@@ -24,6 +24,15 @@ def handle_form(form):
         mystr.run()
         return mystr.getResult()
 
+def dict_to_sql(dict):
+    tempstr=str(dict)
+    binary=base64.b64encode(tempstr)
+    return binary
+
+def sql_to_dict(bin):
+    tempstr=base64.b64decode(bin)
+    dict=eval(tempstr)
+    return dict
 @unique
 class Strategy(Enum):
     Pair_Strategy_Based_Bank = 0  # 设置sun 的value为  策略id 数据库

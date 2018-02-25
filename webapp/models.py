@@ -24,8 +24,24 @@ roles = db.Table(
 class strategy(db.Model):
     __bind_key__ = 'quant'
     __tablename__ = 'strategy'
-    id=db.Column(db.String(255), primary_key=True)
-    base64=db.Column(db.String(255))
+    id=db.Column(db.Integer, primary_key=True)
+    name_en=db.Column(db.String(255))
+    name_cn = db.Column(db.String(255))
+    type = db.Column(db.String(255))
+    description = db.Column(db.String(255))
+    sample=db.Column(db.BLOB)
+
+class subscriber(db.Model):
+    __bind_key__ = 'quant'
+    __tablename__= 'subscriber'
+    identifier=db.Column(db.Integer,primary_key=True)
+    user=db.Column(db.String(20))
+    strategy_id=db.Column(db.Integer)
+    parameter=db.Column(db.BLOB)
+    status=db.Column(db.String(255))
+    build_date=db.Column(db.DateTime)
+    threadpid=db.Column(db.Integer)
+    threadname=db.Column(db.String(255))
 
 
 class users_roles(db.Model):
