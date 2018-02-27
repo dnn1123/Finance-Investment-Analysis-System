@@ -1,0 +1,205 @@
+{% extends "quant_base.html" %}
+{% block styles %}
+    <style>
+        .loader {
+            text-align: center;
+        }
+
+        .dot {
+            width: 24px;
+            height: 24px;
+            background: #3ac;
+            border-radius: 100%;
+            display: inline-block;
+            animation: slide 1s infinite;
+        }
+
+        .dot:nth-child(1) {
+            animation-delay: 0.1s;
+            background: #32aacc;
+        }
+
+        .dot:nth-child(2) {
+            animation-delay: 0.2s;
+            background: #64aacc;
+        }
+
+        .dot:nth-child(3) {
+            animation-delay: 0.3s;
+            background: #96aacc;
+        }
+
+        .dot:nth-child(4) {
+            animation-delay: 0.4s;
+            background: #c8aacc;
+        }
+
+        .dot:nth-child(5) {
+            animation-delay: 0.5s;
+            background: #faaacc;
+        }
+
+        @-moz-keyframes slide {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.3;
+                transform: scale(2);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        @-webkit-keyframes slide {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.3;
+                transform: scale(2);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        @-o-keyframes slide {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.3;
+                transform: scale(2);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        @keyframes slide {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.3;
+                transform: scale(2);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+    </style>
+{% endblock %}
+{% block content %}
+    <div class="module">
+        <div class="module-head">回测参数</div>
+        <div class="module-body">
+            <select id="form_type">
+                <option disabled selected value>请选择……</option>
+                <option value="Pair_Strategy_Based_Bank">配对策略</option>
+                <option value="DoubleMA_Strategy">双均线策略</option>
+            </select>
+            <div id="div_form"></div>
+        </div>
+        <div class="module-foot"></div>
+    </div>
+
+    <div class="module">
+        <div class="module-head">
+            回测结果
+        </div>
+        <div class="module-body">
+            <div id="loading"></div>
+            <div id="div_result" style="display: none">
+                <div class="btn-controls">
+                    <div class="btn-box-row row-fluid">
+                        <a href="#" class="btn-box big span4"><i class="icon-money "></i><b id="portfolio">-</b>
+                            <p class="text-muted">
+                                市值</p>
+                        </a><a href="#" class="btn-box big span4"><i class="icon-glass"></i><b id="culrtn">-</b>
+                        <p class="text-muted">
+                            累计收益率</p>
+                    </a><a href="#" class="btn-box big span4"><i class="icon-random"></i><b id="meanrtn">-</b>
+                        <p class="text-muted">
+                            平均日收益率</p>
+                    </a>
+                    </div>
+                </div>
+                <div class="btn-controls">
+                    <div class="btn-box-row row-fluid">
+                        <a href="#" class="btn-box big span4"><i class="icon-indent-right "></i><b id="stdrtn">-</b>
+                            <p class="text-muted">
+                                日收益率标准差</p>
+                        </a><a href="#" class="btn-box big span4"><i class="icon-star"></i><b id="sharp">-</b>
+                        <p class="text-muted">
+                            夏普率</p>
+                    </a><a href="#" class="btn-box big span4"><i class=" icon-arrow-down"></i><b id="MDD">-</b>
+                        <p class="text-muted">
+                            最大回撤</p>
+                    </a>
+                    </div>
+                </div>
+                <div class="btn-controls">
+                    <div class="btn-box-row row-fluid">
+                        <a href="#" class="btn-box big span4"><i class=" icon-time "></i><b id="stimes">-</b>
+                            <p class="text-muted">
+                                总交易次数</p>
+                        </a><a href="#" class="btn-box big span4"><i class=" icon-time"></i><b id="gtimes">-</b>
+                        <p class="text-muted">
+                            盈利交易次数</p>
+                    </a><a href="#" class="btn-box big span4"><i class=" icon-time"></i><b id="ltimes">-</b>
+                        <p class="text-muted">
+                            亏损交易次数</p>
+                    </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block scripts %}
+    <script>
+        $("#form_type").on('change', function (e) {
+            $.ajax({
+                type: "GET",
+                data: {"type": $("#form_type").val()},
+                url: "{{ url_for("quant_api.request_form") }}",
+                dataType: "html",
+                success: function (data) {
+                    $("#div_form").html(data)
+                }
+            })
+        })
+        $("#div_form").on('click', '.submit', function () {
+            $.ajax({
+                type: "POST",//方法类型
+                dataType: "json",//预期服务器返回的数据类型
+                url: "{{ url_for("quant_api.back_test") }}",//url
+                data: $('#backtest_form').serialize(),
+                success: function (result) {
+                    $('#loading').empty()
+                    $('#div_result').css('display','inline')
+                    $("#portfolio").text(result.portfolio)
+                    $("#culrtn").text(result.culrtn)
+                    $("#meanrtn").text(result.meanrtn)
+                    $("#stdrtn").text(result.stdrtn)
+                    $("#sharp").text(result.sharp)
+                    $("#MDD").text(result.MDD)
+                    $("#stimes").text(result.stimes)
+                    $("#gtimes").text(result.gtimes)
+                    $("#ltimes").text(result.ltimes)
+                },
+                error: function () {
+                    alert("异常！");
+                },
+                beforeSend: function () {
+                    $('#div_result').css('display','none')
+                    html = '<div class="loader"> <div class="dot"></div> <div class="dot"></div> <div class="dot"></div> <div class="dot"></div> <div class="dot"></div> </div>'
+                    $('#loading').html(html)
+                }
+            });
+        })
+    </script>
+{% endblock %}

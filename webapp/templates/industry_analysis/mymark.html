@@ -1354,7 +1354,7 @@
         function CreateChart(province) {
             $.ajax({
                 type: 'GET',
-                url: '{{ url_for("restfulapi.market_value") }}',
+                url: '{{ url_for("industry_analysis_api.market_value") }}',
                 data: {
                     province: province,
                     starttime: '19911231',
@@ -1456,7 +1456,7 @@
             var dz = opt.dataZoom[0];
             $.ajax({
                 type: 'GET',
-                url: '{{url_for("restfulapi.market_value")}}',
+                url: '{{url_for("industry_analysis_api.market_value")}}',
                 data: {
                     province: province,
                     starttime: opt.xAxis[0].data[dz.endValue],
@@ -1631,7 +1631,7 @@
             indexes = ['tot_oper_rev', 'tot_assets', 'tot_liab', 'wgsd_com_eq']
             $.ajax({
                 type: 'GET',
-                url: '{{ url_for("restfulapi.market_one") }}',
+                url: '{{ url_for("industry_analysis_api.market_one") }}',
                 data: {
                     province: province,
                     time: '20161231',
@@ -2089,7 +2089,7 @@
             $('#stockcode4').empty();
             $.ajax({
                 type: 'GET',
-                url: '{{ url_for("restfulapi.market_form1") }}',
+                url: '{{ url_for("industry_analysis_api.market_form1") }}',
                 data: {
                     code: thiscode1,
                 },
@@ -2132,7 +2132,7 @@
             $('#stockcode4').empty();
             $.ajax({
                 type: 'GET',
-                url: '{{ url_for("restfulapi.market_form2") }}',
+                url: '{{ url_for("industry_analysis_api.market_form2") }}',
                 data: {
                     code: thiscode2,
                 },
@@ -2173,7 +2173,7 @@
             $('#stockcode4').empty();
             $.ajax({
                 type: 'GET',
-                url: '{{ url_for("restfulapi.market_form3") }}',
+                url: '{{ url_for("industry_analysis_api.market_form3") }}',
                 data: {
                     code: thiscode3,
                 },
@@ -2244,7 +2244,7 @@
             $('#stockcode1').empty();//部门选择框
             $.ajax({
                 type: 'GET',
-                url: '{{ url_for("restfulapi.market_form0") }}',
+                url: '{{ url_for("industry_analysis_api.market_bumen") }}',
                 dataType: 'json',
                 success: function (data) {
                     for (var i = 0; i < data.my_value.length; i++) {
@@ -2258,7 +2258,7 @@
             });
             $.ajax({
                 type: 'GET',
-                url: '{{ url_for("restfulapi.market_status1") }}',
+                url: '{{ url_for("industry_analysis_api.market_status1") }}',
                 data: {
                     code: thiscode1,
                     starttime: '19911231',
@@ -2359,7 +2359,7 @@
         function requestChart1() {
             $.ajax({
                 type: 'GET',
-                url: '{{ url_for("restfulapi.market_status1") }}',
+                url: '{{ url_for("industry_analysis_api.market_status1") }}',
                 data: {
                     province: province,
                     code: thiscode1,
@@ -2382,7 +2382,7 @@
         function requestChart2() {
             $.ajax({
                 type: 'GET',
-                url: '{{ url_for("restfulapi.market_status2") }}',
+                url: '{{ url_for("industry_analysis_api.market_status2") }}',
                 data: {
                     province: province,
                     code: thiscode2,
@@ -2404,7 +2404,7 @@
         function requestChart3() {
             $.ajax({
                 type: 'GET',
-                url: '{{ url_for("restfulapi.market_status3") }}',
+                url: '{{ url_for("industry_analysis_api.market_status3") }}',
                 data: {
                     province: province,
                     code: thiscode3,
@@ -2426,7 +2426,7 @@
         function requestChart4() {
             $.ajax({
                 type: 'GET',
-                url: '{{ url_for("restfulapi.market_status4") }}',
+                url: '{{ url_for("industry_analysis_api.market_status4") }}',
                 data: {
 
                     code: thiscode4,
@@ -2598,7 +2598,7 @@
         function RequestChart1() {
             $.ajax({
                 type: 'GET',
-                url: '{{ url_for("restfulapi.market_status1") }}',
+                url: '{{ url_for("industry_analysis_api.market_status1") }}',
                 data: {
                     province: province,
                     code: thiscode1,
@@ -2616,7 +2616,7 @@
         function RequestChart2() {
             $.ajax({
                 type: 'GET',
-                url: '{{ url_for("restfulapi.market_status2") }}',
+                url: '{{ url_for("industry_analysis_api.market_status2") }}',
                 data: {
                     province: province,
                     code: thiscode2,
@@ -2634,7 +2634,7 @@
         function RequestChart3() {
             $.ajax({
                 type: 'GET',
-                url: '{{ url_for("restfulapi.market_status3") }}',
+                url: '{{ url_for("industry_analysis_api.market_status3") }}',
                 data: {
                     province: province,
                     code: thiscode3,
@@ -2652,7 +2652,7 @@
         function RequestChart4() {
             $.ajax({
                 type: 'GET',
-                url: '{{ url_for("restfulapi.market_status4") }}',
+                url: '{{ url_for("industry_analysis_api.market_status4") }}',
                 data: {
                     province: province,
                     code: thiscode4,
@@ -2674,7 +2674,7 @@
             var dz = opt.dataZoom[0];
             $.ajax({
                 type: 'GET',
-                url: '{{url_for("restfulapi.market_status1")}}',
+                url: '{{url_for("industry_analysis_api.market_status1")}}',
                 data: {
                     province: province,
                     code: thiscode1,
@@ -2696,7 +2696,7 @@
             var dz = opt.dataZoom[0];
             $.ajax({
                 type: 'GET',
-                url: '{{url_for("restfulapi.market_status2")}}',
+                url: '{{url_for("industry_analysis_api.market_status2")}}',
                 data: {
                     province: province,
                     code: thiscode2,
@@ -2718,7 +2718,7 @@
             var dz = opt.dataZoom[0];
             $.ajax({
                 type: 'GET',
-                url: '{{url_for("restfulapi.market_status3")}}',
+                url: '{{url_for("industry_analysis_api.market_status3")}}',
                 data: {
                     code: thiscode3,
                     province: province,
@@ -2740,7 +2740,7 @@
             var dz = opt.dataZoom[0];
             $.ajax({
                 type: 'GET',
-                url: '{{url_for("restfulapi.market_status4")}}',
+                url: '{{url_for("industry_analysis_api.market_status4")}}',
                 data: {
                     province: province,
                     code: thiscode4,
@@ -2972,7 +2972,7 @@
             $('#div_compare1').empty();
             $.ajax({
                 type: 'GET',
-                url: '{{ url_for("restfulapi.market_form0") }}',
+                url: '{{ url_for("industry_analysis_api.market_bumen") }}',
                 dataType: 'json',
                 success: function (data) {
                     for (var i = 0; i < data.my_value.length; i++) {
@@ -2983,7 +2983,7 @@
             dataSeries1 = [];
             $.ajax({
                 type: 'GET',
-                url: '{{ url_for("restfulapi.market_status1") }}',
+                url: '{{ url_for("industry_analysis_api.market_status1") }}',
                 data: {
                     code: '10',
                     starttime: '19911231',
@@ -3009,7 +3009,7 @@
                     }
                     $.ajax({
                         type: 'GET',
-                        url: '{{ url_for("restfulapi.market_status1") }}',
+                        url: '{{ url_for("industry_analysis_api.market_status1") }}',
                         data: {
                             code: '15',
                             starttime: '19911231',
@@ -3114,7 +3114,7 @@
             for (var k = 0; k < codelists1.length; k++) {
                 $.ajax({
                     type: 'GET',
-                    url: '{{ url_for("restfulapi.market_status1") }}',
+                    url: '{{ url_for("industry_analysis_api.market_status1") }}',
                     data: {
                         code: codelists1[k],
                         starttime: '19911231',
@@ -3214,7 +3214,7 @@
             var dz = opt.dataZoom[0];
             $.ajax({
                 type: 'GET',
-                url: '{{url_for("restfulapi.market_status1")}}',
+                url: '{{url_for("industry_analysis_api.market_status1")}}',
                 data: {
                     code: '10',
                     starttime: opt.xAxis[0].data[dz.endValue],
@@ -3280,7 +3280,7 @@
                     for (var k = 0; k < codelists1.length; k++) {
                         $.ajax({
                             type: 'GET',
-                            url: '{{url_for("restfulapi.market_status1")}}',
+                            url: '{{url_for("industry_analysis_api.market_status1")}}',
                             data: {
                                 province: province,
                                 code: codelists1[k],
@@ -3311,7 +3311,7 @@
         function CreateTables1(codelists1) {
             $.ajax({
                 type: 'GET',
-                url: '{{url_for("restfulapi.market_status1")}}',
+                url: '{{url_for("industry_analysis_api.market_status1")}}',
                 data: {
                     code: '10',
                     starttime: '19911231',
@@ -3377,7 +3377,7 @@
                     for (var k = 0; k < codelists1.length; k++) {
                         $.ajax({
                             type: 'GET',
-                            url: '{{url_for("restfulapi.market_status1")}}',
+                            url: '{{url_for("industry_analysis_api.market_status1")}}',
                             data: {
                                 province: province,
                                 code: codelists1[k],
@@ -3409,7 +3409,7 @@
         function creat_compares1(thiscodes1) {
             $.ajax({
                 type: 'GET',
-                url: '{{ url_for("restfulapi.market_status1") }}',
+                url: '{{ url_for("industry_analysis_api.market_status1") }}',
                 data: {
                     code: thiscodes1,
                     starttime: '19911231',
@@ -3536,7 +3536,7 @@
         function creat_echart_compare_2() {
             $.ajax({
                 type: 'GET',
-                url: '{{ url_for("restfulapi.market_hangyezu") }}',
+                url: '{{ url_for("industry_analysis_api.market_hangyezu") }}',
                 dataType: 'json',
                 success: function (data) {
                     for (var i = 0; i < data.my_value.length; i++) {
@@ -3547,7 +3547,7 @@
             dataSeries2 = []
             $.ajax({
                 type: 'GET',
-                url: '{{ url_for("restfulapi.market_status2") }}',
+                url: '{{ url_for("industry_analysis_api.market_status2") }}',
                 data: {
                     province: province,
                     code: '1010',
@@ -3573,7 +3573,7 @@
                     }
                     $.ajax({
                         type: 'GET',
-                        url: '{{ url_for("restfulapi.market_status2") }}',
+                        url: '{{ url_for("industry_analysis_api.market_status2") }}',
                         data: {
                             province: province,
                             code: '1510',
@@ -3677,7 +3677,7 @@
             for (var k = 0; k < codelists2.length; k++) {
                 $.ajax({
                     type: 'GET',
-                    url: '{{ url_for("restfulapi.market_status2") }}',
+                    url: '{{ url_for("industry_analysis_api.market_status2") }}',
                     data: {
                         province: province,
                         code: codelists2[k],
@@ -3777,7 +3777,7 @@
             var dz = opt.dataZoom[0];
             $.ajax({
                 type: 'GET',
-                url: '{{url_for("restfulapi.market_status2")}}',
+                url: '{{url_for("industry_analysis_api.market_status2")}}',
                 data: {
                     province: province,
                     code: '1010',
@@ -3843,7 +3843,7 @@
                     for (var k = 0; k < codelists2.length; k++) {
                         $.ajax({
                             type: 'GET',
-                            url: '{{url_for("restfulapi.market_status2")}}',
+                            url: '{{url_for("industry_analysis_api.market_status2")}}',
                             data: {
                                 province: province,
                                 code: codelists2[k],
@@ -3874,7 +3874,7 @@
         function CreateTables2(codelists2) {
             $.ajax({
                 type: 'GET',
-                url: '{{url_for("restfulapi.market_status2")}}',
+                url: '{{url_for("industry_analysis_api.market_status2")}}',
                 data: {
                     province: province,
                     code: '1010',
@@ -3940,7 +3940,7 @@
                     for (var k = 0; k < codelists2.length; k++) {
                         $.ajax({
                             type: 'GET',
-                            url: '{{url_for("restfulapi.market_status2")}}',
+                            url: '{{url_for("industry_analysis_api.market_status2")}}',
                             data: {
                                 province: province,
                                 code: codelists2[k],
@@ -3972,7 +3972,7 @@
         function creat_compares2(thiscodes2) {
             $.ajax({
                 type: 'GET',
-                url: '{{ url_for("restfulapi.market_status2") }}',
+                url: '{{ url_for("industry_analysis_api.market_status2") }}',
                 data: {
                     province: province,
                     code: thiscodes2,
@@ -4098,7 +4098,7 @@
         function creat_echart_compare_3() {
             $.ajax({
                 type: 'GET',
-                url: '{{ url_for("restfulapi.market_hangye") }}',
+                url: '{{ url_for("industry_analysis_api.market_hangye") }}',
                 dataType: 'json',
                 success: function (data) {
                     for (var i = 0; i < data.my_value.length; i++) {
@@ -4109,7 +4109,7 @@
             dataSeries3 = []
             $.ajax({
                 type: 'GET',
-                url: '{{ url_for("restfulapi.market_status3") }}',
+                url: '{{ url_for("industry_analysis_api.market_status3") }}',
                 data: {
                     province: province,
                     code: '101010',
@@ -4135,7 +4135,7 @@
                     }
                     $.ajax({
                         type: 'GET',
-                        url: '{{ url_for("restfulapi.market_status3") }}',
+                        url: '{{ url_for("industry_analysis_api.market_status3") }}',
                         data: {
                             province: province,
                             code: '101020',
@@ -4239,7 +4239,7 @@
             for (var k = 0; k < codelists3.length; k++) {
                 $.ajax({
                     type: 'GET',
-                    url: '{{ url_for("restfulapi.market_status3") }}',
+                    url: '{{ url_for("industry_analysis_api.market_status3") }}',
                     data: {
                         province: province,
                         code: codelists3[k],
@@ -4339,7 +4339,7 @@
             var dz = opt.dataZoom[0];
             $.ajax({
                 type: 'GET',
-                url: '{{url_for("restfulapi.market_status3")}}',
+                url: '{{url_for("industry_analysis_api.market_status3")}}',
                 data: {
                     province: province,
                     code: '101010',
@@ -4405,7 +4405,7 @@
                     for (var k = 0; k < codelists3.length; k++) {
                         $.ajax({
                             type: 'GET',
-                            url: '{{url_for("restfulapi.market_status3")}}',
+                            url: '{{url_for("industry_analysis_api.market_status3")}}',
                             data: {
                                 province: province,
                                 code: codelists3[k],
@@ -4436,7 +4436,7 @@
         function CreateTables3(codelists3) {
             $.ajax({
                 type: 'GET',
-                url: '{{url_for("restfulapi.market_status3")}}',
+                url: '{{url_for("industry_analysis_api.market_status3")}}',
                 data: {
                     province: province,
                     code: '101010',
@@ -4502,7 +4502,7 @@
                     for (var k = 0; k < codelists3.length; k++) {
                         $.ajax({
                             type: 'GET',
-                            url: '{{url_for("restfulapi.market_status3")}}',
+                            url: '{{url_for("industry_analysis_api.market_status3")}}',
                             data: {
                                 province: province,
                                 code: codelists3[k],
@@ -4534,7 +4534,7 @@
         function creat_compares3(thiscodes3) {
             $.ajax({
                 type: 'GET',
-                url: '{{ url_for("restfulapi.market_status3") }}',
+                url: '{{ url_for("industry_analysis_api.market_status3") }}',
                 data: {
                     province: province,
                     code: thiscodes3,
@@ -4661,7 +4661,7 @@
         function creat_echart_compare_4() {
             $.ajax({
                 type: 'GET',
-                url: '{{ url_for("restfulapi.market_zihangye") }}',
+                url: '{{ url_for("industry_analysis_api.market_zihangye") }}',
                 dataType: 'json',
                 success: function (data) {
                     for (var i = 0; i < data.my_value.length; i++) {
@@ -4672,7 +4672,7 @@
             dataSeries4 = []
             $.ajax({
                 type: 'GET',
-                url: '{{ url_for("restfulapi.market_status4") }}',
+                url: '{{ url_for("industry_analysis_api.market_status4") }}',
                 data: {
                     province: province,
                     code: '10101010',
@@ -4698,7 +4698,7 @@
                     }
                     $.ajax({
                         type: 'GET',
-                        url: '{{ url_for("restfulapi.market_status4") }}',
+                        url: '{{ url_for("industry_analysis_api.market_status4") }}',
                         data: {
                             province: province,
                             code: '10101020',
@@ -4802,7 +4802,7 @@
             for (var k = 0; k < codelists4.length; k++) {
                 $.ajax({
                     type: 'GET',
-                    url: '{{ url_for("restfulapi.market_status4") }}',
+                    url: '{{ url_for("industry_analysis_api.market_status4") }}',
                     data: {
                         province: province,
                         code: codelists4[k],
@@ -4902,7 +4902,7 @@
             var dz = opt.dataZoom[0];
             $.ajax({
                 type: 'GET',
-                url: '{{url_for("restfulapi.market_status4")}}',
+                url: '{{url_for("industry_analysis_api.market_status4")}}',
                 data: {
                     province: province,
                     code: '10101010',
@@ -4968,7 +4968,7 @@
                     for (var k = 0; k < codelists4.length; k++) {
                         $.ajax({
                             type: 'GET',
-                            url: '{{url_for("restfulapi.market_status4")}}',
+                            url: '{{url_for("industry_analysis_api.market_status4")}}',
                             data: {
                                 province: province,
                                 code: codelists4[k],
@@ -4999,7 +4999,7 @@
         function CreateTables4(codelists4) {
             $.ajax({
                 type: 'GET',
-                url: '{{url_for("restfulapi.market_status4")}}',
+                url: '{{url_for("industry_analysis_api.market_status4")}}',
                 data: {
                     province: province,
                     code: '10101010',
@@ -5065,7 +5065,7 @@
                     for (var k = 0; k < codelists4.length; k++) {
                         $.ajax({
                             type: 'GET',
-                            url: '{{url_for("restfulapi.market_status4")}}',
+                            url: '{{url_for("industry_analysis_api.market_status4")}}',
                             data: {
                                 province: province,
                                 code: codelists4[k],
@@ -5097,7 +5097,7 @@
         function creat_compares4(thiscodes4) {
             $.ajax({
                 type: 'GET',
-                url: '{{ url_for("restfulapi.market_status4") }}',
+                url: '{{ url_for("industry_analysis_api.market_status4") }}',
                 data: {
                     province: province,
                     code: thiscodes4,

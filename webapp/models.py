@@ -4,15 +4,14 @@ from sqlalchemy import func
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import AnonymousUserMixin, UserMixin
 
-
 # ORM访问数据库
 db = SQLAlchemy()
 
 roles = db.Table(
-        'role_users',
-        db.Column('user_name', db.String(80), db.ForeignKey('users.username')),
-        db.Column('role_id', db.Integer, db.ForeignKey('role.id')),
-        db.Column('permissions', db.Integer),
+    'role_users',
+    db.Column('user_name', db.String(80), db.ForeignKey('users.username')),
+    db.Column('role_id', db.Integer, db.ForeignKey('role.id')),
+    db.Column('permissions', db.Integer),
 )
 
 
@@ -22,6 +21,11 @@ roles = db.Table(
 #     user_name = db.Column(db.String(80), db.ForeignKey('users.username'))
 #     role_id = db.Column(db.Integer, db.ForeignKey('role.id'))
 #     permissions = db.Column(db.Integer)
+class strategy(db.Model):
+    __bind_key__ = 'quant'
+    __tablename__ = 'strategy'
+    id=db.Column(db.String(255), primary_key=True)
+    base64=db.Column(db.String(255))
 
 
 class users_roles(db.Model):
@@ -31,6 +35,38 @@ class users_roles(db.Model):
     user_name = db.Column(db.String(80), db.ForeignKey('users.username'))
     permissions = db.Column(db.Integer)
     # permissions_name = db.Column(db.Integer)
+
+
+class input_message(db.Model):
+    __bind_key__ = 'my_message'
+    __tablename__ = 'input_message'
+    post_id = db.Column(db.Integer, primary_key=True)
+    poster = db.Column(db.String(20))
+    post_text = db.Column(db.Text)
+    post_time = db.Column(db.String(45))
+    comment_num = db.Column(db.Integer)
+    retrant_num = db.Column(db.Integer)
+    upvote_num = db.Column(db.Integer)
+    if_retrant = db.Column(db.Integer)
+    retrant_poster = db.Column(db.String(20))
+    retrant_text = db.Column(db.Text)
+
+
+class comments(db.Model):
+    __bind_key__ = 'my_message'
+    __tablename__ = 'comments'
+    comment_id = db.Column(db.Integer, primary_key=True)
+    post_id = db.Column(db.Integer)
+    commenter = db.Column(db.String(20))
+    comment_text = db.Column(db.Text)
+    comment_time = db.Column(db.String(45))
+
+
+class follows(db.Model):
+    __bind_key__ = 'my_message'
+    __tablename__ = 'follows'
+    follower = db.Column(db.String(20), primary_key=True)
+    followed = db.Column(db.String(20), primary_key=True)
 
 
 # 权限常量
@@ -46,6 +82,7 @@ class users(UserMixin, db.Model):
     # username = db.StringField(max_length=100, primary_key=True)
     username = db.Column(db.String(45), primary_key=True)
     password = db.Column(db.String(45))
+
     # def __init__(self, **kwargs):
     #     super(User, self).__init__(**kwargs)
     def can(self, permissions):
@@ -94,17 +131,19 @@ class favorite_code(db.Model):
     user_name = db.Column(db.String(20), db.ForeignKey('users.username'))
     code = db.Column(db.String(10))
 
+
 class history(db.Model):
     __bind_key__ = 'users_info'
     __tablename__ = 'history'
     ID = db.Column(db.Integer, primary_key=True)
     users = db.Column(db.String(20), db.ForeignKey('users.username'))
     code = db.Column(db.String(10))
-    position=db.Column(db.String(10))
-    price=db.Column(db.Numeric)
-    amount=db.Column(db.Integer)
-    commission=db.Column(db.Numeric)
-    time=db.Column(db.DateTime())
+    position = db.Column(db.String(10))
+    price = db.Column(db.Numeric)
+    amount = db.Column(db.Integer)
+    commission = db.Column(db.Numeric)
+    time = db.Column(db.DateTime())
+
 
 class investment_portfolio(db.Model):
     __bind_key__ = 'users_info'
@@ -112,8 +151,9 @@ class investment_portfolio(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_name = db.Column(db.String(20), db.ForeignKey('users.username'))
     code = db.Column(db.String(10))
-    shares=db.Column(db.Integer)
-    total_cost=db.Column(db.Numeric)
+    shares = db.Column(db.Integer)
+    total_cost = db.Column(db.Numeric)
+
 
 class Role(db.Model):
     __bind_key__ = 'users_info'
@@ -122,11 +162,13 @@ class Role(db.Model):
     name = db.Column(db.String(80), unique=True)
     description = db.Column(db.String(255))
 
+
 class basic_stock(db.Model):
-    __tablename__="basic_stock"
-    code=db.Column(db.String(20), primary_key=True)
-    name=db.Column(db.String(20))
-    industry=db.Column(db.String(20))
+    __tablename__ = "basic_stock"
+    code = db.Column(db.String(20), primary_key=True)
+    name = db.Column(db.String(20))
+    industry = db.Column(db.String(20))
+
 
 class stock_basics(db.Model):
     __tablename__ = 'stock_basics'
@@ -514,6 +556,3 @@ class deposit_reserve_rate(db.Model):
     __tablename__ = 'deposit_reserve_rate'
     datetime = db.Column(db.DateTime, primary_key=True)
     M0048187 = db.Column(db.Numeric(6, 3))
-
-
-
