@@ -1,21 +1,23 @@
 # coding=utf-8
-from flask import Blueprint, redirect, url_for, flash, render_template, current_app,request, jsonify
+import os
+from flask import Blueprint, redirect, url_for, flash, render_template, current_app, request, jsonify
 from webapp.forms import LoginForm, RegisterForm
-from webapp.models import users, db,Permission
+from webapp.models import users, db, Permission
 from flask_login import login_user, login_required, logout_user, current_user
 from flask_principal import Identity, AnonymousIdentity, identity_changed
-from webapp.decorators import admin_required,permission_required
+from webapp.decorators import admin_required, permission_required
 from webapp.models import *
 from webapp.sms import *
 import random
+
 main_blueprint = Blueprint(
     'main',
     __name__,
     template_folder='../templates/main'
 )
 
-
 Verification_code_list = {}
+
 
 # 登录界面
 @main_blueprint.route('/')
@@ -38,8 +40,18 @@ def login():
         # text = "【253云通讯】您的验证码是1234"
         # send_sms(text, phone)
         flash("You have been logged in", category="success")
-        return redirect(url_for('stock.home',usersname=user.username))
+        return redirect(url_for('stock.home', usersname=user.username))
     return render_template('main/login.html', form=form, register_form=register_form)
+
+
+@main_blueprint.route('/profilephoto/', methods=['GET', 'POST'])
+def profilephoto():
+    if request.method == 'POST':
+        f = request.files['file']
+        newname = current_user.username + '.jpg'
+        upload_path = os.path.join(os.getcwd(), 'webapp', 'static', 'avatar', newname)  # 注意：没有的文件夹一定要先创建，不然会提示没有该路径
+        f.save(upload_path)
+    return render_template('main/profilephoto.html', current_user=current_user)
 
 
 @main_blueprint.route('/personal/', methods=['GET', 'POST'])
@@ -48,12 +60,14 @@ def personal():
     # rolename = Role.query.filter_by(id=user.permissions).first()
     role = Role.query.filter_by(id=user.permissions).first()
     rolename = role.description
-    return render_template('personal/person.html',user=user,rolename=rolename)
+    return render_template('personal/person.html', user=user, rolename=rolename)
+
 
 @main_blueprint.route('/myposition/', methods=['GET', 'POST'])
 @login_required
 def analysis():
     return render_template('personal/analysis.html', current_user=current_user)
+
 
 # 手机注册
 @main_blueprint.route('/register_phone', methods=['GET', 'POST'])
@@ -80,6 +94,7 @@ def register_phone():
     data['msg'] = 'failure'
     return jsonify(data)
 
+
 # 发送验证码短信
 @main_blueprint.route('/send_Verification_code', methods=['GET', 'POST'])
 def send_Verification_code():
@@ -89,11 +104,11 @@ def send_Verification_code():
     result = users.query.filter_by(username=phone_number).first()
     if result:
         data['exit'] = 'true'
-        data['aaa'] =  result.username
+        data['aaa'] = result.username
         return jsonify(data)
     else:
         data['exit'] = 'flase'
-        Verification_code = str(random.randint(100000,999999))
+        Verification_code = str(random.randint(100000, 999999))
         Verification_code_list[phone_number] = Verification_code
         text = '【中勋科技】您的验证码是' + Verification_code
         send_sms(text, phone_number)
@@ -138,9 +153,11 @@ def logout():
     )
     return redirect(url_for('main.login'))
 
+
 @main_blueprint.route('/test')
 def test():
     return render_template('test.html')
+
 
 @main_blueprint.route('/my_favoritecode/', methods=['GET', 'POST'])
 def my_favoritecode():
@@ -148,7 +165,8 @@ def my_favoritecode():
     # rolename = Role.query.filter_by(id=user.permissions).first()
     role = Role.query.filter_by(id=user.permissions).first()
     rolename = role.description
-    return render_template('personal/my_favoritecode.html',user=user,rolename=rolename)
+    return render_template('personal/my_favoritecode.html', user=user, rolename=rolename)
+
 
 @main_blueprint.route('/admin/', methods=['GET', 'POST'])
 @login_required
@@ -158,4 +176,4 @@ def admin():
     # rolename = Role.query.filter_by(id=user.permissions).first()
     role = Role.query.filter_by(id=user.permissions).first()
     rolename = role.description
-    return render_template('admin/admin_permission.html',user=user,rolename=rolename)
+    return render_template('admin/admin_permission.html', user=user, rolename=rolename)

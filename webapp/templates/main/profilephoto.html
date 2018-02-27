@@ -1,0 +1,110 @@
+{% extends "stock_base.html" %}
+{% block current_user %}
+    {{ current_user.username }}
+{% endblock %}
+
+{% block body %}
+    <style>
+
+        .my_profile {
+            height: 200px;
+            width: 200px;
+            float: left;
+            margin-top: 20px;
+            margin-left: 20px;
+            border: 0.1px solid darkgray
+        }
+
+        .my_function {
+            height: 50px;
+            width: 220px;
+            float: left;
+            margin-top: 20px;
+            margin-left: 10px;
+            margin-bottom: 10px;
+        }
+
+        .thebutton {
+            height: 30px;
+            width: 95px;
+            background-color: grey;
+            border: none;
+            color: white;
+            text-align: center;
+            font-kerning: normal;
+            text-decoration: none;
+            display: inline-block;
+            border-radius: 18px;
+            font-size: 16px;
+            font-family: KaiTi;
+            float: left;
+            margin-top: 10px;
+            margin-left: 10px;
+        }
+
+    </style>
+
+    <div class="span9">
+        <div class="content">
+            <div class="btn-controls">
+                <!--上传头像-->
+                <div class="btn-box-row row-fluid">
+                    <div class="module span4">
+                        <div class="module-body">
+                            <img class="my_profile" id="img-change" src="">
+                            <div class="my_function">
+                                <button id="to_choose" class="thebutton">选择文件</button>
+                                <form action="{{ url_for("main.profilephoto") }}" enctype='multipart/form-data' method='POST'>
+                                    <input type="file" id="my_avatar" style="display:none" name="file" onchange="filechange(event)"/>
+                                    <button type="submit" id="to_upload" class="thebutton">上传头像</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 事件模块 -->
+    <script>
+        var myavatar, myfile;
+        //选择图片预览
+        $("#to_choose").click(function () {//点击导入按钮，使files触发点击事件，然后完成读取文件的操作。
+            $("#my_avatar").click();
+        });
+        var filechange = function (event) {
+            var files = event.target.files, file;
+            if (files && files.length > 0) {
+                // 获取目前上传的文件
+                file = files[0];// 文件大小校验的动作
+                myfile = file;
+                if (file.size > 1024 * 1024 * 2) {
+                    alert('图片大小不能超过2MB!');
+                    return false;
+                }
+                // 获取 window 的 URL 工具
+                var URL = window.URL || window.webkitURL;
+                // 通过 file 生成目标 url
+                var imgURL = URL.createObjectURL(file);
+                //用attr将img的src属性改成获得的url
+                $("#img-change").attr("src", imgURL);
+                // 如需释放内存：URL.revokeObjectURL(imgURL);
+                myavatar = imgURL;
+                console.log(imgURL);
+            }
+        };
+    </script>
+
+    <!-- 功能模块 -->
+    <script>
+        //文件下载
+        function saveFile(data, fileName) {
+            var saveLink = document.createElementNS('http://www.w3.org/1999/xhtml', 'a');
+            saveLink.href = data;
+            saveLink.download = fileName;
+            saveLink.click();
+        }
+    </script>
+
+{% endblock %}
