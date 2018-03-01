@@ -262,10 +262,78 @@
         }
 
     </style>
+    {#    发私信模态框#}
+    <div class="modal hide fade" id="send_personal_message_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title" id="myModalLabel">发送私信</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group" style="margin-left:10px;width:450px">
+                        <input type="text" class="span3 form-control" id="reciver" style="height: 30px;width:100%"
+                               placeholder="接收人" name="receiver">
 
+                        <ul class="dropdown-menu" role="menu" style="left: 0!important;"></ul>
+                    </div>
+                    <div class="input-group" style="width:450px">
+                        <textarea id="message_content" class="mytext" placeholder=""></textarea>
+                        <ul class="dropdown-menu" role="menu" style="left: 0!important;"></ul>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" onclick="send_personal_message()">发送</button>
+                </div>
+
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div>
+    {#    管理员群发消息模态框#}
+    <div class="modal hide fade" id="send_admin_message_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title" id="myModalLabel">管理员消息</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group" style="margin-left:10px;height:200px;overflow:auto;float:left">
+                        <table id="user_list">
+                            <thead>
+                            <tr>
+                                <th>选中</th>
+                                <th>用户</th>
+                            </tr>
+                            </thead>
+                            <tbody id="user_tbody">
+
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="input-group" style="width:300px;float:left">
+                        <textarea id="admin_message_content" class="mytext" placeholder=""></textarea>
+                        <ul class="dropdown-menu" role="menu" style="left: 0!important;"></ul>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" onclick="send_admin_message()">发送</button>
+                </div>
+
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div>
     <div class="span9">
         <div class="content">
+
             <div class="btn-controls">
+
                 <!--消息发布-->
                 <div class="btn-box-row row-fluid">
                     <div class="module span12">
@@ -274,12 +342,16 @@
                                 <div class="mytitle"><h4 style="font-size:18px;color:gray">有疑问？快来看看大家都是怎么想的吧！</h4></div>
                                 <textarea id="inputtext" class="mytext" placeholder=""></textarea>
                                 <button type="submit" id="fbbutton" class="fbbutton">点击发布</button>
+
                             </div>
                         </div>
                     </div>
                 </div>
                 <!--消息显示-->
+
+
                 <div class="btn-box-row row-fluid">
+
                     <div class="module span12" style="background-color: rgba(0,0,0,0);border: 0">
                         <div id="myshow" class="module span12" style="background-color: rgba(0,0,0,0);border: 0">
                             <div class="nav" style="float:left;margin:auto;width:100%;background-color:white">
@@ -354,6 +426,47 @@
                                 </div>
                                 <div id="accept_message" class="tab-pane fade"
                                      style="float:left;margin-left:0;width:100%;height:auto;">
+                                    <div class="span12">
+                                        <div class="content">
+
+                                            <div class="module message">
+                                                <div class="module-head">
+                                                    <h3>Task Management Tool</h3>
+                                                </div>
+                                                <div class="module-option clearfix" id="send_message_div">
+
+                                                    <div class="pull-right">
+                                                        <a data-toggle="modal"
+                                                           data-target="#send_personal_message_modal"
+                                                           class="btn btn-primary">发送私信</a>
+                                                    </div>
+                                                </div>
+                                                <div class="module-body table">
+                                                    <table class="table table-message" id="table_message"
+                                                           style="width:100%">
+                                                        <thead>
+                                                        <tr class="heading">
+                                                            <td class="cell-icon"></td>
+                                                            <td class="cell-title">Task</td>
+                                                            <td class="cell-status hidden-phone hidden-tablet">Status
+                                                            </td>
+                                                            <td class="cell-time align-right">Due Date</td>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody id="table_message_tbody">
+
+
+                                                        </tbody>
+                                                    </table>
+
+
+                                                </div>
+                                                <div class="module-foot">
+                                                </div>
+                                            </div>
+
+                                        </div><!--/.content-->
+                                    </div><!--/.span9-->
                                 </div>
                             </div>
                         </div>
@@ -435,6 +548,7 @@
 
         //发布评论
         $("div#all_post").on("click", ".to_release", function () {
+
             parentid = $(this).parent().parent().parent().attr('id').toString();
             if ($("#comment_input" + parentid).val().length == 0) {
                 alert("评论内容不可为空");
@@ -464,10 +578,13 @@
                 type: 'POST',
                 url: '{{url_for("message_api.to_follow")}}',
                 data: {
-                    input_post: parseInt(parentid),
+                    'input_post': parseInt(parentid),
+                    {#                    'time':getNowFormatDate()#}
                 },
                 dataType: 'json',
+                async: false,
                 success: function (data) {
+                    console.log(data)
                     alert("关注成功");
                     location.reload();
                 }
@@ -523,7 +640,8 @@
                 url: '{{url_for("message_api.to_retrant")}}',
                 data: {
                     get_id: parseInt(postid),
-                    get_text: posttext
+                    get_text: posttext,
+                    input_post: parseInt(parentid),
                 },
                 dataType: 'json',
                 success: function (data) {
@@ -549,60 +667,60 @@
                 if (mydata.po_ifretrant[i] == 0) {
                     if (followindex == 0) {
                         $('#all_post').append("<div class='module span12' style='width:100%;height:auto;float:left;margin-left:0;background-color:white;border:0' id='" + mydata.po_id[i] + "'>" +
-                            "<div style='width:8%;float:left;margin-top:10;'><div class='my_photo'></div></div>" +
-                            "<div style='width:92%;float:right;margin-top:10;'><button class='to_follow'><b>+关注</b></button><span class='person' id='poster_" + mydata.po_id[i] + "'>" + mydata.po_user[i] + "</span><h10 style='font-size:5px;color:gray;float:left;width:90%'>" + mydata.po_time[i] + "</h10>" +
-                            "<h5><strong style='font-size:16px;float:left;width:100%;margin-top:5px'>" + mydata.po_text[i] + "</strong></h5></div>" +
-                            "<div class='post_function'><button class='to_retrant' data-toggle='modal' data-target='#all_message_modal'><b>转发" + mydata.po_retrant[i] + "</b></button><div class='line'></div><button class='to_comment'><b>评论" + mydata.po_comment[i] + "</b></button><div class='line'></div><button class='to_upvote'><b>点赞" + mydata.po_upvote[i] + "</b></button></div>" +
-                            "<div class='post_comment' id='post_comment_" + mydata.po_id[i] + "'>" +
-                            "<div style='width:100%;float:left'><input type='text' class='comment_input' id='comment_input" + mydata.po_id[i] + "'></input><button class='to_release'><b>发布</b></button><button class='to_withdraw'><b>收起</b></button></div>" +
-                            "<div id='comment_area_" + mydata.po_id[i] + "'></div>" +
-                            "<div id='comment_pagination_" + mydata.po_id[i] + "' class='pagination' style='float:right;margin-top: 0'></div></div></div>");
+                                "<div style='width:8%;float:left;margin-top:10;'><div class='my_photo'></div></div>" +
+                                "<div style='width:92%;float:right;margin-top:10;'><button class='to_follow'><b>+关注</b></button><span class='person' id='poster_" + mydata.po_id[i] + "'>" + mydata.po_user[i] + "</span><h10 style='font-size:5px;color:gray;float:left;width:90%'>" + mydata.po_time[i] + "</h10>" +
+                                "<h5><strong style='font-size:16px;float:left;width:100%;margin-top:5px'>" + mydata.po_text[i] + "</strong></h5></div>" +
+                                "<div class='post_function'><button class='to_retrant' data-toggle='modal' data-target='#all_message_modal'><b>转发" + mydata.po_retrant[i] + "</b></button><div class='line'></div><button class='to_comment'><b>评论" + mydata.po_comment[i] + "</b></button><div class='line'></div><button class='to_upvote'><b>点赞" + mydata.po_upvote[i] + "</b></button></div>" +
+                                "<div class='post_comment' id='post_comment_" + mydata.po_id[i] + "'>" +
+                                "<div style='width:100%;float:left'><input type='text' class='comment_input' id='comment_input" + mydata.po_id[i] + "'></input><button class='to_release'><b>发布</b></button><button class='to_withdraw'><b>收起</b></button></div>" +
+                                "<div id='comment_area_" + mydata.po_id[i] + "'></div>" +
+                                "<div id='comment_pagination_" + mydata.po_id[i] + "' class='pagination' style='float:right;margin-top: 0'></div></div></div>");
                     }
 
                     else {
                         $('#all_post').append("<div class='module span12' style='width:100%;height:auto;float:left;margin-left:0;background-color:white;border:0' id='" + mydata.po_id[i] + "'>" +
-                            "<div style='width:8%;float:left;margin-top:10;'><div class='my_photo'></div></div>" +
-                            "<div style='width:92%;float:right;margin-top:10;'><button class='no_follow'><b>取消关注</b></button><span class='person' id='poster_" + mydata.po_id[i] + "'>" + mydata.po_user[i] + "</span><h10 style='font-size:5px;color:gray;float:left;width:90%'>" + mydata.po_time[i] + "</h10>" +
-                            "<h5><strong style='font-size:16px;float:left;width:100%;margin-top:5px'>" + mydata.po_text[i] + "</strong></h5></div>" +
-                            "<div class='post_function'><button class='to_retrant' data-toggle='modal' data-target='#all_message_modal'><b>转发" + mydata.po_retrant[i] + "</b></button><div class='line'></div><button class='to_comment'><b>评论" + mydata.po_comment[i] + "</b></button><div class='line'></div><button class='to_upvote'><b>点赞" + mydata.po_upvote[i] + "</b></button></div>" +
-                            "<div class='post_comment' id='post_comment_" + mydata.po_id[i] + "'>" +
-                            "<div style='width:100%;float:left'><input type='text' class='comment_input' id='comment_input" + mydata.po_id[i] + "'></input><button class='to_release'><b>发布</b></button><button class='to_withdraw'><b>收起</b></button></div>" +
-                            "<div id='comment_area_" + mydata.po_id[i] + "'></div>" +
-                            "<div id='comment_pagination_" + mydata.po_id[i] + "' class='pagination' style='float:right;margin-top: 0'></div></div></div>");
+                                "<div style='width:8%;float:left;margin-top:10;'><div class='my_photo'></div></div>" +
+                                "<div style='width:92%;float:right;margin-top:10;'><button class='no_follow'><b>取消关注</b></button><span class='person' id='poster_" + mydata.po_id[i] + "'>" + mydata.po_user[i] + "</span><h10 style='font-size:5px;color:gray;float:left;width:90%'>" + mydata.po_time[i] + "</h10>" +
+                                "<h5><strong style='font-size:16px;float:left;width:100%;margin-top:5px'>" + mydata.po_text[i] + "</strong></h5></div>" +
+                                "<div class='post_function'><button class='to_retrant' data-toggle='modal' data-target='#all_message_modal'><b>转发" + mydata.po_retrant[i] + "</b></button><div class='line'></div><button class='to_comment'><b>评论" + mydata.po_comment[i] + "</b></button><div class='line'></div><button class='to_upvote'><b>点赞" + mydata.po_upvote[i] + "</b></button></div>" +
+                                "<div class='post_comment' id='post_comment_" + mydata.po_id[i] + "'>" +
+                                "<div style='width:100%;float:left'><input type='text' class='comment_input' id='comment_input" + mydata.po_id[i] + "'></input><button class='to_release'><b>发布</b></button><button class='to_withdraw'><b>收起</b></button></div>" +
+                                "<div id='comment_area_" + mydata.po_id[i] + "'></div>" +
+                                "<div id='comment_pagination_" + mydata.po_id[i] + "' class='pagination' style='float:right;margin-top: 0'></div></div></div>");
                     }
                 }
 
                 else {
                     if (followindex == 0) {
                         $('#all_post').append("<div class='module span12' style='width:100%;height:auto;float:left;margin-left:0;background-color:white;border:0' id='" + mydata.po_id[i] + "'>" +
-                            "<div style='width:8%;float:left;margin-top:10;'><div class='my_photo'></div></div>" +
-                            "<div style='width:92%;float:right;margin-top:10;'><button class='to_follow'><b>+关注</b></button><span class='person' id='poster_" + mydata.po_id[i] + "'>" + mydata.po_user[i] + "</span><h10 style='font-size:5px;color:gray;float:left;width:90%'>" + mydata.po_time[i] + "</h10>" +
-                            "<h5><strong style='font-size:16px;float:left;width:100%;margin-top:5px'>" + mydata.po_text[i] + "</strong></h5></div>" +
+                                "<div style='width:8%;float:left;margin-top:10;'><div class='my_photo'></div></div>" +
+                                "<div style='width:92%;float:right;margin-top:10;'><button class='to_follow'><b>+关注</b></button><span class='person' id='poster_" + mydata.po_id[i] + "'>" + mydata.po_user[i] + "</span><h10 style='font-size:5px;color:gray;float:left;width:90%'>" + mydata.po_time[i] + "</h10>" +
+                                "<h5><strong style='font-size:16px;float:left;width:100%;margin-top:5px'>" + mydata.po_text[i] + "</strong></h5></div>" +
 
-                            "<div style='width:100%;background-color: #FFFDEE;'><h5 style='float:left;width:100%;margin-left:0;margin-top:5px;background-color: #FFFDEE;'><strong style='font-size:18px;float:left;width:92%;margin-left:8%;margin-top:5px;background-color: #FFFDEE;'>" + "@" + mydata.po_retrant_poster[i] + "</strong>" +
-                            "<strong style='font-size:16px;float:left;width:92%;margin-left:8%;margin-top:5px;margin-bottom:5px;background-color: #FFFDEE;'>" + mydata.po_retrant_text[i] + "</strong></h5></div>" +
+                                "<div style='width:100%;background-color: #FFFDEE;'><h5 style='float:left;width:100%;margin-left:0;margin-top:5px;background-color: #FFFDEE;'><strong style='font-size:18px;float:left;width:92%;margin-left:8%;margin-top:5px;background-color: #FFFDEE;'>" + "@" + mydata.po_retrant_poster[i] + "</strong>" +
+                                "<strong style='font-size:16px;float:left;width:92%;margin-left:8%;margin-top:5px;margin-bottom:5px;background-color: #FFFDEE;'>" + mydata.po_retrant_text[i] + "</strong></h5></div>" +
 
-                            "<div class='post_function'><button class='to_retrant' data-toggle='modal' data-target='#all_message_modal'><b>转发" + mydata.po_retrant[i] + "</b></button><div class='line'></div><button class='to_comment'><b>评论" + mydata.po_comment[i] + "</b></button><div class='line'></div><button class='to_upvote'><b>点赞" + mydata.po_upvote[i] + "</b></button></div>" +
-                            "<div class='post_comment' id='post_comment_" + mydata.po_id[i] + "'>" +
-                            "<div style='width:100%;float:left'><input type='text' class='comment_input' id='comment_input" + mydata.po_id[i] + "'></input><button class='to_release'><b>发布</b></button><button class='to_withdraw'><b>收起</b></button></div>" +
-                            "<div id='comment_area_" + mydata.po_id[i] + "'></div>" +
-                            "<div id='comment_pagination_" + mydata.po_id[i] + "' class='pagination' style='float:right;margin-top: 0'></div></div></div>");
+                                "<div class='post_function'><button class='to_retrant' data-toggle='modal' data-target='#all_message_modal'><b>转发" + mydata.po_retrant[i] + "</b></button><div class='line'></div><button class='to_comment'><b>评论" + mydata.po_comment[i] + "</b></button><div class='line'></div><button class='to_upvote'><b>点赞" + mydata.po_upvote[i] + "</b></button></div>" +
+                                "<div class='post_comment' id='post_comment_" + mydata.po_id[i] + "'>" +
+                                "<div style='width:100%;float:left'><input type='text' class='comment_input' id='comment_input" + mydata.po_id[i] + "'></input><button class='to_release'><b>发布</b></button><button class='to_withdraw'><b>收起</b></button></div>" +
+                                "<div id='comment_area_" + mydata.po_id[i] + "'></div>" +
+                                "<div id='comment_pagination_" + mydata.po_id[i] + "' class='pagination' style='float:right;margin-top: 0'></div></div></div>");
                     }
 
                     else {
                         $('#all_post').append("<div class='module span12' style='width:100%;height:auto;float:left;margin-left:0;background-color:white;border:0' id='" + mydata.po_id[i] + "'>" +
-                            "<div style='width:8%;float:left;margin-top:10;'><div class='my_photo'></div></div>" +
-                            "<div style='width:92%;float:left;margin-top:10;'><button class='no_follow'><b>取消关注</b></button><span class='person' id='poster_" + mydata.po_id[i] + "'>" + mydata.po_user[i] + "</span><h10 style='font-size:5px;color:gray;float:left;width:90%'>" + mydata.po_time[i] + "</h10>" +
-                            "<h5><strong style='font-size:16px;float:left;width:100%;margin-top:5px'>" + mydata.po_text[i] + "</strong></h5></div>" +
+                                "<div style='width:8%;float:left;margin-top:10;'><div class='my_photo'></div></div>" +
+                                "<div style='width:92%;float:left;margin-top:10;'><button class='no_follow'><b>取消关注</b></button><span class='person' id='poster_" + mydata.po_id[i] + "'>" + mydata.po_user[i] + "</span><h10 style='font-size:5px;color:gray;float:left;width:90%'>" + mydata.po_time[i] + "</h10>" +
+                                "<h5><strong style='font-size:16px;float:left;width:100%;margin-top:5px'>" + mydata.po_text[i] + "</strong></h5></div>" +
 
-                            "<div style='width:100%;background-color: #FFFDEE;'><h5 style='float:left;width:100%;margin-left:0;margin-top:5px;background-color: #FFFDEE;'><strong style='font-size:18px;float:left;width:92%;margin-left:8%;margin-top:5px;background-color: #FFFDEE;'>" + "@" + mydata.po_retrant_poster[i] + "</strong>" +
-                            "<strong style='font-size:16px;float:left;width:92%;margin-left:8%;margin-top:5px;margin-bottom:5px;background-color: #FFFDEE;'>" + mydata.po_retrant_text[i] + "</strong></h5></div>" +
+                                "<div style='width:100%;background-color: #FFFDEE;'><h5 style='float:left;width:100%;margin-left:0;margin-top:5px;background-color: #FFFDEE;'><strong style='font-size:18px;float:left;width:92%;margin-left:8%;margin-top:5px;background-color: #FFFDEE;'>" + "@" + mydata.po_retrant_poster[i] + "</strong>" +
+                                "<strong style='font-size:16px;float:left;width:92%;margin-left:8%;margin-top:5px;margin-bottom:5px;background-color: #FFFDEE;'>" + mydata.po_retrant_text[i] + "</strong></h5></div>" +
 
-                            "<div class='post_function'><button class='to_retrant' data-toggle='modal' data-target='#all_message_modal'><b>转发" + mydata.po_retrant[i] + "</b></button><div class='line'></div><button class='to_comment'><b>评论" + mydata.po_comment[i] + "</b></button><div class='line'></div><button class='to_upvote'><b>点赞" + mydata.po_upvote[i] + "</b></button></div>" +
-                            "<div class='post_comment' id='post_comment_" + mydata.po_id[i] + "'>" +
-                            "<div style='width:100%;float:left'><input type='text' class='comment_input' id='comment_input" + mydata.po_id[i] + "'></input><button class='to_release'><b>发布</b></button><button class='to_withdraw'><b>收起</b></button></div>" +
-                            "<div id='comment_area_" + mydata.po_id[i] + "'></div>" +
-                            "<div id='comment_pagination_" + mydata.po_id[i] + "' class='pagination' style='float:right;margin-top: 0'></div></div></div>");
+                                "<div class='post_function'><button class='to_retrant' data-toggle='modal' data-target='#all_message_modal'><b>转发" + mydata.po_retrant[i] + "</b></button><div class='line'></div><button class='to_comment'><b>评论" + mydata.po_comment[i] + "</b></button><div class='line'></div><button class='to_upvote'><b>点赞" + mydata.po_upvote[i] + "</b></button></div>" +
+                                "<div class='post_comment' id='post_comment_" + mydata.po_id[i] + "'>" +
+                                "<div style='width:100%;float:left'><input type='text' class='comment_input' id='comment_input" + mydata.po_id[i] + "'></input><button class='to_release'><b>发布</b></button><button class='to_withdraw'><b>收起</b></button></div>" +
+                                "<div id='comment_area_" + mydata.po_id[i] + "'></div>" +
+                                "<div id='comment_pagination_" + mydata.po_id[i] + "' class='pagination' style='float:right;margin-top: 0'></div></div></div>");
                     }
                 }
             }
@@ -736,11 +854,138 @@
                 }
             }
         }
+        function send_personal_message() {
+            receiver = $("#reciver").val()
+            message_content = document.getElementById('message_content').value
+            var username_list = new Array()
+            {#            var message_content_list = new Array()#}
+            username_list.push(receiver)
+            {#            message_content_list.push(message_content)#}
+            {#            console.log(receiver)#}
+            $.ajax({
+                type: 'GET',
+                url: '{{ url_for("message_api.is_username") }}',
+                data: {
+                    "username": receiver
+                },
+                dataType: 'json',
+                success: function (data) {
+                    if (data.exit == 'true') {
+                        $.ajax({
+                            type: 'POST',
+                            url: '{{ url_for("message_api.send_message") }}',
+                            data: {
+                                "username_list": username_list,
+                                "message_content": message_content
+                            },
+                            dataType: 'json',
+                            success: function (data) {
+                                console.log(data)
+                                alert('发送成功！')
+                            }
+                        })
+                    }
+                    else {
+                        alert('不存在此用户！')
+                    }
+                }
+            })
+        }
 
     </script>
 
     <!-- 分页模块 -->
     <script>
+
+        {#    消息私信呈现#}
+        function creat_table_for_accept_message(data) {
+            for (i = data.info_list.length; i >= 0; i--) {
+                if (data.state_list[i] == 'N') {
+                    $('#table_message_tbody').append(
+                            " <tr class=\"task\" id=\"info_" + data.id_list[i] + "\">" +
+                            "<td class=\"cell-icon\"><i class=\"icon-checker high\"></td>" +
+                            "<td class=\"cell-title\">" + data.sender_list[i] + data.info_list[i] + "</td>" +
+                            "<td class=\"cell-status hidden-phone hidden-tablet\">未读</td>" +
+                            "<td class=\"cell-time align-right\">" + data.time_list[i] + "</td>" +
+                            "</tr>"
+                    )
+                }
+                else if (data.state_list[i] == 'Y') {
+                    $('#table_message_tbody').append(
+                            " <tr class=\"task resolved\" id=\"" + data.id_list[i] + "\">" +
+                            "<td class=\"cell-icon\"><i class=\"icon-checker high\"></td>" +
+                            "<td class=\"cell-title\">" + data.sender_list[i] + data.info_list[i] + "</td>" +
+                            "<td class=\"cell-status hidden-phone hidden-tablet\">已读</td>" +
+                            "<td class=\"cell-time align-right\">" + data.time_list[i] + "</td>" +
+                            "</tr>"
+                    )
+                }
+            }
+            ;
+            var table = $('#table_message').DataTable({
+                "lengthChange": false,
+                "pageLength": 5,
+                "searching": false,
+                "language": {
+                    "emptyTable": "没有数据",
+                    "loadingRecords": "加载中…",
+                    "processing": "查询中…",
+                    "search": "检索:",
+                    "lengthMenu": "每页 _MENU_ 条",
+                    "zeroRecords": "没有数据",
+                    "paginate": {
+                        "first": "第一页",
+                        "last": "最后一页",
+                        "next": "",
+                        "previous": ""
+                    },
+                    "info": "第 _PAGE_ 页 / 总 _PAGES_ 页",
+                    "infoEmpty": "没有数据",
+                    "infoFiltered": "(过滤总件数 _MAX_ 条)",
+
+                },
+            })
+
+
+            {#        阅读消息#}
+            $('#table_message_tbody tr').click(
+                    function () {
+                        var content = jQuery(this).children("td:eq(2)").text();
+
+                        if (content == "未读") {
+                            $(this).children("td:eq(2)").text('已读');
+                            $(this).toggleClass('resolved');
+                            str = $(this).attr('id')
+                            var pos = str.indexOf('_');
+                            var info_id = str.substring(pos + 1, str.length);
+                            $.ajax({
+                                type: 'GET',
+                                url: '{{ url_for("message_api.read_message") }}',
+                                data: {
+                                    "info_id": info_id
+                                },
+                                dataType: 'json',
+                                success: function (data) {
+                                    console.log(data);
+                                    {#                                                        $.ajax({#}
+                                    {#                                                            type: 'GET',#}
+                                    {#                                                            url: '{{ url_for("message_api.request_page") }}',#}
+                                    {#                                                            dataType: 'json',#}
+                                    {#                                                            success: function (data) {#}
+                                    {#                                                                console.log(data);#}
+                                    {#                                                                creat_table_for_accept_message(data)#}
+                                    {#                                                            }#}
+                                    {#                                                        })#}
+                                }
+                            });
+                        }
+
+
+                    }
+            )
+        }
+
+        {#            首次访问#}
         $(function () {
             $.ajax({
                 type: 'GET',
@@ -748,6 +993,7 @@
                 dataType: 'json',
                 success: function (data) {
                     console.log(data);
+                    creat_table_for_accept_message(data)
                     var num_entries = data.page_num;
                     $("#my_pagination").pagination(num_entries, {
                         num_edge_entries: 1, //边缘页数
@@ -759,7 +1005,6 @@
                     });
                 }
             });
-
             function pageselectCallback(page_index) {
                 $.ajax({
                     type: 'GET',
@@ -774,6 +1019,71 @@
                     }
                 })
             }
+
+            {#            判断是否是管理员，群发消息权限,填充user_list#}
+            $.ajax({
+                type: 'GET',
+                url: '{{ url_for("message_api.get_role") }}',
+                dataType: 'json',
+                success: function (data) {
+                    if (data.role == 1) {
+                        $("#send_message_div").append(
+                                "<div class=\"pull-right\">" +
+                                "<a data-toggle=\"modal\"" +
+                                "data-target=\"#send_admin_message_modal\"" +
+                                " class=\"btn btn-primary\">群发消息（管理员）</a>" +
+                                "</div>"
+                        )
+                        $.ajax({
+                            type: 'GET',
+                            url: '{{ url_for("message_api.get_user_list") }}',
+                            dataType: 'json',
+                            success: function (data) {
+                                console.log(data)
+                                for (i = 0; i < data.user_list.length; i++) {
+                                    str = "<tr ><td><input type='checkbox' class='user_table'  id='" + data.user_list[i] + "' ></td><td>" + data.user_list[i] + "</td></tr>"
+                                    $("#user_tbody").append(str)
+                                }
+                            }
+                        })
+                    }
+
+                }
+            });
+        });
+        var send_list = new Array()
+
+        {#        群发消息#}
+        function send_admin_message() {
+            {#群发选中事件#}
+            $('.user_table').each(function () {
+                if ($(this).is(':checked')) {
+                    send_list.push($(this).attr('id'))
+                }
+            })
+            if (send_list.length == 0) {
+                alert('请选择接收用户！')
+            }
+            else {
+                console.log(document.getElementById('admin_message_content').value)
+                $.ajax({
+                    type: 'POST',
+                    url: '{{ url_for("message_api.send_message") }}',
+                    data: {
+                        "username_list": send_list,
+                        "message_content": document.getElementById('admin_message_content').value
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        console.log(data)
+                        alert('发送成功！')
+                    }
+                })
+            }
+        }
+        $(document).ready(function () {
+
+            $.fn.dataTable.ext.errMode = 'none';
         });
     </script>
 
