@@ -1,5 +1,6 @@
 # encoding:utf-8
 # 程序配置文件
+import os
 class Config(object):
     pass
 
@@ -17,3 +18,26 @@ class DevConfig(Config):
         'my_message': 'mysql+pymysql://root:0000@localhost:3306/my_message',
     }
     SECRET_KEY = 'you-will-never-guess'
+    JOBS = [
+        {
+            'id': 'job1',
+            'func': 'clientapp:send_notice',
+            'args': '',
+            # 'trigger': {
+            #     'type': 'cron',
+            #     'day_of_week': "mon-fri",
+            #     'hour': '0-23',
+            #     'minute': '0-11',
+            #     'second': '*/5'
+            # }
+            'trigger': 'interval',
+            'seconds': 30
+
+        }
+    ]
+    SCHEDULER_API_ENABLED = True
+
+
+class paths(object):
+    project_path=os.path.dirname(os.path.realpath(__file__))
+    root_path=os.path.dirname(project_path)

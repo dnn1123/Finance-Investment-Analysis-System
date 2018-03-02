@@ -1,11 +1,12 @@
 # coding=utf-8
 from flask import Blueprint,render_template
+from webapp.config import paths
 import os
 
 quant_view = Blueprint(
     'quant',
     __name__,
-    template_folder=os.path.abspath(os.path.join(os.getcwd(),'webapp','Template','quant')),
+    template_folder=os.path.abspath(os.path.join(paths.project_path,'webapp','Template','quant')),
     url_prefix="/quant"
 )
 
@@ -13,7 +14,7 @@ quant_view = Blueprint(
 def backtest():
     return render_template('backtest.html')
 
-@quant_view.route('/realtime_simulation', methods=('GET', 'POST'))
+@quant_view.route('/realtime_simulation/', methods=('GET', 'POST'))
 def realtime_simulation():
     return  render_template('realtime_simulation.html')
 

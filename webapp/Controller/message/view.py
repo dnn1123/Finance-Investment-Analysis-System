@@ -1,11 +1,12 @@
 from flask import Blueprint, redirect, render_template, url_for, request
+from webapp.config import paths
 import os
 from flask_login import login_required, current_user
 
 message_view = Blueprint(
     'message',
     __name__,
-    template_folder=os.path.abspath(os.path.join(os.getcwd(),'webapp', 'Template', 'message')),
+    template_folder=os.path.abspath(os.path.join(paths.project_path,'webapp', 'Template', 'message')),
     url_prefix="/message"
 )
 
