@@ -5,14 +5,14 @@
             <button id="head1" class="btn btn-primary" data-toggle="button">我的订阅</button>
             <div class="span3 pull-right" style="float:right;margin-right:0px;text-align: right">
                 <button class="btn btn-mini btn-primary" type="button" data-toggle="modal"
-                        data-target="#myModal">创建
+                        data-target="#subscribe">创建
                 </button>
             </div>
         </div>
         <div class="module-body">
             <div class="row-fluid">
                 <div class="span12" style="background-color:white">
-                    <table id="mytable1" style="text-align:center;width: 90%;">
+                    <table id="mytable" style="text-align:center;width: 90%;">
                         <thead>
                         <tr>
                             <th>
@@ -44,16 +44,16 @@
                         <tbody id="tbody">
                         <tr>
                             <td>
-                                <input type="checkbox"/>
+                                test
                             </td>
                             <td>
-                                <a href="{{ url_for("quant.realtime_simulation_detail") }}">1号策略</a>
+                                1号策略
                             </td>
                             <td>
                                 三均线
                             </td>
                             <td>
-                                1000元
+                                1000
                             </td>
                             <td>
                                 1200元
@@ -122,24 +122,30 @@
     </div>
 {% endblock %}
 {% block bottombody %}
-<!-- Modal -->
-<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-    <h3 id="myModalLabel">Modal header</h3>
-  </div>
-  <div class="modal-body">
-    <p>One fine body…</p>
-  </div>
-  <div class="modal-footer">
-    <button class="btn" data-dismiss="modal" aria-hidden="true">关闭</button>
-    <button class="btn btn-primary">Save changes</button>
-  </div>
-</div>
+    <!-- Modal -->
+    <div id="subscribe" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3>添加订阅</h3>
+        </div>
+        <div class="modal-body">
+            <select id="form_type">
+                <option disabled selected value>请选择……</option>
+                <option value="Pair_Strategy_Based_Bank">配对策略</option>
+                <option value="DoubleMA_Strategy">双均线策略</option>
+            </select>
+            <div id="div_form"></div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn" data-dismiss="modal" aria-hidden="true">关闭</button>
+        </div>
+    </div>
 {% endblock %}
 {% block scripts %}
     <script>
-        $('#mytable1').DataTable({
+    $(document).ready(function () {
+         mytable=$('#mytable').DataTable({
             "info": false,
             "lengthChange": false,
             "pageLength": 5,
@@ -161,10 +167,91 @@
                 "infoEmpty": "没有数据",
                 "infoFiltered": "(过滤总件数 _MAX_ 条)"
             },
+            "columnDefs": [{
+                    "targets": 0,
+                    "render": function (data, type, row) {
+                        return '<input type="checkbox"/>'
+                    }
+                }, {
+                    "targets": 1,
+                    "render": function (data, type, row) {
+                     html ="{{ url_for("quant.realtime_simulation") }}";
+                        return '<a href="' + html + row[0]+ '">' + data + '</a>';
+                    }
+                }, {
+                    "targets": 3,
+                    "render": function (data, type, row) {
+                        return data+'元';
+                    }
+                },{
+                    "targets": 7,
+                    "render": function (data, type, row) {
+                            return '<button class="btn-primary btn-mini">暂停</button> <button class="btn-warning btn-mini delete_subscribe" id="'+row[0]+'">删除</button>'
+                        }
+                }],
 
         })
+        getdata()
+    })
+
     </script>
 
+    <script>
+        $("#form_type").on('change', function (e) {
+            $.ajax({
+                type: "GET",
+                data: {"type": $("#form_type").val()},
+                url: "{{ url_for("quant_api.request_liveform") }}",
+                dataType: "html",
+                success: function (data) {
+                    $("#div_form").html(data)
+                }
+            })
+        })
+
+        $("#div_form").on('click', '.submit', function () {
+            $.ajax({
+                type: "POST",//方法类型
+                dataType: "json",//预期服务器返回的数据类型
+                url: "{{ url_for("quant_api.subscribe") }}",//url
+                data: $('#backtest_form').serialize(),
+                success: function (result) {
+                    alert(result.data)
+                    getdata()
+                }
+            })
+        })
+    $("#mytable").on('click','.delete_subscribe',function () {
+        $.ajax({
+                type: "GET",//方法类型
+                dataType: "json",//预期服务器返回的数据类型
+                url: "{{ url_for("quant_api.delete_subscribe") }}",//url
+                data:{"id":$(this).attr('id')},
+                success: function (result) {
+                    alert(result.result)
+                    getdata()
+                    }
+                })
+            }
+    )
+
+    </script>
+    <script>
+        function getdata() {
+            $.ajax({
+                type: "GET",//方法类型
+                dataType: "json",//预期服务器返回的数据类型
+                url: "{{ url_for("quant_api.get_realtime_simulation_data") }}",//url
+                {#data#}
+                success: function (result) {
+                    if (result.flag != "empty") {
+                        console.log(result.data)
+                        mytable.rows.add(result.data).draw()
+                    }
+                }
+            })
+        }
+    </script>
 
 
 {% endblock %}

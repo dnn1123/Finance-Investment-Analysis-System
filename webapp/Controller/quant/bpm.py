@@ -10,7 +10,7 @@ from pyalgotrade.technical import cross
 from enum import Enum, unique
 from webapp.Library.pyalgotrade_custom import dataFramefeed,plotter
 import tushare as ts
-import base64
+import base64,datetime
 def handle_form(form):
     type=form.get('type')
     if type=="Pair_Strategy_Based_Bank":
@@ -23,7 +23,18 @@ def handle_form(form):
                                  startdate=form.get('sdate'), enddate=form.get('edate'))
         mystr.run()
         return mystr.getResult()
-
+def handle_liveform(form):
+    type=form.get('type')
+    if type=="Pair_Strategy_Based_Bank":
+        params={"commission":float(form.get('commission')), "cash":float(form.get('cash')),"instrument_1":form.get('instrument_1'), "instrument_2":form.get('instrument_2')}
+        data={"strategy_id":Strategy.Pair_Strategy_Based_Bank.value,"strategy_name":form.get('strategy_name'),"params":params,"build_date":datetime.datetime.now()}
+        return data
+    if type=="DoubleMA_Strategy":
+        params = {"commission": float(form.get('commission')), "cash": float(form.get('cash')),
+                  "instrument": form.get('instrument')}
+        data = {"strategy_id": Strategy.DoubleMA_Strategy.value, "strategy_name": form.get('strategy_name'),
+                "params": params, "build_date": datetime.datetime.now()}
+        return data
 def dict_to_sql(dict):
     tempstr=str(dict)
     binary=base64.b64encode(tempstr)
@@ -41,24 +52,40 @@ class Strategy(Enum):
     # @unique装饰器可以帮助我们检查保证没有重复值
 
 class Strategy_Manager():  # 策略管理器
-    def __init__(self, StrategyType, **args):
+    def __init__(self, StrategyType,live=False,**args):
         self.__strategy_type = StrategyType
+        self.__live=live
         if StrategyType == Strategy.Pair_Strategy_Based_Bank:
-            self.__commission = args.get('commission')
-            self.__startdate = args.get('startdate')
-            self.__enddate = args.get('enddate')
-            self.__cash = args.get('cash')
-            self.__i1 = args.get('instrument_1')
-            self.__i2 = args.get('instrument_2')
-            self.__init_Pair_Strategy_Based_Bank()
+            if self.__live:
+                self.__commission = args.get('commission')
+                self.__builddate = args.get('builddate')
+                self.__cash = args.get('cash')
+                self.__i1 = args.get('instrument_1')
+                self.__i2 = args.get('instrument_2')
+                self.__init_Pair_Strategy_Based_Bank_Live()
+            else:
+                self.__commission = args.get('commission')
+                self.__startdate = args.get('startdate')
+                self.__enddate = args.get('enddate')
+                self.__cash = args.get('cash')
+                self.__i1 = args.get('instrument_1')
+                self.__i2 = args.get('instrument_2')
+                self.__init_Pair_Strategy_Based_Bank()
 
         if StrategyType==Strategy.DoubleMA_Strategy:
-            self.__commission = args.get('commission')
-            self.__startdate = args.get('startdate')
-            self.__enddate = args.get('enddate')
-            self.__cash = args.get('cash')
-            self.__i = args.get('instrument')
-            self.__init_DoubleMA_Strategy()
+            if self.__live:
+                self.__commission = args.get('commission')
+                self.__builddate = args.get('builddate')
+                self.__cash = args.get('cash')
+                self.__i = args.get('instrument')
+                self.__init_DoubleMA_Strategy_Live()
+            else:
+                self.__commission = args.get('commission')
+                self.__startdate = args.get('startdate')
+                self.__enddate = args.get('enddate')
+                self.__cash = args.get('cash')
+                self.__i = args.get('instrument')
+                self.__init_DoubleMA_Strategy()
     def __init_Pair_Strategy_Based_Bank(self):
 
         i1_data = ts.get_k_data(self.__i1, self.__startdate, self.__enddate)
@@ -91,6 +118,39 @@ class Strategy_Manager():  # 策略管理器
         # 绘图模块
         self.__plt = plotter.StrategyPlotter(self.__strategy_entity)
 
+    def __init_Pair_Strategy_Based_Bank_Live(self):
+        i1_data = ts.get_k_data(self.__i1, (self.__builddate+ datetime.timedelta(days=-90)).strftime("%Y-%m-%d"))
+        i2_data = ts.get_k_data(self.__i2, (self.__builddate+ datetime.timedelta(days=-90)).strftime("%Y-%m-%d"))
+        feed = dataFramefeed.Feed(bar.Frequency.DAY)
+        feed.addBarsFromDataFrame(self.__i1, i1_data)
+        feed.addBarsFromDataFrame(self.__i2, i2_data)
+
+        broker_commission = broker.backtesting.TradePercentage(self.__commission)  # 费率交易金额百分比 也可设置固定费率 无手续费
+        # 3.2 fill strategy设置
+        fill_stra = broker.fillstrategy.DefaultStrategy(volumeLimit=0.1)  # 成交比例 也可以用set方法修改 初始化赋值也可
+        sli_stra = broker.slippage.NoSlippage()  # 滑点模型  此为无滑点
+        # broker.slippage.VolumeShareSlippage(priceImpact=0.1) 设置影响程度
+        fill_stra.setSlippageModel(sli_stra)
+        # setVolumeLimit(volumeLimit)  更改成交比例
+        # 3.3完善broker类
+        brk = broker.backtesting.Broker(self.__cash, feed, broker_commission)  # 初始化
+        brk.setFillStrategy(fill_stra)  # 将成交策略传给brk
+        # 4.把策略跑起来
+        self.__strategy_entity = Pair_Strategy_Based_Bank_Live(feed, brk, self.__i1, self.__i2, self.__builddate,50)
+
+        self.__retAnalyzer = returns.Returns()
+        self.__strategy_entity.attachAnalyzer(self.__retAnalyzer)
+        self.__sharpeRatioAnalyzer = sharpe.SharpeRatio()
+        self.__strategy_entity.attachAnalyzer(self.__sharpeRatioAnalyzer)
+        self.__drawdownAnalyzer = drawdown.DrawDown()
+        self.__strategy_entity.attachAnalyzer(self.__drawdownAnalyzer)
+        self.__tradeAnalyzer = trades.Trades()
+        self.__strategy_entity.attachAnalyzer(self.__tradeAnalyzer)
+        # 绘图模块
+        self.__plt = plotter.StrategyPlotter(self.__strategy_entity)
+
+
+
     def __init_DoubleMA_Strategy(self):
         i_data = ts.get_k_data(self.__i, self.__startdate, self.__enddate)
         feed = dataFramefeed.Feed(bar.Frequency.DAY)
@@ -119,8 +179,39 @@ class Strategy_Manager():  # 策略管理器
         # 绘图模块
         self.__plt = plotter.StrategyPlotter(self.__strategy_entity)
 
+    def __init_DoubleMA_Strategy_Live(self):
+        i_data = ts.get_k_data(self.__i, (self.__builddate+ datetime.timedelta(days=-90)).strftime("%Y-%m-%d"))
+        feed = dataFramefeed.Feed(bar.Frequency.DAY)
+        feed.addBarsFromDataFrame(self.__i, i_data)
+        broker_commission = broker.backtesting.TradePercentage(self.__commission)  # 费率交易金额百分比 也可设置固定费率 无手续费
+        # 3.2 fill strategy设置
+        fill_stra = broker.fillstrategy.DefaultStrategy(volumeLimit=0.1)  # 成交比例 也可以用set方法修改 初始化赋值也可
+        sli_stra = broker.slippage.NoSlippage()  # 滑点模型  此为无滑点
+        # broker.slippage.VolumeShareSlippage(priceImpact=0.1) 设置影响程度
+        fill_stra.setSlippageModel(sli_stra)
+        # setVolumeLimit(volumeLimit)  更改成交比例
+        # 3.3完善broker类
+        brk = broker.backtesting.Broker(self.__cash, feed, broker_commission)  # 初始化
+        brk.setFillStrategy(fill_stra)  # 将成交策略传给brk
+        # 4.把策略跑起来
+        self.__strategy_entity = DoubleMA_Strategy_Live(feed, brk, self.__i,self.__builddate,5,20)
+
+        self.__retAnalyzer = returns.Returns()
+        self.__strategy_entity.attachAnalyzer(self.__retAnalyzer)
+        self.__sharpeRatioAnalyzer = sharpe.SharpeRatio()
+        self.__strategy_entity.attachAnalyzer(self.__sharpeRatioAnalyzer)
+        self.__drawdownAnalyzer = drawdown.DrawDown()
+        self.__strategy_entity.attachAnalyzer(self.__drawdownAnalyzer)
+        self.__tradeAnalyzer = trades.Trades()
+        self.__strategy_entity.attachAnalyzer(self.__tradeAnalyzer)
+        # 绘图模块
+        self.__plt = plotter.StrategyPlotter(self.__strategy_entity)
+
+
     def run(self):
         self.__strategy_entity.run()
+    def getMessage(self):
+        return  self.__strategy_entity.getTextlist()
 
     def getResult_print(self):
         self.__broker=self.__strategy_entity.getBroker()
@@ -229,8 +320,6 @@ def regression(ylist, xlist):  # 回归计算 返回参数 输入类型nparray �
     result = model.fit()
     return result.params
 
-# ds1 gong ds2 nong
-# 需要一个策略管理器 负责搭建策略 即生成参数 调用策略 提供暂停 销毁等功能
 class DataCalculator_For_Pair_Strategy_Based_Bank():
     def __init__(self, ds1, ds2, interval):
         # We're going to use datetime aligned versions of the dataseries.
@@ -307,6 +396,72 @@ class Pair_Strategy_Based_Bank(strategy.BacktestingStrategy):
                         self.enterShort(self.__i1, currentPos_i1)
                     self.buyUseAllMoney(self.__i2, bars)
 
+
+class Pair_Strategy_Based_Bank_Live(strategy.BacktestingStrategy):
+    def __init__(self, feed, brk, instrument1, instrument2, builddate,interval):
+        super(Pair_Strategy_Based_Bank_Live, self).__init__(feed, brk)
+        self.__DataCalculator = DataCalculator_For_Pair_Strategy_Based_Bank(feed[instrument1].getAdjCloseDataSeries(),
+                                                                            feed[instrument2].getAdjCloseDataSeries(),
+                                                                            interval)
+        self.__i1 = instrument1
+        self.__i2 = instrument2
+        self.__builddate=builddate
+        self.__thresholdStd = 0
+        self.__position = None
+        self.__text=""
+        self.__textlist={}
+
+    def buyUseAllMoney(self, instrument, bars):
+        cash = self.getBroker().getCash(False)
+        price = bars[instrument].getPrice()
+        size = int(cash*0.9 / price)
+        if size > 0:
+            self.enterLong(instrument, size)
+            self.__text+=u"买入"+self.__i1+u"股票"+str(size)+u"股"
+
+    def getTextlist(self):
+        return self.__textlist
+
+    def onEnterOk(self, position):
+        # print position.getEntryOrder().getAction()
+        execInfo = position.getEntryOrder().getExecutionInfo()
+        self.info("Trade %.2f" % (execInfo.getPrice()))
+
+    def onEnterCanceled(self, position):
+        self.__position = None
+
+    def onExitOk(self, position):
+        execInfo = position.getExitOrder().getExecutionInfo()
+        self.info("SELL at $%.2f" % (execInfo.getPrice()))
+        self.__position = None
+
+    def onExitCanceled(self, position):
+        self.__position.exitMarket()
+
+    def onBars(self, bars):
+        if bars.getDateTime() > self.__builddate:
+            self.__text=""
+            self.__DataCalculator.update()  # 计算所有需要指标
+            if bars.getBar(self.__i1) and bars.getBar(self.__i2):
+                threshold = self.__DataCalculator.getThreshold()
+                if threshold is not None:
+                    currentPos_i1 = self.getBroker().getShares(self.__i1)
+                    currentPos_i2 = self.getBroker().getShares(self.__i2)
+                    if threshold < -1 * self.__thresholdStd:
+                        if currentPos_i2 > 0:
+                            self.enterShort(self.__i2, currentPos_i2)
+                            self.__text+=u"卖出"+self.__i2+u"股票"+str(currentPos_i2)+u"股"
+                        self.buyUseAllMoney(self.__i1, bars)
+                    elif threshold > self.__thresholdStd:  # Buy spread when its value drops below 2 standard deviations.
+                        if currentPos_i1 > 0:
+                            self.enterShort(self.__i1, currentPos_i1)
+                            self.__text += u"卖出" + self.__i1 + u"股票" + str(currentPos_i1) + u"股"
+                        self.buyUseAllMoney(self.__i2, bars)
+            if self.__text != "":
+                self.__textlist.setdefault(bars.getDateTime().date(),self.__text)
+
+
+
 class DataCalculator_For_DoubleMA_Strategy():
     def __init__(self,ds,malength_1,malength_2):
         self.__ds = ds
@@ -360,4 +515,54 @@ class DoubleMA_Strategy(strategy.BacktestingStrategy):
             if cross.cross_above(self.__DataCalculator.getSMA(1), self.__DataCalculator.getSMA(2)) > 0:
                 shares = int(self.getBroker().getEquity() * 0.2 / bars[self.__i].getPrice())
                 self.__position = self.enterLong(self.__i, shares)
+
+class DoubleMA_Strategy_Live(strategy.BacktestingStrategy):
+    def __init__(self,feed,brk,instrument,builddate,malength_1,malength_2):
+        super(DoubleMA_Strategy, self).__init__(feed, brk)
+        self.__DataCalculator = DataCalculator_For_DoubleMA_Strategy(feed[instrument].getPriceDataSeries(),malength_1,malength_2)
+        self.__builddate=builddate
+        self.__i = instrument
+        self.__text=''
+        self.__textlist={}
+        self.__position = None
+
+    def getTextlist(self):
+        return self.__textlist
+
+    def onEnterOk(self, position):
+        # print position.getEntryOrder().getAction()
+        execInfo = position.getEntryOrder().getExecutionInfo()
+        self.info("Trade %.2f" % (execInfo.getPrice()))
+
+    def onEnterCanceled(self, position):
+        self.__position = None
+
+    def onExitOk(self, position):
+        execInfo = position.getExitOrder().getExecutionInfo()
+        self.info("SELL at $%.2f" % (execInfo.getPrice()))
+        self.__position = None
+
+    def onExitCanceled(self, position):
+        self.__position.exitMarket()
+
+    def onBars(self, bars):
+        if bars.getDateTime() > self.__builddate:
+            self.__text=''
+            # If a position was not opened, check if we should enter a long position.
+            if self.__DataCalculator.getSMA(2)[-1] is None:
+                return
+
+            if self.__position is not None:
+                if not self.__position.exitActive() and cross.cross_below(self.__DataCalculator.getSMA(1), self.__DataCalculator.getSMA(2)) > 0:
+                    self.__position.exitMarket()
+                    self.__text+=u"卖出"+self.__i+u"以平仓"
+                    # self.info("sell %s" % (bars.getDateTime()))
+            if self.__position is None:
+                if cross.cross_above(self.__DataCalculator.getSMA(1), self.__DataCalculator.getSMA(2)) > 0:
+                    shares = int(self.getBroker().getEquity() * 0.2 / bars[self.__i].getPrice())
+                    self.__position = self.enterLong(self.__i, shares)
+                    self.__text+=u"买入"+self.__i+u"股票"+str(shares)+u"股开仓"
+
+            if self.__text != "":
+                self.__textlist.setdefault(bars.getDateTime().date(), self.__text)
 

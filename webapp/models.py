@@ -36,7 +36,8 @@ class subscriber(db.Model):
     __tablename__= 'subscriber'
     identifier=db.Column(db.Integer,primary_key=True)
     user=db.Column(db.String(20))
-    strategy_id=db.Column(db.Integer)
+    strategy_id=db.Column(db.Integer,db.ForeignKey('strategy.id'),)
+    strategy_name=db.Column(db.String(255))
     parameter=db.Column(db.BLOB)
     status=db.Column(db.String(255))
     build_date=db.Column(db.DateTime)

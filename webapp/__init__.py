@@ -1,6 +1,7 @@
 # coding=utf-8
 from flask import Flask, redirect, url_for, render_template
 from flask_principal import identity_loaded, UserNeed, RoleNeed
+from flask_apscheduler import APScheduler
 from config import DevConfig
 from controllers.stock import stock_blueprint
 from controllers.stock_solo import stocksolo_blueprint
@@ -27,6 +28,7 @@ from Controller.message.view import message_view
 from Controller.message.api import message_api
 
 def create_app(object_name):
+    scheduler = APScheduler()
     app = Flask(__name__)
     app.config.from_object(DevConfig)
     # create_admin(app)
@@ -35,6 +37,8 @@ def create_app(object_name):
     login_manager.init_app(app)
     principals.init_app(app)
     db.init_app(app)
+    scheduler.init_app(app)
+    scheduler.start()
     #模块注册
     app.register_blueprint(stock_blueprint)
     app.register_blueprint(stocksolo_blueprint)

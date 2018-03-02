@@ -4,11 +4,12 @@ from flask_login import login_user
 from flask_principal import identity_changed,Identity
 from webapp.models import users,users_roles,db
 from webapp.sms import send_sms
+from webapp.config import paths
 import os,random
 main_api = Blueprint(
     'main_api',
     __name__,
-    template_folder=os.path.abspath(os.path.join(os.getcwd(), 'webapp', 'Template', 'main')),
+    template_folder=os.path.abspath(os.path.join(paths.project_path, 'webapp', 'Template', 'main')),
     url_prefix="/main_api"
 )
 Verification_code_list = {}
