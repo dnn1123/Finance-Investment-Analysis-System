@@ -1,4 +1,4 @@
-# encoding=utf-8
+#coding=utf-8
 from flask import Blueprint, redirect, render_template, url_for, request, session, make_response, jsonify, flash
 from webapp.models import *
 import MySQLdb, time, re
@@ -7,9 +7,11 @@ from sqlalchemy.orm import sessionmaker
 from flask_login import current_user
 import math
 import string
+import time as Time
 from collections import Counter
 import tushare as ts
 import gc
+import sys
 import pandas as pd
 from datetime import datetime
 from datetime import timedelta
@@ -33,7 +35,25 @@ def request_page():
     result = session.query(func.count(input_message.post_id).label("page_num")).first()
 
     data['page_num'] = math.ceil((result.page_num) / float(5))
-
+    # 查询用户未读消息
+    sender_list = []
+    info_list = []
+    id_list = []
+    time_list = []
+    state_list = []
+    username = current_user.username
+    results = personal_information.query.filter_by(receiver=username).all()
+    for result in results:
+            sender_list.append(result.sender)
+            info_list.append(result.message_content)
+            id_list.append(result.id)
+            time_list.append(result.time)
+            state_list.append(result.state)
+    data['sender_list'] = sender_list
+    data['info_list'] = info_list
+    data['id_list'] = id_list
+    data['time_list'] = time_list
+    data['state_list'] = state_list
     return jsonify(data)
 
 
@@ -207,6 +227,17 @@ def to_comment():
     my_input_comment.comment_text = inputcomment
     my_input_comment.comment_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
+    # 向被评论者发送消息
+    result = input_message.query.filter_by(post_id=inputpost).first()
+    message_content = '评论了您'
+    information =  personal_information()
+    information.receiver = result.poster
+    information.sender = current_user.username
+    information.message_content = message_content
+    information.time = Time.strftime('%Y-%m-%d %H:%M:%S',Time.localtime(Time.time()))
+    information.state = 'N'
+    db.session.add(information)
+
     db.session.add(my_input_comment)
     db.session.commit()
 
@@ -233,6 +264,16 @@ def to_upvote():
     postresult = input_message.query.filter_by(post_id=inputpost).first()
     newdata = postresult.upvote_num + 1
     input_message.query.filter_by(post_id=inputpost).update({'upvote_num': newdata})
+     # 向被点赞者发送消息
+    result = input_message.query.filter_by(post_id=inputpost).first()
+    message_content = '赞了您的动态'
+    information =  personal_information()
+    information.receiver = result.poster
+    information.sender = current_user.username
+    information.message_content = message_content
+    information.time = Time.strftime('%Y-%m-%d %H:%M:%S',Time.localtime(Time.time()))
+    information.state = 'N'
+    db.session.add(information)
     db.session.commit()
 
     data['value'] = 'success'
@@ -266,12 +307,23 @@ def to_follow():
     session = Session()
 
     inputpost = request.form.get('input_post')
-
     result = input_message.query.filter_by(post_id=inputpost).first()
 
     my_input_follow = follows()
+    # 被关注
     my_input_follow.followed = result.poster
+    # 关注者
     my_input_follow.follower = current_user.username
+
+    # 向被关注者发送消息
+
+    information =  personal_information()
+    information.receiver = result.poster
+    information.sender = current_user.username
+    information.message_content = '关注了您'
+    information.time = Time.strftime('%Y-%m-%d %H:%M:%S',Time.localtime(Time.time()))
+    information.state = 'N'
+    db.session.add(information)
 
     db.session.add(my_input_follow)
     db.session.commit()
@@ -311,7 +363,7 @@ def to_retrant():
 
     getid = request.form.get('get_id')
     gettext = request.form.get('get_text')
-
+    inputpost = request.form.get('input_post')
     myresult = input_message.query.filter_by(post_id=getid).first()
 
     if myresult.if_retrant == 0:
@@ -340,8 +392,122 @@ def to_retrant():
     my_input.post_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
     db.session.add(my_input)
+
+     # 向被转发者发送消息
+    result = input_message.query.filter_by(post_id=inputpost).first()
+    message_content = '转发了您的动态'
+    information =  personal_information()
+    information.receiver = result.poster
+    information.sender = current_user.username
+    information.message_content = message_content
+    information.time = Time.strftime('%Y-%m-%d %H:%M:%S',Time.localtime(Time.time()))
+    information.state = 'N'
+    db.session.add(information)
     db.session.commit()
 
     data['value'] = 'success'
 
+    return jsonify(data)
+
+# 用于设置消息私信已读未读
+@message_api.route('/read_message', methods=['GET', 'POST'])
+def read_message():
+    data = {}
+
+    db_engine = create_engine('mysql://root:0000@localhost/my_message?charset=utf8')
+    Session = sessionmaker(bind=db_engine)
+    session = Session()
+
+    info_id = request.args.get('info_id')
+
+    result = personal_information.query.filter_by(id=info_id).first()
+
+    result.state = 'Y'
+
+    db.session.add(result)
+    db.session.commit()
+
+    data['value'] = info_id
+
+    return jsonify(data)
+
+
+# 判断用户名是否合法
+@message_api.route('/is_username', methods=['GET', 'POST'])
+def is_username():
+    data = {}
+
+    db_engine = create_engine('mysql://root:0000@localhost/my_message?charset=utf8')
+    Session = sessionmaker(bind=db_engine)
+    session = Session()
+
+    username = request.args.get('username')
+
+    result = users.query.filter_by(username=username).first()
+    if result:
+        data['exit'] = 'true'
+    else:
+        data['exit'] = 'flase'
+
+    return jsonify(data)
+
+# 用于用户发私信$$管理员群发消息
+@message_api.route('/send_message', methods=['GET', 'POST'])
+def send_message():
+    data = {}
+    db_engine = create_engine('mysql://root:0000@localhost/my_message?charset=utf8')
+    Session = sessionmaker(bind=db_engine)
+    session = Session()
+    username_list = request.form.getlist('username_list[]')
+    message_content = request.form.get('message_content')
+    a = 0
+   # 发送消息
+    for username in username_list:
+        information =  personal_information()
+        information.receiver = username
+        information.sender = current_user.username
+        information.message_content = message_content
+        information.time = Time.strftime('%Y-%m-%d %H:%M:%S',Time.localtime(Time.time()))
+        information.state = 'N'
+        db.session.add(information)
+        a=a+1
+    db.session.commit()
+    data['name'] = username_list
+    return jsonify(data)
+
+
+# 用于获取用户身份
+@message_api.route('/get_role', methods=['GET', 'POST'])
+def get_role():
+    data = {}
+    db_engine = create_engine('mysql://root:0000@localhost/my_message?charset=utf8')
+    Session = sessionmaker(bind=db_engine)
+    session = Session()
+    result =  users_roles.query.filter_by(user_name=current_user.username).first()
+    data['role'] = result.permissions
+    return jsonify(data)
+
+#用于获取用户名列表
+@message_api.route('/get_user_list', methods=['GET', 'POST'])
+def get_user_list():
+    data = {}
+    db_engine = create_engine('mysql://root:0000@localhost/my_message?charset=utf8')
+    Session = sessionmaker(bind=db_engine)
+
+    user_list = []
+    results = users.query.all()
+    for result in results:
+        user_list.append(result.username)
+    data['user_list'] = user_list
+    return jsonify(data)
+
+
+#用于获取用户未读信息数目
+@message_api.route('/get_message_count', methods=['GET', 'POST'])
+def get_message_count():
+    data = {}
+    db_engine = create_engine('mysql://root:0000@localhost/my_message?charset=utf8')
+    Session = sessionmaker(bind=db_engine)
+    results = personal_information.query.filter_by(receiver=current_user.username,state='N').count()
+    data['count'] = results
     return jsonify(data)

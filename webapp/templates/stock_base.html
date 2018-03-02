@@ -211,9 +211,9 @@
                         </li>
                         <li><a href="{{ url_for('stock.myposition') }}"><i class="menu-icon icon-paste"></i>当前持仓 </a>
                         </li>
-                        <li><a href="{{ url_for('message.my_message') }}"><i class="menu-icon icon-inbox"></i>我的消息 <b
+                        <li><a href="{{ url_for('message.my_message') }}"><i class="menu-icon icon-inbox"></i>我的消息 <b id="personal_message_count"
                                 class="label green pull-right">
-                            11</b> </a></li>
+                            </b> </a></li>
                         <li><a href="task.html"><i class="menu-icon icon-tasks"></i>系统消息 <b
                                 class="label orange pull-right">
                             19</b> </a></li>
@@ -273,6 +273,22 @@
         var navheight = $("div.navbar").height();
         $("#container").css("margin-top", navheight);
     })
+  setInterval(aa,30000);
+   function aa(){
+       $.ajax({
+                type: 'GET',
+                url: '{{ url_for("message_api.get_message_count") }}',
+                dataType: 'json',
+                success: function (data) {
+                    console.log(data)
+                    if(data.count>0){ $("#personal_message_count").text(data.count)}
+                    else{
+                        $("#personal_message_count").text('暂无未读')
+                    }
+
+                }})
+ }
+
 </script>
 {% block JavaScripts %}{% endblock %}
 </html>

@@ -68,12 +68,37 @@ class follows(db.Model):
     follower = db.Column(db.String(20), primary_key=True)
     followed = db.Column(db.String(20), primary_key=True)
 
+# 用户个人消息
+class personal_information(db.Model):
+    __bind_key__ = 'my_message'
+    __tablename__ = 'personal_information'
+
+    id = db.Column(db.Integer, primary_key=True)
+    receiver = db.Column(db.String(20), db.ForeignKey('users.username'))
+    sender = db.Column(db.String(20), db.ForeignKey('users.username'))
+    message_content = db.Column(db.String(20))
+    time = db.Column(db.DateTime)
+    state = db.Column(db.String(20))
 
 # 权限常量
 class Permission:
     administrator = 1
     trader = 2
     visitor = 3
+
+#用户余额
+class user_money(db.Model):
+    __bind_key__ = 'users_info'
+    __tablename__ = 'user_money'
+    user_name = db.Column(db.String(20), db.ForeignKey('users.username'), primary_key=True)
+    user_money = db.Column(db.Integer())
+#会员信息
+class member_information(db.Model):
+    __bind_key__ = 'users_info'
+    __tablename__ = 'member_information'
+    user_name = db.Column(db.String(20), db.ForeignKey('users.username'), primary_key=True)
+    member_type = db.Column(db.String(20))
+    member_expiration_date = db.Column(db.DateTime)
 
 
 class users(UserMixin, db.Model):

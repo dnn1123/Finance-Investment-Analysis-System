@@ -4,10 +4,54 @@
 {% endblock %}
 
 {% block body %}
+    {#    充值模态框#}
+    <div class="modal fade" id="modal_recharge" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title" id="myModalLabel">账户充值</h4>
+                </div>
+                {#                            <div class="modal-body">#}
+
+                <div class="input-group" style="margin-left:10px">
+                    <input type="text" class="span3 form-control" id="recharge_money" style="height: 30px"
+                           placeholder="请输入充值金额(整数)" name="recharge_money">
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" id="recharge">充值</button>
+                </div>
+
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div>
     {#    this is the body part#}
     <div class="span9">
         <div class="content">
+
             <div class="btn-controls">
+                <div class="btn-box-row row-fluid">
+                    <div class="btn-box big span12" style="text-align:left;">
+                        <div >
+                            <div style="margin-left:20px;font-size:40px;float:left;">
+                                {{ current_user.username }}
+
+                            </div>
+                            <div id='personal_img' style="height:50px;width:50px;margin-left:10px;margin-right:10px;float:left" ></div>
+                            <div style="margin-top:20px;margin-left:20px;">
+                                个人信息
+                            </div>
+
+
+                            <div id="user_info" style="margin-left:30">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="btn-box-row row-fluid">
                     <a href="#" class="btn-box big span4"><i class=" icon-random"></i><b id="myfavorites"></b>
                         <p class="text-muted">
@@ -96,9 +140,24 @@
                     $("#mypositions").text(data.position_stock_count);
                     $("#myprofits").text(data.position_profit.toFixed(2));
                     $("#mytraderec").text(data.trade_rec_count);
+                    if (data.member_type == null) {
+                        $("#user_info").text('您的账户尚未开通会员服务');
+                    }
+                    else if (data.member_type == 'month') {
+                        $("#personal_img").append("<img src=\"../static/personal_img/包月会员.png\" />")
+                        $("#user_info").text('您的账户目前是包月会员，可免费下载数据');
+                    }
+                    else if (data.member_type == 'year') {
+                        $("#personal_img").append("<img src=\"../static/personal_img/年费会员.png\" />")
+                        $("#user_info").text('您的账户目前是年费会员，可免费下载数据');
+                    }
+                    $("#user_info").append('</br>您当前账户余额：' + data.user_money + '元<button  data-toggle=\"modal\" data-target=\"#modal_recharge\" class=\'btn btn-mini btn-primary\'>点此充值</button>');
                     cityDist(data);
                 }
             });
+
+
+
             {#            get profit cost market value trend data#}
             $.ajax({
                 type: 'GET',
@@ -112,6 +171,28 @@
                     profittrend(data);
                 }
             })
+
+        })
+
+
+        {#        充值#}
+        $("#recharge").click(function () {
+
+            $.ajax({
+                type: 'GET',
+                url: '{{ url_for("restfulapi.change_money") }}',
+                data: {
+                    'action': "add",
+                    'count': $("#recharge_money").val(),
+                },
+                dataType: 'json',
+                success: function (data) {
+                    console.log(data)
+                    alert('充值成功！')
+                    location.reload()
+                }
+            })
+
 
         })
         function cityDist(data) {
@@ -552,5 +633,6 @@
             }
             return res;
         };
+
     </script>
 {% endblock %}
