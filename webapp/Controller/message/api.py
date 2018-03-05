@@ -460,7 +460,7 @@ def send_message():
     session = Session()
     username_list = request.form.getlist('username_list[]')
     message_content = request.form.get('message_content')
-    a = 0
+
    # 发送消息
     for username in username_list:
         information =  personal_information()
@@ -470,7 +470,7 @@ def send_message():
         information.time = Time.strftime('%Y-%m-%d %H:%M:%S',Time.localtime(Time.time()))
         information.state = 'N'
         db.session.add(information)
-        a=a+1
+
     db.session.commit()
     data['name'] = username_list
     return jsonify(data)

@@ -13,6 +13,7 @@ import pandas as pd
 from datetime import datetime
 from datetime import timedelta
 from  webapp.stratlib import *
+from webapp.Library.wind_mysql.get_company_list import *
 
 api_blueprint = Blueprint(
     'restfulapi',
@@ -917,3 +918,10 @@ def cns_home():
         pie4_data.append({'name': i[0], 'value': i[1]})
     return jsonify({"pie1", pie1_data})
 
+@api_blueprint.route('/updata_company_list', methods=['GET', 'POST'])
+def updata_company_list():
+    data={}
+    # upData_company_list()
+    # upData_cns_stock_basics()
+    data = upData_cns_balance_sheet()
+    return jsonify(data)
