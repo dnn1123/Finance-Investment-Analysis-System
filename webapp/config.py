@@ -16,6 +16,7 @@ class DevConfig(Config):
     'users_info':        'mysql+pymysql://root:0000@localhost:3306/users_info',
         'quant':          'mysql+pymysql://root:0000@localhost:3306/quant',
         'my_message': 'mysql+pymysql://root:0000@localhost:3306/my_message',
+        'cns_stock': 'mysql+pymysql://root:0000@localhost:3306/cns_stock',
     }
     SECRET_KEY = 'you-will-never-guess'
     JOBS = [

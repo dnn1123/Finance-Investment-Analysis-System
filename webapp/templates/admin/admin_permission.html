@@ -64,6 +64,28 @@
 {#                分类列表#}
                 <div class="module">
                     <div class="module-head">
+                        <button id="head3" class="btn btn-primary" data-toggle="button">更新数据库</button>
+                        <div class="span3 pull-right" style="float:right;margin-right:0px;text-align: right">
+
+                                    <button class="btn btn-mini btn-primary" type="button" id="updata_company_list"
+                                            >更新
+                                    </button>
+
+
+                                </div>
+                    </div>
+                    <div class="module-body" id="body3">
+                        <div class="btn-box-row row-fluid">
+                            <div class="span12" style="background-color:white">
+                                <div style="height:100px;">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="module">
+                    <div class="module-head">
                         <button id="head2" class="btn btn-primary" data-toggle="button">分类列表</button>
                     </div>
                     <div class="module-body" id="body2">
@@ -180,6 +202,15 @@
                     location.reload()
                 }
             })
+        })
+        $("#updata_company_list").click(function(){
+             $.ajax({
+                type: 'POST',
+                url: '{{url_for("restfulapi.updata_company_list")}}',
+                dataType: 'json',
+                success: function (data) {
+                    console.log(data)
+                }})
         })
         firstvisit()
     </script>
