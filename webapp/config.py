@@ -24,15 +24,15 @@ class DevConfig(Config):
             'id': 'job1',
             'func': 'clientapp:send_notice',
             'args': '',
-            # 'trigger': {
-            #     'type': 'cron',
-            #     'day_of_week': "mon-fri",
-            #     'hour': '0-23',
-            #     'minute': '0-11',
-            #     'second': '*/5'
-            # }
-            'trigger': 'interval',
-            'seconds': 30
+            'trigger': {
+                'type': 'cron',
+                'day_of_week': "mon-fri",
+                'hour': '15',
+                'minute': '10',
+                'second': '00'
+            }
+            # 'trigger': 'interval',
+            # 'seconds': 30
 
         }
     ]

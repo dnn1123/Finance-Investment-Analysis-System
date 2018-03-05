@@ -211,12 +211,14 @@
                         </li>
                         <li><a href="{{ url_for('stock.myposition') }}"><i class="menu-icon icon-paste"></i>当前持仓 </a>
                         </li>
-                        <li><a href="{{ url_for('message.my_message') }}"><i class="menu-icon icon-inbox"></i>我的消息 <b id="personal_message_count"
+                        <li><a href="{{ url_for('message.my_message') }}"><i class="menu-icon icon-inbox"></i>我的消息 <b
+                                id="personal_message_count"
                                 class="label green pull-right">
+                        </b> </a></li>
+                        <li><a href="{{ url_for('message.system_message') }}"><i class="menu-icon icon-tasks"></i>系统消息
+                            <b id="system_message_count"
+                               class="label orange pull-right">
                             </b> </a></li>
-                        <li><a href="task.html"><i class="menu-icon icon-tasks"></i>系统消息 <b
-                                class="label orange pull-right">
-                            19</b> </a></li>
                     </ul>
                     <!--/.widget-nav-->
 
@@ -243,9 +245,10 @@
                             <i class="icon-chevron-down pull-right"></i><i class="menu-icon icon-book">
                         </i>量化模型 </a>
                             <ul id="togglePages_quant" class="collapse unstyled">
-                                <li><a href="#"><i class="icon-inbox"></i>量化模型 </a></li>
+                                <li><a href="{{ url_for("quant.models") }}"><i class="icon-inbox"></i>量化模型 </a></li>
                                 <li><a href="{{ url_for("quant.backtest") }}"><i class="icon-inbox"></i>历史回测 </a></li>
-                                <li><a href="{{ url_for("quant.realtime_simulation") }}"><i class="icon-inbox"></i>实时模拟 </a></li>
+                                <li><a href="{{ url_for("quant.realtime_simulation") }}"><i class="icon-inbox"></i>实时模拟
+                                </a></li>
                             </ul>
                         </li>
                         <li><a href="table.html"><i class="menu-icon icon-table"></i>交易模型 </a></li>
@@ -273,21 +276,43 @@
         var navheight = $("div.navbar").height();
         $("#container").css("margin-top", navheight);
     })
-  setInterval(aa,30000);
-   function aa(){
-       $.ajax({
-                type: 'GET',
-                url: '{{ url_for("message_api.get_message_count") }}',
-                dataType: 'json',
-                success: function (data) {
-                    console.log(data)
-                    if(data.count>0){ $("#personal_message_count").text(data.count)}
-                    else{
-                        $("#personal_message_count").text('暂无未读')
-                    }
+    setInterval(aa, 30000);
+    setInterval(bb, 30000);
 
-                }})
- }
+    function aa() {
+        $.ajax({
+            type: 'GET',
+            url: '{{ url_for("message_api.get_message_count") }}',
+            dataType: 'json',
+            success: function (data) {
+                console.log(data)
+                if (data.count > 0) {
+                    $("#personal_message_count").text(data.count)
+                }
+                else {
+                    $("#personal_message_count").text('暂无未读')
+                }
+
+            }
+        })
+    }
+
+    function bb() {
+        $.ajax({
+            type: 'GET',
+            url: '{{ url_for("message_api.get_system_message_count") }}',
+            dataType: 'json',
+            success: function (data) {
+                if (data.count > 0) {
+                    $("#system_message_count").text(data.count)
+                }
+                else {
+                    $("#system_message_count").text('暂无未读')
+                }
+
+            }
+        })
+    }
 
 </script>
 {% block JavaScripts %}{% endblock %}
