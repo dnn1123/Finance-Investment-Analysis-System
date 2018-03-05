@@ -1,0 +1,61 @@
+{% extends "stock_base.html" %}
+{% block current_user %}
+    {{ current_user.username }}
+{% endblock %}
+
+{% block body %}
+    <div class="span9" style="height: auto;min-height: 100%">
+        <div class="content">
+            <div class="module">
+                <div class="module-head">
+                    系统消息
+                </div>
+                <div class="module-body" id="message">
+                </div>
+            </div>
+        </div>
+        </div>
+{% endblock %}
+
+{% block JavaScripts %}
+    <script>
+    $(document).ready(function () {
+        getdata()
+    })
+    function getdata() {
+        $.ajax({
+            type: 'GET',
+            url: '{{ url_for("message_api.get_system_message") }}',
+            dataType: 'json',
+            success: function (data) {
+                $("#message").empty()
+                for(i=0;i<data.length;i++){
+                    if (data[i].state == 'Y'){
+                        html='<div class="alert alert-block alert-success" id="'+ data[i].id+'"><h5>系统消息&nbsp&nbsp&nbsp&nbsp'+data[i].time+'</h5>'+data[i].message +'</div>'
+                        $("#message").append(html)
+                    }
+                    if(data[i].state == 'N'){
+                        html='<div class="alert alert-block alert-info unread-message" id="'+ data[i].id+'"><h5>系统消息&nbsp&nbsp&nbsp&nbsp'+data[i].time+'</h5>'+data[i].message +'</div>'
+                        $("#message").append(html)
+                    }
+                }
+            }
+        })
+    }
+    $("#message").on('click','.unread-message',function () {
+        var id = $(this).attr('id')
+        var obj = $(this)
+        $.ajax({
+            type: 'GET',
+            url: '{{ url_for("message_api.read_system_message") }}',
+            data: {"id": id},
+            dataType: 'json',
+            success: function (data) {
+                obj.removeClass('unread-message', 'alert-info')
+                obj.addClass('alert-success')
+            }
+        })
+        })
+    </script>
+
+{% endblock %}

@@ -42,33 +42,6 @@
                         </tr>
                         </thead>
                         <tbody id="tbody">
-                        <tr>
-                            <td>
-                                test
-                            </td>
-                            <td>
-                                1号策略
-                            </td>
-                            <td>
-                                三均线
-                            </td>
-                            <td>
-                                1000
-                            </td>
-                            <td>
-                                1200元
-                            </td>
-                            <td>
-                                运行中
-                            </td>
-                            <td>
-                                2017年10月01日
-                            </td>
-                            <td>
-                                <button class="btn-primary btn-mini">暂停</button>
-                                <button class="btn-warning btn-mini">删除</button>
-                            </td>
-                        </tr>
                         </tbody>
                     </table>
                 </div>
@@ -76,50 +49,50 @@
         </div>
     </div>
 
-    <div class="btn-controls">
-        <div class="btn-box-row row-fluid">
-            <a href="#" class="btn-box big span4"><i class="icon-money "></i><b id="portfolio">-</b>
-                <p class="text-muted">
-                    总市值</p>
-            </a><a href="#" class="btn-box big span4"><i class="icon-glass"></i><b id="culrtn">-</b>
-            <p class="text-muted">
-                总成本</p>
-        </a><a href="#" class="btn-box big span4"><i class="icon-random"></i><b id="meanrtn">-</b>
-            <p class="text-muted">
-                总利润</p>
-        </a>
-        </div>
-    </div>
-    <div class="btn-controls">
-        <div class="btn-box-row row-fluid">
-            <a href="#" class="btn-box big span4"><i class="icon-money "></i><b id="portfolio">-</b>
-                <p class="text-muted">
-                    累计收益率</p>
-            </a><a href="#" class="btn-box big span4"><i class="icon-glass"></i><b id="culrtn">-</b>
-            <p class="text-muted">
-                平均日收益率</p>
-        </a><a href="#" class="btn-box big span4"><i class="icon-random"></i><b id="meanrtn">-</b>
-            <p class="text-muted">
-                近一个月收益率最高</p>
-        </a>
-        </div>
-    </div>
-    <div class="module">
-        <div class="module-head">资金分布</div>
-        投入 市值
-    </div>
-    <div class="module">
-        <div class="module-head">夏普率条形图</div>
-    </div>
-    <div class="module">
-        <div class="module-head">最大回撤条形图</div>
-    </div>
-    <div class="module">
-        <div class="module-head">平均日收益率条形图</div>
-    </div>
-    <div class="module">
-        <div class="module-head">利润条形图</div>
-    </div>
+{#    <div class="btn-controls">#}
+{#        <div class="btn-box-row row-fluid">#}
+{#            <a href="#" class="btn-box big span4"><i class="icon-money "></i><b id="portfolio">-</b>#}
+{#                <p class="text-muted">#}
+{#                    总市值</p>#}
+{#            </a><a href="#" class="btn-box big span4"><i class="icon-glass"></i><b id="culrtn">-</b>#}
+{#            <p class="text-muted">#}
+{#                总成本</p>#}
+{#        </a><a href="#" class="btn-box big span4"><i class="icon-random"></i><b id="meanrtn">-</b>#}
+{#            <p class="text-muted">#}
+{#                总利润</p>#}
+{#        </a>#}
+{#        </div>#}
+{#    </div>#}
+{#    <div class="btn-controls">#}
+{#        <div class="btn-box-row row-fluid">#}
+{#            <a href="#" class="btn-box big span4"><i class="icon-money "></i><b id="portfolio">-</b>#}
+{#                <p class="text-muted">#}
+{#                    累计收益率</p>#}
+{#            </a><a href="#" class="btn-box big span4"><i class="icon-glass"></i><b id="culrtn">-</b>#}
+{#            <p class="text-muted">#}
+{#                平均日收益率</p>#}
+{#        </a><a href="#" class="btn-box big span4"><i class="icon-random"></i><b id="meanrtn">-</b>#}
+{#            <p class="text-muted">#}
+{#                近一个月收益率最高</p>#}
+{#        </a>#}
+{#        </div>#}
+{#    </div>#}
+{#    <div class="module">#}
+{#        <div class="module-head">资金分布</div>#}
+{#        投入 市值#}
+{#    </div>#}
+{#    <div class="module">#}
+{#        <div class="module-head">夏普率条形图</div>#}
+{#    </div>#}
+{#    <div class="module">#}
+{#        <div class="module-head">最大回撤条形图</div>#}
+{#    </div>#}
+{#    <div class="module">#}
+{#        <div class="module-head">平均日收益率条形图</div>#}
+{#    </div>#}
+{#    <div class="module">#}
+{#        <div class="module-head">利润条形图</div>#}
+{#    </div>#}
 {% endblock %}
 {% block bottombody %}
     <!-- Modal -->
@@ -134,6 +107,7 @@
                 <option disabled selected value>请选择……</option>
                 <option value="Pair_Strategy_Based_Bank">配对策略</option>
                 <option value="DoubleMA_Strategy">双均线策略</option>
+                <option value="Buy_Everyday">每日一买</option>
             </select>
             <div id="div_form"></div>
         </div>
@@ -186,7 +160,7 @@
                 },{
                     "targets": 7,
                     "render": function (data, type, row) {
-                            return '<button class="btn-primary btn-mini">暂停</button> <button class="btn-warning btn-mini delete_subscribe" id="'+row[0]+'">删除</button>'
+                            return '<button class="btn-success btn-mini start_subscribe" id="'+row[0]+'">运行</button><button class="btn-primary btn-mini stop_subscribe" id="'+row[0]+'">暂停</button> <button class="btn-warning btn-mini delete_subscribe" id="'+row[0]+'">删除</button>'
                         }
                 }],
 
@@ -210,6 +184,7 @@
         })
 
         $("#div_form").on('click', '.submit', function () {
+            $('#subscribe').modal('hide')
             $.ajax({
                 type: "POST",//方法类型
                 dataType: "json",//预期服务器返回的数据类型
@@ -234,6 +209,33 @@
                 })
             }
     )
+        $("#mytable").on('click','.start_subscribe',function () {
+        $.ajax({
+                type: "GET",//方法类型
+                dataType: "json",//预期服务器返回的数据类型
+                url: "{{ url_for("quant_api.start_subscribe") }}",//url
+                data:{"id":$(this).attr('id')},
+                success: function (result) {
+                    alert(result.result)
+                    getdata()
+                    }
+                })
+            }
+    )
+
+    $("#mytable").on('click','.stop_subscribe',function () {
+        $.ajax({
+                type: "GET",//方法类型
+                dataType: "json",//预期服务器返回的数据类型
+                url: "{{ url_for("quant_api.stop_subscribe") }}",//url
+                data:{"id":$(this).attr('id')},
+                success: function (result) {
+                    alert(result.result)
+                    getdata()
+                    }
+                })
+            }
+    )
 
     </script>
     <script>
@@ -244,8 +246,8 @@
                 url: "{{ url_for("quant_api.get_realtime_simulation_data") }}",//url
                 {#data#}
                 success: function (result) {
+                    mytable.clear().draw()
                     if (result.flag != "empty") {
-                        console.log(result.data)
                         mytable.rows.add(result.data).draw()
                     }
                 }

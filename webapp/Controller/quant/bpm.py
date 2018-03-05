@@ -35,6 +35,12 @@ def handle_liveform(form):
         data = {"strategy_id": Strategy.DoubleMA_Strategy.value, "strategy_name": form.get('strategy_name'),
                 "params": params, "build_date": datetime.datetime.now()}
         return data
+    if type=="Buy_Everyday":
+        params = {"commission": float(form.get('commission')), "cash": float(form.get('cash')),
+                  "instrument": form.get('instrument')}
+        data = {"strategy_id": Strategy.Buy_Everyday.value, "strategy_name": form.get('strategy_name'),
+                "params": params, "build_date": datetime.datetime.now()}
+        return data
 def dict_to_sql(dict):
     tempstr=str(dict)
     binary=base64.b64encode(tempstr)
@@ -48,6 +54,7 @@ def sql_to_dict(bin):
 class Strategy(Enum):
     Pair_Strategy_Based_Bank = 0  # 设置sun 的value为  策略id 数据库
     DoubleMA_Strategy=1
+    Buy_Everyday=2
     # Sat = 6 # 如果重复会报错 TypeError: Attempted to reuse key: 'Sat'
     # @unique装饰器可以帮助我们检查保证没有重复值
 
@@ -86,6 +93,12 @@ class Strategy_Manager():  # 策略管理器
                 self.__cash = args.get('cash')
                 self.__i = args.get('instrument')
                 self.__init_DoubleMA_Strategy()
+        if StrategyType==Strategy.Buy_Everyday:
+            self.__commission = args.get('commission')
+            self.__builddate = args.get('builddate')
+            self.__cash = args.get('cash')
+            self.__i = args.get('instrument')
+            self.__init_Buy_Everyday_Live()
     def __init_Pair_Strategy_Based_Bank(self):
 
         i1_data = ts.get_k_data(self.__i1, self.__startdate, self.__enddate)
@@ -207,6 +220,33 @@ class Strategy_Manager():  # 策略管理器
         # 绘图模块
         self.__plt = plotter.StrategyPlotter(self.__strategy_entity)
 
+    def __init_Buy_Everyday_Live(self):
+        i_data = ts.get_k_data(self.__i, (self.__builddate+ datetime.timedelta(days=-90)).strftime("%Y-%m-%d"))
+        feed = dataFramefeed.Feed(bar.Frequency.DAY)
+        feed.addBarsFromDataFrame(self.__i, i_data)
+        broker_commission = broker.backtesting.TradePercentage(self.__commission)  # 费率交易金额百分比 也可设置固定费率 无手续费
+        # 3.2 fill strategy设置
+        fill_stra = broker.fillstrategy.DefaultStrategy(volumeLimit=0.1)  # 成交比例 也可以用set方法修改 初始化赋值也可
+        sli_stra = broker.slippage.NoSlippage()  # 滑点模型  此为无滑点
+        # broker.slippage.VolumeShareSlippage(priceImpact=0.1) 设置影响程度
+        fill_stra.setSlippageModel(sli_stra)
+        # setVolumeLimit(volumeLimit)  更改成交比例
+        # 3.3完善broker类
+        brk = broker.backtesting.Broker(self.__cash, feed, broker_commission)  # 初始化
+        brk.setFillStrategy(fill_stra)  # 将成交策略传给brk
+        # 4.把策略跑起来
+        self.__strategy_entity = Buy_Everyday_Live(feed, brk, self.__i,self.__builddate)
+
+        self.__retAnalyzer = returns.Returns()
+        self.__strategy_entity.attachAnalyzer(self.__retAnalyzer)
+        self.__sharpeRatioAnalyzer = sharpe.SharpeRatio()
+        self.__strategy_entity.attachAnalyzer(self.__sharpeRatioAnalyzer)
+        self.__drawdownAnalyzer = drawdown.DrawDown()
+        self.__strategy_entity.attachAnalyzer(self.__drawdownAnalyzer)
+        self.__tradeAnalyzer = trades.Trades()
+        self.__strategy_entity.attachAnalyzer(self.__tradeAnalyzer)
+        # 绘图模块
+        self.__plt = plotter.StrategyPlotter(self.__strategy_entity)
 
     def run(self):
         self.__strategy_entity.run()
@@ -518,7 +558,7 @@ class DoubleMA_Strategy(strategy.BacktestingStrategy):
 
 class DoubleMA_Strategy_Live(strategy.BacktestingStrategy):
     def __init__(self,feed,brk,instrument,builddate,malength_1,malength_2):
-        super(DoubleMA_Strategy, self).__init__(feed, brk)
+        super(DoubleMA_Strategy_Live, self).__init__(feed, brk)
         self.__DataCalculator = DataCalculator_For_DoubleMA_Strategy(feed[instrument].getPriceDataSeries(),malength_1,malength_2)
         self.__builddate=builddate
         self.__i = instrument
@@ -566,3 +606,41 @@ class DoubleMA_Strategy_Live(strategy.BacktestingStrategy):
             if self.__text != "":
                 self.__textlist.setdefault(bars.getDateTime().date(), self.__text)
 
+class Buy_Everyday_Live(strategy.BacktestingStrategy):
+    def __init__(self,feed,brk,instrument,builddate):
+        super(Buy_Everyday_Live, self).__init__(feed, brk)
+        self.__builddate=builddate
+        self.__i = instrument
+        self.__text=''
+        self.__textlist={}
+        self.__position = None
+
+    def getTextlist(self):
+        return self.__textlist
+
+    def onEnterOk(self, position):
+        # print position.getEntryOrder().getAction()
+        execInfo = position.getEntryOrder().getExecutionInfo()
+        self.info("Trade %.2f" % (execInfo.getPrice()))
+
+    def onEnterCanceled(self, position):
+        self.__position = None
+
+    def onExitOk(self, position):
+        execInfo = position.getExitOrder().getExecutionInfo()
+        self.info("SELL at $%.2f" % (execInfo.getPrice()))
+        self.__position = None
+
+    def onExitCanceled(self, position):
+        self.__position.exitMarket()
+
+    def onBars(self, bars):
+        if bars.getDateTime() > self.__builddate:
+            self.__text=''
+            shares=100
+            # If a position was not opened, check if we should enter a long position.
+            self.__position = self.enterLong(self.__i, shares)
+            self.__text+=u"买入"+self.__i+u"股票"+str(shares)+u"股开仓"
+
+            if self.__text != "":
+                self.__textlist.setdefault(bars.getDateTime().date(), self.__text)

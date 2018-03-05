@@ -506,8 +506,30 @@ def get_user_list():
 @message_api.route('/get_message_count', methods=['GET', 'POST'])
 def get_message_count():
     data = {}
-    db_engine = create_engine('mysql://root:0000@localhost/my_message?charset=utf8')
-    Session = sessionmaker(bind=db_engine)
-    results = personal_information.query.filter_by(receiver=current_user.username,state='N').count()
+    results = personal_information.query.filter(personal_information.sender !='system',).filter_by(receiver=current_user.username,state='N').count()
     data['count'] = results
     return jsonify(data)
+
+@message_api.route('/get_system_message_count', methods=['GET', 'POST'])
+def get_system_message_count():
+    data = {}
+    results = personal_information.query.filter_by(receiver=current_user.username,sender='system',state='N').count()
+    data['count'] = results
+    return jsonify(data)
+
+@message_api.route('/get_system_message',methods=['GET', 'POST'])
+def get_system_message():
+    result=[]
+    data=personal_information.query.filter_by(receiver=current_user.username,sender='system').order_by(desc(personal_information.time)).all()
+    if data=={}:
+        return jsonify(result)
+    for each in data:
+        result.append({"id":each.id,"message":each.message_content,"time":each.time.strftime("%Y-%m-%d %H:%M:%S"),"state":each.state})
+    return jsonify(result)
+
+@message_api.route('/read_system_message',methods=['GET', 'POST'])
+def read_system_message():
+    id=request.args.get('id')
+    data=personal_information.query.filter_by(id=id).update({'state':'Y'})
+    db.session.commit()
+    return jsonify({"result":"success"})

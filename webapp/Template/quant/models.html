@@ -1,9 +1,68 @@
 {% extends "quant_base.html" %}
 {% block content %}
+<div class="content" id="model_list">
 
-
+</div>
+{% endblock %}
+{% block bottombody %}
+    <div id="subscribe" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3>添加订阅</h3>
+        </div>
+        <div class="modal-body">
+            <div id="div_form"></div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn" data-dismiss="modal" aria-hidden="true">关闭</button>
+        </div>
+    </div>
 {% endblock %}
 {% block scripts %}
+<script>
+$(document).ready(function () {
+    getdata()
+})
+function getdata() {
+    $.ajax({
+        type: "GET",//方法类型
+        dataType: "json",//预期服务器返回的数据类型
+        url: "{{ url_for("quant_api.get_models") }}",//url
+        success: function (result) {
+            for (i=0;i<result.length;i++){
+                 html='<div class="module"> <div class="module-head">'+result[i].name_cn+'</div> <div class="module-body"><p>类型：'+result[i].type+'</p>'+result[i].description+'</div> <div class="module-foot" style="padding:5px"> <div class="row-fluid"> <button class="btn btn-mini btn-primary subscribe_str" style="float: right;margin-left: 5px" id="'+result[i].name_en+'">订阅</button> <button class="btn btn-mini btn-primary sample" style="float: right;margin-left: 5px" id="'+result[i].id+'">查看示例</button> </div> </div> </div>'
+                $("#model_list").append(html)
+            }
+            }
+    })
+}
+$("#model_list").on('click','.subscribe_str',function () {
+    var type=$(this).attr('id')
+    $.ajax({
+                type: "GET",
+                data: {"type": type},
+                url: "{{ url_for("quant_api.request_liveform") }}",
+                dataType: "html",
+                success: function (data) {
+                    $("#div_form").html(data)
+                    $("#subscribe").modal('show')
+                }
+            })
 
+})
+$("#div_form").on('click', '.submit', function () {
+            $('#subscribe').modal('hide')
+            $.ajax({
+                type: "POST",//方法类型
+                dataType: "json",//预期服务器返回的数据类型
+                url: "{{ url_for("quant_api.subscribe") }}",//url
+                data: $('#backtest_form').serialize(),
+                success: function (result) {
+                    alert(result.data)
+                }
+            })
+        })
+</script>
 
 {% endblock %}
