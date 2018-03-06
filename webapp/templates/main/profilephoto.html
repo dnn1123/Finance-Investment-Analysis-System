@@ -54,8 +54,10 @@
                             <img class="my_profile" id="img-change" src="">
                             <div class="my_function">
                                 <button id="to_choose" class="thebutton">选择文件</button>
-                                <form action="{{ url_for("main.profilephoto") }}" enctype='multipart/form-data' method='POST'>
-                                    <input type="file" id="my_avatar" style="display:none" name="file" onchange="filechange(event)"/>
+                                <form action="{{ url_for("main.profilephoto") }}" enctype='multipart/form-data'
+                                      method='POST'>
+                                    <input type="file" id="my_avatar" style="display:none" name="file"
+                                           onchange="filechange(event)"/>
                                     <button type="submit" id="to_upload" class="thebutton">上传头像</button>
                                 </form>
                             </div>
@@ -78,7 +80,6 @@
             if (files && files.length > 0) {
                 // 获取目前上传的文件
                 file = files[0];// 文件大小校验的动作
-                myfile = file;
                 if (file.size > 1024 * 1024 * 2) {
                     alert('图片大小不能超过2MB!');
                     return false;
@@ -89,9 +90,8 @@
                 var imgURL = URL.createObjectURL(file);
                 //用attr将img的src属性改成获得的url
                 $("#img-change").attr("src", imgURL);
-                // 如需释放内存：URL.revokeObjectURL(imgURL);
                 myavatar = imgURL;
-                console.log(imgURL);
+                // 如需释放内存：URL.revokeObjectURL(imgURL);
             }
         };
     </script>

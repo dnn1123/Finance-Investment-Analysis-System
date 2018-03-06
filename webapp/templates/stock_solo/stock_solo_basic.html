@@ -4,9 +4,9 @@
 {% endblock %}
 {% block styles %}
     <style>
-    div.mytable td{
-        white-space: nowrap;
-    }
+        div.mytable td {
+            white-space: nowrap;
+        }
     </style>
 {% endblock %}
 {% block body %}
@@ -285,13 +285,13 @@
                 "infoEmpty": "没有数据",
                 "infoFiltered": "(过滤总件数 _MAX_ 条)"
             },
-             dom: 'Bfrtip',
-                        buttons: {
-                            buttons: [
-                                {extend: 'copy', 'text': '复制', 'className': 'btn btn-default btn-xs',},
-                                {extend: 'excel', 'text': '导出Excel', 'className': 'btn btn-default btn-xs',}
-                            ]
-                        }
+            dom: 'Bfrtip',
+            buttons: {
+                buttons: [
+                    {extend: 'copy', 'text': '复制', 'className': 'btn btn-default btn-xs',},
+                    {extend: 'excel', 'text': '导出Excel', 'className': 'btn btn-default btn-xs',}
+                ]
+            }
         });
         var data = [
             {name: '{{ stock.city }}', value: 100}
@@ -898,7 +898,7 @@
             'ev2': '整体价值估计（不含货币）',
             'employee': '雇员数量'
         }
-        var dict={
+        var dict = {
             'tot_oper_rev': '营业总收入',
             'tot_oper_cost': '营业总成本',
             'ebit_rate': '息税前利润率',
@@ -923,7 +923,7 @@
             'invturndays': '存货周转天数',
             'arturndays': '应收账款周转天数',
             'apturndays': '应付账款周转天数',
-             'wgsd_com_eq': '归属股东权益',
+            'wgsd_com_eq': '归属股东权益',
             'net_inc_eq_rate': '净资产收益率（股东）',
             'total_shares': '股本',
             'earnings_per_share': '每股收益',
@@ -983,7 +983,7 @@
             format: 'yyyy年Q4',
             startView: 4,
             maxView: 4,
-            minView:4,
+            minView: 4,
             autoclose: true,
             pickerPosition: 'top-right'
         });
@@ -1028,36 +1028,40 @@
                 increaseArea: '20%' // optional
             });
             $('input').on('ifChecked', function (event) {
-            indexname = $(this).val();
-            Chosenindexes[indexname] = NewColor();
-            $("#div_" + indexname).css("background-color", Chosenindexes[indexname])
-            console.log(Chosenindexes)
-            CreateChart();
-            CreateTable();
-        });
-        $('input').on('ifUnchecked', function (event) {
-            indexname = $(this).val();
-            delete Chosenindexes[indexname]
-            $("#div_" + indexname).css("background-color", 'transparent')
-            CreateChart();
-            CreateTable();
-        });
+                indexname = $(this).val();
+                Chosenindexes[indexname] = NewColor();
+                $("#div_" + indexname).css("background-color", Chosenindexes[indexname])
+                console.log(Chosenindexes)
+                CreateChart();
+                CreateTable();
+            });
+            $('input').on('ifUnchecked', function (event) {
+                indexname = $(this).val();
+                delete Chosenindexes[indexname]
+                $("#div_" + indexname).css("background-color", 'transparent')
+                CreateChart();
+                CreateTable();
+            });
             getdata()
         });
 
         function creatindex() {
-            thtml='<div><a class="accordion-toggle" data-toggle="collapse"  href="#collapseOne"> <h4>财务指标</h4> </a> <div id="collapseOne" class="collapse in"> <div id="list1"> </div> </div> </div>'
-            thtml+='<div><a class="accordion-toggle" data-toggle="collapse"  href="#collapseTwo"> <h4>投资指标</h4> </a> <div id="collapseTwo" class="collapse in"> <div id="list2"> </div> </div> </div>'
+            thtml = '<div class="panel panel-default"><div class="panel-heading"><h4 class="panel-title"><a class="accordion-toggle" data-toggle="collapse"  href="#collapseOne">财务指标</a></h4><div id="collapseOne" class="collapse in"><div class="panel-body" id="list1"></div> </div></div></div>';
+            thtml += '<div class="panel panel-default"><div class="panel-heading"><h4 class="panel-title"><a class="accordion-toggle" data-toggle="collapse"  href="#collapseTwo">投资指标</a></h4><div id="collapseTwo" class="collapse in"><div class="panel-body" id="list2"></div> </div></div></div>';
+            thtml += '<div class="panel panel-default"><div class="panel-heading"><h4 class="panel-title"><a class="accordion-toggle" data-toggle="collapse"  href="#collapseThree">财务报表</a></h4><div id="collapseThree" class="collapse in"><div class="panel-body" id="list3"></div> </div></div></div>';
 
-            $("#index").append(thtml)
+            $("#index").append(thtml);
             for (var key in indexdict_finance) {
-                $("#list1").append("<div style='width:100%;height:30px;margin-top:10px;'><label style='font-size:12px;font-weight:normal'><input id='cl_" + key + "' type='checkbox' value='" + key + "'  >" + indexdict_finance[key] + " <div id='div_" + key + "' style='height: 10px;width: 10px;float: right;margin: 5px'></div></label> </div>"
-                )
+                $("#list1").append("<div style='width:100%;height:30px;margin-top:10px;'><label style='font-size:12px;font-weight:normal'><input id='cl_" + key + "' type='checkbox' value='" + key + "'  >" + indexdict_finance[key] + " <div id='div_" + key + "' style='height: 10px;width: 10px;float: right;margin: 5px'></div></label> </div>")
             }
             for (var key in indexdict_invest) {
-                $("#list2").append("<div style='width:100%;height:30px;margin-top:10px;'><label style='font-size:12px;font-weight:normal'><input id='cl_" + key + "' type='checkbox' value='" + key + "'  >" + indexdict_invest[key] + " <div id='div_" + key + "' style='height: 10px;width: 10px;float: right;margin: 5px'></div></label> </div>"
-                )
+                $("#list2").append("<div style='width:100%;height:30px;margin-top:10px;'><label style='font-size:12px;font-weight:normal'><input id='cl_" + key + "' type='checkbox' value='" + key + "'  >" + indexdict_invest[key] + " <div id='div_" + key + "' style='height: 10px;width: 10px;float: right;margin: 5px'></div></label> </div>")
             }
+
+            $("#list3").append("<div><h4><a class='accordion-toggle' data-toggle='collapse'  href='#balance sheet'>资产负债表</a></h4><div id='balance sheet' class='collapse in'><div id='balance list'></div> </div></div>" +
+                "<div><h4><a class='accordion-toggle' data-toggle='collapse'  href='#cash-flow statement'>现金流量表</a></h4><div id='cash-flow statement' class='collapse in'><div id='cashflow list'></div> </div></div>" +
+                "<div><h4><a class='accordion-toggle' data-toggle='collapse'  href='#income statement'>利润表</a></h4><div id='income statement' class='collapse in'><div id='income list'></div> </div></div>")
+
         }
 
         function getdata() {
@@ -1068,7 +1072,7 @@
                     stockcode: currentcode,
                     starttime: '19901231',
                     endtime: '20161231',
-                    indexes:['tot_oper_rev', 'tot_oper_cost',  'fin_exp_is', 'tot_profit', 'net_profit_is', 'wgsd_net_inc', 'tot_assets', 'tot_cur_assets', 'tot_non_cur_assets', 'tot_liab', 'tot_cur_liab', 'tot_non_cur_liab', 'wgsd_com_eq', 'operatecashflow_ttm2', 'investcashflow_ttm2', 'financecashflow_ttm2', 'cashflow_ttm2', 'monetary_cap', 'grossprofitmargin', 'roic', 'turndays', 'invturndays', 'arturndays', 'apturndays']
+                    indexes: ['tot_oper_rev', 'tot_oper_cost', 'fin_exp_is', 'tot_profit', 'net_profit_is', 'wgsd_net_inc', 'tot_assets', 'tot_cur_assets', 'tot_non_cur_assets', 'tot_liab', 'tot_cur_liab', 'tot_non_cur_liab', 'wgsd_com_eq', 'operatecashflow_ttm2', 'investcashflow_ttm2', 'financecashflow_ttm2', 'cashflow_ttm2', 'monetary_cap', 'grossprofitmargin', 'roic', 'turndays', 'invturndays', 'arturndays', 'apturndays']
                 },
                 dataType: 'json',//希望服务器返回json格式的数据
                 success: function (data) {
@@ -1454,8 +1458,8 @@
                         xAxisIndex: [0],
                         height: 20,
                         startValue: "2016年Q4",
-{#                        start: 0,      // 左边在 10% 的位置。#}
-{#                        end: 50,         // 右边在 60% 的位置。#}
+                        {#                        start: 0,      // 左边在 10% 的位置。#}
+                        {#                        end: 50,         // 右边在 60% 的位置。#}
                         {#                            top: '93%',#}
                         endValue: "2006年Q4",
                         filterMode: 'filter',
@@ -1493,7 +1497,7 @@
                     stockcode: currentcode,
                     starttime: parseInt(opt.xAxis[0].data[dz.startValue]) <= parseInt(opt.xAxis[0].data[dz.endValue]) ? opt.xAxis[0].data[dz.startValue] : opt.xAxis[0].data[dz.endValue],
                     endtime: parseInt(opt.xAxis[0].data[dz.startValue]) >= parseInt(opt.xAxis[0].data[dz.endValue]) ? opt.xAxis[0].data[dz.startValue] : opt.xAxis[0].data[dz.endValue],
-                    indexes:['tot_oper_rev', 'tot_oper_cost',  'fin_exp_is', 'tot_profit', 'net_profit_is', 'wgsd_net_inc', 'tot_assets', 'tot_cur_assets', 'tot_non_cur_assets', 'tot_liab', 'tot_cur_liab', 'tot_non_cur_liab', 'wgsd_com_eq', 'operatecashflow_ttm2', 'investcashflow_ttm2', 'financecashflow_ttm2', 'cashflow_ttm2', 'monetary_cap', 'grossprofitmargin', 'roic', 'turndays', 'invturndays', 'arturndays', 'apturndays']
+                    indexes: ['tot_oper_rev', 'tot_oper_cost', 'fin_exp_is', 'tot_profit', 'net_profit_is', 'wgsd_net_inc', 'tot_assets', 'tot_cur_assets', 'tot_non_cur_assets', 'tot_liab', 'tot_cur_liab', 'tot_non_cur_liab', 'wgsd_com_eq', 'operatecashflow_ttm2', 'investcashflow_ttm2', 'financecashflow_ttm2', 'cashflow_ttm2', 'monetary_cap', 'grossprofitmargin', 'roic', 'turndays', 'invturndays', 'arturndays', 'apturndays']
                 },
                 dataType: 'json',//希望服务器返回json格式的数据
                 success: function (data) {
@@ -1571,13 +1575,13 @@
                     "infoEmpty": "没有数据",
                     "infoFiltered": "(过滤总件数 _MAX_ 条)"
                 },
-                 dom: 'Bfrtip',
-                        buttons: {
-                            buttons: [
-                                {extend: 'copy', 'text': '复制', 'className': 'btn btn-default btn-xs',},
-                                {extend: 'excel', 'text': '导出Excel', 'className': 'btn btn-default btn-xs',}
-                            ]
-                        }
+                dom: 'Bfrtip',
+                buttons: {
+                    buttons: [
+                        {extend: 'copy', 'text': '复制', 'className': 'btn btn-default btn-xs',},
+                        {extend: 'excel', 'text': '导出Excel', 'className': 'btn btn-default btn-xs',}
+                    ]
+                }
             });
             setTimeout("$(\"#subject\").trigger(\"click\")", 100);
             for (var i = 0; i < finance_results_t.indexes.length; i++) {

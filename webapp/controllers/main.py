@@ -5,16 +5,11 @@ from webapp.forms import LoginForm, RegisterForm
 from webapp.models import users, db, Permission
 from flask_login import login_user, login_required, logout_user, current_user
 from flask_principal import Identity, AnonymousIdentity, identity_changed
-<<<<<<< HEAD
 from webapp.decorators import admin_required, permission_required
-=======
-
->>>>>>> origin/dev
 from webapp.models import *
 from webapp.sms import *
 import random
 
-<<<<<<< HEAD
 main_blueprint = Blueprint(
     'main',
     __name__,
@@ -182,7 +177,6 @@ def admin():
     role = Role.query.filter_by(id=user.permissions).first()
     rolename = role.description
     return render_template('admin/admin_permission.html', user=user, rolename=rolename)
-=======
 
 
 
@@ -244,5 +238,3 @@ def admin():
 #         return redirect(url_for('.login'))
 
 
-
->>>>>>> origin/dev

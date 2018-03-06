@@ -24,8 +24,26 @@ roles = db.Table(
 class strategy(db.Model):
     __bind_key__ = 'quant'
     __tablename__ = 'strategy'
-    id=db.Column(db.String(255), primary_key=True)
-    base64=db.Column(db.String(255))
+    id = db.Column(db.Integer, primary_key=True)
+    name_en = db.Column(db.String(255))
+    name_cn = db.Column(db.String(255))
+    type = db.Column(db.String(255))
+    description = db.Column(db.String(255))
+    sample = db.Column(db.BLOB)
+
+
+class subscriber(db.Model):
+    __bind_key__ = 'quant'
+    __tablename__ = 'subscriber'
+    identifier = db.Column(db.Integer, primary_key=True)
+    user = db.Column(db.String(20))
+    strategy_id = db.Column(db.Integer, db.ForeignKey('strategy.id'), )
+    strategy_name = db.Column(db.String(255))
+    parameter = db.Column(db.BLOB)
+    status = db.Column(db.String(255))
+    build_date = db.Column(db.DateTime)
+    threadpid = db.Column(db.Integer)
+    threadname = db.Column(db.String(255))
 
 
 class users_roles(db.Model):
@@ -69,11 +87,53 @@ class follows(db.Model):
     followed = db.Column(db.String(20), primary_key=True)
 
 
+class comment_reply(db.Model):
+    __bind_key__ = 'my_message'
+    __tablename__ = 'comment_reply'
+    reply_id = db.Column(db.Integer, primary_key=True)
+    post_id = db.Column(db.Integer)
+    comment_id = db.Column(db.Integer)
+    replier = db.Column(db.String(20))
+    replied = db.Column(db.String(20))
+    reply_text = db.Column(db.Text)
+    reply_time = db.Column(db.String(45))
+
+
+# 用户个人消息
+class personal_information(db.Model):
+    __bind_key__ = 'my_message'
+    __tablename__ = 'personal_information'
+
+    id = db.Column(db.Integer, primary_key=True)
+    receiver = db.Column(db.String(20), db.ForeignKey('users.username'))
+    sender = db.Column(db.String(20), db.ForeignKey('users.username'))
+    message_content = db.Column(db.String(20))
+    time = db.Column(db.DateTime)
+    state = db.Column(db.String(20))
+
+
 # 权限常量
 class Permission:
     administrator = 1
     trader = 2
     visitor = 3
+
+
+# 用户余额
+class user_money(db.Model):
+    __bind_key__ = 'users_info'
+    __tablename__ = 'user_money'
+    user_name = db.Column(db.String(20), db.ForeignKey('users.username'), primary_key=True)
+    user_money = db.Column(db.Integer())
+
+
+# 会员信息
+class member_information(db.Model):
+    __bind_key__ = 'users_info'
+    __tablename__ = 'member_information'
+    user_name = db.Column(db.String(20), db.ForeignKey('users.username'), primary_key=True)
+    member_type = db.Column(db.String(20))
+    member_expiration_date = db.Column(db.DateTime)
 
 
 class users(UserMixin, db.Model):
@@ -556,3 +616,98 @@ class deposit_reserve_rate(db.Model):
     __tablename__ = 'deposit_reserve_rate'
     datetime = db.Column(db.DateTime, primary_key=True)
     M0048187 = db.Column(db.Numeric(6, 3))
+
+
+# 新数据库
+
+class company_list(db.Model):
+    __bind_key__ = 'cns_stock'
+    __tablename__ = 'company_list'
+    Code = db.Column(db.String(20), primary_key=True)
+    Name = db.Column(db.String(80))
+    IPO_Date = db.Column(db.DateTime)
+    Up_Date = db.Column(db.DateTime)
+
+
+class cns_stock_basics(db.Model):
+    __bind_key__ = 'cns_stock'
+    __tablename__ = 'cns_stock_basics'
+    trade_code = db.Column(db.String(20), primary_key=True)
+    sec_name = db.Column(db.String(20))
+    ipo_date = db.Column(db.DateTime())
+    exch_city = db.Column(db.String(20))
+    industry_gics = db.Column(db.String(20))
+    concept = db.Column(db.String(200))
+    curr = db.Column(db.String(20))
+    fiscaldate = db.Column(db.String(20))
+    auditor = db.Column(db.String(200))
+    province = db.Column(db.String(20))
+    city = db.Column(db.String(20))
+    founddate = db.Column(db.DateTime())
+    nature1 = db.Column(db.String(20))
+    boardchairmen = db.Column(db.String(20))
+    holder_controller = db.Column(db.String(20))
+    website = db.Column(db.String(10000))
+    phone = db.Column(db.String(200))
+    majorproducttype = db.Column(db.String(200))
+    majorproductname = db.Column(db.String(2000))
+
+
+class cns_balance_sheet(db.Model):
+    __bind_key__ = 'cns_stock'
+    __tablename__ = 'cns_balance_sheet'
+    id = db.Column(db.Integer, primary_key=True)
+    stock_code = db.Column(db.String(20))
+    sec_name = db.Column(db.String(80))
+    the_data = db.Column(db.String(80))
+    monetary_cap = db.Column(db.Numeric(20, 3))
+    tradable_fin_assets = db.Column(db.Numeric(20, 3))
+    notes_rcv = db.Column(db.Numeric(20, 3))
+    acct_rcv = db.Column(db.Numeric(20, 3))
+    prepay = db.Column(db.Numeric(20, 3))
+    int_rcv = db.Column(db.Numeric(20, 3))
+    dvd_rcv = db.Column(db.Numeric(20, 3))
+    inventories = db.Column(db.Numeric(20, 3))
+    non_cur_assets_due_within_1y = db.Column(db.Numeric(20, 3))
+    oth_cur_assets = db.Column(db.Numeric(20, 3))
+    fin_assets_avail_for_sale = db.Column(db.Numeric(20, 3))
+    held_to_mty_invest = db.Column(db.Numeric(20, 3))
+    long_term_rec = db.Column(db.Numeric(20, 3))
+    long_term_eqy_invest = db.Column(db.Numeric(20, 3))
+    invest_real_estate = db.Column(db.Numeric(20, 3))
+    fix_assets = db.Column(db.Numeric(20, 3))
+    const_in_prog = db.Column(db.Numeric(20, 3))
+    proj_matl = db.Column(db.Numeric(20, 3))
+    fix_assets_disp = db.Column(db.Numeric(20, 3))
+    productive_bio_assets = db.Column(db.Numeric(20, 3))
+    oil_and_natural_gas_assets = db.Column(db.Numeric(20, 3))
+    intang_assets = db.Column(db.Numeric(20, 3))
+    r_and_d_costs = db.Column(db.Numeric(20, 3))
+    goodwill = db.Column(db.Numeric(20, 3))
+    long_term_deferred_exp = db.Column(db.Numeric(20, 3))
+    deferred_tax_assets = db.Column(db.Numeric(20, 3))
+    oth_non_cur_assets = db.Column(db.Numeric(20, 3))
+    st_borrow = db.Column(db.Numeric(20, 3))
+    tradable_fin_liab = db.Column(db.Numeric(20, 3))
+    notes_payable = db.Column(db.Numeric(20, 3))
+    acct_payable = db.Column(db.Numeric(20, 3))
+    adv_from_cust = db.Column(db.Numeric(20, 3))
+    empl_ben_payable = db.Column(db.Numeric(20, 3))
+    taxes_surcharges_payable = db.Column(db.Numeric(20, 3))
+    int_payable = db.Column(db.Numeric(20, 3))
+    dvd_payable = db.Column(db.Numeric(20, 3))
+    oth_payable = db.Column(db.Numeric(20, 3))
+    non_cur_liab_due_within_1y = db.Column(db.Numeric(20, 3))
+    oth_cur_liab = db.Column(db.Numeric(20, 3))
+    lt_borrow = db.Column(db.Numeric(20, 3))
+    bonds_payable = db.Column(db.Numeric(20, 3))
+    lt_payable = db.Column(db.Numeric(20, 3))
+    specific_item_payable = db.Column(db.Numeric(20, 3))
+    provisions = db.Column(db.Numeric(20, 3))
+    deferred_tax_liab = db.Column(db.Numeric(20, 3))
+    oth_non_cur_liab = db.Column(db.Numeric(20, 3))
+    cap_stk = db.Column(db.Numeric(20, 3))
+    cap_rsrv = db.Column(db.Numeric(20, 3))
+    tsy_stk = db.Column(db.Numeric(20, 3))
+    surplus_rsrv = db.Column(db.Numeric(20, 3))
+    undistributed_profit = db.Column(db.Numeric(20, 3))

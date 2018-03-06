@@ -1,5 +1,6 @@
 # coding=utf-8
 from flask import Blueprint, redirect, render_template, url_for, request  # me:request
+from webapp.config import paths
 import os
 from webapp.models import *
 from webapp.forms import *
@@ -13,7 +14,7 @@ import MySQLdb, time
 stock_group_view = Blueprint(
     'stock_group',
     __name__,
-    template_folder=os.path.abspath(os.path.join(os.getcwd(),'webapp','Template','stock_group')),
+    template_folder=os.path.abspath(os.path.join(paths.project_path,'webapp','Template','stock_group')),
     url_prefix="/stock_group"
 )
 

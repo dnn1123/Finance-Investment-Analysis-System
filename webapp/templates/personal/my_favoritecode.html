@@ -67,6 +67,9 @@
                                     <button class="btn btn-mini btn-danger" type="button" id="deleteStock"
                                     >删除
                                     </button>
+                                    <button class="btn btn-mini btn-danger" type="button" id="excel"
+                                    >下载
+                                    </button>
 
                                 </div>
 
@@ -111,7 +114,7 @@
                         <div id="cityDist" style="width:100%;height:260px">
                         </div>
                     </div>
-                </div>——
+                </div>
                 {#行业状况饼状图#}
                 <div class="btn-box-row row-fluid">
                     <div class="module span12" style="background-color: transparent">
@@ -1166,6 +1169,7 @@
                 {#                checked.checked = true#}
             }
         }
+
         {#关注股票列表生成$$绘制行业分布图$$地图#}
         function creat_code_table() {
             $.ajax({
@@ -1222,29 +1226,72 @@
                             "infoEmpty": "没有数据",
                             "infoFiltered": "(过滤总件数 _MAX_ 条)"
                         },
-                        dom: 'Bfrtip',
-                        buttons: {
-                            buttons: [
-                                {extend: 'copy', 'text': '复制', 'className': 'btn btn-default btn-xs',},
-                                {extend: 'excel', 'text': '导出Excel', 'className': 'btn btn-default btn-xs',}
-                            ]
-                        }
+                        {#                        dom: 'Bfrtip',#}
+                        {#                        buttons: {#}
+                        {#                            buttons: [#}
+                        {#                                {extend: 'copy', 'text': '复制', 'className': 'btn btn-default btn-xs',},#}
+                        {#                                {extend: 'excel', 'text': '导出Excel', 'className': 'btn btn-default btn-xs',}#}
+                        {#                            ]#}
+                        {#                        }#}
                     })
-                    {#                    $('#excel').on('click', function () {#}
-                    {#                        table.buttons(0).trigger()#}
-                    {#                    });#}
-                    {#                                        new $.fn.dataTable.Buttons(table, {#}
-                    {#                                             buttons: [#}
-                    {#                                {extend: 'copy', 'text': '复制', 'className': 'btn btn-default btn-xs',},#}
-                    {#                                {extend: 'excel', 'text': '导出Excel', 'className': 'btn btn-default btn-xs',}#}
-                    {#                            ]#}
-                    {#                                        });#}
+
+                    new $.fn.dataTable.Buttons(table, {
+                        buttons: [
+                            {#                            {extend: 'copy', 'text': '复制', 'className': 'btn btn-default btn-xs',},#}
+                            {extend: 'excel', 'text': '导出Excel', 'className': 'btn btn-default btn-xs',}
+                        ]
+                    });
+                    $('#excel').on('click', function () {
+
+                        $.ajax({
+                            type: 'GET',
+                            url: '{{ url_for("restfulapi.buy_data") }}',
+                            data: {
+                                'username': "{{ current_user.username }}",
+
+                            },
+                            dataType: 'json',
+                            success: function (data) {
+                                if (data.member == null) {
+                                    if (data.user_money >= 1) {
+                                        if (confirm('您当前账户余额' + data.user_money + '元，下载该数据需要消费1元，是否需要下载？')) {
+                                            table.buttons(0).trigger()
+                                            $.ajax({
+                                                type: 'GET',
+                                                url: '{{ url_for("restfulapi.change_money") }}',
+                                                data: {
+                                                    'action': "sub",
+                                                    'count':1,
+                                                },
+                                                dataType: 'json',
+                                                success: function (data) {
+console.log(data)
+                                                }
+                                            })
+                                        }
+
+                                    }
+                                    else {
+                                        alert('您当前账户余额' + data.user_money + '元,不足1元，无法下载！')
+                                    }
+                                }
+                                else {
+                                    alert('您当前享有免费下载数据特权，次此操作不消耗账户余额！')
+                                }
+                            }
+                        })
+
+                    })
                     {##}
                     {#                                        table.buttons().container()#}
                     {#                                                .appendTo($('.col-sm-6:eq(0)', table.table().container() ));#}
 
                     {#                    绘制地图#}
-                    cityDist(data)
+{#                    if(data.cityrec.length>0){#}
+{#                        console.log(data.cityrec)#}
+                        cityDist(data)
+{#                    }#}
+
                     {#                        绘制行业分布图#}
                     var windpie_4 = echarts.init(document.getElementById('windpie_4'));
                     var legenddata4 = [];
@@ -2011,7 +2058,9 @@
                 set_timepicker('2010-q4', '2015-q4')
 
                 {#财务指标饼图#}
+                if(code_list.length>0){
                 index_chart_by_year(code_list, selectedindex, '2015', 1)
+                    }
                 {#投资指标饼图#}
                 getdata(code_list, '2015')
                 CreateChart(selectedindex, 1)

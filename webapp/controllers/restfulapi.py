@@ -13,6 +13,7 @@ import pandas as pd
 from datetime import datetime
 from datetime import timedelta
 from  webapp.stratlib import *
+from webapp.Library.wind_mysql.get_company_list import *
 
 api_blueprint = Blueprint(
     'restfulapi',
@@ -35,6 +36,45 @@ def admin():
         "permission_list": permission_list
     }
     return jsonify(data)
+
+
+# 购买数据
+@api_blueprint.route('/ buy_data', methods=['GET', 'POST'])
+def buy_data():
+    username = request.args.get('username')
+
+    money = user_money.query.filter_by(user_name=username).first_or_404().user_money
+    member_type = member_information.query.filter_by(user_name=username).first_or_404().member_type
+    time = member_information.query.filter_by(user_name=username).first_or_404().member_expiration_date
+    results = {
+        'user_money': money,
+        'member_type': member_type,
+
+    }
+    return jsonify(results)
+
+
+# 账户余额操作，充值，花费
+@api_blueprint.route('/change_money', methods=['GET', 'POST'])
+def change_money():
+    username = current_user.username
+    action =  request.args.get('action')
+    count = request.args.get('count')
+
+    if(action == 'sub'):
+        result = user_money.query.filter_by(user_name=username).first_or_404()
+        result.user_money = result.user_money - int(count)
+        db.session.commit()
+    else:
+        result = user_money.query.filter_by(user_name=username).first_or_404()
+        result.user_money = result.user_money + int(count)
+        db.session.commit()
+    results = {
+        'action':action,
+        'count':count,
+
+    }
+    return jsonify(results)
 
 
 # 数据库查询api 用于Ajax数据返回 json格式数据
@@ -692,7 +732,9 @@ def home():
     for key in citycount:
         rec = [key, citycount[key]]
         cityrec.append(rec)
-
+    money = user_money.query.filter_by(user_name=username).first_or_404().user_money
+    member_type = member_information.query.filter_by(user_name=username).first_or_404().member_type
+    time = member_information.query.filter_by(user_name=username).first_or_404().member_expiration_date
     results = {
         'rolename': rolename,
         'favorite_stock_count': favorite_stock_count,
@@ -700,6 +742,9 @@ def home():
         'trade_rec_count': trade_rec_count,
         'position_profit': position_profit,
         'cityrec': cityrec,
+        'user_money': money,
+        'member_type': member_type,
+        'time': time,
     }
     return jsonify(results)
 
@@ -873,3 +918,10 @@ def cns_home():
         pie4_data.append({'name': i[0], 'value': i[1]})
     return jsonify({"pie1", pie1_data})
 
+@api_blueprint.route('/updata_company_list', methods=['GET', 'POST'])
+def updata_company_list():
+    data={}
+    # upData_company_list()
+    # upData_cns_stock_basics()
+    data = upData_cns_balance_sheet()
+    return jsonify(data)

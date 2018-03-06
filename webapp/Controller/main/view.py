@@ -4,11 +4,12 @@ from flask_login import login_required,logout_user,current_user
 from flask_principal import identity_changed,AnonymousIdentity
 from webapp.decorators import permission_required
 from webapp.models import users_roles,Role,Permission
+from webapp.config import paths
 import os
 main_view = Blueprint(
     'main',
     __name__,
-    template_folder=os.path.abspath(os.path.join(os.getcwd(),'webapp','Template','main')),
+    template_folder=os.path.abspath(os.path.join(paths.project_path,'Template','main')),
     url_prefix="/"
 )
 
