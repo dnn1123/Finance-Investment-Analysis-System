@@ -24,25 +24,26 @@ roles = db.Table(
 class strategy(db.Model):
     __bind_key__ = 'quant'
     __tablename__ = 'strategy'
-    id=db.Column(db.Integer, primary_key=True)
-    name_en=db.Column(db.String(255))
+    id = db.Column(db.Integer, primary_key=True)
+    name_en = db.Column(db.String(255))
     name_cn = db.Column(db.String(255))
     type = db.Column(db.String(255))
     description = db.Column(db.String(255))
-    sample=db.Column(db.BLOB)
+    sample = db.Column(db.BLOB)
+
 
 class subscriber(db.Model):
     __bind_key__ = 'quant'
-    __tablename__= 'subscriber'
-    identifier=db.Column(db.Integer,primary_key=True)
-    user=db.Column(db.String(20))
-    strategy_id=db.Column(db.Integer,db.ForeignKey('strategy.id'),)
-    strategy_name=db.Column(db.String(255))
-    parameter=db.Column(db.BLOB)
-    status=db.Column(db.String(255))
-    build_date=db.Column(db.DateTime)
-    threadpid=db.Column(db.Integer)
-    threadname=db.Column(db.String(255))
+    __tablename__ = 'subscriber'
+    identifier = db.Column(db.Integer, primary_key=True)
+    user = db.Column(db.String(20))
+    strategy_id = db.Column(db.Integer, db.ForeignKey('strategy.id'), )
+    strategy_name = db.Column(db.String(255))
+    parameter = db.Column(db.BLOB)
+    status = db.Column(db.String(255))
+    build_date = db.Column(db.DateTime)
+    threadpid = db.Column(db.Integer)
+    threadname = db.Column(db.String(255))
 
 
 class users_roles(db.Model):
@@ -85,6 +86,19 @@ class follows(db.Model):
     follower = db.Column(db.String(20), primary_key=True)
     followed = db.Column(db.String(20), primary_key=True)
 
+
+class comment_reply(db.Model):
+    __bind_key__ = 'my_message'
+    __tablename__ = 'comment_reply'
+    reply_id = db.Column(db.Integer, primary_key=True)
+    post_id = db.Column(db.Integer)
+    comment_id = db.Column(db.Integer)
+    replier = db.Column(db.String(20))
+    replied = db.Column(db.String(20))
+    reply_text = db.Column(db.Text)
+    reply_time = db.Column(db.String(45))
+
+
 # 用户个人消息
 class personal_information(db.Model):
     __bind_key__ = 'my_message'
@@ -97,19 +111,23 @@ class personal_information(db.Model):
     time = db.Column(db.DateTime)
     state = db.Column(db.String(20))
 
+
 # 权限常量
 class Permission:
     administrator = 1
     trader = 2
     visitor = 3
 
-#用户余额
+
+# 用户余额
 class user_money(db.Model):
     __bind_key__ = 'users_info'
     __tablename__ = 'user_money'
     user_name = db.Column(db.String(20), db.ForeignKey('users.username'), primary_key=True)
     user_money = db.Column(db.Integer())
-#会员信息
+
+
+# 会员信息
 class member_information(db.Model):
     __bind_key__ = 'users_info'
     __tablename__ = 'member_information'
@@ -610,6 +628,7 @@ class company_list(db.Model):
     IPO_Date = db.Column(db.DateTime)
     Up_Date = db.Column(db.DateTime)
 
+
 class cns_stock_basics(db.Model):
     __bind_key__ = 'cns_stock'
     __tablename__ = 'cns_stock_basics'
@@ -632,6 +651,7 @@ class cns_stock_basics(db.Model):
     phone = db.Column(db.String(200))
     majorproducttype = db.Column(db.String(200))
     majorproductname = db.Column(db.String(2000))
+
 
 class cns_balance_sheet(db.Model):
     __bind_key__ = 'cns_stock'
@@ -691,4 +711,3 @@ class cns_balance_sheet(db.Model):
     tsy_stk = db.Column(db.Numeric(20, 3))
     surplus_rsrv = db.Column(db.Numeric(20, 3))
     undistributed_profit = db.Column(db.Numeric(20, 3))
-

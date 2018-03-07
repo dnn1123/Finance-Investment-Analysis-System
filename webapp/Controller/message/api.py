@@ -1,7 +1,6 @@
-#coding=utf-8
+# coding=utf-8
 from flask import Blueprint, redirect, render_template, url_for, request, session, make_response, jsonify, flash
 from webapp.models import *
-import MySQLdb, time, re
 from sqlalchemy import create_engine, or_, func, desc, distinct  # me func用于计数,desc用于逆序找max值
 from sqlalchemy.orm import sessionmaker
 from flask_login import current_user
@@ -17,6 +16,7 @@ from datetime import datetime
 from datetime import timedelta
 from  webapp.stratlib import *
 
+
 message_api = Blueprint(
     'message_api',
     __name__,
@@ -24,6 +24,7 @@ message_api = Blueprint(
 )
 
 
+# 用于获取分页总数
 @message_api.route('/request_page', methods=['GET', 'POST'])
 def request_page():
     data = {}
@@ -35,6 +36,7 @@ def request_page():
     result = session.query(func.count(input_message.post_id).label("page_num")).first()
 
     data['page_num'] = math.ceil((result.page_num) / float(5))
+
     # 查询用户未读消息
     sender_list = []
     info_list = []
@@ -44,19 +46,37 @@ def request_page():
     username = current_user.username
     results = personal_information.query.filter_by(receiver=username).all()
     for result in results:
-            sender_list.append(result.sender)
-            info_list.append(result.message_content)
-            id_list.append(result.id)
-            time_list.append(result.time)
-            state_list.append(result.state)
+        sender_list.append(result.sender)
+        info_list.append(result.message_content)
+        id_list.append(result.id)
+        time_list.append(result.time)
+        state_list.append(result.state)
     data['sender_list'] = sender_list
     data['info_list'] = info_list
     data['id_list'] = id_list
     data['time_list'] = time_list
     data['state_list'] = state_list
+
     return jsonify(data)
 
 
+@message_api.route('/request_follow_page', methods=['GET', 'POST'])
+def request_follow_page():
+    data = {}
+
+    db_engine = create_engine('mysql://root:0000@localhost/my_message?charset=utf8')
+    Session = sessionmaker(bind=db_engine)
+    session = Session()
+
+    result = session.query(func.count(input_message.post_id).label("page_num")).filter(
+        input_message.poster == follows.followed).filter(follows.follower == current_user.username).first()
+
+    data['page_num'] = math.ceil((result.page_num) / float(5))
+
+    return jsonify(data)
+
+
+# 用于展示个人信息悬浮框
 @message_api.route('/person_box', methods=['GET', 'POST'])
 def person_box():
     data = {}
@@ -78,6 +98,7 @@ def person_box():
     fs = session.query(func.count(follows.follower).label("followernum")).filter(
         follows.followed == personid).first()
 
+    data['my_poster'] = personid
     data['postnum'] = fb.postnum
     data['followednum'] = gz.followednum
     data['followernum'] = fs.followernum
@@ -85,6 +106,7 @@ def person_box():
     return jsonify(data)
 
 
+# 用于发布动态
 @message_api.route('/to_input_text', methods=['GET', 'POST'])
 def to_input_text():
     data = {}
@@ -114,6 +136,7 @@ def to_input_text():
     return jsonify(data)
 
 
+# 用于展示用户动态
 @message_api.route('/message_all', methods=['GET', 'POST'])
 def message_all():
     data = {}
@@ -166,10 +189,116 @@ def message_all():
     data['po_ifretrant'] = ifretrant
     data['po_retrant_poster'] = retrantposter
     data['po_retrant_text'] = retranttext
+    data['current_user'] = current_user.username
 
     return jsonify(data)
 
 
+@message_api.route('/message_follow', methods=['GET', 'POST'])
+def message_follow():
+    data = {}
+
+    id = []
+    user = []
+    text = []
+    time = []
+    comment = []
+    retrant = []
+    upvote = []
+    ifretrant = []
+    retrantposter = []
+    retranttext = []
+
+    db_engine = create_engine('mysql://root:0000@localhost/my_message?charset=utf8')
+    Session = sessionmaker(bind=db_engine)
+    session = Session()
+
+    number = session.query(func.count(input_message.post_id).label("page_num")).filter(
+        input_message.poster == follows.followed).filter(follows.follower == current_user.username).first()
+
+    results = input_message.query.filter(
+        input_message.poster == follows.followed).filter(follows.follower == current_user.username).all()
+
+    for result in results:
+        id.append(result.post_id)
+        user.append(result.poster)
+        text.append(result.post_text)
+        time.append(result.post_time)
+        comment.append(result.comment_num)
+        retrant.append(result.retrant_num)
+        upvote.append(result.upvote_num)
+        ifretrant.append(result.if_retrant)
+        retrantposter.append(result.retrant_poster)
+        retranttext.append(result.retrant_text)
+
+    data['po_id'] = id
+    data['po_user'] = user
+    data['po_text'] = text
+    data['po_time'] = time
+    data['po_comment'] = comment
+    data['po_retrant'] = retrant
+    data['po_upvote'] = upvote
+    data['po_ifretrant'] = ifretrant
+    data['po_retrant_poster'] = retrantposter
+    data['po_retrant_text'] = retranttext
+    data['current_user'] = current_user.username
+
+    return jsonify(data)
+
+
+@message_api.route('/message_myown', methods=['GET', 'POST'])
+def message_myown():
+    data = {}
+
+    id = []
+    user = []
+    text = []
+    time = []
+    comment = []
+    retrant = []
+    upvote = []
+    ifretrant = []
+    retrantposter = []
+    retranttext = []
+
+    db_engine = create_engine('mysql://root:0000@localhost/my_message?charset=utf8')
+    Session = sessionmaker(bind=db_engine)
+    session = Session()
+
+    number = session.query(func.count(input_message.post_id).label("page_num")).filter(
+        input_message.poster == current_user.username).first()
+
+    results = input_message.query.filter(
+        input_message.poster == current_user.username).all()
+
+    for result in results:
+        id.append(result.post_id)
+        user.append(result.poster)
+        text.append(result.post_text)
+        time.append(result.post_time)
+        comment.append(result.comment_num)
+        retrant.append(result.retrant_num)
+        upvote.append(result.upvote_num)
+        ifretrant.append(result.if_retrant)
+        retrantposter.append(result.retrant_poster)
+        retranttext.append(result.retrant_text)
+
+    data['po_id'] = id
+    data['po_user'] = user
+    data['po_text'] = text
+    data['po_time'] = time
+    data['po_comment'] = comment
+    data['po_retrant'] = retrant
+    data['po_upvote'] = upvote
+    data['po_ifretrant'] = ifretrant
+    data['po_retrant_poster'] = retrantposter
+    data['po_retrant_text'] = retranttext
+    data['current_user'] = current_user.username
+
+    return jsonify(data)
+
+
+# 用于展示用户评论
 @message_api.route('/comment_all', methods=['GET', 'POST'])
 def comment_all():
     data = {}
@@ -207,6 +336,7 @@ def comment_all():
     return jsonify(data)
 
 
+# 用于用户评论动态
 @message_api.route('/to_comment', methods=['GET', 'POST'])
 def to_comment():
     data = {}
@@ -230,11 +360,11 @@ def to_comment():
     # 向被评论者发送消息
     result = input_message.query.filter_by(post_id=inputpost).first()
     message_content = '评论了您'
-    information =  personal_information()
+    information = personal_information()
     information.receiver = result.poster
     information.sender = current_user.username
     information.message_content = message_content
-    information.time = Time.strftime('%Y-%m-%d %H:%M:%S',Time.localtime(Time.time()))
+    information.time = Time.strftime('%Y-%m-%d %H:%M:%S', Time.localtime(Time.time()))
     information.state = 'N'
     db.session.add(information)
 
@@ -251,53 +381,55 @@ def to_comment():
     return jsonify(data)
 
 
+# 用于点赞
 @message_api.route('/to_upvote', methods=['GET', 'POST'])
 def to_upvote():
-    data = {}
-
     db_engine = create_engine('mysql://root:0000@localhost/my_message?charset=utf8')
     Session = sessionmaker(bind=db_engine)
     session = Session()
 
-    inputpost = request.form.get('input_post')
+    inputpost = request.args.get('input_post')
 
     postresult = input_message.query.filter_by(post_id=inputpost).first()
     newdata = postresult.upvote_num + 1
     input_message.query.filter_by(post_id=inputpost).update({'upvote_num': newdata})
-     # 向被点赞者发送消息
+
+    # 向被点赞者发送消息
     result = input_message.query.filter_by(post_id=inputpost).first()
     message_content = '赞了您的动态'
-    information =  personal_information()
+    information = personal_information()
     information.receiver = result.poster
     information.sender = current_user.username
     information.message_content = message_content
-    information.time = Time.strftime('%Y-%m-%d %H:%M:%S',Time.localtime(Time.time()))
+    information.time = Time.strftime('%Y-%m-%d %H:%M:%S', Time.localtime(Time.time()))
     information.state = 'N'
     db.session.add(information)
     db.session.commit()
 
-    data['value'] = 'success'
+    data = newdata
 
     return jsonify(data)
 
 
+# 用于判断是否关注
 @message_api.route('/query_follow', methods=['GET', 'POST'])
 def query_follow():
-    data = 0
-
     thisposter = request.args.get('myposter')
     thisuser = current_user.username
 
-    result = follows.query.filter_by(follower=thisuser, followed=thisposter).first()
-
-    if result:
-        data = 1
+    if thisposter == thisuser:
+        data = 2
     else:
-        data = 0
+        result = follows.query.filter_by(follower=thisuser, followed=thisposter).first()
+        if result:
+            data = 1
+        else:
+            data = 0
 
     return jsonify(data)
 
 
+# 用于关注
 @message_api.route('/to_follow', methods=['GET', 'POST'])
 def to_follow():
     data = {}
@@ -317,11 +449,11 @@ def to_follow():
 
     # 向被关注者发送消息
 
-    information =  personal_information()
+    information = personal_information()
     information.receiver = result.poster
     information.sender = current_user.username
     information.message_content = '关注了您'
-    information.time = Time.strftime('%Y-%m-%d %H:%M:%S',Time.localtime(Time.time()))
+    information.time = Time.strftime('%Y-%m-%d %H:%M:%S', Time.localtime(Time.time()))
     information.state = 'N'
     db.session.add(information)
 
@@ -333,6 +465,7 @@ def to_follow():
     return jsonify(data)
 
 
+# 用于取消关注
 @message_api.route('/no_follow', methods=['GET', 'POST'])
 def no_follow():
     data = {}
@@ -353,6 +486,7 @@ def no_follow():
     return jsonify(data)
 
 
+# 用于转发动态
 @message_api.route('/to_retrant', methods=['GET', 'POST'])
 def to_retrant():
     data = {}
@@ -363,7 +497,7 @@ def to_retrant():
 
     getid = request.form.get('get_id')
     gettext = request.form.get('get_text')
-    inputpost = request.form.get('input_post')
+
     myresult = input_message.query.filter_by(post_id=getid).first()
 
     if myresult.if_retrant == 0:
@@ -390,17 +524,16 @@ def to_retrant():
     my_input.retrant_poster = inputposter
     my_input.retrant_text = inputtext
     my_input.post_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-
     db.session.add(my_input)
 
-     # 向被转发者发送消息
-    result = input_message.query.filter_by(post_id=inputpost).first()
+    # 向被转发者发送消息
+    result = input_message.query.filter_by(post_id=getid).first()
     message_content = '转发了您的动态'
-    information =  personal_information()
+    information = personal_information()
     information.receiver = result.poster
     information.sender = current_user.username
     information.message_content = message_content
-    information.time = Time.strftime('%Y-%m-%d %H:%M:%S',Time.localtime(Time.time()))
+    information.time = Time.strftime('%Y-%m-%d %H:%M:%S', Time.localtime(Time.time()))
     information.state = 'N'
     db.session.add(information)
     db.session.commit()
@@ -408,6 +541,90 @@ def to_retrant():
     data['value'] = 'success'
 
     return jsonify(data)
+
+
+# 用于回复评论
+@message_api.route('/to_reply', methods=['GET', 'POST'])
+def to_reply():
+    data = {}
+
+    db_engine = create_engine('mysql://root:0000@localhost/my_message?charset=utf8')
+    Session = sessionmaker(bind=db_engine)
+    session = Session()
+
+    getid = request.form.get('get_id')
+    gettext = request.form.get('get_text')
+
+    myresult = comments.query.filter_by(comment_id=getid).first()
+
+    inputpostid = myresult.post_id
+    inputreplied = myresult.commenter
+
+    result = session.query(func.count(comment_reply.reply_id).label("reply_id")).first()
+
+    my_input = comment_reply()
+
+    my_input.reply_id = result.reply_id
+    my_input.comment_id = getid
+    my_input.post_id = inputpostid
+    my_input.replier = current_user.username
+    my_input.replied = inputreplied
+    my_input.reply_text = gettext
+    my_input.reply_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    db.session.add(my_input)
+
+    # 向被回复者发送消息
+    result = comments.query.filter_by(comment_id=getid).first()
+    message_content = '回复了您的评论'
+    information = personal_information()
+    information.receiver = result.commenter
+    information.sender = current_user.username
+    information.message_content = message_content
+    information.time = Time.strftime('%Y-%m-%d %H:%M:%S', Time.localtime(Time.time()))
+    information.state = 'N'
+    db.session.add(information)
+
+    db.session.commit()
+
+    data['value'] = 'success'
+
+    return jsonify(data)
+
+
+# 用于展示回复
+@message_api.route('/query_reply', methods=['GET', 'POST'])
+def query_reply():
+    data = {}
+
+    mycomment = int(request.args.get('mycomment'))
+
+    db_engine = create_engine('mysql://root:0000@localhost/my_message?charset=utf8')
+    Session = sessionmaker(bind=db_engine)
+    session = Session()
+
+    replyid = []
+    replier = []
+    replied = []
+    text = []
+    time = []
+
+    results = comment_reply.query.filter(comment_reply.comment_id == mycomment).all()
+
+    for result in results:
+        replyid.append(result.reply_id)
+        replier.append(result.replier)
+        replied.append(result.replied)
+        text.append(result.reply_text)
+        time.append(result.reply_time)
+
+    data['re_id'] = replyid
+    data['replier'] = replier
+    data['replied'] = replied
+    data['re_text'] = text
+    data['re_time'] = time
+
+    return jsonify(data)
+
 
 # 用于设置消息私信已读未读
 @message_api.route('/read_message', methods=['GET', 'POST'])
@@ -451,6 +668,7 @@ def is_username():
 
     return jsonify(data)
 
+
 # 用于用户发私信$$管理员群发消息
 @message_api.route('/send_message', methods=['GET', 'POST'])
 def send_message():
@@ -461,13 +679,13 @@ def send_message():
     username_list = request.form.getlist('username_list[]')
     message_content = request.form.get('message_content')
 
-   # 发送消息
+    # 发送消息
     for username in username_list:
-        information =  personal_information()
+        information = personal_information()
         information.receiver = username
         information.sender = current_user.username
         information.message_content = message_content
-        information.time = Time.strftime('%Y-%m-%d %H:%M:%S',Time.localtime(Time.time()))
+        information.time = Time.strftime('%Y-%m-%d %H:%M:%S', Time.localtime(Time.time()))
         information.state = 'N'
         db.session.add(information)
 
@@ -483,11 +701,12 @@ def get_role():
     db_engine = create_engine('mysql://root:0000@localhost/my_message?charset=utf8')
     Session = sessionmaker(bind=db_engine)
     session = Session()
-    result =  users_roles.query.filter_by(user_name=current_user.username).first()
+    result = users_roles.query.filter_by(user_name=current_user.username).first()
     data['role'] = result.permissions
     return jsonify(data)
 
-#用于获取用户名列表
+
+# 用于获取用户名列表
 @message_api.route('/get_user_list', methods=['GET', 'POST'])
 def get_user_list():
     data = {}
@@ -502,34 +721,40 @@ def get_user_list():
     return jsonify(data)
 
 
-#用于获取用户未读信息数目
+# 用于获取用户未读信息数目
 @message_api.route('/get_message_count', methods=['GET', 'POST'])
 def get_message_count():
     data = {}
-    results = personal_information.query.filter(personal_information.sender !='system',).filter_by(receiver=current_user.username,state='N').count()
+    results = personal_information.query.filter(personal_information.sender != 'system', ).filter_by(
+        receiver=current_user.username, state='N').count()
     data['count'] = results
     return jsonify(data)
+
 
 @message_api.route('/get_system_message_count', methods=['GET', 'POST'])
 def get_system_message_count():
     data = {}
-    results = personal_information.query.filter_by(receiver=current_user.username,sender='system',state='N').count()
+    results = personal_information.query.filter_by(receiver=current_user.username, sender='system', state='N').count()
     data['count'] = results
     return jsonify(data)
 
-@message_api.route('/get_system_message',methods=['GET', 'POST'])
+
+@message_api.route('/get_system_message', methods=['GET', 'POST'])
 def get_system_message():
-    result=[]
-    data=personal_information.query.filter_by(receiver=current_user.username,sender='system').order_by(desc(personal_information.time)).all()
-    if data=={}:
+    result = []
+    data = personal_information.query.filter_by(receiver=current_user.username, sender='system').order_by(
+        desc(personal_information.time)).all()
+    if data == {}:
         return jsonify(result)
     for each in data:
-        result.append({"id":each.id,"message":each.message_content,"time":each.time.strftime("%Y-%m-%d %H:%M:%S"),"state":each.state})
+        result.append({"id": each.id, "message": each.message_content, "time": each.time.strftime("%Y-%m-%d %H:%M:%S"),
+                       "state": each.state})
     return jsonify(result)
 
-@message_api.route('/read_system_message',methods=['GET', 'POST'])
+
+@message_api.route('/read_system_message', methods=['GET', 'POST'])
 def read_system_message():
-    id=request.args.get('id')
-    data=personal_information.query.filter_by(id=id).update({'state':'Y'})
+    id = request.args.get('id')
+    data = personal_information.query.filter_by(id=id).update({'state': 'Y'})
     db.session.commit()
-    return jsonify({"result":"success"})
+    return jsonify({"result": "success"})

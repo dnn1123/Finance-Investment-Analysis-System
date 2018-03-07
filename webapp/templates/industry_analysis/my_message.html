@@ -39,7 +39,7 @@
         }
 
         .grbox {
-            height: 240px;
+            height: 220px;
             width: 260px;
             background-color: lightyellow;
             position: absolute;
@@ -48,7 +48,7 @@
         }
 
         .box_top {
-            height: 130px;
+            height: 110px;
             width: 260px;
             float: right;
             background-color: aliceblue;
@@ -60,7 +60,9 @@
             height: 80px;
             width: 80px;
             border-radius: 50%;
-            margin-top: 80px;
+            border: none;
+            overflow: hidden;
+            margin-top: 60px;
             float: left;
             margin-left: 90.5px;
             background-color: white;
@@ -70,11 +72,25 @@
         .my_photo {
             height: 50px;
             width: 50px;
-            border-radius: 50%;
             float: left;
             margin-top: 0;
             margin-left: 10px;
             background-color: #afd9ee;
+            border-radius: 50%;
+            border: 2px solid #fff;
+            overflow: hidden;
+        }
+
+        .comment_avatar {
+            height: 30px;
+            width: 30px;
+            float: left;
+            margin-top: 0;
+            margin-left: 10px;
+            background-color: #afd9ee;
+            border-radius: 50%;
+            border: 2px solid #fff;
+            overflow: hidden;
         }
 
         .box_bottom {
@@ -198,6 +214,16 @@
             text-align: center;
         }
 
+        .to_reply {
+            border-radius: 5px;
+            float: right;
+            background-color: #edeeff;
+            margin-right: 15px;
+            margin-top: 0;
+            border: none;
+            text-align: center;
+        }
+
         .no_follow {
             border-radius: 5px;
             float: right;
@@ -218,10 +244,10 @@
         }
 
         .comment_input {
-            width: 84%;
+            width: 80%;
             height: 20px;
             float: left;
-            margin-left: 5px;
+            margin-left: 10px;
             margin-top: 5px;
             border-radius: 10px;
         }
@@ -255,15 +281,20 @@
             color: black;
         }
 
-        .my_retrant {
+        .reply_area {
             width: 100%;
-            background-color: #fdf59a;
-            background-color: #FFFDEE;
+            height: auto;
+            float: left;
+            margin-left: 0;
+            margin-top: 0;
+            background-color: lightcyan;
         }
 
     </style>
+
     {#    发私信模态框#}
-    <div class="modal hide fade" id="send_personal_message_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+    <div class="modal hide fade" id="send_personal_message_modal" tabindex="-1" role="dialog"
+         aria-labelledby="myModalLabel"
          aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -293,7 +324,8 @@
         </div><!-- /.modal-dialog -->
     </div>
     {#    管理员群发消息模态框#}
-    <div class="modal hide fade" id="send_admin_message_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+    <div class="modal hide fade" id="send_admin_message_modal" tabindex="-1" role="dialog"
+         aria-labelledby="myModalLabel"
          aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -325,15 +357,14 @@
                     <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
                     <button type="button" class="btn btn-primary" onclick="send_admin_message()">发送</button>
                 </div>
-
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div>
+
+
     <div class="span9">
         <div class="content">
-
             <div class="btn-controls">
-
                 <!--消息发布-->
                 <div class="btn-box-row row-fluid">
                     <div class="module span12">
@@ -342,16 +373,12 @@
                                 <div class="mytitle"><h4 style="font-size:18px;color:gray">有疑问？快来看看大家都是怎么想的吧！</h4></div>
                                 <textarea id="inputtext" class="mytext" placeholder=""></textarea>
                                 <button type="submit" id="fbbutton" class="fbbutton">点击发布</button>
-
                             </div>
                         </div>
                     </div>
                 </div>
                 <!--消息显示-->
-
-
                 <div class="btn-box-row row-fluid">
-
                     <div class="module span12" style="background-color: rgba(0,0,0,0);border: 0">
                         <div id="myshow" class="module span12" style="background-color: rgba(0,0,0,0);border: 0">
                             <div class="nav" style="float:left;margin:auto;width:100%;background-color:white">
@@ -368,7 +395,8 @@
                                     <div id="all_post" class="module span12"
                                          style="background-color: rgba(0,0,0,0);border:0;float:left;margin-left:0;width:100%;height:auto;"></div>
                                     <ul id="my_pagination" class="pagination" style="float:right;margin-top: 0"></ul>
-                                    <div class="modal hide fade in" style="display: none; " id="all_message_modal"
+                                    <!-- 回复模态框 -->
+                                    <div class="modal hide fade in" style="display: none; " id="reply_modal"
                                          tabindex="-1"
                                          role="dialog"
                                          aria-labelledby="myModalLabel"
@@ -379,50 +407,122 @@
                                                 <div class="modal-header">
                                                     <button type="button" class="close" data-dismiss="modal">&times;
                                                     </button>
-                                                    <h4 class="modal-title">转发</h4>
+                                                    <h4 class="modal-title">回复</h4>
                                                 </div>
                                                 <!-- 模态框主体 -->
                                                 <div class="modal-body">
-                                                    <div id="retrant" style="height:170px;width:500px;margin:0 auto">
-                                                        <textarea id="inputretrant" class="mytext"
+                                                    <div id="reply" style="height:170px;width:500px;margin:0 auto">
+                                                        <textarea id="inputreply" class="mytext"
                                                                   placeholder=""></textarea>
                                                     </div>
                                                 </div>
                                                 <!-- 模态框底部 -->
                                                 <div class="modal-footer">
                                                     <button type="button" class="fbbutton" data-dismiss="modal"
-                                                            id="myid">确认发布
+                                                            id="myreply">确认回复
                                                     </button>
                                                 </div>
                                             </div><!-- /.modal-content -->
                                         </div><!-- /.modal-dialog -->
                                     </div>
-                                    <div id="box" class="grbox">
-                                        <div class="box_top"></div>
-                                        <div class="box_photo"></div>
-                                        <div class="box_bottom">
-                                            <ul>
-                                                <li class="item_prose">
-                                                    <span class="text_count" id="fb"></span>
-                                                    <br/><span class="text_atr">发布</span></li>
-                                                <li class="line_bor"></li>
-                                                <li class="item_follow">
-                                                    <span class="text_count" id="gz"></span>
-                                                    <br/><span class="text_atr">关注</span></li>
-                                                <li class="line_bor"></li>
-                                                <li class="item_fans">
-                                                    <span class="text_count" id="fs"></span>
-                                                    <br/><span class="text_atr">粉丝</span>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
                                 </div>
                                 <div id="follow_message" class="tab-pane fade"
                                      style="float:left;margin-left:0;width:100%;height:auto;">
+                                    <div id="follow_post" class="module span12"
+                                         style="background-color: rgba(0,0,0,0);border:0;float:left;margin-left:0;width:100%;height:auto;"></div>
+                                    <ul id="my_follow_pagination" class="pagination"
+                                        style="float:right;margin-top: 0"></ul>
+                                    <!-- 回复模态框 -->
+                                    <div class="modal hide fade in" style="display: none; " id="reply_follow_modal"
+                                         tabindex="-1"
+                                         role="dialog"
+                                         aria-labelledby="myModalLabel"
+                                         aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <!-- 模态框头部 -->
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal">&times;
+                                                    </button>
+                                                    <h4 class="modal-title">回复</h4>
+                                                </div>
+                                                <!-- 模态框主体 -->
+                                                <div class="modal-body">
+                                                    <div id="reply" style="height:170px;width:500px;margin:0 auto">
+                                                        <textarea id="inputreply_follow" class="mytext"
+                                                                  placeholder=""></textarea>
+                                                    </div>
+                                                </div>
+                                                <!-- 模态框底部 -->
+                                                <div class="modal-footer">
+                                                    <button type="button" class="fbbutton" data-dismiss="modal"
+                                                            id="myreply_follow">确认回复
+                                                    </button>
+                                                </div>
+                                            </div><!-- /.modal-content -->
+                                        </div><!-- /.modal-dialog -->
+                                    </div>
+                                    <script>
+                                        $.ajax({
+                                            type: 'GET',
+                                            url: '{{ url_for("message_api.message_follow") }}',
+                                            dataType: 'json',//希望服务器返回json格式的数据
+                                            success: function (data) {
+                                                console.log(data);
+                                                postcommentfollow = data;
+                                                post_comment_follow(postcommentfollow);
+                                            }
+                                        })
+                                    </script>
                                 </div>
                                 <div id="my_message" class="tab-pane fade"
                                      style="float:left;margin-left:0;width:100%;height:auto;">
+                                    <div id="my_own_post" class="module span12"
+                                         style="background-color: rgba(0,0,0,0);border:0;float:left;margin-left:0;width:100%;height:auto;"></div>
+                                    <ul id="my_own_pagination" class="pagination"
+                                        style="float:right;margin-top: 0"></ul>
+                                    <!-- 回复模态框 -->
+                                    <div class="modal hide fade in" style="display: none; " id="reply_myown_modal"
+                                         tabindex="-1"
+                                         role="dialog"
+                                         aria-labelledby="myModalLabel"
+                                         aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <!-- 模态框头部 -->
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal">&times;
+                                                    </button>
+                                                    <h4 class="modal-title">回复</h4>
+                                                </div>
+                                                <!-- 模态框主体 -->
+                                                <div class="modal-body">
+                                                    <div id="reply" style="height:170px;width:500px;margin:0 auto">
+                                                        <textarea id="inputreply_myown" class="mytext"
+                                                                  placeholder=""></textarea>
+                                                    </div>
+                                                </div>
+                                                <!-- 模态框底部 -->
+                                                <div class="modal-footer">
+                                                    <button type="button" class="fbbutton" data-dismiss="modal"
+                                                            id="myreply_myown">确认回复
+                                                    </button>
+                                                </div>
+                                            </div><!-- /.modal-content -->
+                                        </div><!-- /.modal-dialog -->
+                                    </div>
+                                    <script>
+                                        $.ajax({
+                                            type: 'GET',
+                                            url: '{{ url_for("message_api.message_myown") }}',
+                                            dataType: 'json',//希望服务器返回json格式的数据
+                                            success: function (data) {
+                                                console.log(data);
+                                                postcommentmyown = data;
+                                                post_comment_myown(postcommentmyown);
+                                            }
+                                        })
+                                    </script>
                                 </div>
                                 <div id="accept_message" class="tab-pane fade"
                                      style="float:left;margin-left:0;width:100%;height:auto;">
@@ -468,6 +568,57 @@
                                         </div><!--/.content-->
                                     </div><!--/.span9-->
                                 </div>
+                                <!-- 个人信息显示框 -->
+                                <div id="box" class="grbox">
+                                    <div class="box_top"></div>
+                                    <img class="box_photo" src="">
+                                    <div class="box_bottom">
+                                        <ul>
+                                            <li class="item_prose">
+                                                <span class="text_count" id="fb"></span>
+                                                <br/><span class="text_atr">发布</span></li>
+                                            <li class="line_bor"></li>
+                                            <li class="item_follow">
+                                                <span class="text_count" id="gz"></span>
+                                                <br/><span class="text_atr">关注</span></li>
+                                            <li class="line_bor"></li>
+                                            <li class="item_fans">
+                                                <span class="text_count" id="fs"></span>
+                                                <br/><span class="text_atr">粉丝</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <!-- 转发模态框 -->
+                                <div class="modal hide fade in" style="display: none; " id="all_message_modal"
+                                     tabindex="-1"
+                                     role="dialog"
+                                     aria-labelledby="myModalLabel"
+                                     aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <!-- 模态框头部 -->
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal">&times;
+                                                </button>
+                                                <h4 class="modal-title">转发</h4>
+                                            </div>
+                                            <!-- 模态框主体 -->
+                                            <div class="modal-body">
+                                                <div id="retrant" style="height:170px;width:500px;margin:0 auto">
+                                                        <textarea id="inputretrant" class="mytext"
+                                                                  placeholder=""></textarea>
+                                                </div>
+                                            </div>
+                                            <!-- 模态框底部 -->
+                                            <div class="modal-footer">
+                                                <button type="button" class="fbbutton" data-dismiss="modal"
+                                                        id="myid">确认发布
+                                                </button>
+                                            </div>
+                                        </div><!-- /.modal-content -->
+                                    </div><!-- /.modal-dialog -->
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -476,9 +627,9 @@
         </div>
     </div>
 
-    <!-- 事件模块 -->
+    <!-- 全部动态事件 -->
     <script>
-        var mytext, parentid, mycomment;
+        var mytext, parentid, mycomment, followid, myownid, commentid;
         //发表文章并更新界面
         $("#fbbutton").click(function () {
             mytext = document.getElementById('inputtext').value;
@@ -508,6 +659,8 @@
                 },
                 dataType: 'json',
                 success: function (data) {
+                    var myimg = "../static/avatar/" + data.my_poster + ".jpg?timestamp=" + new Date().getTime()
+                    $(".box_photo").attr("src", myimg);
                     $("#fb").empty();
                     $("#fb").append("<b style='float:left;font-size: 18px;width: 36px;text-align: center;'>" + data.postnum + "</b>")
                     $("#gz").empty();
@@ -548,7 +701,6 @@
 
         //发布评论
         $("div#all_post").on("click", ".to_release", function () {
-
             parentid = $(this).parent().parent().parent().attr('id').toString();
             if ($("#comment_input" + parentid).val().length == 0) {
                 alert("评论内容不可为空");
@@ -578,13 +730,10 @@
                 type: 'POST',
                 url: '{{url_for("message_api.to_follow")}}',
                 data: {
-                    'input_post': parseInt(parentid),
-                    {#                    'time':getNowFormatDate()#}
+                    input_post: parseInt(parentid),
                 },
                 dataType: 'json',
-                async: false,
                 success: function (data) {
-                    console.log(data)
                     alert("关注成功");
                     location.reload();
                 }
@@ -612,15 +761,14 @@
         $("div#all_post").on("click", ".to_upvote", function () {
             parentid = $(this).parent().parent().attr('id');
             $.ajax({
-                type: 'POST',
+                type: 'GET',
                 url: '{{url_for("message_api.to_upvote")}}',
                 data: {
                     input_post: parseInt(parentid),
                 },
                 dataType: 'json',
                 success: function (data) {
-                    alert("已点赞");
-                    location.reload();
+                    $("#upvote_" + parentid).html("点赞" + data);
                 }
             })
         });
@@ -641,7 +789,6 @@
                 data: {
                     get_id: parseInt(postid),
                     get_text: posttext,
-                    input_post: parseInt(parentid),
                 },
                 dataType: 'json',
                 success: function (data) {
@@ -651,11 +798,322 @@
             });
         })
 
+        //打开回复模态框
+        $("div#all_post").on("click", ".to_reply", function () {
+            parentid = $(this).parent().parent().parent().parent().attr('id');
+            commentid = $(this).attr('id');
+            $("#myreply").val(commentid);
+        });
+
+        //回复发布
+        $("div#reply_modal").on("click", ".fbbutton", function () {
+            thisid = $(this).val();
+            posttext = document.getElementById('inputreply').value;
+            $.ajax({
+                type: 'POST',
+                url: '{{url_for("message_api.to_reply")}}',
+                data: {
+                    get_id: parseInt(thisid),
+                    get_text: posttext
+                },
+                dataType: 'json',
+                success: function (data) {
+                    alert("回复成功");
+                    $('#reply_' + thisid).empty();
+                    my_reply(thisid);
+                }
+            });
+        })
+
+    </script>
+
+    <!-- 我的关注事件 -->
+    <script>
+        //展开个人信息
+        $("div#follow_post").on("mouseover", ".person", function () {
+            parentid = $(this).parent().parent().attr('id');
+            followid = parentid.substring(2);
+            console.log(followid);
+            $("#box").val(followid);
+            $.ajax({
+                type: 'GET',
+                url: '{{url_for("message_api.person_box")}}',
+                data: {
+                    postID: followid
+                },
+                dataType: 'json',
+                success: function (data) {
+                    var myimg = "../static/avatar/" + data.my_poster + ".jpg?timestamp=" + new Date().getTime()
+                    $(".box_photo").attr("src", myimg);
+                    $("#fb").empty();
+                    $("#fb").append("<b style='float:left;font-size: 18px;width: 36px;text-align: center;'>" + data.postnum + "</b>")
+                    $("#gz").empty();
+                    $("#gz").append("<b style='float:left;font-size: 18px;width: 36px;text-align: center;'>" + data.followednum + "</b>")
+                    $("#fs").empty();
+                    $("#fs").append("<b style='float:left;font-size: 18px;width: 36px;text-align: center;'>" + data.followernum + "</b>")
+                }
+            });
+
+            var thisdiv = document.getElementById("F_poster_" + followid);
+            p = getElementLeft(thisdiv);
+            q = getElementTop(thisdiv);
+            document.getElementById("box").style.display = "block";
+            $("#box").css("left", p + 20);
+            $("#box").css("top", q + 20);
+
+        });
+
+        //收起个人信息
+        $("div#follow_post").on("mouseleave", ".person", function () {
+            document.getElementById("box").style.display = "none";
+        });
+
+        //展开评论区
+        $("div#follow_post").on("click", ".to_comment", function () {
+            parentid = $(this).parent().parent().attr('id');
+            followid = parentid.substring(2);
+            $("#F_comment_area_" + followid).empty();
+            $("#F_comment_pagination_" + followid).empty();
+            open_comment_follow(followid);
+            $("#F_post_comment_" + followid).fadeToggle();
+        });
+
+        //收起评论区
+        $("div#follow_post").on("click", ".to_withdraw", function () {
+            parentid = $(this).parent().parent().parent().attr('id');
+            followid = parentid.substring(2);
+            $("#F_post_comment_" + followid).fadeOut();
+            $("#F_comment_pagination_" + followid).fadeOut();
+        });
+
+        //发布评论
+        $("div#follow_post").on("click", ".to_release", function () {
+            parentid = $(this).parent().parent().parent().attr('id').toString();
+            followid = parentid.substring(2);
+            if ($("#F_comment_input" + followid).val().length == 0) {
+                alert("评论内容不可为空");
+            }
+            else {
+                mycomment = $("#F_comment_input" + followid).val();
+                $.ajax({
+                    type: 'POST',
+                    url: '{{url_for("message_api.to_comment")}}',
+                    data: {
+                        input_comment: mycomment,
+                        input_post: parseInt(followid),
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        alert("评论成功");
+                        location.reload();
+                    }
+                })
+            }
+        });
+
+        //取消关注
+        $("div#follow_post").on("click", ".no_follow", function () {
+            parentid = $(this).parent().parent().attr('id');
+            followid = parentid.substring(2);
+            $.ajax({
+                type: 'POST',
+                url: '{{url_for("message_api.no_follow")}}',
+                data: {
+                    input_post: parseInt(followid),
+                },
+                dataType: 'json',
+                success: function (data) {
+                    alert("取消关注");
+                    location.reload();
+                }
+            })
+        });
+
+        //点赞
+        $("div#follow_post").on("click", ".to_upvote", function () {
+            parentid = $(this).parent().parent().attr('id');
+            followid = parentid.substring(2);
+            $.ajax({
+                type: 'GET',
+                url: '{{url_for("message_api.to_upvote")}}',
+                data: {
+                    input_post: parseInt(followid),
+                },
+                dataType: 'json',
+                success: function (data) {
+                    $("#F_upvote_" + followid).html("点赞" + data);
+                }
+            })
+        });
+
+        //打开转发模态框
+        $("div#follow_post").on("click", ".to_retrant", function () {
+            parentid = $(this).parent().parent().attr('id');
+            followid = parentid.substring(2);
+            $("#myid").val(followid);
+        });
+
+        //打开回复模态框
+        $("div#follow_post").on("click", ".to_reply", function () {
+            parentid = $(this).parent().parent().parent().parent().attr('id');
+            commentid = $(this).attr('id');
+            $("#myreply_follow").val(commentid);
+        });
+
+        //回复发布
+        $("div#reply_follow_modal").on("click", ".fbbutton", function () {
+            thisid = $(this).val();
+            posttext = document.getElementById('inputreply_follow').value;
+            $.ajax({
+                type: 'POST',
+                url: '{{url_for("message_api.to_reply")}}',
+                data: {
+                    get_id: parseInt(thisid),
+                    get_text: posttext
+                },
+                dataType: 'json',
+                success: function (data) {
+                    alert("回复成功");
+                    $('#F_reply_' + thisid).empty();
+                    my_reply_follow(thisid);
+                }
+            });
+        })
+
+    </script>
+
+    <!-- 我的动态事件 -->
+    <script>
+        //展开个人信息
+        $("div#my_own_post").on("mouseover", ".person", function () {
+            parentid = $(this).parent().parent().attr('id');
+            myownid = parentid.substring(2);
+            $("#box").val(myownid);
+            $.ajax({
+                type: 'GET',
+                url: '{{url_for("message_api.person_box")}}',
+                data: {
+                    postID: myownid
+                },
+                dataType: 'json',
+                success: function (data) {
+                    var myimg = "../static/avatar/" + data.my_poster + ".jpg?timestamp=" + new Date().getTime()
+                    $(".box_photo").attr("src", myimg);
+                    $("#fb").empty();
+                    $("#fb").append("<b style='float:left;font-size: 18px;width: 36px;text-align: center;'>" + data.postnum + "</b>")
+                    $("#gz").empty();
+                    $("#gz").append("<b style='float:left;font-size: 18px;width: 36px;text-align: center;'>" + data.followednum + "</b>")
+                    $("#fs").empty();
+                    $("#fs").append("<b style='float:left;font-size: 18px;width: 36px;text-align: center;'>" + data.followernum + "</b>")
+                }
+            });
+
+            var thisdiv = document.getElementById("M_poster_" + myownid);
+            p = getElementLeft(thisdiv);
+            q = getElementTop(thisdiv);
+            document.getElementById("box").style.display = "block";
+            $("#box").css("left", p + 20);
+            $("#box").css("top", q + 20);
+
+        });
+
+        //收起个人信息
+        $("div#my_own_post").on("mouseleave", ".person", function () {
+            document.getElementById("box").style.display = "none";
+        });
+
+        //展开评论区
+        $("div#my_own_post").on("click", ".to_comment", function () {
+            parentid = $(this).parent().parent().attr('id');
+            myownid = parentid.substring(2);
+            $("#M_comment_area_" + myownid).empty();
+            $("#M_comment_pagination_" + myownid).empty();
+            open_comment_myown(myownid);
+            $("#M_post_comment_" + myownid).fadeToggle();
+        });
+
+        //收起评论区
+        $("div#my_own_post").on("click", ".to_withdraw", function () {
+            parentid = $(this).parent().parent().parent().attr('id');
+            myownid = parentid.substring(2);
+            $("#M_post_comment_" + myownid).fadeOut();
+            $("#M_comment_pagination_" + myownid).fadeOut();
+        });
+
+        //发布评论
+        $("div#my_own_post").on("click", ".to_release", function () {
+            parentid = $(this).parent().parent().parent().attr('id').toString();
+            myownid = parentid.substring(2);
+            if ($("#M_comment_input" + myownid).val().length == 0) {
+                alert("评论内容不可为空");
+            }
+            else {
+                mycomment = $("#M_comment_input" + myownid).val();
+                $.ajax({
+                    type: 'POST',
+                    url: '{{url_for("message_api.to_comment")}}',
+                    data: {
+                        input_comment: mycomment,
+                        input_post: parseInt(myownid),
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        alert("评论成功");
+                        location.reload();
+                    }
+                })
+            }
+        });
+
+        //点赞
+        $("div#my_own_post").on("click", ".to_upvote", function () {
+            parentid = $(this).parent().parent().attr('id');
+            myownid = parentid.substring(2);
+            $.ajax({
+                type: 'GET',
+                url: '{{url_for("message_api.to_upvote")}}',
+                data: {
+                    input_post: parseInt(myownid),
+                },
+                dataType: 'json',
+                success: function (data) {
+                    $("#M_upvote_" + myownid).html("点赞" + data);
+                }
+            })
+        });
+
+        //打开回复模态框
+        $("div#my_own_post").on("click", ".to_reply", function () {
+            parentid = $(this).parent().parent().parent().parent().attr('id');
+            commentid = $(this).attr('id');
+            $("#myreply_myown").val(commentid);
+        });
+
+        //回复发布
+        $("div#reply_myown_modal").on("click", ".fbbutton", function () {
+            thisid = $(this).val();
+            posttext = document.getElementById('inputreply_myown').value;
+            $.ajax({
+                type: 'POST',
+                url: '{{url_for("message_api.to_reply")}}',
+                data: {
+                    get_id: parseInt(thisid),
+                    get_text: posttext
+                },
+                dataType: 'json',
+                success: function (data) {
+                    alert("回复成功");
+                    $('#M_reply_' + thisid).empty();
+                    my_reply_myown(thisid);
+                }
+            });
+        })
+
     </script>
 
     <!-- 功能模块 -->
     <script>
-        var postcomment, postfollow, followindex, pagecomment, minpage, maxpage, topScroll;
+        var postcomment, postcommentfollow, postcommentmyown, postfollow, followindex;
         //文章数据显示
         function post_comment(mydata) {
             $('#all_post').empty();
@@ -667,65 +1125,172 @@
                 if (mydata.po_ifretrant[i] == 0) {
                     if (followindex == 0) {
                         $('#all_post').append("<div class='module span12' style='width:100%;height:auto;float:left;margin-left:0;background-color:white;border:0' id='" + mydata.po_id[i] + "'>" +
-                                "<div style='width:8%;float:left;margin-top:10;'><div class='my_photo'></div></div>" +
-                                "<div style='width:92%;float:right;margin-top:10;'><button class='to_follow'><b>+关注</b></button><span class='person' id='poster_" + mydata.po_id[i] + "'>" + mydata.po_user[i] + "</span><h10 style='font-size:5px;color:gray;float:left;width:90%'>" + mydata.po_time[i] + "</h10>" +
-                                "<h5><strong style='font-size:16px;float:left;width:100%;margin-top:5px'>" + mydata.po_text[i] + "</strong></h5></div>" +
-                                "<div class='post_function'><button class='to_retrant' data-toggle='modal' data-target='#all_message_modal'><b>转发" + mydata.po_retrant[i] + "</b></button><div class='line'></div><button class='to_comment'><b>评论" + mydata.po_comment[i] + "</b></button><div class='line'></div><button class='to_upvote'><b>点赞" + mydata.po_upvote[i] + "</b></button></div>" +
-                                "<div class='post_comment' id='post_comment_" + mydata.po_id[i] + "'>" +
-                                "<div style='width:100%;float:left'><input type='text' class='comment_input' id='comment_input" + mydata.po_id[i] + "'></input><button class='to_release'><b>发布</b></button><button class='to_withdraw'><b>收起</b></button></div>" +
-                                "<div id='comment_area_" + mydata.po_id[i] + "'></div>" +
-                                "<div id='comment_pagination_" + mydata.po_id[i] + "' class='pagination' style='float:right;margin-top: 0'></div></div></div>");
+                            "<div style='width:8%;float:left;margin-top:10;'><img class='my_photo' src='../static/avatar/" + mydata.po_user[i] + ".jpg?timestamp=" + new Date().getTime() + "'></div>" +
+                            "<div style='width:92%;float:right;margin-top:10;'><button class='to_follow'><b>+关注</b></button><span class='person' id='poster_" + mydata.po_id[i] + "'>" + mydata.po_user[i] + "</span><h10 style='font-size:5px;color:gray;float:left;width:90%'>" + mydata.po_time[i] + "</h10>" +
+                            "<h5><strong style='font-size:16px;float:left;width:100%;margin-top:5px'>" + mydata.po_text[i] + "</strong></h5></div>" +
+
+                            "<div class='post_function'><button class='to_retrant' data-toggle='modal' data-target='#all_message_modal'><b>转发" + mydata.po_retrant[i] + "</b></button><div class='line'></div><button class='to_comment'><b>评论" + mydata.po_comment[i] + "</b></button><div class='line'></div><button class='to_upvote' id='upvote_" + mydata.po_id[i] + "'><b>点赞" + mydata.po_upvote[i] + "</b></button></div>" +
+                            "<div class='post_comment' id='post_comment_" + mydata.po_id[i] + "'>" +
+
+                            "<div style='width:100%;float:left'><img class='comment_avatar' src='../static/avatar/" + mydata.current_user + ".jpg?timestamp=" + new Date().getTime() + "'><input type='text' class='comment_input' id='comment_input" + mydata.po_id[i] + "'></input><button class='to_release'><b>发布</b></button><button class='to_withdraw'><b>收起</b></button></div>" +
+                            "<div id='comment_area_" + mydata.po_id[i] + "'></div>" +
+                            "<div id='comment_pagination_" + mydata.po_id[i] + "' class='pagination' style='float:right;margin-top: 0'></div></div></div>");
+                    }
+
+                    else if (followindex == 1) {
+                        $('#all_post').append("<div class='module span12' style='width:100%;height:auto;float:left;margin-left:0;background-color:white;border:0' id='" + mydata.po_id[i] + "'>" +
+                            "<div style='width:8%;float:left;margin-top:10;'><img class='my_photo' src='../static/avatar/" + mydata.po_user[i] + ".jpg?timestamp=" + new Date().getTime() + "'></div>" +
+                            "<div style='width:92%;float:right;margin-top:10;'><button class='no_follow'><b>取消关注</b></button><span class='person' id='poster_" + mydata.po_id[i] + "'>" + mydata.po_user[i] + "</span><h10 style='font-size:5px;color:gray;float:left;width:90%'>" + mydata.po_time[i] + "</h10>" +
+                            "<h5><strong style='font-size:16px;float:left;width:100%;margin-top:5px'>" + mydata.po_text[i] + "</strong></h5></div>" +
+
+                            "<div class='post_function'><button class='to_retrant' data-toggle='modal' data-target='#all_message_modal'><b>转发" + mydata.po_retrant[i] + "</b></button><div class='line'></div><button class='to_comment'><b>评论" + mydata.po_comment[i] + "</b></button><div class='line'></div><button class='to_upvote' id='upvote_" + mydata.po_id[i] + "'><b>点赞" + mydata.po_upvote[i] + "</b></button></div>" +
+
+                            "<div class='post_comment' id='post_comment_" + mydata.po_id[i] + "'>" +
+                            "<div style='width:100%;float:left'><img class='comment_avatar' src='../static/avatar/" + mydata.current_user + ".jpg?timestamp=" + new Date().getTime() + "'><input type='text' class='comment_input' id='comment_input" + mydata.po_id[i] + "'></input><button class='to_release'><b>发布</b></button><button class='to_withdraw'><b>收起</b></button></div>" +
+                            "<div id='comment_area_" + mydata.po_id[i] + "'></div>" +
+                            "<div id='comment_pagination_" + mydata.po_id[i] + "' class='pagination' style='float:right;margin-top: 0'></div></div></div>");
+
                     }
 
                     else {
                         $('#all_post').append("<div class='module span12' style='width:100%;height:auto;float:left;margin-left:0;background-color:white;border:0' id='" + mydata.po_id[i] + "'>" +
-                                "<div style='width:8%;float:left;margin-top:10;'><div class='my_photo'></div></div>" +
-                                "<div style='width:92%;float:right;margin-top:10;'><button class='no_follow'><b>取消关注</b></button><span class='person' id='poster_" + mydata.po_id[i] + "'>" + mydata.po_user[i] + "</span><h10 style='font-size:5px;color:gray;float:left;width:90%'>" + mydata.po_time[i] + "</h10>" +
-                                "<h5><strong style='font-size:16px;float:left;width:100%;margin-top:5px'>" + mydata.po_text[i] + "</strong></h5></div>" +
-                                "<div class='post_function'><button class='to_retrant' data-toggle='modal' data-target='#all_message_modal'><b>转发" + mydata.po_retrant[i] + "</b></button><div class='line'></div><button class='to_comment'><b>评论" + mydata.po_comment[i] + "</b></button><div class='line'></div><button class='to_upvote'><b>点赞" + mydata.po_upvote[i] + "</b></button></div>" +
-                                "<div class='post_comment' id='post_comment_" + mydata.po_id[i] + "'>" +
-                                "<div style='width:100%;float:left'><input type='text' class='comment_input' id='comment_input" + mydata.po_id[i] + "'></input><button class='to_release'><b>发布</b></button><button class='to_withdraw'><b>收起</b></button></div>" +
-                                "<div id='comment_area_" + mydata.po_id[i] + "'></div>" +
-                                "<div id='comment_pagination_" + mydata.po_id[i] + "' class='pagination' style='float:right;margin-top: 0'></div></div></div>");
+                            "<div style='width:8%;float:left;margin-top:10;'><img class='my_photo' src='../static/avatar/" + mydata.po_user[i] + ".jpg?timestamp=" + new Date().getTime() + "'></div>" +
+                            "<div style='width:92%;float:right;margin-top:10;'><span class='person' id='poster_" + mydata.po_id[i] + "'>" + mydata.po_user[i] + "</span><h10 style='font-size:5px;color:gray;float:left;width:100%'>" + mydata.po_time[i] + "</h10>" +
+                            "<h5><strong style='font-size:16px;float:left;width:100%;margin-top:5px'>" + mydata.po_text[i] + "</strong></h5></div>" +
+
+                            "<div class='post_function'><button class='to_retrant'><b>转发" + mydata.po_retrant[i] + "</b></button><div class='line'></div><button class='to_comment'><b>评论" + mydata.po_comment[i] + "</b></button><div class='line'></div><button class='to_upvote' id='upvote_" + mydata.po_id[i] + "'><b>点赞" + mydata.po_upvote[i] + "</b></button></div>" +
+                            "<div class='post_comment' id='post_comment_" + mydata.po_id[i] + "'>" +
+                            "<div style='width:100%;float:left'><img class='comment_avatar' src='../static/avatar/" + mydata.current_user + ".jpg?timestamp=" + new Date().getTime() + "'><input type='text' class='comment_input' id='comment_input" + mydata.po_id[i] + "'></input><button class='to_release'><b>发布</b></button><button class='to_withdraw'><b>收起</b></button></div>" +
+                            "<div id='comment_area_" + mydata.po_id[i] + "'></div>" +
+                            "<div id='comment_pagination_" + mydata.po_id[i] + "' class='pagination' style='float:right;margin-top: 0'></div></div></div>");
                     }
                 }
 
                 else {
                     if (followindex == 0) {
                         $('#all_post').append("<div class='module span12' style='width:100%;height:auto;float:left;margin-left:0;background-color:white;border:0' id='" + mydata.po_id[i] + "'>" +
-                                "<div style='width:8%;float:left;margin-top:10;'><div class='my_photo'></div></div>" +
-                                "<div style='width:92%;float:right;margin-top:10;'><button class='to_follow'><b>+关注</b></button><span class='person' id='poster_" + mydata.po_id[i] + "'>" + mydata.po_user[i] + "</span><h10 style='font-size:5px;color:gray;float:left;width:90%'>" + mydata.po_time[i] + "</h10>" +
-                                "<h5><strong style='font-size:16px;float:left;width:100%;margin-top:5px'>" + mydata.po_text[i] + "</strong></h5></div>" +
+                            "<div style='width:8%;float:left;margin-top:10;'><img class='my_photo' src='../static/avatar/" + mydata.po_user[i] + ".jpg?timestamp=" + new Date().getTime() + "'></div>" +
+                            "<div style='width:92%;float:right;margin-top:10;'><button class='to_follow'><b>+关注</b></button><span class='person' id='poster_" + mydata.po_id[i] + "'>" + mydata.po_user[i] + "</span><h10 style='font-size:5px;color:gray;float:left;width:90%'>" + mydata.po_time[i] + "</h10>" +
+                            "<h5><strong style='font-size:16px;float:left;width:100%;margin-top:5px'>" + mydata.po_text[i] + "</strong></h5></div>" +
 
-                                "<div style='width:100%;background-color: #FFFDEE;'><h5 style='float:left;width:100%;margin-left:0;margin-top:5px;background-color: #FFFDEE;'><strong style='font-size:18px;float:left;width:92%;margin-left:8%;margin-top:5px;background-color: #FFFDEE;'>" + "@" + mydata.po_retrant_poster[i] + "</strong>" +
-                                "<strong style='font-size:16px;float:left;width:92%;margin-left:8%;margin-top:5px;margin-bottom:5px;background-color: #FFFDEE;'>" + mydata.po_retrant_text[i] + "</strong></h5></div>" +
+                            "<div style='width:100%;background-color: #FFFDEE;'><h5 style='float:left;width:100%;margin-left:0;margin-top:5px;background-color: #FFFDEE;'><strong style='font-size:18px;float:left;width:92%;margin-left:8%;margin-top:5px;background-color: #FFFDEE;'>" + "@" + mydata.po_retrant_poster[i] + "</strong>" +
+                            "<strong style='font-size:16px;float:left;width:92%;margin-left:8%;margin-top:5px;margin-bottom:5px;background-color: #FFFDEE;'>" + mydata.po_retrant_text[i] + "</strong></h5></div>" +
 
-                                "<div class='post_function'><button class='to_retrant' data-toggle='modal' data-target='#all_message_modal'><b>转发" + mydata.po_retrant[i] + "</b></button><div class='line'></div><button class='to_comment'><b>评论" + mydata.po_comment[i] + "</b></button><div class='line'></div><button class='to_upvote'><b>点赞" + mydata.po_upvote[i] + "</b></button></div>" +
-                                "<div class='post_comment' id='post_comment_" + mydata.po_id[i] + "'>" +
-                                "<div style='width:100%;float:left'><input type='text' class='comment_input' id='comment_input" + mydata.po_id[i] + "'></input><button class='to_release'><b>发布</b></button><button class='to_withdraw'><b>收起</b></button></div>" +
-                                "<div id='comment_area_" + mydata.po_id[i] + "'></div>" +
-                                "<div id='comment_pagination_" + mydata.po_id[i] + "' class='pagination' style='float:right;margin-top: 0'></div></div></div>");
+                            "<div class='post_function'><button class='to_retrant' data-toggle='modal' data-target='#all_message_modal'><b>转发" + mydata.po_retrant[i] + "</b></button><div class='line'></div><button class='to_comment'><b>评论" + mydata.po_comment[i] + "</b></button><div class='line'></div><button class='to_upvote' id='upvote_" + mydata.po_id[i] + "'><b>点赞" + mydata.po_upvote[i] + "</b></button></div>" +
+                            "<div class='post_comment' id='post_comment_" + mydata.po_id[i] + "'>" +
+                            "<div style='width:100%;float:left'><img class='comment_avatar' src='../static/avatar/" + mydata.current_user + ".jpg?timestamp=" + new Date().getTime() + "'><input type='text' class='comment_input' id='comment_input" + mydata.po_id[i] + "'></input><button class='to_release'><b>发布</b></button><button class='to_withdraw'><b>收起</b></button></div>" +
+                            "<div id='comment_area_" + mydata.po_id[i] + "'></div>" +
+                            "<div id='comment_pagination_" + mydata.po_id[i] + "' class='pagination' style='float:right;margin-top: 0'></div></div></div>");
+                    }
+
+                    else if (followindex == 1) {
+                        $('#all_post').append("<div class='module span12' style='width:100%;height:auto;float:left;margin-left:0;background-color:white;border:0' id='" + mydata.po_id[i] + "'>" +
+                            "<div style='width:8%;float:left;margin-top:10;'><img class='my_photo' src='../static/avatar/" + mydata.po_user[i] + ".jpg?timestamp=" + new Date().getTime() + "'></div>" +
+                            "<div style='width:92%;float:left;margin-top:10;'><button class='no_follow'><b>取消关注</b></button><span class='person' id='poster_" + mydata.po_id[i] + "'>" + mydata.po_user[i] + "</span><h10 style='font-size:5px;color:gray;float:left;width:90%'>" + mydata.po_time[i] + "</h10>" +
+                            "<h5><strong style='font-size:16px;float:left;width:100%;margin-top:5px'>" + mydata.po_text[i] + "</strong></h5></div>" +
+
+                            "<div style='width:100%;background-color: #FFFDEE;'><h5 style='float:left;width:100%;margin-left:0;margin-top:5px;background-color: #FFFDEE;'><strong style='font-size:18px;float:left;width:92%;margin-left:8%;margin-top:5px;background-color: #FFFDEE;'>" + "@" + mydata.po_retrant_poster[i] + "</strong>" +
+                            "<strong style='font-size:16px;float:left;width:92%;margin-left:8%;margin-top:5px;margin-bottom:5px;background-color: #FFFDEE;'>" + mydata.po_retrant_text[i] + "</strong></h5></div>" +
+
+                            "<div class='post_function'><button class='to_retrant' data-toggle='modal' data-target='#all_message_modal'><b>转发" + mydata.po_retrant[i] + "</b></button><div class='line'></div><button class='to_comment'><b>评论" + mydata.po_comment[i] + "</b></button><div class='line'></div><button class='to_upvote' id='upvote_" + mydata.po_id[i] + "'><b>点赞" + mydata.po_upvote[i] + "</b></button></div>" +
+                            "<div class='post_comment' id='post_comment_" + mydata.po_id[i] + "'>" +
+                            "<div style='width:100%;float:left'><img class='comment_avatar' src='../static/avatar/" + mydata.current_user + ".jpg?timestamp=" + new Date().getTime() + "'><input type='text' class='comment_input' id='comment_input" + mydata.po_id[i] + "'></input><button class='to_release'><b>发布</b></button><button class='to_withdraw'><b>收起</b></button></div>" +
+                            "<div id='comment_area_" + mydata.po_id[i] + "'></div>" +
+                            "<div id='comment_pagination_" + mydata.po_id[i] + "' class='pagination' style='float:right;margin-top: 0'></div></div></div>");
                     }
 
                     else {
                         $('#all_post').append("<div class='module span12' style='width:100%;height:auto;float:left;margin-left:0;background-color:white;border:0' id='" + mydata.po_id[i] + "'>" +
-                                "<div style='width:8%;float:left;margin-top:10;'><div class='my_photo'></div></div>" +
-                                "<div style='width:92%;float:left;margin-top:10;'><button class='no_follow'><b>取消关注</b></button><span class='person' id='poster_" + mydata.po_id[i] + "'>" + mydata.po_user[i] + "</span><h10 style='font-size:5px;color:gray;float:left;width:90%'>" + mydata.po_time[i] + "</h10>" +
-                                "<h5><strong style='font-size:16px;float:left;width:100%;margin-top:5px'>" + mydata.po_text[i] + "</strong></h5></div>" +
+                            "<div style='width:8%;float:left;margin-top:10;'><img class='my_photo' src='../static/avatar/" + mydata.po_user[i] + ".jpg?timestamp=" + new Date().getTime() + "'></div>" +
+                            "<div style='width:92%;float:left;margin-top:10;'><span class='person' id='poster_" + mydata.po_id[i] + "'>" + mydata.po_user[i] + "</span><h10 style='font-size:5px;color:gray;float:left;width:100%'>" + mydata.po_time[i] + "</h10>" +
+                            "<h5><strong style='font-size:16px;float:left;width:100%;margin-top:5px'>" + mydata.po_text[i] + "</strong></h5></div>" +
 
-                                "<div style='width:100%;background-color: #FFFDEE;'><h5 style='float:left;width:100%;margin-left:0;margin-top:5px;background-color: #FFFDEE;'><strong style='font-size:18px;float:left;width:92%;margin-left:8%;margin-top:5px;background-color: #FFFDEE;'>" + "@" + mydata.po_retrant_poster[i] + "</strong>" +
-                                "<strong style='font-size:16px;float:left;width:92%;margin-left:8%;margin-top:5px;margin-bottom:5px;background-color: #FFFDEE;'>" + mydata.po_retrant_text[i] + "</strong></h5></div>" +
+                            "<div style='width:100%;background-color: #FFFDEE;'><h5 style='float:left;width:100%;margin-left:0;margin-top:5px;background-color: #FFFDEE;'><strong style='font-size:18px;float:left;width:92%;margin-left:8%;margin-top:5px;background-color: #FFFDEE;'>" + "@" + mydata.po_retrant_poster[i] + "</strong>" +
+                            "<strong style='font-size:16px;float:left;width:92%;margin-left:8%;margin-top:5px;margin-bottom:5px;background-color: #FFFDEE;'>" + mydata.po_retrant_text[i] + "</strong></h5></div>" +
 
-                                "<div class='post_function'><button class='to_retrant' data-toggle='modal' data-target='#all_message_modal'><b>转发" + mydata.po_retrant[i] + "</b></button><div class='line'></div><button class='to_comment'><b>评论" + mydata.po_comment[i] + "</b></button><div class='line'></div><button class='to_upvote'><b>点赞" + mydata.po_upvote[i] + "</b></button></div>" +
-                                "<div class='post_comment' id='post_comment_" + mydata.po_id[i] + "'>" +
-                                "<div style='width:100%;float:left'><input type='text' class='comment_input' id='comment_input" + mydata.po_id[i] + "'></input><button class='to_release'><b>发布</b></button><button class='to_withdraw'><b>收起</b></button></div>" +
-                                "<div id='comment_area_" + mydata.po_id[i] + "'></div>" +
-                                "<div id='comment_pagination_" + mydata.po_id[i] + "' class='pagination' style='float:right;margin-top: 0'></div></div></div>");
+                            "<div class='post_function'><button class='to_retrant'><b>转发" + mydata.po_retrant[i] + "</b></button><div class='line'></div><button class='to_comment'><b>评论" + mydata.po_comment[i] + "</b></button><div class='line'></div><button class='to_upvote' id='upvote_" + mydata.po_id[i] + "'><b>点赞" + mydata.po_upvote[i] + "</b></button></div>" +
+                            "<div class='post_comment' id='post_comment_" + mydata.po_id[i] + "'>" +
+                            "<div style='width:100%;float:left'><img class='comment_avatar' src='../static/avatar/" + mydata.current_user + ".jpg?timestamp=" + new Date().getTime() + "'><input type='text' class='comment_input' id='comment_input" + mydata.po_id[i] + "'></input><button class='to_release'><b>发布</b></button><button class='to_withdraw'><b>收起</b></button></div>" +
+                            "<div id='comment_area_" + mydata.po_id[i] + "'></div>" +
+                            "<div id='comment_pagination_" + mydata.po_id[i] + "' class='pagination' style='float:right;margin-top: 0'></div></div></div>");
                     }
                 }
             }
         }
 
+        //我的关注文章数据显示
+        function post_comment_follow(mydata) {
+            $('#follow_post').empty();
+            for (var i = mydata.po_id.length - 1; i >= 0; i--) {
+                postfollow = mydata.po_user[i];
+
+                if (mydata.po_ifretrant[i] == 0) {
+                    $('#follow_post').append("<div class='module span12' style='width:100%;height:auto;float:left;margin-left:0;background-color:white;border:0' id='F_" + mydata.po_id[i] + "'>" +
+                        "<div style='width:8%;float:left;margin-top:10;'><img class='my_photo' src='../static/avatar/" + mydata.po_user[i] + ".jpg?timestamp=" + new Date().getTime() + "'></div>" +
+                        "<div style='width:92%;float:right;margin-top:10;'><button class='no_follow'><b>取消关注</b></button><span class='person' id='F_poster_" + mydata.po_id[i] + "'>" + mydata.po_user[i] + "</span><h10 style='font-size:5px;color:gray;float:left;width:90%'>" + mydata.po_time[i] + "</h10>" +
+                        "<h5><strong style='font-size:16px;float:left;width:100%;margin-top:5px'>" + mydata.po_text[i] + "</strong></h5></div>" +
+
+                        "<div class='post_function'><button class='to_retrant' data-toggle='modal' data-target='#all_message_modal'><b>转发" + mydata.po_retrant[i] + "</b></button><div class='line'></div><button class='to_comment'><b>评论" + mydata.po_comment[i] + "</b></button><div class='line'></div><button class='to_upvote' id='F_upvote_" + mydata.po_id[i] + "'><b>点赞" + mydata.po_upvote[i] + "</b></button></div>" +
+                        "<div class='post_comment' id='F_post_comment_" + mydata.po_id[i] + "'>" +
+                        "<div style='width:100%;float:left'><img class='comment_avatar' src='../static/avatar/" + mydata.current_user + ".jpg?timestamp=" + new Date().getTime() + "'><input type='text' class='comment_input' id='F_comment_input" + mydata.po_id[i] + "'></input><button class='to_release'><b>发布</b></button><button class='to_withdraw'><b>收起</b></button></div>" +
+                        "<div id='F_comment_area_" + mydata.po_id[i] + "'></div>" +
+                        "<div id='F_comment_pagination_" + mydata.po_id[i] + "' class='pagination' style='float:right;margin-top: 0'></div></div></div>");
+                }
+
+                else {
+                    $('#follow_post').append("<div class='module span12' style='width:100%;height:auto;float:left;margin-left:0;background-color:white;border:0' id='F_" + mydata.po_id[i] + "'>" +
+                        "<div style='width:8%;float:left;margin-top:10;'><img class='my_photo' src='../static/avatar/" + mydata.po_user[i] + ".jpg?timestamp=" + new Date().getTime() + "'></div>" +
+                        "<div style='width:92%;float:left;margin-top:10;'><button class='no_follow'><b>取消关注</b></button><span class='person' id='F_poster_" + mydata.po_id[i] + "'>" + mydata.po_user[i] + "</span><h10 style='font-size:5px;color:gray;float:left;width:90%'>" + mydata.po_time[i] + "</h10>" +
+                        "<h5><strong style='font-size:16px;float:left;width:100%;margin-top:5px'>" + mydata.po_text[i] + "</strong></h5></div>" +
+
+                        "<div style='width:100%;background-color: #FFFDEE;'><h5 style='float:left;width:100%;margin-left:0;margin-top:5px;background-color: #FFFDEE;'><strong style='font-size:18px;float:left;width:92%;margin-left:8%;margin-top:5px;background-color: #FFFDEE;'>" + "@" + mydata.po_retrant_poster[i] + "</strong>" +
+                        "<strong style='font-size:16px;float:left;width:92%;margin-left:8%;margin-top:5px;margin-bottom:5px;background-color: #FFFDEE;'>" + mydata.po_retrant_text[i] + "</strong></h5></div>" +
+
+                        "<div class='post_function'><button class='to_retrant' data-toggle='modal' data-target='#all_message_modal'><b>转发" + mydata.po_retrant[i] + "</b></button><div class='line'></div><button class='to_comment'><b>评论" + mydata.po_comment[i] + "</b></button><div class='line'></div><button class='to_upvote' id='F_upvote_" + mydata.po_id[i] + "'><b>点赞" + mydata.po_upvote[i] + "</b></button></div>" +
+                        "<div class='post_comment' id='F_post_comment_" + mydata.po_id[i] + "'>" +
+                        "<div style='width:100%;float:left'><img class='comment_avatar' src='../static/avatar/" + mydata.current_user + ".jpg?timestamp=" + new Date().getTime() + "'><input type='text' class='comment_input' id='F_comment_input" + mydata.po_id[i] + "'></input><button class='to_release'><b>发布</b></button><button class='to_withdraw'><b>收起</b></button></div>" +
+                        "<div id='F_comment_area_" + mydata.po_id[i] + "'></div>" +
+                        "<div id='F_comment_pagination_" + mydata.po_id[i] + "' class='pagination' style='float:right;margin-top: 0'></div></div></div>");
+                }
+            }
+        }
+
+        //我的文章数据显示
+        function post_comment_myown(mydata) {
+            $('#my_own_post').empty();
+            for (var i = mydata.po_id.length - 1; i >= 0; i--) {
+                if (mydata.po_ifretrant[i] == 0) {
+                    $('#my_own_post').append("<div class='module span12' style='width:100%;height:auto;float:left;margin-left:0;background-color:white;border:0' id='M_" + mydata.po_id[i] + "'>" +
+                        "<div style='width:8%;float:left;margin-top:10;'><img class='my_photo' src='../static/avatar/" + mydata.po_user[i] + ".jpg?timestamp=" + new Date().getTime() + "'></div>" +
+                        "<div style='width:92%;float:right;margin-top:10;'><span class='person' id='M_poster_" + mydata.po_id[i] + "'>" + mydata.po_user[i] + "</span><h10 style='font-size:5px;color:gray;float:left;width:100%'>" + mydata.po_time[i] + "</h10>" +
+                        "<h5><strong style='font-size:16px;float:left;width:100%;margin-top:5px'>" + mydata.po_text[i] + "</strong></h5></div>" +
+
+                        "<div class='post_function'><button class='to_retrant'><b>转发" + mydata.po_retrant[i] + "</b></button><div class='line'></div><button class='to_comment'><b>评论" + mydata.po_comment[i] + "</b></button><div class='line'></div><button class='to_upvote' id='M_upvote_" + mydata.po_id[i] + "'><b>点赞" + mydata.po_upvote[i] + "</b></button></div>" +
+                        "<div class='post_comment' id='M_post_comment_" + mydata.po_id[i] + "'>" +
+                        "<div style='width:100%;float:left'><img class='comment_avatar' src='../static/avatar/" + mydata.current_user + ".jpg?timestamp=" + new Date().getTime() + "'><input type='text' class='comment_input' id='M_comment_input" + mydata.po_id[i] + "'></input><button class='to_release'><b>发布</b></button><button class='to_withdraw'><b>收起</b></button></div>" +
+                        "<div id='M_comment_area_" + mydata.po_id[i] + "'></div>" +
+                        "<div id='M_comment_pagination_" + mydata.po_id[i] + "' class='pagination' style='float:right;margin-top: 0'></div></div></div>");
+                }
+
+                else {
+                    $('#my_own_post').append("<div class='module span12' style='width:100%;height:auto;float:left;margin-left:0;background-color:white;border:0' id='M_" + mydata.po_id[i] + "'>" +
+                        "<div style='width:8%;float:left;margin-top:10;'><img class='my_photo' src='../static/avatar/" + mydata.po_user[i] + ".jpg?timestamp=" + new Date().getTime() + "'></div>" +
+                        "<div style='width:92%;float:left;margin-top:10;'><span class='person' id='M_poster_" + mydata.po_id[i] + "'>" + mydata.po_user[i] + "</span><h10 style='font-size:5px;color:gray;float:left;width:100%'>" + mydata.po_time[i] + "</h10>" +
+                        "<h5><strong style='font-size:16px;float:left;width:100%;margin-top:5px'>" + mydata.po_text[i] + "</strong></h5></div>" +
+
+                        "<div style='width:100%;background-color: #FFFDEE;'><h5 style='float:left;width:100%;margin-left:0;margin-top:5px;background-color: #FFFDEE;'><strong style='font-size:18px;float:left;width:92%;margin-left:8%;margin-top:5px;background-color: #FFFDEE;'>" + "@" + mydata.po_retrant_poster[i] + "</strong>" +
+                        "<strong style='font-size:16px;float:left;width:92%;margin-left:8%;margin-top:5px;margin-bottom:5px;background-color: #FFFDEE;'>" + mydata.po_retrant_text[i] + "</strong></h5></div>" +
+
+                        "<div class='post_function'><button class='to_retrant'><b>转发" + mydata.po_retrant[i] + "</b></button><div class='line'></div><button class='to_comment'><b>评论" + mydata.po_comment[i] + "</b></button><div class='line'></div><button class='to_upvote' id='M_upvote_" + mydata.po_id[i] + "'><b>点赞" + mydata.po_upvote[i] + "</b></button></div>" +
+                        "<div class='post_comment' id='M_post_comment_" + mydata.po_id[i] + "'>" +
+                        "<div style='width:100%;float:left'><img class='comment_avatar' src='../static/avatar/" + mydata.current_user + ".jpg?timestamp=" + new Date().getTime() + "'><input type='text' class='comment_input' id='M_comment_input" + mydata.po_id[i] + "'></input><button class='to_release'><b>发布</b></button><button class='to_withdraw'><b>收起</b></button></div>" +
+                        "<div id='M_comment_area_" + mydata.po_id[i] + "'></div>" +
+                        "<div id='M_comment_pagination_" + mydata.po_id[i] + "' class='pagination' style='float:right;margin-top: 0'></div></div></div>");
+                }
+            }
+        }
+
+        var pagecomment, minpage, maxpage, topScroll;
         //展开评论
         function open_comment(id) {
             $.ajax({
@@ -751,6 +1316,56 @@
             });
         }
 
+        //我的关注展开评论
+        function open_comment_follow(id) {
+            $.ajax({
+                type: 'GET',
+                url: '{{ url_for("message_api.comment_all") }}',
+                data: {
+                    post: id
+                },
+                dataType: 'json',
+                success: function (data) {
+                    console.log(data);
+                    pagecomment = data;
+                    var max_entries = data.co_page;
+                    $("#F_comment_pagination_" + id).pagination(max_entries, {
+                        num_edge_entries: 1, //边缘页数
+                        num_display_entries: 2, //主体页数
+                        callback: follow_comment_callback,
+                        items_per_page: 1, //每页显示1项
+                        prev_text: "<<",
+                        next_text: ">>"
+                    });
+                }
+            });
+        }
+
+        //我的动态展开评论
+        function open_comment_myown(id) {
+            $.ajax({
+                type: 'GET',
+                url: '{{ url_for("message_api.comment_all") }}',
+                data: {
+                    post: id
+                },
+                dataType: 'json',
+                success: function (data) {
+                    console.log(data);
+                    pagecomment = data;
+                    var max_entries = data.co_page;
+                    $("#M_comment_pagination_" + id).pagination(max_entries, {
+                        num_edge_entries: 1, //边缘页数
+                        num_display_entries: 2, //主体页数
+                        callback: myown_comment_callback,
+                        items_per_page: 1, //每页显示1项
+                        prev_text: "<<",
+                        next_text: ">>"
+                    });
+                }
+            });
+        }
+
         //评论分页
         function comment_callback(page_index) {
             minpage = 5 * page_index;
@@ -761,14 +1376,73 @@
             if (pagecomment.co_id.length - maxpage > 0) {
                 for (var k = pagecomment.co_id.length - minpage - 1; k >= pagecomment.co_id.length - maxpage; k--) {
                     (function (j) {
-                        $('#comment_area_' + pagecomment.co_post).append("<div style='width:100%;height:auto;float:left;margin-left:0;margin-top:10px;'><strong style='font-size:17px;'>" + pagecomment.co_commenter[j] + ":  </strong><h10 style='font-size:17px'>" + pagecomment.co_text[j] + "</h10></div>")
+                        $('#comment_area_' + pagecomment.co_post).append("<div style='width:100%;height:auto;float:left;margin-left:0;margin-top:10px;'><img class='comment_avatar' src='../static/avatar/" + pagecomment.co_commenter[j] + ".jpg?timestamp=" + new Date().getTime() + "'><div style='float:left;margin-left:10px;margin-top:5px'><strong style='font-size:17px'>" + pagecomment.co_commenter[j] + ": </strong><h10 style='font-size:17px'>" + pagecomment.co_text[j] + "</h10></div><button class='to_reply' data-toggle='modal' data-target='#reply_modal' id='" + pagecomment.co_id[j] + "'><b>回复</b></buttom></div><div class='reply_area' id='reply_" + pagecomment.co_id[j] + "'></div>");
+                        my_reply(pagecomment.co_id[j])
                     })(k)
                 }
             }
             else {
                 for (var k = pagecomment.co_id.length - minpage - 1; k >= 0; k--) {
                     (function (j) {
-                        $('#comment_area_' + pagecomment.co_post).append("<div style='width:100%;height:auto;float:left;margin-left:0;margin-top:10px;'><strong style='font-size:17px;'>" + pagecomment.co_commenter[j] + ":  </strong><h10 style='font-size:17px'>" + pagecomment.co_text[j] + "</h10></div>")
+                        $('#comment_area_' + pagecomment.co_post).append("<div style='width:100%;height:auto;float:left;margin-left:0;margin-top:10px;'><img class='comment_avatar' src='../static/avatar/" + pagecomment.co_commenter[j] + ".jpg?timestamp=" + new Date().getTime() + "'><div style='float:left;margin-left:10px;margin-top:5px'><strong style='font-size:17px'>" + pagecomment.co_commenter[j] + ": </strong><h10 style='font-size:17px'>" + pagecomment.co_text[j] + "</h10></div><button class='to_reply' data-toggle='modal' data-target='#reply_modal' id='" + pagecomment.co_id[j] + "'><b>回复</b></buttom></div><div class='reply_area' id='reply_" + pagecomment.co_id[j] + "'></div>");
+                        my_reply(pagecomment.co_id[j])
+                    })(k)
+                }
+            }
+
+            topScroll = document.body.scrollTop;//滚动的距离,距离顶部的距离
+            $('body,html').animate({scrollTop: topScroll}, 500)
+        }
+
+        //我的关注评论分页
+        function follow_comment_callback(page_index) {
+            minpage = 5 * page_index;
+            maxpage = 5 * (page_index + 1);
+
+            $('#F_comment_area_' + pagecomment.co_post).empty();
+
+            if (pagecomment.co_id.length - maxpage > 0) {
+                for (var k = pagecomment.co_id.length - minpage - 1; k >= pagecomment.co_id.length - maxpage; k--) {
+                    (function (j) {
+                        $('#F_comment_area_' + pagecomment.co_post).append("<div style='width:100%;height:auto;float:left;margin-left:0;margin-top:10px;'><img class='comment_avatar' src='../static/avatar/" + pagecomment.co_commenter[j] + ".jpg?timestamp=" + new Date().getTime() + "'><div style='float:left;margin-left:10px;margin-top:5px'><strong style='font-size:17px'>" + pagecomment.co_commenter[j] + ": </strong><h10 style='font-size:17px'>" + pagecomment.co_text[j] + "</h10></div><button class='to_reply' data-toggle='modal' data-target='#reply_follow_modal' id='" + pagecomment.co_id[j] + "'><b>回复</b></buttom></div><div class='reply_area' id='F_reply_" + pagecomment.co_id[j] + "'></div>");
+                        my_reply_follow(pagecomment.co_id[j])
+                    })(k)
+                }
+            }
+            else {
+                for (var k = pagecomment.co_id.length - minpage - 1; k >= 0; k--) {
+                    (function (j) {
+                        $('#F_comment_area_' + pagecomment.co_post).append("<div style='width:100%;height:auto;float:left;margin-left:0;margin-top:10px;'><img class='comment_avatar' src='../static/avatar/" + pagecomment.co_commenter[j] + ".jpg?timestamp=" + new Date().getTime() + "'><div style='float:left;margin-left:10px;margin-top:5px'><strong style='font-size:17px'>" + pagecomment.co_commenter[j] + ": </strong><h10 style='font-size:17px'>" + pagecomment.co_text[j] + "</h10></div><button class='to_reply' data-toggle='modal' data-target='#reply_follow_modal' id='" + pagecomment.co_id[j] + "'><b>回复</b></buttom></div><div class='reply_area' id='F_reply_" + pagecomment.co_id[j] + "'></div>");
+                        my_reply_follow(pagecomment.co_id[j])
+                    })(k)
+                }
+            }
+
+            topScroll = document.body.scrollTop;//滚动的距离,距离顶部的距离
+            console.log(topScroll);
+            $('body,html').animate({scrollTop: topScroll}, 500)
+        }
+
+        //我的动态评论分页
+        function myown_comment_callback(page_index) {
+            minpage = 5 * page_index;
+            maxpage = 5 * (page_index + 1);
+
+            $('#M_comment_area_' + pagecomment.co_post).empty();
+
+            if (pagecomment.co_id.length - maxpage > 0) {
+                for (var k = pagecomment.co_id.length - minpage - 1; k >= pagecomment.co_id.length - maxpage; k--) {
+                    (function (j) {
+                        $('#M_comment_area_' + pagecomment.co_post).append("<div style='width:100%;height:auto;float:left;margin-left:0;margin-top:10px;'><img class='comment_avatar' src='../static/avatar/" + pagecomment.co_commenter[j] + ".jpg?timestamp=" + new Date().getTime() + "'><div style='float:left;margin-left:10px;margin-top:5px'><strong style='font-size:17px'>" + pagecomment.co_commenter[j] + ": </strong><h10 style='font-size:17px'>" + pagecomment.co_text[j] + "</h10></div><button class='to_reply' data-toggle='modal' data-target='#reply_myown_modal' id='" + pagecomment.co_id[j] + "'><b>回复</b></buttom></div><div class='reply_area' id='M_reply_" + pagecomment.co_id[j] + "'></div>");
+                        my_reply_myown(pagecomment.co_id[j])
+                    })(k)
+                }
+            }
+            else {
+                for (var k = pagecomment.co_id.length - minpage - 1; k >= 0; k--) {
+                    (function (j) {
+                        $('#M_comment_area_' + pagecomment.co_post).append("<div style='width:100%;height:auto;float:left;margin-left:0;margin-top:10px;'><img class='comment_avatar' src='../static/avatar/" + pagecomment.co_commenter[j] + ".jpg?timestamp=" + new Date().getTime() + "'><div style='float:left;margin-left:10px;margin-top:5px'><strong style='font-size:17px'>" + pagecomment.co_commenter[j] + ": </strong><h10 style='font-size:17px'>" + pagecomment.co_text[j] + "</h10></div><button class='to_reply' data-toggle='modal' data-target='#reply_myown_modal' id='" + pagecomment.co_id[j] + "'><b>回复</b></buttom></div><div class='reply_area' id='M_reply_" + pagecomment.co_id[j] + "'></div>");
+                        my_reply_myown(pagecomment.co_id[j])
                     })(k)
                 }
             }
@@ -780,7 +1454,7 @@
 
         //是否关注判断
         function if_follow(thisdata) {
-            var myindex = 0;
+            var myindex;
             $.ajax({
                 type: 'GET',
                 url: '{{ url_for("message_api.query_follow") }}',
@@ -794,9 +1468,72 @@
                     if (data == 1) {
                         myindex = 1;
                     }
+                    else if (data == 2) {
+                        myindex = 2;
+                    }
+                    else {
+                        myindex = 0;
+                    }
                 }
             });
             return myindex;
+        }
+
+        //评论回复查询
+        function my_reply(id) {
+            $.ajax({
+                type: 'GET',
+                url: '{{ url_for("message_api.query_reply") }}',
+                data: {
+                    mycomment: id
+                },
+                async: false,
+                dataType: 'json',
+                success: function (data) {
+                    console.log(data);
+                    for (var m = data.re_id.length - 1; m >= 0; m--) {
+                        $('#reply_' + id).append("<div style='width:100%;float:left;margin-left:53px;margin-top:5px'><strong style='font-size:17px'>" + data.replier[m] + "回复" + data.replied[m] + ":  </strong><h10 style='font-size:17px'>" + data.re_text[m] + "</h10></div>")
+                    }
+                }
+            });
+        }
+
+        //我的关注评论回复查询
+        function my_reply_follow(id) {
+            $.ajax({
+                type: 'GET',
+                url: '{{ url_for("message_api.query_reply") }}',
+                data: {
+                    mycomment: id
+                },
+                async: false,
+                dataType: 'json',
+                success: function (data) {
+                    console.log(data);
+                    for (var m = data.re_id.length - 1; m >= 0; m--) {
+                        $('#F_reply_' + id).append("<div style='width:100%;float:left;margin-left:53px;margin-top:5px'><strong style='font-size:17px'>" + data.replier[m] + "回复" + data.replied[m] + ":  </strong><h10 style='font-size:17px'>" + data.re_text[m] + "</h10></div>")
+                    }
+                }
+            });
+        }
+
+        //我的动态评论回复查询
+        function my_reply_myown(id) {
+            $.ajax({
+                type: 'GET',
+                url: '{{ url_for("message_api.query_reply") }}',
+                data: {
+                    mycomment: id
+                },
+                async: false,
+                dataType: 'json',
+                success: function (data) {
+                    console.log(data);
+                    for (var m = data.re_id.length - 1; m >= 0; m--) {
+                        $('#M_reply_' + id).append("<div style='width:100%;float:left;margin-left:53px;margin-top:5px'><strong style='font-size:17px'>" + data.replier[m] + "回复" + data.replied[m] + ":  </strong><h10 style='font-size:17px'>" + data.re_text[m] + "</h10></div>")
+                    }
+                }
+            });
         }
 
         //获取left
@@ -854,12 +1591,14 @@
                 }
             }
         }
+
+        //发送私信
         function send_personal_message() {
-            receiver = $("#reciver").val()
-            message_content = document.getElementById('message_content').value
+            receiver = $("#reciver").val();
+            message_content = document.getElementById('message_content').value;
             var username_list = new Array()
             {#            var message_content_list = new Array()#}
-            username_list.push(receiver)
+            username_list.push(receiver);
             {#            message_content_list.push(message_content)#}
             {#            console.log(receiver)#}
             $.ajax({
@@ -894,7 +1633,7 @@
 
     </script>
 
-    <!-- 分页模块 -->
+    <!-- 全部动态分页模块 -->
     <script>
 
         {#    消息私信呈现#}
@@ -985,7 +1724,7 @@
             )
         }
 
-        {#            首次访问#}
+        {#     首次访问#}
         $(function () {
             $.ajax({
                 type: 'GET',
@@ -1082,9 +1821,9 @@
             }
         }
         $(document).ready(function () {
-
             $.fn.dataTable.ext.errMode = 'none';
         });
+
     </script>
 
 {% endblock %}

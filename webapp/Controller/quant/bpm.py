@@ -7,7 +7,7 @@ from pyalgotrade.stratanalyzer import returns, sharpe, drawdown, trades
 from pyalgotrade.utils import stats
 from pyalgotrade.technical import ma
 from pyalgotrade.technical import cross
-from enum import Enum, unique
+from enum import Enum,unique
 from webapp.Library.pyalgotrade_custom import dataFramefeed,plotter
 import tushare as ts
 import base64,datetime
