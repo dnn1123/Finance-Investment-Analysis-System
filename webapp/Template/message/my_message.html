@@ -357,7 +357,6 @@
                     <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
                     <button type="button" class="btn btn-primary" onclick="send_admin_message()">发送</button>
                 </div>
-
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div>
@@ -1595,11 +1594,11 @@
 
         //发送私信
         function send_personal_message() {
-            receiver = $("#reciver").val()
-            message_content = document.getElementById('message_content').value
+            receiver = $("#reciver").val();
+            message_content = document.getElementById('message_content').value;
             var username_list = new Array()
             {#            var message_content_list = new Array()#}
-            username_list.push(receiver)
+            username_list.push(receiver);
             {#            message_content_list.push(message_content)#}
             {#            console.log(receiver)#}
             $.ajax({
@@ -1634,8 +1633,98 @@
 
     </script>
 
-    <!-- 全部动态分页 -->
+    <!-- 全部动态分页模块 -->
     <script>
+
+        {#    消息私信呈现#}
+        function creat_table_for_accept_message(data) {
+            for (i = data.info_list.length; i >= 0; i--) {
+                if (data.state_list[i] == 'N') {
+                    $('#table_message_tbody').append(
+                            " <tr class=\"task\" id=\"info_" + data.id_list[i] + "\">" +
+                            "<td class=\"cell-icon\"><i class=\"icon-checker high\"></td>" +
+                            "<td class=\"cell-title\">" + data.sender_list[i] + data.info_list[i] + "</td>" +
+                            "<td class=\"cell-status hidden-phone hidden-tablet\">未读</td>" +
+                            "<td class=\"cell-time align-right\">" + data.time_list[i] + "</td>" +
+                            "</tr>"
+                    )
+                }
+                else if (data.state_list[i] == 'Y') {
+                    $('#table_message_tbody').append(
+                            " <tr class=\"task resolved\" id=\"" + data.id_list[i] + "\">" +
+                            "<td class=\"cell-icon\"><i class=\"icon-checker high\"></td>" +
+                            "<td class=\"cell-title\">" + data.sender_list[i] + data.info_list[i] + "</td>" +
+                            "<td class=\"cell-status hidden-phone hidden-tablet\">已读</td>" +
+                            "<td class=\"cell-time align-right\">" + data.time_list[i] + "</td>" +
+                            "</tr>"
+                    )
+                }
+            }
+            ;
+            var table = $('#table_message').DataTable({
+                "lengthChange": false,
+                "pageLength": 5,
+                "searching": false,
+                "language": {
+                    "emptyTable": "没有数据",
+                    "loadingRecords": "加载中…",
+                    "processing": "查询中…",
+                    "search": "检索:",
+                    "lengthMenu": "每页 _MENU_ 条",
+                    "zeroRecords": "没有数据",
+                    "paginate": {
+                        "first": "第一页",
+                        "last": "最后一页",
+                        "next": "",
+                        "previous": ""
+                    },
+                    "info": "第 _PAGE_ 页 / 总 _PAGES_ 页",
+                    "infoEmpty": "没有数据",
+                    "infoFiltered": "(过滤总件数 _MAX_ 条)",
+
+                },
+            })
+
+
+            {#        阅读消息#}
+            $('#table_message_tbody tr').click(
+                    function () {
+                        var content = jQuery(this).children("td:eq(2)").text();
+
+                        if (content == "未读") {
+                            $(this).children("td:eq(2)").text('已读');
+                            $(this).toggleClass('resolved');
+                            str = $(this).attr('id')
+                            var pos = str.indexOf('_');
+                            var info_id = str.substring(pos + 1, str.length);
+                            $.ajax({
+                                type: 'GET',
+                                url: '{{ url_for("message_api.read_message") }}',
+                                data: {
+                                    "info_id": info_id
+                                },
+                                dataType: 'json',
+                                success: function (data) {
+                                    console.log(data);
+                                    {#                                                        $.ajax({#}
+                                    {#                                                            type: 'GET',#}
+                                    {#                                                            url: '{{ url_for("message_api.request_page") }}',#}
+                                    {#                                                            dataType: 'json',#}
+                                    {#                                                            success: function (data) {#}
+                                    {#                                                                console.log(data);#}
+                                    {#                                                                creat_table_for_accept_message(data)#}
+                                    {#                                                            }#}
+                                    {#                                                        })#}
+                                }
+                            });
+                        }
+
+
+                    }
+            )
+        }
+
+        {#     首次访问#}
         $(function () {
             $.ajax({
                 type: 'GET',
@@ -1643,6 +1732,7 @@
                 dataType: 'json',
                 success: function (data) {
                     console.log(data);
+                    creat_table_for_accept_message(data)
                     var num_entries = data.page_num;
                     $("#my_pagination").pagination(num_entries, {
                         num_edge_entries: 1, //边缘页数
@@ -1654,7 +1744,6 @@
                     });
                 }
             });
-
             function pageselectCallback(page_index) {
                 $.ajax({
                     type: 'GET',
@@ -1669,7 +1758,72 @@
                     }
                 })
             }
+
+            {#            判断是否是管理员，群发消息权限,填充user_list#}
+            $.ajax({
+                type: 'GET',
+                url: '{{ url_for("message_api.get_role") }}',
+                dataType: 'json',
+                success: function (data) {
+                    if (data.role == 1) {
+                        $("#send_message_div").append(
+                                "<div class=\"pull-right\">" +
+                                "<a data-toggle=\"modal\"" +
+                                "data-target=\"#send_admin_message_modal\"" +
+                                " class=\"btn btn-primary\">群发消息（管理员）</a>" +
+                                "</div>"
+                        )
+                        $.ajax({
+                            type: 'GET',
+                            url: '{{ url_for("message_api.get_user_list") }}',
+                            dataType: 'json',
+                            success: function (data) {
+                                console.log(data)
+                                for (i = 0; i < data.user_list.length; i++) {
+                                    str = "<tr ><td><input type='checkbox' class='user_table'  id='" + data.user_list[i] + "' ></td><td>" + data.user_list[i] + "</td></tr>"
+                                    $("#user_tbody").append(str)
+                                }
+                            }
+                        })
+                    }
+
+                }
+            });
         });
+        var send_list = new Array()
+
+        {#        群发消息#}
+        function send_admin_message() {
+            {#群发选中事件#}
+            $('.user_table').each(function () {
+                if ($(this).is(':checked')) {
+                    send_list.push($(this).attr('id'))
+                }
+            })
+            if (send_list.length == 0) {
+                alert('请选择接收用户！')
+            }
+            else {
+                console.log(document.getElementById('admin_message_content').value)
+                $.ajax({
+                    type: 'POST',
+                    url: '{{ url_for("message_api.send_message") }}',
+                    data: {
+                        "username_list": send_list,
+                        "message_content": document.getElementById('admin_message_content').value
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        console.log(data)
+                        alert('发送成功！')
+                    }
+                })
+            }
+        }
+        $(document).ready(function () {
+            $.fn.dataTable.ext.errMode = 'none';
+        });
+
     </script>
 
 {% endblock %}

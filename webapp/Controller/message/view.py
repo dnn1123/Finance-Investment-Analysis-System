@@ -6,7 +6,7 @@ from flask_login import login_required, current_user
 message_view = Blueprint(
     'message',
     __name__,
-    template_folder=os.path.abspath(os.path.join(paths.project_path,'webapp','Template', 'message')),
+    template_folder=os.path.abspath(os.path.join(paths.project_path,'Template', 'message')),
     url_prefix="/message"
 )
 

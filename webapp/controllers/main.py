@@ -44,16 +44,6 @@ def login():
     return render_template('main/login.html', form=form, register_form=register_form)
 
 
-@main_blueprint.route('/profilephoto/', methods=['GET', 'POST'])
-def profilephoto():
-    if request.method == 'POST':
-        f = request.files['file']
-        newname = current_user.username + '.jpg'
-        upload_path = os.path.join(os.getcwd(), 'webapp', 'static', 'avatar', newname)  # 注意：没有的文件夹一定要先创建，不然会提示没有该路径
-        f.save(upload_path)
-    return render_template('main/profilephoto.html', current_user=current_user)
-
-
 @main_blueprint.route('/personal/', methods=['GET', 'POST'])
 def personal():
     user = users_roles.query.filter_by(user_name=current_user.username).first()

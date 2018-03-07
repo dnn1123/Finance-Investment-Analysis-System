@@ -16,6 +16,7 @@ from datetime import datetime
 from datetime import timedelta
 from  webapp.stratlib import *
 
+
 message_api = Blueprint(
     'message_api',
     __name__,
