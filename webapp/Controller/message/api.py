@@ -6,14 +6,8 @@ from sqlalchemy.orm import sessionmaker
 from flask_login import current_user
 import math
 import string
+import os
 import time as Time
-from collections import Counter
-import tushare as ts
-import gc
-import sys
-import pandas as pd
-from datetime import datetime
-from datetime import timedelta
 from  webapp.stratlib import *
 
 message_api = Blueprint(
@@ -425,14 +419,12 @@ def comment_all():
 # 用于用户评论动态
 @message_api.route('/to_comment', methods=['GET', 'POST'])
 def to_comment():
-    data = {}
-
     db_engine = create_engine('mysql://root:0000@localhost/my_message?charset=utf8')
     Session = sessionmaker(bind=db_engine)
     session = Session()
 
-    inputcomment = request.form.get('input_comment')
-    inputpost = request.form.get('input_post')
+    inputcomment = request.args.get('input_comment')
+    inputpost = request.args.get('input_post')
 
     result = session.query(func.count(comments.comment_id).label("comment_id")).first()
 
@@ -462,7 +454,7 @@ def to_comment():
     input_message.query.filter_by(post_id=inputpost).update({'comment_num': newdata})
     db.session.commit()
 
-    data['value'] = 'success'
+    data = newdata
 
     return jsonify(data)
 
@@ -575,14 +567,12 @@ def no_follow():
 # 用于转发动态
 @message_api.route('/to_retrant', methods=['GET', 'POST'])
 def to_retrant():
-    data = {}
-
     db_engine = create_engine('mysql://root:0000@localhost/my_message?charset=utf8')
     Session = sessionmaker(bind=db_engine)
     session = Session()
 
-    getid = request.form.get('get_id')
-    gettext = request.form.get('get_text')
+    getid = request.args.get('get_id')
+    gettext = request.args.get('get_text')
 
     myresult = input_message.query.filter_by(post_id=getid).first()
 
@@ -624,7 +614,7 @@ def to_retrant():
     db.session.add(information)
     db.session.commit()
 
-    data['value'] = 'success'
+    data = newdata
 
     return jsonify(data)
 
@@ -729,6 +719,32 @@ def query_avatar():
 
     data['avatar'] = avatar
 
+    return jsonify(data)
+
+
+# 用于上传头像
+@message_api.route('/to_upload', methods=['GET', 'POST'])
+def to_upload():
+    data = {}
+
+    db_engine = create_engine('mysql://root:0000@localhost/my_message?charset=utf8')
+    Session = sessionmaker(bind=db_engine)
+    session = Session()
+
+
+    result = personal.query.filter_by(username=current_user.username).first()
+    if result:
+        newdata = current_user.username + ".jpg"
+        personal.query.filter(personal.username == current_user.username).update({'avatar': newdata})
+
+    else:
+        my_input_avatar = personal()
+        my_input_avatar.username = current_user.username
+        my_input_avatar.avatar = current_user.username + ".jpg"
+        db.session.add(my_input_avatar)
+
+    db.session.commit()
+    data['value'] = 'success'
     return jsonify(data)
 
 

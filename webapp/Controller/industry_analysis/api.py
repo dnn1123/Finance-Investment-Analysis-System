@@ -4,15 +4,6 @@ from webapp.models import *
 import MySQLdb, time, re
 from sqlalchemy import create_engine, or_, func, desc, distinct  # me func用于计数,desc用于逆序找max值
 from sqlalchemy.orm import sessionmaker  # me
-from flask_login import current_user
-import string
-from collections import Counter
-import tushare as ts
-import gc
-import pandas as pd
-from datetime import datetime
-from datetime import timedelta
-from  webapp.stratlib import *
 
 industry_analysis_api = Blueprint(
     'industry_analysis_api',

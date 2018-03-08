@@ -58,7 +58,7 @@
                                       method='POST'>
                                     <input type="file" id="my_avatar" style="display:none" name="file"
                                            onchange="filechange(event)"/>
-                                    <button type="submit" id="to_upload" class="thebutton">上传头像</button>
+                                    <button type="submit" id="to_upload" class="thebutton" onclick="upload_avatar()">上传头像</button>
                                 </form>
                             </div>
                         </div>
@@ -94,6 +94,16 @@
                 // 如需释放内存：URL.revokeObjectURL(imgURL);
             }
         };
+        function upload_avatar(){
+            $.ajax({
+                type: 'POST',
+                url: '{{url_for("message_api.to_upload")}}',
+                dataType: 'json',
+                success: function (data) {
+                    alert("成功");
+                }
+            });
+        }
     </script>
 
     <!-- 功能模块 -->
