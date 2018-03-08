@@ -4,12 +4,13 @@ from flask_login import current_user
 from .bpm import handle_form,handle_liveform,dict_to_sql,sql_to_dict,Strategy_Manager,Strategy
 from webapp.stratlib import Profit_monitoring
 from webapp.models import strategy,subscriber,db
+from webapp.config import paths
 import os,datetime
 from time import sleep
 quant_api = Blueprint(
     'quant_api',
     __name__,
-    template_folder=os.path.abspath(os.path.join(os.getcwd(),'webapp','Template','quant')),
+    template_folder=os.path.abspath(os.path.join(paths.project_path,'Template','quant')),
     url_prefix="/quant_api"
 )
 
@@ -99,6 +100,12 @@ def get_realtime_simulation_detail_data():
 
         if data.strategy_id == Strategy.DoubleMA_Strategy.value:
             strategy = Strategy_Manager(Strategy.DoubleMA_Strategy, live=True, cash=params['cash'],
+                                        commission=params['commission'], builddate=data.build_date,
+                                        instrument=params['instrument'])
+            strategy.run()
+            message = strategy.getMessage()
+        if data.strategy_id == Strategy.Buy_Everyday.value:
+            strategy = Strategy_Manager(Strategy.Buy_Everyday, live=True, cash=params['cash'],
                                         commission=params['commission'], builddate=data.build_date,
                                         instrument=params['instrument'])
             strategy.run()
