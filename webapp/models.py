@@ -55,6 +55,7 @@ class users_roles(db.Model):
     # permissions_name = db.Column(db.Integer)
 
 
+# 动态
 class input_message(db.Model):
     __bind_key__ = 'my_message'
     __tablename__ = 'input_message'
@@ -70,6 +71,7 @@ class input_message(db.Model):
     retrant_text = db.Column(db.Text)
 
 
+# 评论
 class comments(db.Model):
     __bind_key__ = 'my_message'
     __tablename__ = 'comments'
@@ -80,6 +82,7 @@ class comments(db.Model):
     comment_time = db.Column(db.String(45))
 
 
+# 关注关系
 class follows(db.Model):
     __bind_key__ = 'my_message'
     __tablename__ = 'follows'
@@ -87,6 +90,7 @@ class follows(db.Model):
     followed = db.Column(db.String(20), primary_key=True)
 
 
+# 回复
 class comment_reply(db.Model):
     __bind_key__ = 'my_message'
     __tablename__ = 'comment_reply'
@@ -97,6 +101,16 @@ class comment_reply(db.Model):
     replied = db.Column(db.String(20))
     reply_text = db.Column(db.Text)
     reply_time = db.Column(db.String(45))
+
+
+# 用户信息
+class personal(db.Model):
+    __bind_key__ = 'my_message'
+    __tablename__ = 'personal'
+    username = db.Column(db.String(20), primary_key=True)
+    avatar = db.Column(db.String(25))
+    introduce = db.Column(db.Text)
+    sex = db.Column(db.String(10))
 
 
 # 用户个人消息

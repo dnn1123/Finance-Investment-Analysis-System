@@ -16,7 +16,6 @@ from datetime import datetime
 from datetime import timedelta
 from  webapp.stratlib import *
 
-
 message_api = Blueprint(
     'message_api',
     __name__,
@@ -76,14 +75,32 @@ def request_follow_page():
     return jsonify(data)
 
 
+@message_api.route('/request_myown_page', methods=['GET', 'POST'])
+def request_myown_page():
+    data = {}
+
+    db_engine = create_engine('mysql://root:0000@localhost/my_message?charset=utf8')
+    Session = sessionmaker(bind=db_engine)
+    session = Session()
+
+    result = session.query(func.count(input_message.post_id).label("page_num")).filter(
+        input_message.poster == current_user.username).first()
+
+    data['page_num'] = math.ceil((result.page_num) / float(5))
+
+    return jsonify(data)
+
+
 # 用于展示个人信息悬浮框
 @message_api.route('/person_box', methods=['GET', 'POST'])
 def person_box():
     data = {}
 
     postid = int(request.args.get('postID'))
-    querypost = input_message.query.filter_by(post_id=postid).first()
-    personid = querypost.poster
+    queryposter = personal.query.filter(personal.username == input_message.poster).filter(
+        input_message.post_id == postid).first()
+    personid = queryposter.username
+    myavatar = queryposter.avatar
 
     db_engine = create_engine('mysql://root:0000@localhost/my_message?charset=utf8')
     Session = sessionmaker(bind=db_engine)
@@ -98,7 +115,7 @@ def person_box():
     fs = session.query(func.count(follows.follower).label("followernum")).filter(
         follows.followed == personid).first()
 
-    data['my_poster'] = personid
+    data['my_avatar'] = myavatar
     data['postnum'] = fb.postnum
     data['followednum'] = gz.followednum
     data['followernum'] = fs.followernum
@@ -151,6 +168,7 @@ def message_all():
     ifretrant = []
     retrantposter = []
     retranttext = []
+    avatar = []
 
     page = int(request.args.get('page_num'))
     minpage = 5 * page
@@ -165,9 +183,13 @@ def message_all():
     min = x - maxpage
     max = x - minpage
 
+    profilephoto = personal.query.filter(personal.username == current_user.username).first()
+
     results = input_message.query.filter(input_message.post_id >= min, input_message.post_id < max).all()
 
     for result in results:
+        name = result.poster
+        myresult = personal.query.filter(personal.username == name).first()
         id.append(result.post_id)
         user.append(result.poster)
         text.append(result.post_text)
@@ -178,6 +200,7 @@ def message_all():
         ifretrant.append(result.if_retrant)
         retrantposter.append(result.retrant_poster)
         retranttext.append(result.retrant_text)
+        avatar.append(myresult.avatar)
 
     data['po_id'] = id
     data['po_user'] = user
@@ -189,7 +212,8 @@ def message_all():
     data['po_ifretrant'] = ifretrant
     data['po_retrant_poster'] = retrantposter
     data['po_retrant_text'] = retranttext
-    data['current_user'] = current_user.username
+    data['avatar'] = avatar
+    data['current_user'] = profilephoto.avatar
 
     return jsonify(data)
 
@@ -208,6 +232,11 @@ def message_follow():
     ifretrant = []
     retrantposter = []
     retranttext = []
+    avatar = []
+
+    page = int(request.args.get('page_num'))
+    minpage = 5 * page
+    maxpage = 5 * (page + 1)
 
     db_engine = create_engine('mysql://root:0000@localhost/my_message?charset=utf8')
     Session = sessionmaker(bind=db_engine)
@@ -216,20 +245,44 @@ def message_follow():
     number = session.query(func.count(input_message.post_id).label("page_num")).filter(
         input_message.poster == follows.followed).filter(follows.follower == current_user.username).first()
 
-    results = input_message.query.filter(
-        input_message.poster == follows.followed).filter(follows.follower == current_user.username).all()
+    profilephoto = personal.query.filter(personal.username == current_user.username).first()
 
-    for result in results:
-        id.append(result.post_id)
-        user.append(result.poster)
-        text.append(result.post_text)
-        time.append(result.post_time)
-        comment.append(result.comment_num)
-        retrant.append(result.retrant_num)
-        upvote.append(result.upvote_num)
-        ifretrant.append(result.if_retrant)
-        retrantposter.append(result.retrant_poster)
-        retranttext.append(result.retrant_text)
+    results = input_message.query.filter(
+        input_message.poster == follows.followed).filter(follows.follower == current_user.username).order_by(
+        input_message.post_id.desc()).all()
+
+    number = len(results)
+
+    if maxpage < number:
+        for x in range(minpage + 4, minpage - 1, -1):
+            name = results[x].poster
+            myresult = personal.query.filter(personal.username == name).first()
+            id.append(results[x].post_id)
+            user.append(results[x].poster)
+            text.append(results[x].post_text)
+            time.append(results[x].post_time)
+            comment.append(results[x].comment_num)
+            retrant.append(results[x].retrant_num)
+            upvote.append(results[x].upvote_num)
+            ifretrant.append(results[x].if_retrant)
+            retrantposter.append(results[x].retrant_poster)
+            retranttext.append(results[x].retrant_text)
+            avatar.append(myresult.avatar)
+    else:
+        for x in range(number - 1, minpage - 1, -1):
+            name = results[x].poster
+            myresult = personal.query.filter(personal.username == name).first()
+            id.append(results[x].post_id)
+            user.append(results[x].poster)
+            text.append(results[x].post_text)
+            time.append(results[x].post_time)
+            comment.append(results[x].comment_num)
+            retrant.append(results[x].retrant_num)
+            upvote.append(results[x].upvote_num)
+            ifretrant.append(results[x].if_retrant)
+            retrantposter.append(results[x].retrant_poster)
+            retranttext.append(results[x].retrant_text)
+            avatar.append(myresult.avatar)
 
     data['po_id'] = id
     data['po_user'] = user
@@ -241,7 +294,8 @@ def message_follow():
     data['po_ifretrant'] = ifretrant
     data['po_retrant_poster'] = retrantposter
     data['po_retrant_text'] = retranttext
-    data['current_user'] = current_user.username
+    data['avatar'] = avatar
+    data['current_user'] = profilephoto.avatar
 
     return jsonify(data)
 
@@ -260,28 +314,54 @@ def message_myown():
     ifretrant = []
     retrantposter = []
     retranttext = []
+    avatar = []
+
+    page = int(request.args.get('page_num'))
+    minpage = 5 * page
+    maxpage = 5 * (page + 1)
 
     db_engine = create_engine('mysql://root:0000@localhost/my_message?charset=utf8')
     Session = sessionmaker(bind=db_engine)
     session = Session()
 
-    number = session.query(func.count(input_message.post_id).label("page_num")).filter(
-        input_message.poster == current_user.username).first()
+    profilephoto = personal.query.filter(personal.username == current_user.username).first()
 
     results = input_message.query.filter(
-        input_message.poster == current_user.username).all()
+        input_message.poster == current_user.username).order_by(
+        input_message.post_id.desc()).all()
 
-    for result in results:
-        id.append(result.post_id)
-        user.append(result.poster)
-        text.append(result.post_text)
-        time.append(result.post_time)
-        comment.append(result.comment_num)
-        retrant.append(result.retrant_num)
-        upvote.append(result.upvote_num)
-        ifretrant.append(result.if_retrant)
-        retrantposter.append(result.retrant_poster)
-        retranttext.append(result.retrant_text)
+    number = len(results)
+
+    if maxpage < number:
+        for x in range(minpage + 4, minpage - 1, -1):
+            name = results[x].poster
+            myresult = personal.query.filter(personal.username == name).first()
+            id.append(results[x].post_id)
+            user.append(results[x].poster)
+            text.append(results[x].post_text)
+            time.append(results[x].post_time)
+            comment.append(results[x].comment_num)
+            retrant.append(results[x].retrant_num)
+            upvote.append(results[x].upvote_num)
+            ifretrant.append(results[x].if_retrant)
+            retrantposter.append(results[x].retrant_poster)
+            retranttext.append(results[x].retrant_text)
+            avatar.append(myresult.avatar)
+    else:
+        for x in range(number - 1, minpage - 1, -1):
+            name = results[x].poster
+            myresult = personal.query.filter(personal.username == name).first()
+            id.append(results[x].post_id)
+            user.append(results[x].poster)
+            text.append(results[x].post_text)
+            time.append(results[x].post_time)
+            comment.append(results[x].comment_num)
+            retrant.append(results[x].retrant_num)
+            upvote.append(results[x].upvote_num)
+            ifretrant.append(results[x].if_retrant)
+            retrantposter.append(results[x].retrant_poster)
+            retranttext.append(results[x].retrant_text)
+            avatar.append(myresult.avatar)
 
     data['po_id'] = id
     data['po_user'] = user
@@ -293,7 +373,8 @@ def message_myown():
     data['po_ifretrant'] = ifretrant
     data['po_retrant_poster'] = retrantposter
     data['po_retrant_text'] = retranttext
-    data['current_user'] = current_user.username
+    data['avatar'] = avatar
+    data['current_user'] = profilephoto.avatar
 
     return jsonify(data)
 
@@ -317,14 +398,18 @@ def comment_all():
     commenter = []
     text = []
     time = []
+    avatar = []
 
     results = comments.query.filter(comments.post_id == mypost).all()
 
     for result in results:
+        name = result.commenter
+        profilephoto = personal.query.filter(personal.username == name).first()
         id.append(result.comment_id)
         commenter.append(result.commenter)
         text.append(result.comment_text)
         time.append(result.comment_time)
+        avatar.append(profilephoto.avatar)
 
     data['co_id'] = id
     data['co_post'] = mypost
@@ -332,6 +417,7 @@ def comment_all():
     data['co_text'] = text
     data['co_time'] = time
     data['co_page'] = page
+    data['avatar'] = avatar
 
     return jsonify(data)
 
@@ -622,6 +708,26 @@ def query_reply():
     data['replied'] = replied
     data['re_text'] = text
     data['re_time'] = time
+
+    return jsonify(data)
+
+
+# 获取头像
+@message_api.route('/query_avatar', methods=['GET', 'POST'])
+def query_avatar():
+    data = {}
+
+    db_engine = create_engine('mysql://root:0000@localhost/my_message?charset=utf8')
+    Session = sessionmaker(bind=db_engine)
+    session = Session()
+
+    avatar = []
+
+    result = personal.query.filter(personal.username == current_user.username).first()
+
+    avatar.append(result.avatar)
+
+    data['avatar'] = avatar
 
     return jsonify(data)
 
