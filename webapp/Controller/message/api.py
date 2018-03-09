@@ -91,10 +91,15 @@ def person_box():
     data = {}
 
     postid = int(request.args.get('postID'))
-    queryposter = personal.query.filter(personal.username == input_message.poster).filter(
-        input_message.post_id == postid).first()
-    personid = queryposter.username
-    myavatar = queryposter.avatar
+    queryposter = input_message.query.filter(input_message.post_id == postid).first()
+    personid = queryposter.poster
+
+    queryavatar = personal.query.filter(personal.username == personid).first()
+
+    if queryavatar:
+        myavatar = queryavatar.avatar
+    else:
+        myavatar = 'user.png'
 
     db_engine = create_engine('mysql://root:0000@localhost/my_message?charset=utf8')
     Session = sessionmaker(bind=db_engine)
@@ -178,12 +183,14 @@ def message_all():
     max = x - minpage
 
     profilephoto = personal.query.filter(personal.username == current_user.username).first()
+    if profilephoto:
+        current_avatar = profilephoto.avatar
+    else:
+        current_avatar = 'user.png'
 
     results = input_message.query.filter(input_message.post_id >= min, input_message.post_id < max).all()
 
     for result in results:
-        name = result.poster
-        myresult = personal.query.filter(personal.username == name).first()
         id.append(result.post_id)
         user.append(result.poster)
         text.append(result.post_text)
@@ -194,7 +201,13 @@ def message_all():
         ifretrant.append(result.if_retrant)
         retrantposter.append(result.retrant_poster)
         retranttext.append(result.retrant_text)
-        avatar.append(myresult.avatar)
+
+        name = result.poster
+        myresult = personal.query.filter(personal.username == name).first()
+        if myresult:
+            avatar.append(myresult.avatar)
+        else:
+            avatar.append('user.png')
 
     data['po_id'] = id
     data['po_user'] = user
@@ -207,7 +220,7 @@ def message_all():
     data['po_retrant_poster'] = retrantposter
     data['po_retrant_text'] = retranttext
     data['avatar'] = avatar
-    data['current_user'] = profilephoto.avatar
+    data['current_user'] = current_avatar
 
     return jsonify(data)
 
@@ -240,6 +253,10 @@ def message_follow():
         input_message.poster == follows.followed).filter(follows.follower == current_user.username).first()
 
     profilephoto = personal.query.filter(personal.username == current_user.username).first()
+    if profilephoto:
+        current_avatar = profilephoto.avatar
+    else:
+        current_avatar = 'user.png'
 
     results = input_message.query.filter(
         input_message.poster == follows.followed).filter(follows.follower == current_user.username).order_by(
@@ -261,11 +278,14 @@ def message_follow():
             ifretrant.append(results[x].if_retrant)
             retrantposter.append(results[x].retrant_poster)
             retranttext.append(results[x].retrant_text)
-            avatar.append(myresult.avatar)
-    else:
-        for x in range(number - 1, minpage - 1, -1):
             name = results[x].poster
             myresult = personal.query.filter(personal.username == name).first()
+            if myresult:
+                avatar.append(myresult.avatar)
+            else:
+                avatar.append('user.png')
+    else:
+        for x in range(number - 1, minpage - 1, -1):
             id.append(results[x].post_id)
             user.append(results[x].poster)
             text.append(results[x].post_text)
@@ -276,7 +296,12 @@ def message_follow():
             ifretrant.append(results[x].if_retrant)
             retrantposter.append(results[x].retrant_poster)
             retranttext.append(results[x].retrant_text)
-            avatar.append(myresult.avatar)
+            name = results[x].poster
+            myresult = personal.query.filter(personal.username == name).first()
+            if myresult:
+                avatar.append(myresult.avatar)
+            else:
+                avatar.append('user.png')
 
     data['po_id'] = id
     data['po_user'] = user
@@ -289,7 +314,7 @@ def message_follow():
     data['po_retrant_poster'] = retrantposter
     data['po_retrant_text'] = retranttext
     data['avatar'] = avatar
-    data['current_user'] = profilephoto.avatar
+    data['current_user'] = current_avatar
 
     return jsonify(data)
 
@@ -319,6 +344,10 @@ def message_myown():
     session = Session()
 
     profilephoto = personal.query.filter(personal.username == current_user.username).first()
+    if profilephoto:
+        current_avatar = profilephoto.avatar
+    else:
+        current_avatar = 'user.png'
 
     results = input_message.query.filter(
         input_message.poster == current_user.username).order_by(
@@ -328,8 +357,6 @@ def message_myown():
 
     if maxpage < number:
         for x in range(minpage + 4, minpage - 1, -1):
-            name = results[x].poster
-            myresult = personal.query.filter(personal.username == name).first()
             id.append(results[x].post_id)
             user.append(results[x].poster)
             text.append(results[x].post_text)
@@ -340,11 +367,15 @@ def message_myown():
             ifretrant.append(results[x].if_retrant)
             retrantposter.append(results[x].retrant_poster)
             retranttext.append(results[x].retrant_text)
-            avatar.append(myresult.avatar)
+            name = results[x].poster
+            myresult = personal.query.filter(personal.username == name).first()
+            if myresult:
+                avatar.append(myresult.avatar)
+            else:
+                avatar.append('user.png')
+
     else:
         for x in range(number - 1, minpage - 1, -1):
-            name = results[x].poster
-            myresult = personal.query.filter(personal.username == name).first()
             id.append(results[x].post_id)
             user.append(results[x].poster)
             text.append(results[x].post_text)
@@ -355,7 +386,12 @@ def message_myown():
             ifretrant.append(results[x].if_retrant)
             retrantposter.append(results[x].retrant_poster)
             retranttext.append(results[x].retrant_text)
-            avatar.append(myresult.avatar)
+            name = results[x].poster
+            myresult = personal.query.filter(personal.username == name).first()
+            if myresult:
+                avatar.append(myresult.avatar)
+            else:
+                avatar.append('user.png')
 
     data['po_id'] = id
     data['po_user'] = user
@@ -368,7 +404,7 @@ def message_myown():
     data['po_retrant_poster'] = retrantposter
     data['po_retrant_text'] = retranttext
     data['avatar'] = avatar
-    data['current_user'] = profilephoto.avatar
+    data['current_user'] = current_avatar
 
     return jsonify(data)
 
@@ -397,13 +433,16 @@ def comment_all():
     results = comments.query.filter(comments.post_id == mypost).all()
 
     for result in results:
-        name = result.commenter
-        profilephoto = personal.query.filter(personal.username == name).first()
         id.append(result.comment_id)
         commenter.append(result.commenter)
         text.append(result.comment_text)
         time.append(result.comment_time)
-        avatar.append(profilephoto.avatar)
+        name = result.commenter
+        profilephoto = personal.query.filter(personal.username == name).first()
+        if profilephoto:
+            avatar.append(profilephoto.avatar)
+        else:
+            avatar.append('user.png')
 
     data['co_id'] = id
     data['co_post'] = mypost
@@ -702,7 +741,7 @@ def query_reply():
     return jsonify(data)
 
 
-# 获取头像
+# 模板获取头像
 @message_api.route('/query_avatar', methods=['GET', 'POST'])
 def query_avatar():
     data = {}
@@ -711,11 +750,11 @@ def query_avatar():
     Session = sessionmaker(bind=db_engine)
     session = Session()
 
-    avatar = []
-
     result = personal.query.filter(personal.username == current_user.username).first()
-
-    avatar.append(result.avatar)
+    if result:
+        avatar = result.avatar
+    else:
+        avatar = 'user.png'
 
     data['avatar'] = avatar
 
@@ -730,7 +769,6 @@ def to_upload():
     db_engine = create_engine('mysql://root:0000@localhost/my_message?charset=utf8')
     Session = sessionmaker(bind=db_engine)
     session = Session()
-
 
     result = personal.query.filter_by(username=current_user.username).first()
     if result:
