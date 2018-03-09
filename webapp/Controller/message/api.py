@@ -33,6 +33,7 @@ def request_page():
     # 查询用户未读消息
     sender_list = []
     info_list = []
+    text_list = []
     id_list = []
     time_list = []
     state_list = []
@@ -41,11 +42,13 @@ def request_page():
     for result in results:
         sender_list.append(result.sender)
         info_list.append(result.message_content)
+        text_list.append(result.message_text)
         id_list.append(result.id)
         time_list.append(result.time)
         state_list.append(result.state)
     data['sender_list'] = sender_list
     data['info_list'] = info_list
+    data['text_list'] = text_list
     data['id_list'] = id_list
     data['time_list'] = time_list
     data['state_list'] = state_list
@@ -477,10 +480,12 @@ def to_comment():
     # 向被评论者发送消息
     result = input_message.query.filter_by(post_id=inputpost).first()
     message_content = '评论了您'
+    message_text = inputcomment + '@' + result.poster + ':' + result.post_text
     information = personal_information()
     information.receiver = result.poster
     information.sender = current_user.username
     information.message_content = message_content
+    information.message_text = message_text
     information.time = Time.strftime('%Y-%m-%d %H:%M:%S', Time.localtime(Time.time()))
     information.state = 'N'
     db.session.add(information)
@@ -514,10 +519,12 @@ def to_upvote():
     # 向被点赞者发送消息
     result = input_message.query.filter_by(post_id=inputpost).first()
     message_content = '赞了您的动态'
+    message_text = '@' + result.poster + ':' + result.post_text
     information = personal_information()
     information.receiver = result.poster
     information.sender = current_user.username
     information.message_content = message_content
+    information.message_text = message_text
     information.time = Time.strftime('%Y-%m-%d %H:%M:%S', Time.localtime(Time.time()))
     information.state = 'N'
     db.session.add(information)
@@ -565,11 +572,11 @@ def to_follow():
     my_input_follow.follower = current_user.username
 
     # 向被关注者发送消息
-
     information = personal_information()
     information.receiver = result.poster
     information.sender = current_user.username
     information.message_content = '关注了您'
+    information.message_text = '又有新粉丝啦！'
     information.time = Time.strftime('%Y-%m-%d %H:%M:%S', Time.localtime(Time.time()))
     information.state = 'N'
     db.session.add(information)
@@ -644,10 +651,12 @@ def to_retrant():
     # 向被转发者发送消息
     result = input_message.query.filter_by(post_id=getid).first()
     message_content = '转发了您的动态'
+    message_text = gettext + '@' + result.poster + ':' + result.post_text
     information = personal_information()
     information.receiver = result.poster
     information.sender = current_user.username
     information.message_content = message_content
+    information.message_text = message_text
     information.time = Time.strftime('%Y-%m-%d %H:%M:%S', Time.localtime(Time.time()))
     information.state = 'N'
     db.session.add(information)
@@ -691,10 +700,12 @@ def to_reply():
     # 向被回复者发送消息
     result = comments.query.filter_by(comment_id=getid).first()
     message_content = '回复了您的评论'
+    message_text = gettext + '@' + result.commenter + ':' + result.comment_text
     information = personal_information()
     information.receiver = result.commenter
     information.sender = current_user.username
     information.message_content = message_content
+    information.message_text = message_text
     information.time = Time.strftime('%Y-%m-%d %H:%M:%S', Time.localtime(Time.time()))
     information.state = 'N'
     db.session.add(information)

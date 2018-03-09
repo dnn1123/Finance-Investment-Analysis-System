@@ -122,6 +122,7 @@ class personal_information(db.Model):
     receiver = db.Column(db.String(20), db.ForeignKey('users.username'))
     sender = db.Column(db.String(20), db.ForeignKey('users.username'))
     message_content = db.Column(db.String(20))
+    message_text = db.Column(db.Text)
     time = db.Column(db.DateTime)
     state = db.Column(db.String(20))
 

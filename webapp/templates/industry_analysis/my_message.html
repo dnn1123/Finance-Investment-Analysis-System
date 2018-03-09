@@ -304,7 +304,7 @@
                 </div>
                 <div class="modal-body">
                     <div class="input-group" style="margin-left:10px;width:450px">
-                        <input type="text" class="span3 form-control" id="reciver" style="height: 30px;width:100%"
+                        <input type="text" class="span3 form-control" id="reciver" style="height: 30px;width:95%"
                                placeholder="接收人" name="receiver">
 
                         <ul class="dropdown-menu" role="menu" style="left: 0!important;"></ul>
@@ -383,17 +383,18 @@
                         <div id="myshow" class="module span12" style="background-color: rgba(0,0,0,0);border: 0">
                             <div class="nav" style="float:left;margin:auto;width:100%;background-color:white">
                                 <ul id="mynav" class="nav nav-tabs nav-justified">
-                                    <li class="active"><a href="#all_message" data-toggle="tab"
+                                    <li><a href="#all_message" data-toggle="tab"
                                                           onclick="all_message_show()">全部动态</a></li>
                                     <li><a href="#follow_message" data-toggle="tab"
                                            onclick="follow_message_show()">我的关注</a></li>
                                     <li><a href="#my_message" data-toggle="tab" onclick="myown_message_show()">我的动态</a>
                                     </li>
-                                    <li><a href="#accept_message" data-toggle="tab">消息私信</a></li>
+                                    <li class="active"><a href="#accept_message" data-toggle="tab"
+                                           onclick="accept_message_show()">消息私信</a></li>
                                 </ul>
                             </div>
                             <div id="mytext" class="tab-content" style="margin-left:0 ;width:100%;height:auto;">
-                                <div id="all_message" class="tab-pane fade in active"
+                                <div id="all_message" class="tab-pane fade"
                                      style="float:left;margin-left:0;width:100%;height:auto;">
                                     <div id="all_post" class="module span12"
                                          style="background-color: rgba(0,0,0,0);border:0;float:left;margin-left:0;width:100%;height:auto;"></div>
@@ -503,17 +504,13 @@
                                         </div><!-- /.modal-dialog -->
                                     </div>
                                 </div>
-                                <div id="accept_message" class="tab-pane fade"
+                                <div id="accept_message" class="tab-pane fade in active"
                                      style="float:left;margin-left:0;width:100%;height:auto;">
                                     <div class="span12">
                                         <div class="content">
-
                                             <div class="module message">
-                                                <div class="module-head">
-                                                    <h3>Task Management Tool</h3>
-                                                </div>
                                                 <div class="module-option clearfix" id="send_message_div">
-
+                                                    <h3 style="float:left">消息列表</h3>
                                                     <div class="pull-right">
                                                         <a data-toggle="modal"
                                                            data-target="#send_personal_message_modal"
@@ -526,24 +523,18 @@
                                                         <thead>
                                                         <tr class="heading">
                                                             <td class="cell-icon"></td>
-                                                            <td class="cell-title">Task</td>
-                                                            <td class="cell-status hidden-phone hidden-tablet">Status
+                                                            <td class="cell-title">消息</td>
+                                                            <td class="cell-status hidden-phone hidden-tablet"
+                                                                style="text-align: center">状态
                                                             </td>
-                                                            <td class="cell-time align-right">Due Date</td>
+                                                            <td class="cell-text align-right">时间</td>
                                                         </tr>
                                                         </thead>
-                                                        <tbody id="table_message_tbody">
-
-
-                                                        </tbody>
+                                                        <tbody id="table_message_tbody"></tbody>
                                                     </table>
-
-
                                                 </div>
-                                                <div class="module-foot">
-                                                </div>
+                                                <div class="module-foot"></div>
                                             </div>
-
                                         </div><!--/.content-->
                                     </div><!--/.span9-->
                                 </div>
@@ -716,7 +707,7 @@
                 dataType: 'json',
                 success: function (data) {
                     alert("关注成功");
-                    location.reload();
+                    all_message_show();
                 }
             })
         });
@@ -733,7 +724,7 @@
                 dataType: 'json',
                 success: function (data) {
                     alert("取消关注");
-                    location.reload();
+                    all_message_show()
                 }
             })
         });
@@ -909,7 +900,7 @@
                 dataType: 'json',
                 success: function (data) {
                     alert("取消关注");
-                    location.reload();
+                    follow_message_show()
                 }
             })
         });
@@ -1626,7 +1617,6 @@
                 dataType: 'json',
                 success: function (data) {
                     console.log(data);
-                    creat_table_for_accept_message(data);
                     var num_entries = data.page_num;
                     $("#my_pagination").pagination(num_entries, {
                         num_edge_entries: 1, //边缘页数
@@ -1725,36 +1715,44 @@
                 });
             }
         }
-    </script>
 
-    <!-- 分页模块 -->
-    <script>
+        //消息私信面板切换
+        function accept_message_show() {
+            $.ajax({
+                type: 'GET',
+                url: '{{ url_for("message_api.request_page") }}',
+                dataType: 'json',
+                success: function (data) {
+                    creat_table_for_accept_message(data);
+                }
+            });
+        }
 
-        {#    消息私信呈现#}
+        //消息私信呈现
         function creat_table_for_accept_message(data) {
+            $('#table_message_tbody').empty();
             for (i = data.info_list.length; i >= 0; i--) {
                 if (data.state_list[i] == 'N') {
                     $('#table_message_tbody').append(
-                        " <tr class=\"task\" id=\"info_" + data.id_list[i] + "\">" +
+                        "<tr class=\"task\" id=\"info_" + data.id_list[i] + "\">" +
                         "<td class=\"cell-icon\"><i class=\"icon-checker high\"></td>" +
-                        "<td class=\"cell-title\">" + data.sender_list[i] + data.info_list[i] + "</td>" +
+                        "<td class=\"cell-title\">" + data.sender_list[i] + data.info_list[i] + "<br/>" + data.text_list[i] + "</td>" +
                         "<td class=\"cell-status hidden-phone hidden-tablet\">未读</td>" +
-                        "<td class=\"cell-time align-right\">" + data.time_list[i] + "</td>" +
+                        "<td class=\"cell-text align-right\">" + data.time_list[i] + "</td>" +
                         "</tr>"
                     )
                 }
                 else if (data.state_list[i] == 'Y') {
                     $('#table_message_tbody').append(
-                        " <tr class=\"task resolved\" id=\"" + data.id_list[i] + "\">" +
+                        "<tr class=\"task resolved\" id=\"" + data.id_list[i] + "\">" +
                         "<td class=\"cell-icon\"><i class=\"icon-checker high\"></td>" +
-                        "<td class=\"cell-title\">" + data.sender_list[i] + data.info_list[i] + "</td>" +
+                        "<td class=\"cell-title\">" + data.sender_list[i] + data.info_list[i] + "<br/>" + data.text_list[i] + "</td>" +
                         "<td class=\"cell-status hidden-phone hidden-tablet\">已读</td>" +
-                        "<td class=\"cell-time align-right\">" + data.time_list[i] + "</td>" +
+                        "<td class=\"cell-text align-right\">" + data.time_list[i] + "</td>" +
                         "</tr>"
                     )
                 }
             }
-            ;
             var table = $('#table_message').DataTable({
                 "lengthChange": false,
                 "pageLength": 5,
@@ -1777,10 +1775,10 @@
                     "infoFiltered": "(过滤总件数 _MAX_ 条)",
 
                 },
-            })
+            });
 
 
-            {#        阅读消息#}
+            <!-- 阅读消息 -->
             $('#table_message_tbody tr').click(
                 function () {
                     var content = jQuery(this).children("td:eq(2)").text();
@@ -1788,7 +1786,7 @@
                     if (content == "未读") {
                         $(this).children("td:eq(2)").text('已读');
                         $(this).toggleClass('resolved');
-                        str = $(this).attr('id')
+                        str = $(this).attr('id');
                         var pos = str.indexOf('_');
                         var info_id = str.substring(pos + 1, str.length);
                         $.ajax({
@@ -1800,60 +1798,21 @@
                             dataType: 'json',
                             success: function (data) {
                                 console.log(data);
-                                {#                                                        $.ajax({#}
-                                {#                                                            type: 'GET',#}
-                                {#                                                            url: '{{ url_for("message_api.request_page") }}',#}
-                                {#                                                            dataType: 'json',#}
-                                {#                                                            success: function (data) {#}
-                                {#                                                                console.log(data);#}
-                                {#                                                                creat_table_for_accept_message(data)#}
-                                {#                                                            }#}
-                                {#                                                        })#}
                             }
                         });
                     }
-
-
                 }
             )
         }
+    </script>
 
-        {#     首次访问#}
+    <!-- 分页模块 -->
+    <script>
+
+        //首次访问
         $(function () {
-            $.ajax({
-                type: 'GET',
-                url: '{{ url_for("message_api.request_page") }}',
-                dataType: 'json',
-                success: function (data) {
-                    console.log(data);
-                    creat_table_for_accept_message(data);
-                    var num_entries = data.page_num;
-                    $("#my_pagination").pagination(num_entries, {
-                        num_edge_entries: 1, //边缘页数
-                        num_display_entries: 2, //主体页数
-                        callback: pageselectCallback,
-                        items_per_page: 1, //每页显示1项
-                        prev_text: "前一页",
-                        next_text: "后一页"
-                    });
-                }
-            });
-            function pageselectCallback(page_index) {
-                $.ajax({
-                    type: 'GET',
-                    url: '{{ url_for("message_api.message_all") }}',
-                    data: {
-                        "page_num": page_index
-                    },
-                    dataType: 'json',//希望服务器返回json格式的数据
-                    success: function (data) {
-                        postcomment = data;
-                        post_comment(postcomment);
-                    }
-                })
-            }
-
-            {#            判断是否是管理员，群发消息权限,填充user_list#}
+            accept_message_show();
+            //判断是否是管理员,群发消息权限,填充user_list
             $.ajax({
                 type: 'GET',
                 url: '{{ url_for("message_api.get_role") }}',
@@ -1886,7 +1845,7 @@
         });
         var send_list = new Array()
 
-        {#        群发消息#}
+        //群发消息
         function send_admin_message() {
             {#群发选中事件#}
             $('.user_table').each(function () {
@@ -1908,7 +1867,7 @@
                     },
                     dataType: 'json',
                     success: function (data) {
-                        console.log(data)
+                        console.log(data);
                         alert('发送成功！')
                     }
                 })
