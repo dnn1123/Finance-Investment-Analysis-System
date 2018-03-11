@@ -12,7 +12,7 @@ import MySQLdb, time, datetime, re  # re用于判断是否含中文
 globalindustry_blueprint = Blueprint(
     'global_industry',
     __name__,
-    template_folder=path.join(path.pardir, 'templates', 'grobal_industry'),
+    template_folder=path.join(path.pardir, 'templates', 'global_industry'),
     url_prefix="/global_industry"
 )
 
@@ -54,7 +54,8 @@ def cns_market(sec_name=None, trade_code=None, query_history=None):
     user = users_roles.query.filter_by(user_name=current_user.username).first()
     return render_template("global_industry/cns_market.html", form=form, sec_name=sec_name, trade_code=trade_code,
                            query_history=query_history, result=result, pagination=pagination, length=length,
-                           history_data=history_data, history_data_len=history_data_len, current_user=current_user,user = user)
+                           history_data=history_data, history_data_len=history_data_len, current_user=current_user,
+                           user=user)
 
 
 # 修改:股票的评级
