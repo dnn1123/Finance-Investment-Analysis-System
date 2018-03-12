@@ -26,7 +26,6 @@ def back_test():
     data,history=handle_form(request.form)
     getdata = Profit_monitoring(history)
     results = getdata.start()
-    print(results)
     return jsonify(data)
 
 @quant_api.route('/realtime_form', methods=('GET', 'POST'))

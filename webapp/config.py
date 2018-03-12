@@ -4,7 +4,6 @@ import os
 class Config(object):
     pass
 
-
 class ProdConfig(Config):
     pass
 
@@ -37,6 +36,12 @@ class DevConfig(Config):
         }
     ]
     SCHEDULER_API_ENABLED = True
+
+class Api_Server(object):
+    server_url='192.168.0.1'
+    server_port='80'
+    def get_server_address(self):
+        return 'http://'+self.server_url+':'+self.server_port
 
 
 class paths(object):
