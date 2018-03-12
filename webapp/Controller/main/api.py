@@ -2,9 +2,14 @@
 from flask import Blueprint,request,redirect,render_template,current_app,url_for,jsonify
 from flask_login import login_user
 from flask_principal import identity_changed,Identity
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy import create_engine, or_, func, desc, distinct  # me func用于计数,desc用于逆序找max值
 from webapp.models import users,users_roles,db
 from webapp.sms import send_sms
 from webapp.config import paths
+from  webapp.stratlib import *
+import math
+from flask_login import current_user
 import os,random
 main_api = Blueprint(
     'main_api',
