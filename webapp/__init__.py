@@ -3,6 +3,7 @@ from flask import Flask, redirect, url_for, render_template
 from flask_principal import identity_loaded, UserNeed, RoleNeed
 from flask_apscheduler import APScheduler
 from config import DevConfig
+from config import Api_Server
 from controllers.stock import stock_blueprint
 from controllers.stock_solo import stocksolo_blueprint
 from controllers.stock_group import stockgroup_blueprint  # me
@@ -35,6 +36,7 @@ from Controller.message.api import message_api
 
 def create_app(object_name):
     scheduler = APScheduler()
+    api_server=Api_Server()
     app = Flask(__name__)
     app.config.from_object(DevConfig)
     # create_admin(app)
@@ -53,7 +55,6 @@ def create_app(object_name):
     app.register_blueprint(industryanalysis_blueprint)
     app.register_blueprint(investenv_blueprint)
     app.register_blueprint(api_blueprint)
-
     app.register_blueprint(main_view)
     app.register_blueprint(main_api)
     app.register_blueprint(stock_group_view)
@@ -64,6 +65,8 @@ def create_app(object_name):
     app.register_blueprint(industry_analysis_api)
     app.register_blueprint(message_view)
     app.register_blueprint(message_api)
+    #添加jinjia2全局变量
+    app.add_template_global(api_server.get_server_address(), 'Api_Server')
     @identity_loaded.connect_via(app)
     def on_identity_loaded(sender, identity):
         identity.user = current_user

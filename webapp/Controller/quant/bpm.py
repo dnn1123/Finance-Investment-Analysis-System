@@ -57,8 +57,8 @@ class Strategy(Enum):
     Buy_Everyday=2
     # Sat = 6 # 如果重复会报错 TypeError: Attempted to reuse key: 'Sat'
     # @unique装饰器可以帮助我们检查保证没有重复值
-
-class Strategy_Manager():  # 策略管理器
+# 策略管理器 当前为变量传递问题未解决的写法 已经解决了传值问题 以后采用新的传值方式，不再使用self.__来保存变量 直接传递到函数 善用解铃 系铃
+class Strategy_Manager():
     def __init__(self, StrategyType,live=False,**args):
         self.__strategy_type = StrategyType
         self.__live=live
@@ -100,7 +100,6 @@ class Strategy_Manager():  # 策略管理器
             self.__i = args.get('instrument')
             self.__init_Buy_Everyday_Live()
     def __init_Pair_Strategy_Based_Bank(self):
-
         i1_data = ts.get_k_data(self.__i1, self.__startdate, self.__enddate)
         i2_data = ts.get_k_data(self.__i2, self.__startdate, self.__enddate)
         feed = dataFramefeed.Feed(bar.Frequency.DAY)
@@ -161,8 +160,6 @@ class Strategy_Manager():  # 策略管理器
         self.__strategy_entity.attachAnalyzer(self.__tradeAnalyzer)
         # 绘图模块
         self.__plt = plotter.StrategyPlotter(self.__strategy_entity)
-
-
 
     def __init_DoubleMA_Strategy(self):
         i_data = ts.get_k_data(self.__i, self.__startdate, self.__enddate)
@@ -247,6 +244,9 @@ class Strategy_Manager():  # 策略管理器
         self.__strategy_entity.attachAnalyzer(self.__tradeAnalyzer)
         # 绘图模块
         self.__plt = plotter.StrategyPlotter(self.__strategy_entity)
+
+    def __init_Stock_Picking_Strategy_Based_Value_By_Steve(self):
+        return 0
 
     def run(self):
         self.__strategy_entity.run()
@@ -606,6 +606,7 @@ class DoubleMA_Strategy_Live(strategy.BacktestingStrategy):
             if self.__text != "":
                 self.__textlist.setdefault(bars.getDateTime().date(), self.__text)
 
+
 class Buy_Everyday_Live(strategy.BacktestingStrategy):
     def __init__(self,feed,brk,instrument,builddate):
         super(Buy_Everyday_Live, self).__init__(feed, brk)
@@ -644,3 +645,48 @@ class Buy_Everyday_Live(strategy.BacktestingStrategy):
 
             if self.__text != "":
                 self.__textlist.setdefault(bars.getDateTime().date(), self.__text)
+
+
+
+class Stock_Picking_Strategy_Based_Value_By_Steve(strategy.BacktestingStrategy):
+    def __init__(self,feed,brk,instrument,malength_1,malength_2):
+        super(Stock_Picking_Strategy_Based_Value_By_Steve, self).__init__(feed, brk)
+        self.__DataCalculator = ''
+        self.__T = 20  #调仓周期
+        self.__margin = instrument  #调仓标记 代表距离调仓还有多少天
+        self.__position = None
+#获取持仓列表 getbroker
+#列表的逻辑运算
+#buylist selllist   根据list形成order order应该为字典列表 股票代码 买卖数量 应当大于100  写一个总体判断下单数量的函数小于100 舍掉 大于100保留 用余额95%下单确保成交
+    #策略构建 feed 获取回测开始日期的股票列表 遍历 得到feed
+
+
+    def onEnterOk(self, position):
+        # print position.getEntryOrder().getAction()
+        execInfo = position.getEntryOrder().getExecutionInfo()
+        self.info("Trade %.2f" % (execInfo.getPrice()))
+
+    def onEnterCanceled(self, position):
+        self.__position = None
+
+    def onExitOk(self, position):
+        execInfo = position.getExitOrder().getExecutionInfo()
+        self.info("SELL at $%.2f" % (execInfo.getPrice()))
+        self.__position = None
+
+    def onExitCanceled(self, position):
+        self.__position.exitMarket()
+
+    def onBars(self, bars):
+        # If a position was not opened, check if we should enter a long position.
+        if self.__DataCalculator.getSMA(2)[-1] is None:
+            return
+
+        if self.__position is not None:
+            if not self.__position.exitActive() and cross.cross_below(self.__DataCalculator.getSMA(1), self.__DataCalculator.getSMA(2)) > 0:
+                self.__position.exitMarket()
+                # self.info("sell %s" % (bars.getDateTime()))
+        if self.__position is None:
+            if cross.cross_above(self.__DataCalculator.getSMA(1), self.__DataCalculator.getSMA(2)) > 0:
+                shares = int(self.getBroker().getEquity() * 0.2 / bars[self.__i].getPrice())
+                self.__position = self.enterLong(self.__i, shares)

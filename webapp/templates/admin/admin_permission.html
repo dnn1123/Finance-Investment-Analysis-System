@@ -206,10 +206,10 @@
         $("#updata_company_list").click(function(){
              $.ajax({
                 type: 'POST',
-                url: '{{url_for("restfulapi.updata_company_list")}}',
+                url: '{{ Api_Server }}'+'/database_update/update_company_list',
                 dataType: 'json',
                 success: function (data) {
-                    console.log(data)
+                    alert(data.message)
                 }})
         })
         firstvisit()

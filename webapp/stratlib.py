@@ -4,7 +4,7 @@ from webapp.Library.pyalgotrade_custom import dataFramefeed
 import tushare as ts
 from datetime import *
 def get_k_data_recent(instruement,startdate):
-    # 得到日数据（股票instruement,始于startdate,止于今天）
+    # 得到日数据（股票instruement,始于startdate,止于今天 日期之间要用- 不能用/）
     data = ts.get_k_data(instruement,startdate)
     return data
 class Profit_monitoring():
