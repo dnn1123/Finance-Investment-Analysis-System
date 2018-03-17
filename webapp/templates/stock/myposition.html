@@ -125,7 +125,7 @@
                                 <div class="module-head">
                                     {#                        <a class="collapsed" href="#mytable"  data-toggle="collapse">我的交易记录</a>#}
                                     <button id="head1" class="btn btn-primary" data-toggle="button">我的交易记录</button>
-                                    <div class="span5 pull-right">
+                                    <div class="span5 pull-right" style="width:260px">
                                         <button class="btn btn-mini btn-primary" type="button" data-toggle="modal"
                                                 data-target="#buyStock">买入
                                         </button>
@@ -135,6 +135,9 @@
                                         <button class="btn btn-mini btn-danger" type="button" data-toggle="modal"
                                                 data-target="#clear">清空交易记录
                                         </button>
+                                        <button class="btn btn-mini btn-danger" type="button" id="excel"
+                                    >下载
+                                    </button>
                                     </div>
                                 </div>
                                 <div class="module-body" id="body1">
@@ -189,9 +192,19 @@
                         <div class="module-head">
                             {#                        <a href="#postable" aria-expanded="false" data-toggle="collapse">持仓盈利情况</a>#}
                             <button id="head3" class="btn btn-primary" data-toggle="button">持仓盈利情况</button>
+                            <div class="span3 pull-right" style="float:right;margin-right:0px;text-align: right"
+                                     id='button'>
+                                    <button class="btn btn-mini btn-danger" type="button" id="excel1"
+                                    >下载
+                                    </button>
+                            </div>
                         </div>
                         <div class="modal-body" id="body3">
-                            <div id="postable" style="margin: auto;width:95%"></div>
+                            <div id="postable" style="margin: auto;width:95%">
+
+
+
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -491,7 +504,7 @@
                 "processing": true,
                 "scrollX": true,
                 "searching": false,
-                "displayLength": 5,
+                "displayLength": 3,
                 "lengthChange": false,
                 "language": {
                     "emptyTable": "没有数据",
@@ -510,21 +523,69 @@
                     "infoEmpty": "没有数据",
                     "infoFiltered": "(过滤总件数 _MAX_ 条)"
                 },
-                 dom: 'Bfrtip',
-                        buttons: {
-                            buttons: [
-                                {extend: 'copy', 'text': '复制', 'className': 'btn btn-default btn-xs',},
-                                {extend: 'excel', 'text': '导出Excel', 'className': 'btn btn-default btn-xs',}
-                            ]
-                        }
+                dom: 'lfrtip',
+{#                buttons: {#}
+{#                    buttons: [#}
+{#                        {extend: 'copy', 'text': '复制', 'className': 'btn btn-default btn-xs',},#}
+{#                        {extend: 'excel', 'text': '导出Excel', 'className': 'btn btn-default btn-xs',}#}
+{#                    ]#}
+{#                }#}
+
             });
+            new $.fn.dataTable.Buttons(table, {
+                        buttons: [
+                            {extend: 'excel', 'text': '导出Excel', 'className': 'btn btn-default btn-xs',}
+                        ]
+                    });
+                    $('#excel').on('click', function () {
+
+                        $.ajax({
+                            type: 'GET',
+                            url: '{{ url_for("restfulapi.buy_data") }}',
+                            data: {
+                                'username': "{{ current_user.username }}",
+
+                            },
+                            dataType: 'json',
+                            success: function (data) {
+                                if (data.member == null) {
+                                    if (data.user_money >= 1) {
+                                        if (confirm('您当前账户余额' + data.user_money + '元，下载该数据需要消费1元，是否需要下载？')) {
+                                            table.buttons(0).trigger()
+                                            $.ajax({
+                                                type: 'GET',
+                                                url: '{{ url_for("restfulapi.change_money") }}',
+                                                data: {
+                                                    'action': "sub",
+                                                    'count': 1,
+                                                },
+                                                dataType: 'json',
+                                                success: function (data) {
+                                                    console.log(data)
+                                                }
+                                            })
+                                        }
+
+                                    }
+                                    else {
+                                        alert('您当前账户余额' + data.user_money + '元,不足1元，无法下载！')
+                                    }
+                                }
+                                else {
+                                    alert('您当前享有免费下载数据特权，此次操作不消耗账户余额！')
+                                }
+                            }
+                        })
+
+                    })
+
             setTimeout("$(\"#subject\").trigger(\"click\")", 100);
             for (var i = 0; i < data['traderec'].length; i++) {
 
                 var rowNode = mydatatb
-                    .row.add(data['traderec'][i])
-                    .draw()
-                    .node();
+                        .row.add(data['traderec'][i])
+                        .draw()
+                        .node();
                 if (data['traderec'][i][2] == 'buy') {
                     $(rowNode).attr('style', "color:red;");
                 }
@@ -574,21 +635,66 @@
                     "infoEmpty": "没有数据",
                     "infoFiltered": "(过滤总件数 _MAX_ 条)"
                 },
-                 dom: 'Bfrtip',
-                        buttons: {
-                            buttons: [
-                                {extend: 'copy', 'text': '复制', 'className': 'btn btn-default btn-xs',},
-                                {extend: 'excel', 'text': '导出Excel', 'className': 'btn btn-default btn-xs',}
-                            ]
-                        }
+                dom: 'lfrtip',
+{#                buttons: {#}
+{#                    buttons: [#}
+{#                        {extend: 'copy', 'text': '复制', 'className': 'btn btn-default btn-xs',},#}
+{#                        {extend: 'excel', 'text': '导出Excel', 'className': 'btn btn-default btn-xs',}#}
+{#                    ]#}
+{#                }#}
             });
+            new $.fn.dataTable.Buttons(table, {
+                        buttons: [
+                            {extend: 'excel', 'text': '导出Excel', 'className': 'btn btn-default btn-xs',}
+                        ]
+                    });
+                    $('#excel1').on('click', function () {
+                        $.ajax({
+                            type: 'GET',
+                            url: '{{ url_for("restfulapi.buy_data") }}',
+                            data: {
+                                'username': "{{ current_user.username }}",
+                            },
+                            dataType: 'json',
+                            success: function (data) {
+                                if (data.member == null) {
+                                    if (data.user_money >= 1) {
+                                        if (confirm('您当前账户余额' + data.user_money + '元，下载该数据需要消费1元，是否需要下载？')) {
+                                            table.buttons(0).trigger()
+                                            $.ajax({
+                                                type: 'GET',
+                                                url: '{{ url_for("restfulapi.change_money") }}',
+                                                data: {
+                                                    'action': "sub",
+                                                    'count': 1,
+                                                },
+                                                dataType: 'json',
+                                                success: function (data) {
+                                                    console.log(data)
+                                                }
+                                            })
+                                        }
+
+                                    }
+                                    else {
+                                        alert('您当前账户余额' + data.user_money + '元,不足1元，无法下载！')
+                                    }
+                                }
+                                else {
+                                    alert('您当前享有免费下载数据特权，此次操作不消耗账户余额！')
+                                }
+                            }
+                        })
+
+                    })
+
             setTimeout("$(\"#subject\").trigger(\"click\")", 100);
             for (var i = 0; i < data['positionrec'].length; i++) {
                 data['positionrec'][i][5] = data['positionrec'][i][5].toFixed(2);
                 var rowNode = mydatatb
-                    .row.add(data['positionrec'][i])
-                    .draw()
-                    .node();
+                        .row.add(data['positionrec'][i])
+                        .draw()
+                        .node();
                 if (data['positionrec'][i][5] >= 0) {
                     $(rowNode).attr('style', "color:red;");
                 }
@@ -626,10 +732,12 @@
                     commissionDist(data);
                     departmentDist(data);
                     groupDist(data);
-
                     cityDist(data);
                 }
             })
+
+
+
             {#            get profit cost market value trend data#}
             $.ajax({
                 type: 'GET',
@@ -1258,6 +1366,7 @@
         function profittrend(data) {
             var tra_recs = new Array();
             console.log(data['traderec'])
+            console.log(data['results'])
             for (var i = 0; i < data['traderec'].length; i++) {
                 if (data['traderec'][i][2] == 'buy') {
                     tra_recs.push({
@@ -1295,7 +1404,19 @@
                         dataZoom: {
                             yAxisIndex: 'none'
                         },
-                        dataView: {readOnly: false},
+                        dataView: {
+                            optionToContent: function (opt) {
+                                var axisData = opt.xAxis[0].data;
+                                var series = opt.series;
+                                var table = '<table id="test" class="table-bordered table-striped" style="width:100%;text-align:center">', table = table + '<tbody><tr>' + '<td>时间</td>' + '<td>' + series[0].name + '</td>' + '<td>' + series[1].name + '</td>' + '</tr>';
+                                for (var i = 0, l = axisData.length; i < l; i++) {
+                                    table += '<tr>' + '<td>' + axisData[i] + '</td>' + '<td>' + series[0].data[i] + '</td>' + '<td>' + series[1].data[i] + '</td>' + '</tr>';
+                                }
+                                table += '</tbody>';
+                                return table;
+                            },
+                            readOnly: false
+                        },
                         magicType: {type: ['line', 'bar']},
                         restore: {},
                         saveAsImage: {}
@@ -1309,211 +1430,178 @@
                 yAxis: {
                     type: 'value',
                     axisLabel: {
-                        formatter: '{value} 元'
-                    }
-                },
-                series: [
-                    {
-                        name: '收益',
-
-                        type: 'bar',
-                        data: data['results']['profit'],
-                        {#                    markPoint: {#}
-                        {#                        data: [#}
-                        {#                            {type: 'max', name: '最大值'},#}
-                        {#                            {type: 'min', name: '最小值'}#}
-                        {#                        ]#}
-                        {#                    },#}
-                        {#                    markLine: {#}
-                        {#                        data: [#}
-                        {#                            {type: 'average', name: '平均值'}#}
-                        {#                        ]#}
-                        {#                    }#}
+{#                        formatter : function (value, index) {#}
+{#                            return value.toFixed(4)#}
+{#                        },#}
+                                                formatter: '{value} 元'
+                                            }
                     },
-                    {
-                        name: '成本',
-                        type: 'line',
-                        data: data['results']['cost'],
-                        markPoint: {
-                            label: {
-                                normal: {
-                                    show: false,
-                                    position: 'bottom',
-                                },
-                            },
-                            data: tra_recs,
+                    series: [
+                        {
+                            name: '收益',
 
+                            type: 'bar',
+                            data: data['results']['profit'],
                         },
-                        markLine: {
-
-                            data: [
-                                {type: 'average', name: '平均值'},
-                                [{
-                                    symbol: 'none',
-                                    x: '90%',
-                                    yAxis: 'max'
-                                }, {
-                                    symbol: 'circle',
-                                    label: {
-                                        normal: {
-                                            position: 'start',
-                                            formatter: '最大值'
-                                        }
+                        {
+                            name: '成本',
+                            type: 'line',
+                            data: data['results']['cost'],
+                            markPoint: {
+                                label: {
+                                    normal: {
+                                        show: false,
+                                        position: 'bottom',
                                     },
-                                    type: 'max',
-                                    name: '最高点'
-                                }]
-                            ]
+                                },
+                                data: tra_recs,
+
+                            },
+                            markLine: {
+
+                                data: [
+                                    {type: 'average', name: '平均值'},
+                                    [{
+                                        symbol: 'none',
+                                        x: '90%',
+                                        yAxis: 'max'
+                                    }, {
+                                        symbol: 'circle',
+                                        label: {
+                                            normal: {
+                                                position: 'start',
+                                                formatter: '最大值'
+                                            }
+                                        },
+                                        type: 'max',
+                                        name: '最高点'
+                                    }]
+                                ]
+                            }
+                        },
+                        {
+                            name: '市值',
+                            type: 'line',
+                            data: data['results']['value']
                         }
-                    },
-                    {
-                        name: '市值',
-                        type: 'line',
-                        data: data['results']['value'],
-                        {#                    markPoint: {#}
-                        {#                        data: [#}
-                        {#                            {name: '周最低', value: -2, xAxis: 1, yAxis: -1.5}#}
-                        {#                        ]#}
-                        {#                    },#}
-                        {#                    markLine: {#}
-                        {#                        data: [#}
-                        {#                            {type: 'average', name: '平均值'},#}
-                        {#                            [{#}
-                        {#                                symbol: 'none',#}
-                        {#                                x: '90%',#}
-                        {#                                yAxis: 'max'#}
-                        {#                            }, {#}
-                        {#                                symbol: 'circle',#}
-                        {#                                label: {#}
-                        {#                                    normal: {#}
-                        {#                                        position: 'start',#}
-                        {#                                        formatter: '最大值'#}
-                        {#                                    }#}
-                        {#                                },#}
-                        {#                                type: 'max',#}
-                        {#                                name: '最高点'#}
-                        {#                            }]#}
-                        {#                        ]#}
-                        {#                    }#}
-                    }
-                ]
-            };
+                    ]
+                }
             myChart.setOption(option);
         }
-        {#map plot position city distribution#}
-        function cityDist(data) {
-            var valueDist = new Array();
-            for (var i = 0; i < data['cityrec'].length; i++) {
+            {#map plot position city distribution#}
+            function cityDist(data) {
+                var valueDist = new Array();
+                for (var i = 0; i < data['cityrec'].length; i++) {
 
-                valueDist.push({
-                    name: data['cityrec'][i][0].substr(0, data['cityrec'][i][0].length - 1),
-                    value: data['cityrec'][i][1]
-                })
-            }
-            ;
+                    valueDist.push({
+                        name: data['cityrec'][i][0].substr(0, data['cityrec'][i][0].length - 1),
+                        value: data['cityrec'][i][1]
+                    })
+                }
+                ;
 
-            console.log(valueDist);
-            var myChart = echarts.init(document.getElementById('cityDist'));
-            var option = {
-                backgroundColor: '#404a59',
-                title: {
-                    text: '当前持仓地区分布',
-                    subtext: 'data by 魔法金融',
-                    left: 'center',
-                    textStyle: {
-                        color: '#fff'
-                    }
-                },
-                tooltip: {
-                    trigger: 'item'
-                },
-                legend: {
-                    orient: 'vertical',
-                    y: 'bottom',
-                    x: 'right',
-                    data: ['城市数'],
-                    textStyle: {
-                        color: '#fff'
-                    }
-                },
-                geo: {
-                    map: 'china',
-                    label: {
-                        emphasis: {
-                            show: false
+                console.log(valueDist);
+                var myChart = echarts.init(document.getElementById('cityDist'));
+                var option = {
+                    backgroundColor: '#404a59',
+                    title: {
+                        text: '当前持仓地区分布',
+                        subtext: 'data by 魔法金融',
+                        left: 'center',
+                        textStyle: {
+                            color: '#fff'
                         }
                     },
-                    roam: true,
-                    itemStyle: {
-                        normal: {
-                            areaColor: '#323c48',
-                            borderColor: '#111'
-                        },
-                        emphasis: {
-                            areaColor: '#2a333d'
+                    tooltip: {
+                        trigger: 'item'
+                    },
+                    legend: {
+                        orient: 'vertical',
+                        y: 'bottom',
+                        x: 'right',
+                        data: ['城市数'],
+                        textStyle: {
+                            color: '#fff'
                         }
-                    }
-                },
-                series: [
-                    {
-                        name: '城市数',
-                        type: 'scatter',
-                        coordinateSystem: 'geo',
-                        data: convertData(valueDist),
-                        symbolSize: function (val) {
-                            return 5 * val[2];
-                        },
+                    },
+                    geo: {
+                        map: 'china',
                         label: {
-                            normal: {
-                                formatter: '{b}',
-                                position: 'right',
+                            emphasis: {
                                 show: false
+                            }
+                        },
+                        roam: true,
+                        itemStyle: {
+                            normal: {
+                                areaColor: '#323c48',
+                                borderColor: '#111'
                             },
                             emphasis: {
-                                show: true
-                            }
-                        },
-                        itemStyle: {
-                            normal: {
-                                color: '#ddb926'
+                                areaColor: '#2a333d'
                             }
                         }
                     },
-                    {
-                        name: 'Top 2',
-                        type: 'effectScatter',
-                        coordinateSystem: 'geo',
-                        data: convertData(valueDist.sort(function (a, b) {
-                            return b.value - a.value;
-                        }).slice(0, 2)),
-                        symbolSize: function (val) {
-                            return 5 * val[2];
-                        },
-                        showEffectOn: 'render',
-                        rippleEffect: {
-                            brushType: 'stroke'
-                        },
-                        hoverAnimation: true,
-                        label: {
-                            normal: {
-                                formatter: '{b}',
-                                position: 'right',
-                                show: true
+                    series: [
+                        {
+                            name: '城市数',
+                            type: 'scatter',
+                            coordinateSystem: 'geo',
+                            data: convertData(valueDist),
+                            symbolSize: function (val) {
+                                return 5 * val[2];
+                            },
+                            label: {
+                                normal: {
+                                    formatter: '{b}',
+                                    position: 'right',
+                                    show: false
+                                },
+                                emphasis: {
+                                    show: true
+                                }
+                            },
+                            itemStyle: {
+                                normal: {
+                                    color: '#ddb926'
+                                }
                             }
                         },
-                        itemStyle: {
-                            normal: {
-                                color: '#f4e925',
-                                shadowBlur: 10,
-                                shadowColor: '#333'
-                            }
-                        },
-                        zlevel: 1
-                    }
-                ]
-            };
-            myChart.setOption(option);
-        }
+                        {
+                            name: 'Top 2',
+                            type: 'effectScatter',
+                            coordinateSystem: 'geo',
+                            data: convertData(valueDist.sort(function (a, b) {
+                                return b.value - a.value;
+                            }).slice(0, 2)),
+                            symbolSize: function (val) {
+                                return 5 * val[2];
+                            },
+                            showEffectOn: 'render',
+                            rippleEffect: {
+                                brushType: 'stroke'
+                            },
+                            hoverAnimation: true,
+                            label: {
+                                normal: {
+                                    formatter: '{b}',
+                                    position: 'right',
+                                    show: true
+                                }
+                            },
+                            itemStyle: {
+                                normal: {
+                                    color: '#f4e925',
+                                    shadowBlur: 10,
+                                    shadowColor: '#333'
+                                }
+                            },
+                            zlevel: 1
+                        }
+                    ]
+                };
+                myChart.setOption(option);
+            }
     </script>
 {% endblock %}
 
