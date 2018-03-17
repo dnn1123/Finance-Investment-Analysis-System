@@ -1,20 +1,13 @@
 # coding=utf-8
-from flask import Blueprint, redirect, render_template, url_for, request  # me:request
+from flask import Blueprint,render_template
 from webapp.config import paths
 import os
-from webapp.models import *
-from webapp.forms import *
-from flask_login import login_required, current_user
-from webapp.extensions import finance_analyst_permission
-# from flask_sqlalchemy import SQLAlchemy #me
-from sqlalchemy import create_engine, or_, func, desc, distinct  # me func用于计数,desc用于逆序找max值
-from sqlalchemy.orm import sessionmaker  # me
-import MySQLdb, time
+from flask_login import login_required
 
 stock_group_view = Blueprint(
     'stock_group',
     __name__,
-    template_folder=os.path.abspath(os.path.join(os.getcwd(), 'webapp', 'Template', 'stock_group')),
+    template_folder=os.path.abspath(os.path.join(paths.project_path, 'Template', 'stock_group')),
     url_prefix="/stock_group"
 )
 

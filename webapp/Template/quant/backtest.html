@@ -1,6 +1,9 @@
 {% extends "quant_base.html" %}
 {% block styles %}
     <style>
+        .dataTable{
+            text-align: center;
+        }
         .loader {
             text-align: center;
         }
@@ -108,9 +111,9 @@
 
     <div class="module">
         <div class="module-head">
-            回测结果
+            <button id="head0" class="btn btn-primary" data-toggle="button">回测结果</button>
         </div>
-        <div class="module-body">
+        <div class="module-body" id="body0">
             <div id="loading"></div>
             <div id="div_result" style="display: none">
                 <div class="btn-controls">
@@ -158,6 +161,94 @@
             </div>
         </div>
     </div>
+
+    <div id="more_results" style="display: none">
+    <div class="btn-controls">
+        <div class="row">
+            <div class="span9">
+                <div class="btn-box-row row-fluid">
+                    <div class="module span12">
+                        <div class="module-head">
+                            <button id="head1" class="btn btn-primary" data-toggle="button">我的交易记录</button>
+                        </div>
+                        <div class="module-body" id="body1">
+                            <div id="mytable" style="margin: auto;width:95%"></div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        {#            datatable for trade records#}
+
+        {#            chart for trade distribution#}
+        <div class="btn-box-row row-fluid">
+            <div class="module span12" style="background-color: transparent">
+                {#                        <div class="module-head">交易状况分析</div>#}
+                <div class="module-head">
+                    <button id="head2" class="btn btn-primary" data-toggle="button">交易状况分析</button>
+                </div>
+                <div class="modal-body" id="body2">
+                    {#                        <div class="row-fluid" id="body2">#}
+
+                    <div class="btn-box small span6">
+                        <div id="frequencyDist" style="width:100%;height:200px;background-color: white"></div>
+                    </div>
+                    <div class="btn-box small span6">
+                        <div id="commissionDist" style="width:100%;height:200px;background-color: white"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {#            datatable for position records#}
+        <div class="btn-box-row row-fluid">
+            <div class="module span12">
+                <div class="module-head">
+                    {#                        <a href="#postable" aria-expanded="false" data-toggle="collapse">持仓盈利情况</a>#}
+                    <button id="head3" class="btn btn-primary" data-toggle="button">持仓盈利情况</button>
+                </div>
+                <div class="modal-body" id="body3">
+                    <div id="postable" style="margin: auto;width:95%"></div>
+                </div>
+            </div>
+        </div>
+        {#            chart for position distribution#}
+        <div class="btn-box-row row-fluid">
+            <div class="module span12" style="background-color: transparent">
+                <div class="module-head">
+                    <button id="head4" class="btn btn-primary" data-toggle="button">持仓分析图表</button>
+                </div>
+                <div class="modal-body" id="body4">
+                    {#                        <div class="row-fluid" >#}
+
+                    <div class="btn-box small span3">
+                        <div id="costDist" style="width:100%;height:200px;background-color: white"></div>
+                    </div>
+                    <div class="btn-box small span3">
+                        <div id="mvDist" style="width:100%;height:200px;background-color: white"></div>
+                    </div>
+                    <div class="btn-box small span6">
+                        <div id="profitDist" style="width:100%;height:200px;background-color: white"></div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+    <!--/#btn-controls-->
+    <div class="module">
+        <div class="module-head">
+            <button id="head5" class="btn btn-primary" data-toggle="button">持仓收益图</button>
+
+        </div>
+        <div class="module-body" id="body5">
+            <div id="profittrend" style="width:100%;height:300px;background-color: white"></div>
+        </div>
+    </div>
+    </div>
 {% endblock %}
 {% block scripts %}
     <script>
@@ -179,27 +270,719 @@
                 url: "{{ url_for("quant_api.back_test") }}",//url
                 data: $('#backtest_form').serialize(),
                 success: function (result) {
-                    $('#loading').empty()
-                    $('#div_result').css('display','inline')
-                    $("#portfolio").text(result.portfolio.toFixed(2))
-                    $("#culrtn").text(result.culrtn.toFixed(4))
-                    $("#meanrtn").text(result.meanrtn.toFixed(4))
-                    $("#stdrtn").text(result.stdrtn.toFixed(4))
-                    $("#sharp").text(result.sharp.toFixed(4))
-                    $("#MDD").text(result.MDD.toFixed(4))
-                    $("#stimes").text(result.stimes)
-                    $("#gtimes").text(result.gtimes)
-                    $("#ltimes").text(result.ltimes)
+                    show_values(result.data)
+                    createTable("mytable", result);
+                    createPosTable("postable", result);
+                    costDist(result);
+                    mvDist(result);
+                    profitDist(result);
+                    frequencyDist(result);
+                    commissionDist(result);
+                    profittrend(result.res);
+
                 },
                 error: function () {
                     alert("异常！");
                 },
                 beforeSend: function () {
-                    $('#div_result').css('display','none')
+                    $('#div_result').css('display', 'none')
                     html = '<div class="loader"> <div class="dot"></div> <div class="dot"></div> <div class="dot"></div> <div class="dot"></div> <div class="dot"></div> </div>'
                     $('#loading').html(html)
                 }
             });
         })
+    </script>
+
+    <script>
+        $("#head0").click(function () {
+            $("#body0").toggle()
+        })
+        $("#head1").click(function () {
+            $("#body1").toggle()
+        })
+        $("#head4").click(function () {
+            $("#body4").toggle()
+        })
+        $("#head2").click(function () {
+            $("#body2").toggle()
+        })
+        $("#head3").click(function () {
+            $("#body3").toggle()
+        })
+
+        $("#head5").click(function () {
+            $("#body5").toggle()
+        })
+    </script>
+
+    <script>
+        function show_values(result) {
+            $('#loading').empty()
+            $('#div_result').css('display', 'inline')
+            $('#more_results').css('display', 'inline')
+            $("#portfolio").text(result.portfolio.toFixed(2))
+            $("#culrtn").text(result.culrtn.toFixed(4))
+            $("#meanrtn").text(result.meanrtn.toFixed(4))
+            $("#stdrtn").text(result.stdrtn.toFixed(4))
+            $("#sharp").text(result.sharp.toFixed(4))
+            $("#MDD").text(result.MDD.toFixed(4))
+            $("#stimes").text(result.stimes)
+            $("#gtimes").text(result.gtimes)
+            $("#ltimes").text(result.ltimes)
+        }
+
+        {#    createtable for trade records#}
+
+        function createTable(divid, data) {
+            var tablename = "#" + divid
+            $(tablename).empty();
+            var table = $("<table id=\"temptable\" class=\"row-border hover order-column\" cellspacing=\"0\" margin=\"auto\" width=\"100%\"  >");
+            table.appendTo($(tablename));
+            th = $("<thead></thead>");
+            th.appendTo(table);
+            var tr = $("<tr></tr>");
+            tr.appendTo(th);
+            var td = $("<th>" + "股票代码" + "</th>" + "<th>" + "股票名称" + "</th>" + "<th>" + "操作" + "</th>" + "<th>" + "价格" + "</th>" + "<th>" + "数量" + "</th>" + "<th>" + "时间" + "</th>");
+            td.appendTo(tr);
+            tb = $("<tbody></tbody>");
+            tb.appendTo(table);
+            $("#mytable").append("</table>");
+            var mydatatb = $('#temptable').DataTable({
+                {#                        "paging":false,#}
+                "info": false,
+                "processing": true,
+                "scrollX": true,
+                "searching": false,
+                "displayLength": 5,
+                "lengthChange": false,
+                "language": {
+                    "emptyTable": "没有数据",
+                    "loadingRecords": "加载中…",
+                    "processing": "查询中…",
+                    "search": "检索:",
+                    "lengthMenu": "每页 _MENU_ 条",
+                    "zeroRecords": "没有数据",
+                    "paginate": {
+                        "first": "第一页",
+                        "last": "最后一页",
+                        "next": "",
+                        "previous": ""
+                    },
+                    "info": "第 _PAGE_ 页 / 总 _PAGES_ 页",
+                    "infoEmpty": "没有数据",
+                    "infoFiltered": "(过滤总件数 _MAX_ 条)"
+                },
+                dom: 'Bfrtip',
+                buttons: {
+                    buttons: [
+                        {extend: 'copy', 'text': '复制', 'className': 'btn btn-default btn-xs',},
+                        {extend: 'excel', 'text': '导出Excel', 'className': 'btn btn-default btn-xs',}
+                    ]
+                }
+            });
+            setTimeout("$(\"#subject\").trigger(\"click\")", 100);
+            for (var i = 0; i < data['traderec'].length; i++) {
+
+                var rowNode = mydatatb
+                    .row.add(data['traderec'][i])
+                    .draw()
+                    .node();
+                if (data['traderec'][i][2] == 'buy') {
+                    $(rowNode).attr('style', "color:red;");
+                }
+                else {
+                    $(rowNode).attr('style', "color:blue");
+                }
+
+            }
+        }
+
+        {#        create table for position records #}
+
+        function createPosTable(divid, data) {
+            var tablename = "#" + divid;
+            $(tablename).empty();
+            var table = $("<table id=\"temptable1\" class=\"row-border hover order-column\" cellspacing=\"0\" margin=\"auto\" width=\"100%\" align=\"center\" >");
+            table.appendTo($(tablename));
+            th = $("<thead></thead>");
+            th.appendTo(table);
+            var tr = $("<tr></tr>");
+            tr.appendTo(th);
+            var td = $("<th>" + "股票代码" + "</th>" + "<th>" + "股票名称" + "</th>" + "<th>" + "持股数" + "</th>" + "<th>" + "平均成本" + "</th>" + "<th>" + "截至回测结束价格" + "</th>" + "<th>" + "盈利" + "</th>");
+            td.appendTo(tr);
+            tb = $("<tbody></tbody>");
+            tb.appendTo(table);
+            $(tablename).append("</table>");
+            var mydatatb = $('#temptable1').DataTable({
+                {#                        "paging":false,#}
+                "info": false,
+                "processing": true,
+                "scrollX": true,
+                "searching": false,
+                "displayLength": 5,
+                "lengthChange": false,
+                "language": {
+                    "emptyTable": "没有数据",
+                    "loadingRecords": "加载中…",
+                    "processing": "查询中…",
+                    "search": "检索:",
+                    "lengthMenu": "每页 _MENU_ 条",
+                    "zeroRecords": "没有数据",
+                    "paginate": {
+                        "first": "第一页",
+                        "last": "最后一页",
+                        "next": "",
+                        "previous": ""
+                    },
+                    "info": "第 _PAGE_ 页 / 总 _PAGES_ 页",
+                    "infoEmpty": "没有数据",
+                    "infoFiltered": "(过滤总件数 _MAX_ 条)"
+                },
+                dom: 'Bfrtip',
+                buttons: {
+                    buttons: [
+                        {extend: 'copy', 'text': '复制', 'className': 'btn btn-default btn-xs',},
+                        {extend: 'excel', 'text': '导出Excel', 'className': 'btn btn-default btn-xs',}
+                    ]
+                }
+            });
+            setTimeout("$(\"#subject\").trigger(\"click\")", 100);
+            for (var i = 0; i < data['positionrec'].length; i++) {
+                data['positionrec'][i][5] = data['positionrec'][i][5].toFixed(2);
+                var rowNode = mydatatb
+                    .row.add(data['positionrec'][i])
+                    .draw()
+                    .node();
+                if (data['positionrec'][i][5] >= 0) {
+                    $(rowNode).attr('style', "color:red;");
+                }
+                else {
+                    $(rowNode).attr('style', "color:blue;");
+                }
+
+            }
+        }
+
+        {#      pie plot position cost distribution#}
+
+        function costDist(data) {
+
+            var myChart = echarts.init(document.getElementById('costDist'));
+            var stockName = new Array();
+            var valueDist = new Array();
+            for (var i = 0; i < data['positionrec'].length; i++) {
+                stockName.push(data['positionrec'][i][1])
+                valueDist.push({
+                    value: data['positionrec'][i][2] * data['positionrec'][i][3],
+                    name: data['positionrec'][i][1]
+                })
+            }
+            ;
+
+
+            var option = {
+                title: {
+                    text: '持仓成本分布',
+                    left: 'center',
+                    bottom: 1,
+                    textStyle: {
+                        fontSize: 10,
+                        fontWeight: 'bolder',
+                    }
+                },
+                tooltip: {
+                    trigger: 'item',
+                    formatter: "{a} <br/>{b}: {c} ({d}%)"
+                },
+                {#            legend: {#}
+                {#                orient: 'vertical',#}
+                {#                x: 'left',#}
+                {#                itemWidth:10,#}
+                {#                itemHeight:5,#}
+                {#                itemGap:4,#}
+                {#                textStyle:{#}
+                {#                    fontSize:2,#}
+                {#                },#}
+                {#                data:stockName,#}
+                {#            },#}
+                series: [
+                    {
+                        name: '持仓成本分布',
+                        type: 'pie',
+                        radius: ['55%', '70%'],
+                        avoidLabelOverlap: false,
+                        label: {
+                            normal: {
+                                show: false,
+                                position: 'center'
+                            },
+                            emphasis: {
+                                show: true,
+                                textStyle: {
+                                    fontSize: '30',
+                                    fontWeight: 'bold'
+                                }
+                            }
+                        },
+                        labelLine: {
+                            normal: {
+                                show: false
+                            }
+                        },
+                        data: valueDist
+                    }
+                ]
+            };
+            myChart.setOption(option);
+        }
+
+        {#pie plot position market value distribution#}
+
+        function mvDist(data) {
+
+            var myChart = echarts.init(document.getElementById('mvDist'));
+            var stockName = new Array();
+            var valueDist = new Array();
+            for (var i = 0; i < data['positionrec'].length; i++) {
+                stockName.push(data['positionrec'][i][1])
+                valueDist.push({
+                    value: data['positionrec'][i][2] * data['positionrec'][i][4],
+                    name: data['positionrec'][i][1]
+                })
+            }
+            ;
+
+
+            var option = {
+                title: {
+                    text: '持仓市值分布',
+                    left: 'center',
+                    bottom: 1,
+                    textStyle: {
+                        fontSize: 10,
+                        fontWeight: 'bolder',
+                    }
+
+                },
+                tooltip: {
+                    trigger: 'item',
+                    formatter: "{a} <br/>{b}: {c} ({d}%)"
+                },
+                {#            legend: {#}
+                {#                orient: 'vertical',#}
+                {#                x: 'left',#}
+                {#                itemWidth:10,#}
+                {#                itemHeight:5,#}
+                {#                itemGap:4,#}
+                {#                textStyle:{#}
+                {#                    fontSize:2,#}
+                {#                },#}
+                {#                data:stockName,#}
+                {#            },#}
+                series: [
+                    {
+                        name: '持仓市值分布',
+                        type: 'pie',
+                        radius: ['55%', '70%'],
+                        avoidLabelOverlap: false,
+                        label: {
+                            normal: {
+                                show: false,
+                                position: 'center'
+                            },
+                            emphasis: {
+                                show: true,
+                                textStyle: {
+                                    fontSize: '30',
+                                    fontWeight: 'bold'
+                                }
+                            }
+                        },
+                        labelLine: {
+                            normal: {
+                                show: false
+                            }
+                        },
+                        data: valueDist
+                    }
+                ]
+            };
+            myChart.setOption(option);
+        }
+
+        {#        bar chart for position profit distribution#}
+
+        function profitDist(data) {
+
+            var myChart = echarts.init(document.getElementById('profitDist'));
+            var stockName = new Array();
+            var valueDist = new Array();
+            for (var i = 0; i < data['positionrec'].length; i++) {
+                stockName.push(data['positionrec'][i][1])
+                valueDist.push(data['positionrec'][i][5])
+            }
+            ;
+
+
+            var option = {
+                title: {
+                    text: '盈利情况分布',
+                    left: 'center',
+                    textStyle: {
+                        fontSize: 10,
+                        fontWeight: 'bolder',
+                    }
+                },
+                color: ['#3398DB'],
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+                        type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                    }
+                },
+                grid: {
+                    left: '1%',
+                    right: '1%',
+                    bottom: '1%',
+                    containLabel: true
+                },
+                xAxis: [
+                    {
+                        type: 'category',
+                        data: stockName,
+                        axisTick: {
+                            alignWithLabel: true
+                        }
+                    }
+                ],
+                yAxis: [
+                    {
+                        type: 'value'
+                    }
+                ],
+                series: [
+                    {
+                        name: '当前盈利',
+                        type: 'bar',
+                        barWidth: '20%',
+                        barMinHeight: 2,
+                        data: valueDist,
+                    }
+                ]
+            };
+            myChart.setOption(option);
+        }
+
+        {#        ring chart for trade frequency distribution#}
+
+        function frequencyDist(data) {
+
+            var myChart = echarts.init(document.getElementById('frequencyDist'));
+            var stockName = new Array();
+            var fDist = new Array();
+            var valueDist = new Array();
+            {#            calculate frequency distribution from trading records#}
+            for (var i = 0; i < data['traderec'].length; i++) {
+                stockName.push(data['traderec'][i][1])
+                if (fDist[data['traderec'][i][1]] == null) {
+                    fDist[data['traderec'][i][1]] = 1;
+                }
+                else {
+                    fDist[data['traderec'][i][1]] = fDist[data['traderec'][i][1]] + 1;
+                }
+            }
+            ;
+            for (var name in fDist) {
+                valueDist.push({value: fDist[name], name: name});
+            }
+
+
+            var option = {
+                title: {
+                    text: '交易频率分布',
+                    left: 'center',
+                    bottom: 1,
+                    textStyle: {
+                        fontSize: 10,
+                        fontWeight: 'bolder',
+                    }
+
+                },
+                tooltip: {
+                    trigger: 'item',
+                    formatter: "{a} <br/>{b}: {c} ({d}%)"
+                },
+                {#            legend: {#}
+                {#                orient: 'vertical',#}
+                {#                x: 'left',#}
+                {#                itemWidth:10,#}
+                {#                itemHeight:5,#}
+                {#                itemGap:4,#}
+                {#                textStyle:{#}
+                {#                    fontSize:2,#}
+                {#                },#}
+                {#                data:stockName,#}
+                {#            },#}
+                series: [
+                    {
+                        name: '交易频率分布',
+                        type: 'pie',
+                        radius: ['55%', '70%'],
+                        avoidLabelOverlap: false,
+                        label: {
+                            normal: {
+                                show: false,
+                                position: 'center'
+                            },
+                            emphasis: {
+                                show: true,
+                                textStyle: {
+                                    fontSize: '30',
+                                    fontWeight: 'bold'
+                                }
+                            }
+                        },
+                        labelLine: {
+                            normal: {
+                                show: false
+                            }
+                        },
+                        data: valueDist
+                    }
+                ]
+            };
+            myChart.setOption(option);
+        }
+
+        {#        ring chart for trade commission distribution#}
+
+        function commissionDist(data) {
+
+            var myChart = echarts.init(document.getElementById('commissionDist'));
+            var stockName = new Array();
+            var cDist = new Array();
+            var valueDist = new Array();
+            console.log(data['commissionrec'])
+            {#            calculate frequency distribution from trading records#}
+            for (var i = 0; i < data['commissionrec'].length; i++) {
+                stockName.push(data['commissionrec'][i][1])
+                if (cDist[data['commissionrec'][i][1]] == null) {
+                    cDist[data['commissionrec'][i][1]] = data['commissionrec'][i][2]
+                }
+                else {
+                    cDist[data['commissionrec'][i][1]] = cDist[data['commissionrec'][i][1]] + data['commissionrec'][i][2]
+                }
+            }
+            ;
+            for (var name in cDist) {
+                valueDist.push({value: cDist[name], name: name});
+            }
+
+
+            var option = {
+                title: {
+                    text: '交易佣金分布',
+                    left: 'center',
+                    bottom: 1,
+                    textStyle: {
+                        fontSize: 10,
+                        fontWeight: 'bolder',
+                    }
+
+                },
+                tooltip: {
+                    trigger: 'item',
+                    formatter: "{a} <br/>{b}: {c} ({d}%)"
+                },
+                {#            legend: {#}
+                {#                orient: 'vertical',#}
+                {#                x: 'left',#}
+                {#                itemWidth:10,#}
+                {#                itemHeight:5,#}
+                {#                itemGap:4,#}
+                {#                textStyle:{#}
+                {#                    fontSize:2,#}
+                {#                },#}
+                {#                data:stockName,#}
+                {#            },#}
+                series: [
+                    {
+                        name: '交易佣金分布',
+                        type: 'pie',
+                        radius: ['55%', '70%'],
+                        avoidLabelOverlap: false,
+                        label: {
+                            normal: {
+                                show: false,
+                                position: 'center'
+                            },
+                            emphasis: {
+                                show: true,
+                                textStyle: {
+                                    fontSize: '30',
+                                    fontWeight: 'bold'
+                                }
+                            }
+                        },
+                        labelLine: {
+                            normal: {
+                                show: false
+                            }
+                        },
+                        data: valueDist
+                    }
+                ]
+            };
+            myChart.setOption(option);
+        }
+
+        {#        ring chart for trade commission distribution#}
+        {#        line chart for historical profit trend#}
+
+        function profittrend(data) {
+            var tra_recs = new Array();
+            console.log(data['traderec'])
+            for (var i = 0; i < data['traderec'].length; i++) {
+                if (data['traderec'][i][2] == 'buy') {
+                    tra_recs.push({
+                        xAxis: data['traderec'][i][5],
+                        yAxis: 0,
+                        symbol: 'triangle',
+                        symbolSize: 15,
+                        symbolOffset: [0, '400%']
+                    })
+                }
+                else {
+                    tra_recs.push({
+                        xAxis: data['traderec'][i][5],
+                        yAxis: 0,
+                        symbol: 'triangle',
+                        symbolSize: 15,
+                        symbolOffset: [0, '400%'],
+                        symbolRotate: 180
+                    })
+                }
+            }
+            ;
+            var myChart = echarts.init(document.getElementById('profittrend'));
+            var option = {
+                color: ['#6633FF', 'red', '#00008B'],
+                tooltip: {
+                    trigger: 'axis'
+                },
+                legend: {
+                    data: ['收益', '成本', '市值']
+                },
+                toolbox: {
+                    show: true,
+                    feature: {
+                        dataZoom: {
+                            yAxisIndex: 'none'
+                        },
+                        dataView: {readOnly: false},
+                        magicType: {type: ['line', 'bar']},
+                        restore: {},
+                        saveAsImage: {}
+                    }
+                },
+                xAxis: {
+                    type: 'category',
+                    boundaryGap: false,
+                    data: data['results']['date']
+                },
+                yAxis: {
+                    type: 'value',
+                    axisLabel: {
+                        formatter: '{value} 元'
+                    }
+                },
+                series: [
+                    {
+                        name: '收益',
+
+                        type: 'bar',
+                        data: data['results']['profit'],
+                        {#                    markPoint: {#}
+                        {#                        data: [#}
+                        {#                            {type: 'max', name: '最大值'},#}
+                        {#                            {type: 'min', name: '最小值'}#}
+                        {#                        ]#}
+                        {#                    },#}
+                        {#                    markLine: {#}
+                        {#                        data: [#}
+                        {#                            {type: 'average', name: '平均值'}#}
+                        {#                        ]#}
+                        {#                    }#}
+                    },
+                    {
+                        name: '成本',
+                        type: 'line',
+                        data: data['results']['cost'],
+                        markPoint: {
+                            label: {
+                                normal: {
+                                    show: false,
+                                    position: 'bottom',
+                                },
+                            },
+                            data: tra_recs,
+
+                        },
+                        markLine: {
+
+                            data: [
+                                {type: 'average', name: '平均值'},
+                                [{
+                                    symbol: 'none',
+                                    x: '90%',
+                                    yAxis: 'max'
+                                }, {
+                                    symbol: 'circle',
+                                    label: {
+                                        normal: {
+                                            position: 'start',
+                                            formatter: '最大值'
+                                        }
+                                    },
+                                    type: 'max',
+                                    name: '最高点'
+                                }]
+                            ]
+                        }
+                    },
+                    {
+                        name: '市值',
+                        type: 'line',
+                        data: data['results']['value'],
+                        {#                    markPoint: {#}
+                        {#                        data: [#}
+                        {#                            {name: '周最低', value: -2, xAxis: 1, yAxis: -1.5}#}
+                        {#                        ]#}
+                        {#                    },#}
+                        {#                    markLine: {#}
+                        {#                        data: [#}
+                        {#                            {type: 'average', name: '平均值'},#}
+                        {#                            [{#}
+                        {#                                symbol: 'none',#}
+                        {#                                x: '90%',#}
+                        {#                                yAxis: 'max'#}
+                        {#                            }, {#}
+                        {#                                symbol: 'circle',#}
+                        {#                                label: {#}
+                        {#                                    normal: {#}
+                        {#                                        position: 'start',#}
+                        {#                                        formatter: '最大值'#}
+                        {#                                    }#}
+                        {#                                },#}
+                        {#                                type: 'max',#}
+                        {#                                name: '最高点'#}
+                        {#                            }]#}
+                        {#                        ]#}
+                        {#                    }#}
+                    }
+                ]
+            };
+            myChart.setOption(option);
+        }
     </script>
 {% endblock %}

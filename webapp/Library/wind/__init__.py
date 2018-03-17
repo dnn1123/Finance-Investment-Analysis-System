@@ -56,8 +56,13 @@ def Json_to_DataFrame(data):
     df=pd.DataFrame(data['Data'],columns=data['Times'],index=data['Fields'])
     df = df.T
     df['date'] = data['Times']
-    for i in data['Times']:
-        print i
+    df.rename(columns={'OPEN': 'open', 'HIGH': 'high', 'LOW': 'low', 'CLOSE': 'close', 'VOLUME': 'volume'}, inplace=True)
+    return df
+
+def WindData_to_DataFrame(data):
+    df=pd.DataFrame(data.Data,columns=data.Times,index=data.Fields)
+    df = df.T
+    df['date'] = [i.strftime("%Y-%m-%d %H:%M:%S") for i in data.Times]
     df.rename(columns={'OPEN': 'open', 'HIGH': 'high', 'LOW': 'low', 'CLOSE': 'close', 'VOLUME': 'volume'}, inplace=True)
     return df
 
