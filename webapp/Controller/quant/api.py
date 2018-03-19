@@ -21,9 +21,10 @@ def request_form():
         return render_template('/form/form_Pair_Strategy_Based_Bank.html')
     if type=="DoubleMA_Strategy":
         return render_template('/form/form_DoubleMA_Strategy.html')
+
 @quant_api.route('/backtest', methods=('GET', 'POST'))
 def back_test():
-    data,history=handle_form(request.form)
+    data,history = handle_form(request.form)
     getdata = Profit_monitoring(history)
     results = getdata.start()
     return jsonify(data)
@@ -51,6 +52,7 @@ def subscribe():
     db.session.add(new_sub)
     db.session.commit()
     return jsonify({"data":"success"})
+
 @quant_api.route('/delete_subscribe',methods=('GET', 'POST'))
 def delete_subscribe():
     id=request.args.get('id')
@@ -72,7 +74,6 @@ def start_subscribe():
     data=subscriber.query.filter_by(identifier=id).update({"status":"运行中"})
     db.session.commit()
     return jsonify({"result":"success"})
-
 
 @quant_api.route('/realtime_simulation',methods=('GET', 'POST'))
 def get_realtime_simulation_data():
@@ -116,7 +117,6 @@ def get_realtime_simulation_detail_data():
         return jsonify({"date":date_list,"message":message_list})
     else:
         return jsonify({"date":[],"message":[]})
-
 
 @quant_api.route('/subscribe_strategy_info',methods=('GET', 'POST'))
 def get_subscribe_strategy_info():

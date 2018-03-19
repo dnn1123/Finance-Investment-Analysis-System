@@ -11,6 +11,7 @@ from enum import Enum,unique
 from webapp.Library.pyalgotrade_custom import dataFramefeed,plotter
 import tushare as ts
 import base64,datetime
+
 def handle_form(form):
     type=form.get('type')
     if type=="Pair_Strategy_Based_Bank":
@@ -23,6 +24,7 @@ def handle_form(form):
                                  startdate=form.get('sdate'), enddate=form.get('edate'))
         mystr.run()
         return mystr.getResult()
+
 def handle_liveform(form):
     type=form.get('type')
     if type=="Pair_Strategy_Based_Bank":
@@ -41,6 +43,7 @@ def handle_liveform(form):
         data = {"strategy_id": Strategy.Buy_Everyday.value, "strategy_name": form.get('strategy_name'),
                 "params": params, "build_date": datetime.datetime.now()}
         return data
+
 def dict_to_sql(dict):
     tempstr=str(dict)
     binary=base64.b64encode(tempstr)
@@ -58,6 +61,7 @@ class Strategy(Enum):
     # Sat = 6 # 如果重复会报错 TypeError: Attempted to reuse key: 'Sat'
     # @unique装饰器可以帮助我们检查保证没有重复值
 # 策略管理器 当前为变量传递问题未解决的写法 已经解决了传值问题 以后采用新的传值方式，不再使用self.__来保存变量 直接传递到函数 善用解铃 系铃
+
 class Strategy_Manager():
     def __init__(self, StrategyType,live=False,**args):
         self.__strategy_type = StrategyType
@@ -118,7 +122,6 @@ class Strategy_Manager():
         brk.setFillStrategy(fill_stra)  # 将成交策略传给brk
         # 4.把策略跑起来
         self.__strategy_entity = Pair_Strategy_Based_Bank(feed, brk, self.__i1, self.__i2, 50)
-
         self.__retAnalyzer = returns.Returns()
         self.__strategy_entity.attachAnalyzer(self.__retAnalyzer)
         self.__sharpeRatioAnalyzer = sharpe.SharpeRatio()
@@ -233,7 +236,6 @@ class Strategy_Manager():
         brk.setFillStrategy(fill_stra)  # 将成交策略传给brk
         # 4.把策略跑起来
         self.__strategy_entity = Buy_Everyday_Live(feed, brk, self.__i,self.__builddate)
-
         self.__retAnalyzer = returns.Returns()
         self.__strategy_entity.attachAnalyzer(self.__retAnalyzer)
         self.__sharpeRatioAnalyzer = sharpe.SharpeRatio()
@@ -353,7 +355,6 @@ class Strategy_Manager():
         result.setdefault("chartdata_portfolio",self.__plt.getPortfolio())
         return result,self.__plt.getTradehistory()
 
-
 def regression(ylist, xlist):  # 回归计算 返回参数 输入类型nparray 返回数组
     xlist = sm.add_constant(xlist)
     model = sm.OLS(ylist, xlist)
@@ -435,7 +436,6 @@ class Pair_Strategy_Based_Bank(strategy.BacktestingStrategy):
                     if currentPos_i1 > 0:
                         self.enterShort(self.__i1, currentPos_i1)
                     self.buyUseAllMoney(self.__i2, bars)
-
 
 class Pair_Strategy_Based_Bank_Live(strategy.BacktestingStrategy):
     def __init__(self, feed, brk, instrument1, instrument2, builddate,interval):
@@ -645,8 +645,6 @@ class Buy_Everyday_Live(strategy.BacktestingStrategy):
 
             if self.__text != "":
                 self.__textlist.setdefault(bars.getDateTime().date(), self.__text)
-
-
 
 class Stock_Picking_Strategy_Based_Value_By_Steve(strategy.BacktestingStrategy):
     def __init__(self,feed,brk,instrument,malength_1,malength_2):

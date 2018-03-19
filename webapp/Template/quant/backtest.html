@@ -171,7 +171,8 @@
                     $("#div_form").html(data)
                 }
             })
-        })
+        });
+
         $("#div_form").on('click', '.submit', function () {
             $.ajax({
                 type: "POST",//方法类型
@@ -179,24 +180,24 @@
                 url: "{{ url_for("quant_api.back_test") }}",//url
                 data: $('#backtest_form').serialize(),
                 success: function (result) {
-                    $('#loading').empty()
-                    $('#div_result').css('display','inline')
-                    $("#portfolio").text(result.portfolio.toFixed(2))
-                    $("#culrtn").text(result.culrtn.toFixed(4))
-                    $("#meanrtn").text(result.meanrtn.toFixed(4))
-                    $("#stdrtn").text(result.stdrtn.toFixed(4))
-                    $("#sharp").text(result.sharp.toFixed(4))
-                    $("#MDD").text(result.MDD.toFixed(4))
-                    $("#stimes").text(result.stimes)
-                    $("#gtimes").text(result.gtimes)
-                    $("#ltimes").text(result.ltimes)
+                    $('#loading').empty();
+                    $('#div_result').css('display','inline');
+                    $("#portfolio").text(result.portfolio.toFixed(2));
+                    $("#culrtn").text(result.culrtn.toFixed(4));
+                    $("#meanrtn").text(result.meanrtn.toFixed(4));
+                    $("#stdrtn").text(result.stdrtn.toFixed(4));
+                    $("#sharp").text(result.sharp.toFixed(4));
+                    $("#MDD").text(result.MDD.toFixed(4));
+                    $("#stimes").text(result.stimes);
+                    $("#gtimes").text(result.gtimes);
+                    $("#ltimes").text(result.ltimes);
                 },
                 error: function () {
                     alert("异常！");
                 },
                 beforeSend: function () {
-                    $('#div_result').css('display','none')
-                    html = '<div class="loader"> <div class="dot"></div> <div class="dot"></div> <div class="dot"></div> <div class="dot"></div> <div class="dot"></div> </div>'
+                    $('#div_result').css('display','none');
+                    html = '<div class="loader"> <div class="dot"></div> <div class="dot"></div> <div class="dot"></div> <div class="dot"></div> <div class="dot"></div> </div>';
                     $('#loading').html(html)
                 }
             });
