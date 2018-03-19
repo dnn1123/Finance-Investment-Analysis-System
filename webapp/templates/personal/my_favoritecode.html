@@ -59,7 +59,8 @@
                         <div class="module">
                             <div class="module-head">
                                 <button id="head1" class="btn btn-primary" data-toggle="button">关注列表</button>
-                                <div class="span3 pull-right" style="float:right;margin-right:0px;text-align: right">
+                                <div class="span3 pull-right" style="float:right;margin-right:0px;text-align: right"
+                                     id='button'>
 
                                     <button class="btn btn-mini btn-primary" type="button" data-toggle="modal"
                                             data-target="#addStock">添加
@@ -77,8 +78,8 @@
                             <div class="module-body" id="body1">
                                 <div class="btn-box-row row-fluid">
                                     <div class="span12" style="background-color:white">
-                                        <div style="height:100px;">
-                                            <table id="mytable1" style="text-align:center;height:100px">
+                                        <div>
+                                            <table id="mytable1" style="text-align:center;height:100px;">
                                                 <thead>
                                                 <tr>
                                                     <th>
@@ -110,7 +111,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="span3">
+                    <div class="span3" >
                         <div id="cityDist" style="width:100%;height:260px">
                         </div>
                     </div>
@@ -1186,7 +1187,7 @@
                     name_list = data.name_list
                     for (i = 0; i < data.code_list.length; i++) {
                         color[data.code_list[i]] = set_color()
-                        str = "<tr ><td><input type='checkbox' class='code_table' value='" + data.name_list[i] + "' id='" + data.code_list[i] + "' ></td><td>" + data.code_list[i] + "</td>" +
+                        str = "<tr style='width:100%'><td><input type='checkbox' class='code_table' value='" + data.name_list[i] + "' id='" + data.code_list[i] + "' ></td><td>" + data.code_list[i] + "</td>" +
                                 "<td>" + data.name_list[i] + "</td>" +
                                 "<td>暂无</td>" +
                                 "<td >暂无 </td>" +
@@ -1201,10 +1202,10 @@
                     set_checked_code_color(code_list, color)
                     var table = $('#mytable1').DataTable({
                         "lengthChange": false,
-                        "pageLength": 5,
+                        "pageLength": 3,
 
                         {#                                                    "processing":false,#}
-                        {#                        "scrollX": true,#}
+                        {#                                                "scrollX": true,#}
                         "searching": false,
                         {#                        "fixedColumns": { //固定列的配置项#}
                         {#                            "leftColumns": 1//固定左边第一列#}
@@ -1226,18 +1227,18 @@
                             "infoEmpty": "没有数据",
                             "infoFiltered": "(过滤总件数 _MAX_ 条)"
                         },
-                        {#                        dom: 'Bfrtip',#}
-                        {#                        buttons: {#}
-                        {#                            buttons: [#}
-                        {#                                {extend: 'copy', 'text': '复制', 'className': 'btn btn-default btn-xs',},#}
-                        {#                                {extend: 'excel', 'text': '导出Excel', 'className': 'btn btn-default btn-xs',}#}
-                        {#                            ]#}
-                        {#                        }#}
+
+                        dom: 'lfrtip',
+                        {#                                                buttons: {#}
+                        {#                                                    buttons: [#}
+                        {#                                                        {extend: 'copy', 'text': '复制', 'className': 'btn btn-default btn-xs',},#}
+                        {#                                                        {extend: 'excel', 'text': '导出Excel', 'className': 'btn btn-default btn-xs',}#}
+                        {#                                                    ]#}
+                        {#                                                }#}
                     })
 
                     new $.fn.dataTable.Buttons(table, {
                         buttons: [
-                            {#                            {extend: 'copy', 'text': '复制', 'className': 'btn btn-default btn-xs',},#}
                             {extend: 'excel', 'text': '导出Excel', 'className': 'btn btn-default btn-xs',}
                         ]
                     });
@@ -1261,11 +1262,11 @@
                                                 url: '{{ url_for("restfulapi.change_money") }}',
                                                 data: {
                                                     'action': "sub",
-                                                    'count':1,
+                                                    'count': 1,
                                                 },
                                                 dataType: 'json',
                                                 success: function (data) {
-console.log(data)
+                                                    console.log(data)
                                                 }
                                             })
                                         }
@@ -1276,21 +1277,14 @@ console.log(data)
                                     }
                                 }
                                 else {
-                                    alert('您当前享有免费下载数据特权，次此操作不消耗账户余额！')
+                                    alert('您当前享有免费下载数据特权，此次操作不消耗账户余额！')
                                 }
                             }
                         })
 
                     })
-                    {##}
-                    {#                                        table.buttons().container()#}
-                    {#                                                .appendTo($('.col-sm-6:eq(0)', table.table().container() ));#}
 
-                    {#                    绘制地图#}
-{#                    if(data.cityrec.length>0){#}
-{#                        console.log(data.cityrec)#}
-                        cityDist(data)
-{#                    }#}
+                    cityDist(data)
 
                     {#                        绘制行业分布图#}
                     var windpie_4 = echarts.init(document.getElementById('windpie_4'));
@@ -2058,9 +2052,9 @@ console.log(data)
                 set_timepicker('2010-q4', '2015-q4')
 
                 {#财务指标饼图#}
-                if(code_list.length>0){
-                index_chart_by_year(code_list, selectedindex, '2015', 1)
-                    }
+                if (code_list.length > 0) {
+                    index_chart_by_year(code_list, selectedindex, '2015', 1)
+                }
                 {#投资指标饼图#}
                 getdata(code_list, '2015')
                 CreateChart(selectedindex, 1)

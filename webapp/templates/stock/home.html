@@ -30,36 +30,39 @@
     </div>
     {#    this is the body part#}
     <div class="span9">
-        <div class="content">
+    <div class="content">
 
-            <div class="btn-controls">
-                <div class="btn-box-row row-fluid">
-                    <div class="btn-box big span12" style="text-align:left;">
-                        <div >
+        <div class="btn-controls">
+            <div class="btn-box-row row-fluid">
+                <div class="btn-box big span12" style="text-align:left;">
+                    <div>
                             <div style="margin-left:20px;font-size:40px;float:left;">
                                 {{ current_user.username }}
 
                             </div>
-                            <div id='personal_img' style="height:50px;width:50px;margin-left:10px;margin-right:10px;float:left" ></div>
+                            <div id='personal_img'
+                                 style="height:50px;width:50px;margin-left:10px;margin-right:10px;float:left"></div>
                             <div style="margin-top:20px;margin-left:20px;">
                                 个人信息
                             </div>
-
-
-                            <div id="user_info" style="margin-left:30">
+                            <div id="user_info" style="margin-left:30px">
 
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="btn-box-row row-fluid">
-                    <a href="#" class="btn-box big span4"><i class=" icon-random"></i><b id="myfavorites"></b>
+                    <a href="{{ url_for('main.my_favoritecode') }}" class="btn-box big span4"><i class=" icon-random"></i><b id="myfavorites"></b>
                         <p class="text-muted">
                             我关注的股票</p>
-                    </a><a href="#" class="btn-box big span4"><i class="icon-user"></i><b id="mypositions"></b>
+                    </a>
+
+                    <a href="{{ url_for('stock.myposition') }}" class="btn-box big span4"><i class="icon-user"></i><b id="mypositions"></b>
                     <p class="text-muted">
                         当前持仓股票</p>
-                </a><a href="#" class="btn-box big span4"><i class="icon-money"></i><b id="myprofits"></b>
+                </a>
+
+                    <a href="#" class="btn-box big span4"><i class="icon-money"></i><b id="myprofits"></b>
                     <p class="text-muted">
                         当前持仓收益</p>
                 </a>
@@ -68,16 +71,16 @@
                     <div class="span8">
                         <div class="row-fluid">
                             <div class="span12">
-                                <a href="#" class="btn-box small span4"><i class="icon-envelope"></i><b id="mymessages">11</b>
+                                <a href="{{ url_for('message.my_message') }}" class="btn-box small span4"><i class="icon-envelope"></i><b id="mymessages">11</b>
                                     <p class="text-muted">
                                         我的消息</p>
                                 </a>
-                                <a href="#" class="btn-box small span4"><i class="icon-group"></i><b
+                                <a href="{{ url_for('stock.myposition') }}" class="btn-box small span4"><i class="icon-group"></i><b
                                         id="mytraderec"></b>
                                     <p class="text-muted">
                                         我的交易</p>
                                 </a>
-                                <a href="#" class="btn-box small span4"><i class="icon-exchange"></i><b>3</b>
+                                <a href="{{ url_for("quant.models") }}" class="btn-box small span4"><i class="icon-exchange"></i><b>3</b>
                                     <p class="text-muted">
                                         我的量化模型</p>
                                 </a>
@@ -90,7 +93,7 @@
                                         我的投资组合</p>
                                 </a>
 
-                                <a href="#" class="btn-box small span4"><i class="icon-bullhorn"></i><b>10</b>
+                                <a href="{{ url_for('message.system_message') }}" class="btn-box small span4"><i class="icon-bullhorn"></i><b>10</b>
                                     <p class="text-muted">
                                         我的新闻</p>
                                 </a>
@@ -144,18 +147,17 @@
                         $("#user_info").text('您的账户尚未开通会员服务');
                     }
                     else if (data.member_type == 'month') {
-                        $("#personal_img").append("<img src=\"../static/personal_img/包月会员.png\" />")
+                        $("#personal_img").append("<img src=\"{{ url_for('static',filename='personal_img/包月会员.png') }}\" />")
                         $("#user_info").text('您的账户目前是包月会员，可免费下载数据');
                     }
                     else if (data.member_type == 'year') {
-                        $("#personal_img").append("<img src=\"../static/personal_img/年费会员.png\" />")
+                        $("#personal_img").append("<img src=\"{{ url_for('static',filename='personal_img/年费会员.png') }}\" />")
                         $("#user_info").text('您的账户目前是年费会员，可免费下载数据');
                     }
                     $("#user_info").append('</br>您当前账户余额：' + data.user_money + '元<button  data-toggle=\"modal\" data-target=\"#modal_recharge\" class=\'btn btn-mini btn-primary\'>点此充值</button>');
                     cityDist(data);
                 }
             });
-
 
 
             {#            get profit cost market value trend data#}
@@ -328,7 +330,19 @@
                         dataZoom: {
                             yAxisIndex: 'none'
                         },
-                        dataView: {readOnly: false},
+                        dataView: {
+                            optionToContent: function (opt) {
+                                var axisData = opt.xAxis[0].data;
+                                var series = opt.series;
+                                var table = '<table id="test" class="table-bordered table-striped" style="width:100%;text-align:center">', table = table + '<tbody><tr>' + '<td>时间</td>' + '<td>' + series[0].name + '</td>' + '<td>' + series[1].name + '</td>' + '</tr>';
+                                for (var i = 0, l = axisData.length; i < l; i++) {
+                                    table += '<tr>' + '<td>' + axisData[i] + '</td>' + '<td>' + series[0].data[i] + '</td>' + '<td>' + series[1].data[i] + '</td>' + '</tr>';
+                                }
+                                table += '</tbody>';
+                                return table;
+                            },
+                            readOnly: false
+                        },
                         magicType: {type: ['line', 'bar']},
                         restore: {},
                         saveAsImage: {}

@@ -684,6 +684,10 @@ def positionhistory():
     data = history.query.filter_by(users=username).order_by(db.desc(history.time)).all()
     getdata = Profit_monitoring(data)
     results = getdata.start()
+    for i in range(0,len(results['profit'])):
+        results['profit'][i] = round(results['profit'][i],4)
+        results['cost'][i] = round(results['cost'][i],4)
+        results['value'][i] = round(results['value'][i],4)
     # get trade records
     trade_records = history.query.filter_by(users=username).all()
     namelist = []
