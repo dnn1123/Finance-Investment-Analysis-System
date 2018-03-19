@@ -13,12 +13,8 @@ from webapp.Library.wind import WindData_to_DataFrame
 from webapp.Library.pyalgotrade_custom import dataFramefeed,plotter,positionRecord
 from webapp.Library.process_bar import ShowProcess
 import tushare as ts
-<<<<<<< HEAD
-import base64,datetime
-
-=======
 import base64,datetime,time
->>>>>>> 78c34cb1f3470e97847f449bbb5ace50d08552fa
+
 def handle_form(form):
     type=form.get('type')
     if type=="Pair_Strategy_Based_Bank":
@@ -31,14 +27,11 @@ def handle_form(form):
                                  startdate=form.get('sdate'), enddate=form.get('edate'))
         mystr.run()
         return mystr.getResult()
-<<<<<<< HEAD
-=======
     if type=="Stock_Picking_Strategy_Based_Value_By_Steve_A":
         mystr = Strategy_Manager(Strategy.Stock_Picking_Strategy_Based_Value_By_Steve_A, commission=float(form.get('commission')),
                                  cash=float(form.get('cash')),startdate=form.get('sdate'), enddate=form.get('edate'))
         mystr.run()
         return mystr.getResult()
->>>>>>> 78c34cb1f3470e97847f449bbb5ace50d08552fa
 
 def handle_liveform(form):
     type=form.get('type')
@@ -182,12 +175,7 @@ class Strategy_Manager():
         brk = broker.backtesting.Broker(self.__cash, feed, broker_commission)  # 初始化
         brk.setFillStrategy(fill_stra)  # 将成交策略传给brk
         # 4.把策略跑起来
-<<<<<<< HEAD
-        self.__strategy_entity = Pair_Strategy_Based_Bank(feed, brk, self.__i1, self.__i2, 50)
-=======
         self.__strategy_entity = Pair_Strategy_Based_Bank(feed, brk, self.__i1, self.__i2, self.__startdate,50)
-
->>>>>>> 78c34cb1f3470e97847f449bbb5ace50d08552fa
         self.__retAnalyzer = returns.Returns()
         self.__strategy_entity.attachAnalyzer(self.__retAnalyzer)
         self.__sharpeRatioAnalyzer = sharpe.SharpeRatio()
@@ -560,22 +548,6 @@ class Pair_Strategy_Based_Bank(strategy.BacktestingStrategy):
         self.__position.exitMarket()
 
     def onBars(self, bars):
-<<<<<<< HEAD
-        self.__DataCalculator.update()  # 计算所有需要指标
-        if bars.getBar(self.__i1) and bars.getBar(self.__i2):
-            threshold = self.__DataCalculator.getThreshold()
-            if threshold is not None:
-                currentPos_i1 = self.getBroker().getShares(self.__i1)
-                currentPos_i2 = self.getBroker().getShares(self.__i2)
-                if threshold < -1 * self.__thresholdStd:
-                    if currentPos_i2 > 0:
-                        self.enterShort(self.__i2, currentPos_i2)
-                    self.buyUseAllMoney(self.__i1, bars)
-                elif threshold > self.__thresholdStd:  # Buy spread when its value drops below 2 standard deviations.
-                    if currentPos_i1 > 0:
-                        self.enterShort(self.__i1, currentPos_i1)
-                    self.buyUseAllMoney(self.__i2, bars)
-=======
         if bars.getDateTime() >= self.__startdate:
             self.__DataCalculator.update()  # 计算所有需要指标
             if bars.getBar(self.__i1) and bars.getBar(self.__i2):
@@ -593,7 +565,6 @@ class Pair_Strategy_Based_Bank(strategy.BacktestingStrategy):
                         self.buyUseAllMoney(self.__i2, bars)
         else:
             pass
->>>>>>> 78c34cb1f3470e97847f449bbb5ace50d08552fa
 
 class Pair_Strategy_Based_Bank_Live(strategy.BacktestingStrategy):
     def __init__(self, feed, brk, instrument1, instrument2, builddate,interval):
@@ -806,14 +777,13 @@ class Buy_Everyday_Live(strategy.BacktestingStrategy):
             if self.__text != "":
                 self.__textlist.setdefault(bars.getDateTime().date(), self.__text)
 
-<<<<<<< HEAD
 class Stock_Picking_Strategy_Based_Value_By_Steve(strategy.BacktestingStrategy):
     def __init__(self,feed,brk,instrument,malength_1,malength_2):
         super(Stock_Picking_Strategy_Based_Value_By_Steve, self).__init__(feed, brk)
         self.__DataCalculator = ''
         self.__T = 20  #调仓周期
         self.__margin = instrument  #调仓标记 代表距离调仓还有多少天
-=======
+
 class DataCalculator_For_Stock_Picking_Strategy_Based_Value_By_Steve_A():
     def __init__(self):
         pass
@@ -930,8 +900,8 @@ class Stock_Picking_Strategy_Based_Value_By_Steve_A(strategy.BacktestingStrategy
         self.__T = T  #调仓周期
         self.__margin = 0  #调仓标记 代表距离调仓还有多少天
         self.__startdate =datetime.datetime.strptime(startdate,"%Y-%m-%d")
->>>>>>> 78c34cb1f3470e97847f449bbb5ace50d08552fa
         self.__position = None
+
     def onEnterOk(self, position):
         pass
 

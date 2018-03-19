@@ -22,12 +22,9 @@ def request_form():
         return render_template('/form/form_Pair_Strategy_Based_Bank.html')
     if type=="DoubleMA_Strategy":
         return render_template('/form/form_DoubleMA_Strategy.html')
-<<<<<<< HEAD
-
-=======
     if type=="Stock_Picking_Strategy_Based_Value_By_Steve_A":
         return render_template('/form/form_Stock_Picking_Strategy_Based_Value_By_Steve_A.html')
->>>>>>> 78c34cb1f3470e97847f449bbb5ace50d08552fa
+
 @quant_api.route('/backtest', methods=('GET', 'POST'))
 def back_test():
     data,history = handle_form(request.form)
@@ -162,12 +159,7 @@ def start_subscribe():
     db.session.commit()
     return jsonify({"result":"success"})
 
-<<<<<<< HEAD
-=======
 
-
-
->>>>>>> 78c34cb1f3470e97847f449bbb5ace50d08552fa
 @quant_api.route('/realtime_simulation',methods=('GET', 'POST'))
 def get_realtime_simulation_data():
     data = subscriber.query.filter_by(user=current_user.username).join(strategy).add_columns(strategy.name_cn).all()
