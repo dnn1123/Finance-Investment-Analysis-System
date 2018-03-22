@@ -13,7 +13,7 @@ from webapp.Library.wind import WindData_to_DataFrame
 from webapp.Library.pyalgotrade_custom import dataFramefeed,plotter,positionRecord
 from webapp.Library.process_bar import ShowProcess
 import tushare as ts
-import base64,datetime,time
+import base64,datetime,string
 def handle_form(form):
     type=form.get('type')
     if type=="Pair_Strategy_Based_Bank":
@@ -31,7 +31,20 @@ def handle_form(form):
                                  cash=float(form.get('cash')),startdate=form.get('sdate'), enddate=form.get('edate'))
         mystr.run()
         return mystr.getResult()
-
+def get_stock_list(form):
+    type=form.get('type')
+    if type=="Pair_Strategy_Based_Bank":
+        stock=[form.get('instrument_1').encode('utf-8'),form.get('instrument_2').encode('utf-8')]
+    if type=="DoubleMA_Strategy":
+        stock = [form.get('instrument').encode('utf-8')]
+    if type=="Stock_Picking_Strategy_Based_Value_By_Steve_A":
+        stock=[]
+    return stock
+def Wind_code(stock):
+    if stock[0]=='6':
+        return stock+'.SH'
+    else:
+        return stock+'.SZ'
 def handle_liveform(form):
     type=form.get('type')
     if type=="Pair_Strategy_Based_Bank":
@@ -164,7 +177,7 @@ class Strategy_Manager():
 
         broker_commission = broker.backtesting.TradePercentage(self.__commission)  # 费率交易金额百分比 也可设置固定费率 无手续费
         # 3.2 fill strategy设置
-        fill_stra = broker.fillstrategy.DefaultStrategy(volumeLimit=0.1)  # 成交比例 也可以用set方法修改 初始化赋值也可
+        fill_stra = broker.fillstrategy.DefaultStrategy(volumeLimit=1.0)  # 成交比例 也可以用set方法修改 初始化赋值也可
         sli_stra = broker.slippage.NoSlippage()  # 滑点模型  此为无滑点
         # broker.slippage.VolumeShareSlippage(priceImpact=0.1) 设置影响程度
         fill_stra.setSlippageModel(sli_stra)
@@ -173,7 +186,7 @@ class Strategy_Manager():
         brk = broker.backtesting.Broker(self.__cash, feed, broker_commission)  # 初始化
         brk.setFillStrategy(fill_stra)  # 将成交策略传给brk
         # 4.把策略跑起来
-        self.__strategy_entity = Pair_Strategy_Based_Bank(feed, brk, self.__i1, self.__i2, self.__startdate,50)
+        self.__strategy_entity = Pair_Strategy_Based_Bank(feed, brk, self.__i1, self.__i2 ,self.__startdate,50)
 
         self.__retAnalyzer = returns.Returns()
         self.__strategy_entity.attachAnalyzer(self.__retAnalyzer)
@@ -197,7 +210,7 @@ class Strategy_Manager():
 
         broker_commission = broker.backtesting.TradePercentage(self.__commission)  # 费率交易金额百分比 也可设置固定费率 无手续费
         # 3.2 fill strategy设置
-        fill_stra = broker.fillstrategy.DefaultStrategy(volumeLimit=0.1)  # 成交比例 也可以用set方法修改 初始化赋值也可
+        fill_stra = broker.fillstrategy.DefaultStrategy(volumeLimit=1.0)  # 成交比例 也可以用set方法修改 初始化赋值也可
         sli_stra = broker.slippage.NoSlippage()  # 滑点模型  此为无滑点
         # broker.slippage.VolumeShareSlippage(priceImpact=0.1) 设置影响程度
         fill_stra.setSlippageModel(sli_stra)
@@ -225,7 +238,7 @@ class Strategy_Manager():
         feed.addBarsFromDataFrame(self.__i, i_data)
         broker_commission = broker.backtesting.TradePercentage(self.__commission)  # 费率交易金额百分比 也可设置固定费率 无手续费
         # 3.2 fill strategy设置
-        fill_stra = broker.fillstrategy.DefaultStrategy(volumeLimit=0.1)  # 成交比例 也可以用set方法修改 初始化赋值也可
+        fill_stra = broker.fillstrategy.DefaultStrategy(volumeLimit=1.0)  # 成交比例 也可以用set方法修改 初始化赋值也可
         sli_stra = broker.slippage.NoSlippage()  # 滑点模型  此为无滑点
         # broker.slippage.VolumeShareSlippage(priceImpact=0.1) 设置影响程度
         fill_stra.setSlippageModel(sli_stra)
@@ -254,7 +267,7 @@ class Strategy_Manager():
         feed.addBarsFromDataFrame(self.__i, i_data)
         broker_commission = broker.backtesting.TradePercentage(self.__commission)  # 费率交易金额百分比 也可设置固定费率 无手续费
         # 3.2 fill strategy设置
-        fill_stra = broker.fillstrategy.DefaultStrategy(volumeLimit=0.1)  # 成交比例 也可以用set方法修改 初始化赋值也可
+        fill_stra = broker.fillstrategy.DefaultStrategy(volumeLimit=1.0)  # 成交比例 也可以用set方法修改 初始化赋值也可
         sli_stra = broker.slippage.NoSlippage()  # 滑点模型  此为无滑点
         # broker.slippage.VolumeShareSlippage(priceImpact=0.1) 设置影响程度
         fill_stra.setSlippageModel(sli_stra)
@@ -283,7 +296,7 @@ class Strategy_Manager():
         feed.addBarsFromDataFrame(self.__i, i_data)
         broker_commission = broker.backtesting.TradePercentage(self.__commission)  # 费率交易金额百分比 也可设置固定费率 无手续费
         # 3.2 fill strategy设置
-        fill_stra = broker.fillstrategy.DefaultStrategy(volumeLimit=0.1)  # 成交比例 也可以用set方法修改 初始化赋值也可
+        fill_stra = broker.fillstrategy.DefaultStrategy(volumeLimit=1.0)  # 成交比例 也可以用set方法修改 初始化赋值也可
         sli_stra = broker.slippage.NoSlippage()  # 滑点模型  此为无滑点
         # broker.slippage.VolumeShareSlippage(priceImpact=0.1) 设置影响程度
         fill_stra.setSlippageModel(sli_stra)
@@ -318,7 +331,7 @@ class Strategy_Manager():
         self.__process_bar.close()
         broker_commission = broker.backtesting.TradePercentage(self.__commission)  # 费率交易金额百分比 也可设置固定费率 无手续费
         # 3.2 fill strategy设置
-        fill_stra = broker.fillstrategy.DefaultStrategy(volumeLimit=0.1)  # 成交比例 也可以用set方法修改 初始化赋值也可
+        fill_stra = broker.fillstrategy.DefaultStrategy(volumeLimit=1.0)  # 成交比例 也可以用set方法修改 初始化赋值也可
         sli_stra = broker.slippage.NoSlippage()  # 滑点模型  此为无滑点
         # broker.slippage.VolumeShareSlippage(priceImpact=0.1) 设置影响程度
         fill_stra.setSlippageModel(sli_stra)
@@ -386,7 +399,7 @@ class Strategy_Manager():
         print self.__broker.getShares("a")  #默认不使用
         print "active order 活跃订单 未完成 已挂出 未完成交易"
         print self.__broker.getActiveOrders()
-        self.__plt.plot()
+        # self.__plt.plot()
 
     def getResult(self):
         self.__broker = self.__strategy_entity.getBroker()
@@ -444,7 +457,7 @@ class Strategy_Manager():
         # print self.__broker.getActiveOrders()
         # self.__plt.plot()
         result.setdefault("chartdata_portfolio",self.__plt.getPortfolio())
-        return result,self.__plt.getTradehistory()
+        return result,self.__plt.getTradehistory(),self.__plt.getPortfolio()
 
 def regression(ylist, xlist):  # 回归计算 返回参数 输入类型nparray 返回数组
     xlist = sm.add_constant(xlist)
@@ -454,7 +467,7 @@ def regression(ylist, xlist):  # 回归计算 返回参数 输入类型nparray �
 
 def count_shares(number):
     if number>=100:
-        return int(number)
+        return int(number/100)*100
     else:
         return 0
 
@@ -523,13 +536,14 @@ class Pair_Strategy_Based_Bank(strategy.BacktestingStrategy):
         self.__position = None
 
     def buyUseAllMoney(self, instrument, bars):
-        cash = self.getBroker().getCash(False)
-        print cash
+        cash = self.getBroker().getCash(False)*0.5
         price = bars[instrument].getPrice()
-        volume=count_shares(cash / price)
-        print 'volume'+ str(volume)
+        volume=count_shares(cash / price/(1.0+0.001))
         if volume != 0:
             self.enterLongLimit(instrument, price, volume)
+
+    def getStartdate(self):
+        return self.__startdate
 
     def onEnterOk(self, position):
         # print position.getEntryOrder().getAction()
@@ -581,12 +595,15 @@ class Pair_Strategy_Based_Bank_Live(strategy.BacktestingStrategy):
         self.__textlist={}
 
     def buyUseAllMoney(self, instrument, bars):
-        cash = self.getBroker().getCash(False)
+        cash = self.getBroker().getCash(False)*0.5
         price = bars[instrument].getPrice()
         volume = count_shares(cash / price)
         if volume != 0:
             self.enterLongLimit(instrument, price,volume)
             self.__text+=u"买入"+self.__i1+u"股票"+str(volume)+u"股"
+
+    def getStartdate(self):
+        return self.__builddate
 
     def getTextlist(self):
         return self.__textlist
@@ -654,6 +671,9 @@ class DoubleMA_Strategy(strategy.BacktestingStrategy):
         self.__i = instrument
         self.__position = None
 
+    def getStartdate(self):
+        return self.__startdate
+
     def onEnterOk(self, position):
         # print position.getEntryOrder().getAction()
         execInfo = position.getEntryOrder().getExecutionInfo()
@@ -697,6 +717,9 @@ class DoubleMA_Strategy_Live(strategy.BacktestingStrategy):
         self.__text=''
         self.__textlist={}
         self.__position = None
+
+    def getStartdate(self):
+        return self.__builddate
 
     def getTextlist(self):
         return self.__textlist
@@ -746,6 +769,9 @@ class Buy_Everyday_Live(strategy.BacktestingStrategy):
         self.__text=''
         self.__textlist={}
         self.__position = None
+
+    def getStartdate(self):
+        return self.__builddate
 
     def getTextlist(self):
         return self.__textlist
@@ -894,6 +920,10 @@ class Stock_Picking_Strategy_Based_Value_By_Steve_A(strategy.BacktestingStrategy
         self.__margin = 0  #调仓标记 代表距离调仓还有多少天
         self.__startdate =datetime.datetime.strptime(startdate,"%Y-%m-%d")
         self.__position = None
+
+    def getStartdate(self):
+        return self.__startdate
+
     def onEnterOk(self, position):
         pass
 
@@ -935,11 +965,35 @@ class Stock_Picking_Strategy_Based_Value_By_Steve_A(strategy.BacktestingStrategy
             pass
 
 
-#
-# if __name__=="__main__":
-#     w.start()
-#     mystr=Strategy_Manager(Strategy.Stock_Picking_Strategy_Based_Value_By_Steve_A,commission=0.001,cash=100000,startdate='2015-01-01',enddate='2015-12-31')
-#     mystr.run()
-#     dc=DataCalculator_For_Stock_Picking_Strategy_Based_Value_By_Steve_A()
-#     suglist= dc.suggest_code_list('2015-02-15','2014-12-31',20)
-#     print suglist
+def get_fiducial_value_data(cash,date,stock,commission=0.001,index="000300"):
+    data=ts.get_k_data(index,start=date[0].strftime("%Y-%m-%d"),end=date[-1].strftime("%Y-%m-%d"),index=True)
+    data['p_change']=data.close/data.close.shift(1)
+    index_data=[]
+    for i in date:
+        p=np.where(data.date == i.strftime("%Y-%m-%d"))[0]
+        if p.size==0:
+            index_data.append(1)
+        else:
+            index_data.append(data.iloc[p].p_change.values[0])
+    stock_data={}
+    for s in stock:
+        s_data=ts.get_k_data(s, start=date[0].strftime("%Y-%m-%d"), end=date[-1].strftime("%Y-%m-%d"))
+        s_data['p_change'] = s_data.close / s_data.close.shift(1)
+        stock_data[s]=[]
+        for i in date:
+            p = np.where(s_data.date == i.strftime("%Y-%m-%d"))[0]
+            if p.size == 0:
+                stock_data[s].append(1)
+            else:
+                stock_data[s].append(s_data.iloc[p].p_change.values[0])
+    index_portfolio=[cash/(1.0+commission)]
+    for i in index_data[1:]:
+        index_portfolio.append(index_portfolio[-1]*i)
+    results={}
+    for s in stock:
+        stock_portfolio = [cash/(1.0+commission)]
+        for j in stock_data[s][1:]:
+            stock_portfolio.append(stock_portfolio[-1] * j)
+        results[s]=stock_portfolio
+    results['index']=index_portfolio
+    return results

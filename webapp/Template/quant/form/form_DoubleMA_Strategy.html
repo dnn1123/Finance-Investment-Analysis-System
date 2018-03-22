@@ -2,7 +2,16 @@
     <input type="text" value="DoubleMA_Strategy" style="display: none" name="type">
     <div class="row-fluid">
         <div class="span6">
-            股票代码：<input type="text" placeholder="" name="instrument">
+            股票代码：
+            <div class="input-append input-group btn-group">
+                <input type="text" class="stockcode" name="instrument">
+                <button class="btn btn-mini dropdown-toggle" data-toggle="dropdown">
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                    <!-- dropdown menu links -->
+                </ul>
+            </div>
         </div>
         <div class="span6">
             投入资金：<input type="text" placeholder="" name="cash">
@@ -18,7 +27,7 @@
     </div>
     <div class="row-fluid">
         <div class="span6">
-            回测结束日期：<input type="text" placeholder="" name="edate"  class="form_datetime">
+            回测结束日期：<input type="text" placeholder="" name="edate" class="form_datetime">
         </div>
     </div>
 </form>
@@ -28,12 +37,35 @@
 
 <script>
     $('.form_datetime').datetimepicker({
-            format: 'yyyy-mm-dd',
-            startView: 4,
-            maxView: 4,
-            minView:2,
-            autoclose: true,
-            pickerPosition:'bottom-right'
+        format: 'yyyy-mm-dd',
+        startView: 4,
+        maxView: 4,
+        minView: 2,
+        autoclose: true,
+        pickerPosition: 'bottom-right'
     })
 
+    $(".stockcode").bsSuggest({
+        indexKey: 1,
+        allowNoKeyword: true,
+        getDataMethod: "url",
+        showBtn: true,
+        url: '{{url_for("restfulapi.stock_code",q="")}}',
+        processData: function (json) {     // url 获取数据时，对数据的处理，作为 getData 的回调函数
+            var i, len, data = {value: []};
+            if (!json || !json.stockcode || json.stockcode.length == 0) {
+                return false;
+            }
+            len = json.stockcode.length;
+            for (i = 0; i < len; i++) {
+                data.value.push({
+                    "Id": (i + 1),
+                    "stockcode": json.stockcode[i],
+                    "stockname": json.stockname[i],
+                });
+            }
+            console.log(data)
+            return data;
+        }
+    });
 </script>

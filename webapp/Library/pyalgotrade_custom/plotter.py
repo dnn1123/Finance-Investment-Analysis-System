@@ -14,13 +14,20 @@ class StrategyPlotter(object):
         self.__dateTimes = []
         self.__tradehistory=[]
         self.__portfolio=[]
+        self.__startdate=strat.getStartdate()
         strat.getBarsProcessedEvent().subscribe(self.__onBarsProcessed)
         strat.getBroker().getOrderUpdatedEvent().subscribe(self.__onOrderEvent)
     def getTradehistory(self):
         self.__tradehistory.reverse()
         return self.__tradehistory
     def getPortfolio(self):
-        return {"date":self.__dateTimes,"data":self.__portfolio}
+        point=None
+        for i in self.__dateTimes:
+            if i>=self.__startdate:
+                point=i
+                break
+        num=self.__dateTimes.index(point)
+        return {"date":self.__dateTimes[num:],"data":self.__portfolio[num:]}
     def __onBarsProcessed(self, strat, bars):
         dateTime = bars.getDateTime()
         self.__dateTimes.append(dateTime)
