@@ -1,15 +1,17 @@
 # coding=utf-8
 from flask import Blueprint,request,render_template,jsonify
 from flask_login import current_user
-from .bpm import handle_form,handle_liveform,dict_to_sql,sql_to_dict,Strategy_Manager,Strategy
+from .bpm import handle_form,handle_liveform,dict_to_sql,sql_to_dict,Strategy_Manager,Strategy,create_position_records
 from webapp.stratlib import Profit_monitoring
-from webapp.models import strategy,subscriber,db
-import os,datetime
+from webapp.models import strategy,subscriber,db,stock_basics,basic_stock
+from webapp.config import paths
+import os,datetime,string
+import tushare as ts
 from time import sleep
 quant_api = Blueprint(
     'quant_api',
     __name__,
-    template_folder=os.path.abspath(os.path.join(os.getcwd(),'webapp','Template','quant')),
+    template_folder=os.path.abspath(os.path.join(paths.project_path,'Template','quant')),
     url_prefix="/quant_api"
 )
 
@@ -20,13 +22,95 @@ def request_form():
         return render_template('/form/form_Pair_Strategy_Based_Bank.html')
     if type=="DoubleMA_Strategy":
         return render_template('/form/form_DoubleMA_Strategy.html')
+    if type=="Stock_Picking_Strategy_Based_Value_By_Steve_A":
+        return render_template('/form/form_Stock_Picking_Strategy_Based_Value_By_Steve_A.html')
 @quant_api.route('/backtest', methods=('GET', 'POST'))
 def back_test():
     data,history=handle_form(request.form)
     getdata = Profit_monitoring(history)
     results = getdata.start()
-    print(results)
-    return jsonify(data)
+    #position history
+    namelist = []
+    for i in range(len(history)):
+        stock_name = stock_basics.query.filter_by(trade_code=history[i].code).first().sec_name
+        namelist.append(stock_name)
+    t_records = []
+    for i in range(len(history)):
+        record = [history[i].code, namelist[i], history[i].position, history[i].price,
+                  history[i].amount, history[i].time.strftime('%Y-%m-%d')]
+        t_records.append(record)
+    res = {
+        'results': results,
+        'traderec': t_records,
+    }
+
+    c_records = []
+    for i in range(len(history)):
+        record = [history[i].code, namelist[i], history[i].commission, history[i].amount]
+        c_records.append(record)
+    # get position records
+    position_records = create_position_records(history)
+    namelist = []
+    for i in range(len(position_records)):
+        stock_name = stock_basics.query.filter_by(trade_code=position_records[i].code).first().sec_name
+        namelist.append(stock_name)
+    # get latest closing price
+    pricelist = []
+    for i in range(len(position_records)):
+        pri = ts.get_hist_data(position_records[i].code,start=request.form.get('edate'),end=request.form.get('edate')).close[0]
+        pricelist.append(pri)
+    p_records = []
+    for i in range(len(position_records)):
+        rec = [position_records[i].code, namelist[i], position_records[i].shares, position_records[i].total_cost,
+               pricelist[i], (pricelist[i] - position_records[i].total_cost) * position_records[i].shares]
+        p_records.append(rec)
+    # get department info
+    departmentlist = []
+    for i in range(len(position_records)):
+        dep = stock_basics.query.filter_by(trade_code=position_records[i].code).first().industry_gics
+        departmentlist.append(dep)
+    d_records = []
+    for i in range(len(position_records)):
+        rec = [namelist[i], departmentlist[i]]
+        d_records.append(rec)
+
+    # get group info
+    grouplist = []
+    for i in range(len(position_records)):
+        gro = basic_stock.query.filter_by(code=position_records[i].code).first().industry
+        grouplist.append(gro)
+    g_records = []
+    for i in range(len(position_records)):
+        rec = [namelist[i], grouplist[i]]
+        g_records.append(rec)
+    citycount = {}
+    for i in range(len(position_records)):
+        city = stock_basics.query.filter_by(trade_code=position_records[i].code).first().city
+        if (citycount.has_key(city)):
+            citycount[city] += 1
+        else:
+            citycount[city] = 1
+    cityrec = []
+    for key in citycount:
+        rec = [key, citycount[key]]
+        cityrec.append(rec)
+    # get group info
+    g_records = []
+    for i in range(len(position_records)):
+        rec = [namelist[i], grouplist[i]]
+        g_records.append(rec)
+
+    results_all = {
+        'data':data,
+        'res':res,
+        'traderec': t_records,
+        'positionrec': p_records,
+        'commissionrec': c_records,
+        'departmentrec': d_records,
+        'grouprec': g_records,
+        'cityrec': cityrec,
+    }
+    return jsonify(results_all)
 
 @quant_api.route('/realtime_form', methods=('GET', 'POST'))
 def request_liveform():
@@ -74,6 +158,8 @@ def start_subscribe():
     return jsonify({"result":"success"})
 
 
+
+
 @quant_api.route('/realtime_simulation',methods=('GET', 'POST'))
 def get_realtime_simulation_data():
     data = subscriber.query.filter_by(user=current_user.username).join(strategy).add_columns(strategy.name_cn).all()
@@ -99,6 +185,12 @@ def get_realtime_simulation_detail_data():
 
         if data.strategy_id == Strategy.DoubleMA_Strategy.value:
             strategy = Strategy_Manager(Strategy.DoubleMA_Strategy, live=True, cash=params['cash'],
+                                        commission=params['commission'], builddate=data.build_date,
+                                        instrument=params['instrument'])
+            strategy.run()
+            message = strategy.getMessage()
+        if data.strategy_id == Strategy.Buy_Everyday.value:
+            strategy = Strategy_Manager(Strategy.Buy_Everyday, live=True, cash=params['cash'],
                                         commission=params['commission'], builddate=data.build_date,
                                         instrument=params['instrument'])
             strategy.run()

@@ -6,7 +6,7 @@ import os
 quant_view = Blueprint(
     'quant',
     __name__,
-    template_folder=os.path.abspath(os.path.join(paths.project_path,'webapp','Template','quant')),
+    template_folder=os.path.abspath(os.path.join(paths.project_path,'Template','quant')),
     url_prefix="/quant"
 )
 @quant_view.route('/models',methods=('GET', 'POST'))

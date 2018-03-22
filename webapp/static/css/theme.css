@@ -1052,8 +1052,8 @@ border-top-left-radius: 3px;
 	padding: 15px 0
 }
 .module-body.table .table th, .module-body.table .table td {
-	padding-left: 15px;
-	padding-right: 15px
+	padding-left: 60px;
+	padding-right: 15px;
 }
 .module-foot {
 	background: #f9f9f9;

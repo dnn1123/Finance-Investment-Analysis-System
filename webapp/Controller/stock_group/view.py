@@ -1,22 +1,16 @@
 # coding=utf-8
-from flask import Blueprint, redirect, render_template, url_for, request  # me:request
+from flask import Blueprint,render_template
 from webapp.config import paths
 import os
-from webapp.models import *
-from webapp.forms import *
-from flask_login import login_required, current_user
-from webapp.extensions import finance_analyst_permission
-# from flask_sqlalchemy import SQLAlchemy #me
-from sqlalchemy import create_engine, or_, func, desc, distinct  # me func用于计数,desc用于逆序找max值
-from sqlalchemy.orm import sessionmaker  # me
-import MySQLdb, time
+from flask_login import login_required
 
 stock_group_view = Blueprint(
     'stock_group',
     __name__,
-    template_folder=os.path.abspath(os.path.join(paths.project_path,'webapp','Template','stock_group')),
+    template_folder=os.path.abspath(os.path.join(paths.project_path, 'Template', 'stock_group')),
     url_prefix="/stock_group"
 )
+
 
 # 市场导航
 @stock_group_view.route('/navigation', methods=('GET', 'POST'))
@@ -24,11 +18,13 @@ stock_group_view = Blueprint(
 def navigation():
     return render_template('navigation.html')
 
+
 # cns 大陆市场
 @stock_group_view.route('/cns_home', methods=('GET', 'POST'))
 @login_required
 def cns_home():
     return render_template("cns/cns_stock_industry.html")
+
 
 # 沪深300指数筛选
 @stock_group_view.route('/hushen_300', methods=('GET', 'POST'))

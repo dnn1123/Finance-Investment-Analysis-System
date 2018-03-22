@@ -12,7 +12,7 @@
     <script type="text/javascript" src="{{ url_for('static',filename='js/china.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static',filename='js/jquery.pagination.js') }}"></script>
     <script type="text/javascript"
-            src="{{ url_for('static',filename='DataTables-1.10.15/media/js/jquery.dataTables.js') }}"></script>
+            src="{{ url_for('static',filename="DataTables-1.10.15/media/js/jquery.dataTables.js") }}"></script>
     <script type="text/javascript"
             src="{{ url_for('static',filename='DataTables-1.10.15/fixedcolumns/js/dataTables.fixedColumns.js') }}"></script>
     {#excel#}
@@ -149,6 +149,20 @@
             table-layout: inherit;
             width: 100px;
         }
+
+        #zyqnav ul ul {
+            display: none;
+            position: absolute;
+            left: 100%;
+            top: 0;
+            background-color: white;
+            border: 1px solid lightgrey;
+        }
+
+        #zyqnav ul li:hover > ul { /* > 子菜单选择器 鼠标在li上的时候 改变子ul的display属性*/
+            display: block;
+        }
+
     </style>
     {% block styles %}{% endblock %}
 </head>
@@ -165,19 +179,25 @@
                     <li><a href="#"><i class="icon-bar-chart"></i></a></li>
                 </ul>
                 {% block searchForm %}{% endblock %}
-                <ul class="nav pull-right">
-                    <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">功能导航
-                        <b class="caret"></b></a>
+                <ul class="nav pull-right" id="onav">
+                    <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">功能导航<b
+                            class="caret"></b></a>
                         <ul class="dropdown-menu">
-                            <li><a href="#">财务分析</a></li>
-                            <li><a href="#">量化模型</a></li>
+                            <li><a href="{{ url_for('stock_solo.basic') }}">股票个体分析 </a></li>
+                            <li><a href="{{ url_for('stock_group.navigation') }}">股票总体概览</a></li>
+                            <li><a href="{{ url_for('industry_analysis.mymark') }}">整体行业状况分析</a></li>
+                            <li><a href="{{ url_for('global_industry.basic') }}">投资分类评级</a></li>
+                            <li class="divider"></li>
+                            <li><a href="{{ url_for("quant.models") }}">量化模型 </a></li>
+                            <li><a href="{{ url_for("quant.backtest") }}">历史回测 </a></li>
+                            <li><a href="{{ url_for("quant.realtime_simulation") }}">实时模拟</a></li>
                             <li class="divider"></li>
                             <li><a href="#">交易系统</a></li>
                         </ul>
                     </li>
-                    <li><a href="{{ url_for('stock.home') }}">返回主页 </a></li>
+                    <li><a href="{{ url_for('stock.home') }}">返回主页</a></li>
                     <li class="nav-user dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <img src="{{ url_for('static',filename='images/user.png') }}" class="nav-avatar"/>
+                        <img id="myavatar" src="" class="nav-avatar"/>
                         {% block current_user %}{% endblock %}
                         <b class="caret"></b></a>
                         <ul class="dropdown-menu">
@@ -192,6 +212,17 @@
                     </li>
                 </ul>
             </div>
+            <script>
+                $.ajax({
+                    type: 'GET',
+                    url: '{{ url_for("message_api.query_avatar") }}',
+                    dataType: 'json',//希望服务器返回json格式的数据
+                    success: function (data) {
+                        var imgsrc = "../static/avatar/" + data.avatar + "?timestamp=" + new Date().getTime()
+                        $("#myavatar").attr("src", imgsrc);
+                    }
+                })
+            </script>
             <!-- /.nav-collapse -->
         </div>
     </div>
