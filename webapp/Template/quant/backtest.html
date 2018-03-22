@@ -271,7 +271,6 @@
                 url: "{{ url_for("quant_api.back_test") }}",//url
                 data: $('#backtest_form').serialize(),
                 success: function (result) {
-<<<<<<< HEAD
                     $('#loading').empty();
                     $('#div_result').css('display','inline');
                     $("#portfolio").text(result.portfolio.toFixed(2));
@@ -283,7 +282,6 @@
                     $("#stimes").text(result.stimes);
                     $("#gtimes").text(result.gtimes);
                     $("#ltimes").text(result.ltimes);
-=======
                     show_values(result.data)
                     createTable("mytable", result);
                     createPosTable("postable", result);
@@ -293,20 +291,13 @@
                     frequencyDist(result);
                     commissionDist(result);
                     profittrend(result.res);
-
->>>>>>> 78c34cb1f3470e97847f449bbb5ace50d08552fa
                 },
                 error: function () {
                     alert("异常！");
                 },
                 beforeSend: function () {
-<<<<<<< HEAD
-                    $('#div_result').css('display','none');
-                    html = '<div class="loader"> <div class="dot"></div> <div class="dot"></div> <div class="dot"></div> <div class="dot"></div> <div class="dot"></div> </div>';
-=======
-                    $('#div_result').css('display', 'none')
+                    $('#div_result').css('display', 'none');
                     html = '<div class="loader"> <div class="dot"></div> <div class="dot"></div> <div class="dot"></div> <div class="dot"></div> <div class="dot"></div> </div>'
->>>>>>> 78c34cb1f3470e97847f449bbb5ace50d08552fa
                     $('#loading').html(html)
                 }
             });
