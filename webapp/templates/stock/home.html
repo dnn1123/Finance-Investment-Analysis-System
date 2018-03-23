@@ -153,11 +153,11 @@
                         $("#user_info").text('您的账户尚未开通会员服务');
                     }
                     else if (data.member_type == 'month') {
-                        $("#personal_img").append("<img src=\"{{ url_for('static',filename='personal_img/包月会员.png') }}\" />")
+                        $("#personal_img").append("<img src=\"{{ url_for('static',filename='personal_img/month_vip.png') }}\" />")
                         $("#user_info").text('您的账户目前是包月会员，可免费下载数据');
                     }
                     else if (data.member_type == 'year') {
-                        $("#personal_img").append("<img src=\"{{ url_for('static',filename='personal_img/年费会员.png') }}\" />")
+                        $("#personal_img").append("<img src=\"{{ url_for('static',filename='personal_img/year_vip.png') }}\" />")
                         $("#user_info").text('您的账户目前是年费会员，可免费下载数据');
                     }
                     $("#user_info").append('</br>您当前账户余额：' + data.user_money + '元<button  data-toggle=\"modal\" data-target=\"#modal_recharge\" class=\'btn btn-mini btn-primary\'>点此充值</button>');
