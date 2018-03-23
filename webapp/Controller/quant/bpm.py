@@ -8,7 +8,6 @@ from pyalgotrade.utils import stats
 from pyalgotrade.technical import ma
 from pyalgotrade.technical import cross
 from enum import Enum,unique
-from WindPy import *
 from webapp.Library.wind import WindData_to_DataFrame
 from webapp.Library.pyalgotrade_custom import dataFramefeed,plotter,positionRecord
 from webapp.Library.process_bar import ShowProcess
