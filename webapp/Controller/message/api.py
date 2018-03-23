@@ -797,6 +797,79 @@ def to_upload():
     return jsonify(data)
 
 
+@message_api.route('/query_person', methods=['GET', 'POST'])
+def query_person():
+    data = {}
+
+    db_engine = create_engine('mysql://root:0000@localhost/my_message?charset=utf8')
+    Session = sessionmaker(bind=db_engine)
+    session = Session()
+
+    result = personal.query.filter(personal.username == current_user.username).first()
+
+    if result:
+        username = result.username
+        phone = result.phonenumber
+        mail = result.mail
+        address = result.address
+        introduce = result.introduce
+        avatar = result.avatar
+    else:
+        username = current_user.username
+        phone = '暂无个人信息'
+        mail = '暂无个人信息'
+        address = '暂无个人信息'
+        introduce = '暂无个人信息'
+        avatar = 'user.png'
+
+    data['usersname'] = username
+    data['phone'] = phone
+    data['mail'] = mail
+    data['address'] = address
+    data['introduce'] = introduce
+    data['avatar'] = avatar
+
+    return jsonify(data)
+
+
+@message_api.route('/to_submit', methods=['GET', 'POST'])
+def to_submit():
+    data = {}
+
+    myaddress = request.form.get('input_address')
+    myphone = request.form.get('input_number')
+    mymail = request.form.get('input_mail')
+    myintroduce = request.form.get('input_introduce')
+
+    db_engine = create_engine('mysql://root:0000@localhost/my_message?charset=utf8')
+    Session = sessionmaker(bind=db_engine)
+    session = Session()
+
+    result = personal.query.filter_by(username=current_user.username).first()
+    if result:
+        newaddress = myaddress
+        newphone = myphone
+        newmail = mymail
+        newperson = myintroduce
+        personal.query.filter(personal.username == current_user.username).update({'phonenumber': newphone});
+        personal.query.filter(personal.username == current_user.username).update({'mail': newmail});
+        personal.query.filter(personal.username == current_user.username).update({'address': newaddress});
+        personal.query.filter(personal.username == current_user.username).update({'introduce': newperson});
+
+    else:
+        my_input_information = personal()
+        my_input_information.username = current_user.username
+        my_input_information.address = myaddress
+        my_input_information.phonenumber = myphone
+        my_input_information.mail = mymail
+        my_input_information.introduce = myintroduce
+        db.session.add(my_input_information)
+
+    db.session.commit()
+    data['value'] = 'success'
+    return jsonify(data)
+
+
 # 用于设置消息私信已读未读
 @message_api.route('/read_message', methods=['GET', 'POST'])
 def read_message():

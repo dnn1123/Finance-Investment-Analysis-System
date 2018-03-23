@@ -1042,6 +1042,7 @@
                 CreateChart();
                 CreateTable();
             });
+            getindex()
             getdata()
         });
 
@@ -1062,6 +1063,18 @@
                 "<div><h4><a class='accordion-toggle' data-toggle='collapse'  href='#cash-flow statement'>现金流量表</a></h4><div id='cash-flow statement' class='collapse in'><div id='cashflow list'></div> </div></div>" +
                 "<div><h4><a class='accordion-toggle' data-toggle='collapse'  href='#income statement'>利润表</a></h4><div id='income statement' class='collapse in'><div id='income list'></div> </div></div>")
 
+        }
+
+        function getindex(){
+             $.ajax({
+                 type: 'GET',
+                 url:  '{{url_for("restfulapi.finance_target")}}',
+                 data:{},
+                 dataType: 'json',//希望服务器返回json格式的数据
+                 success: function (data) {
+                     console.log(data)
+                 }
+             })
         }
 
         function getdata() {

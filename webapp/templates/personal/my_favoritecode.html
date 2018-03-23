@@ -4,6 +4,11 @@
 {% endblock %}
 
 {% block body %}
+    <style>
+    #fixTable_wrapper .row{
+        margin-left:10px
+    }
+    </style>
     {#    this is the body part#}
     <div class="span9">
         <div class="content">
@@ -213,7 +218,7 @@
                                     <div>
                                         {#                                            <legend style="font-size:9px">比较代码列表</legend>#}
                                         <div id="code_checkbox"
-                                             style="height:80%;overflow-y :auto;margin-top:4.5%">
+                                             style="height:90%;overflow-y :auto;margin-top:8%">
                                             <div id="div_compare" style="overflow-y: auto;">
                                             </div>
                                         </div>
@@ -238,10 +243,10 @@
                                         </div>
                                         <div class="tab-pane fade" id="table" style="width:  100%">
                                             <div id="mytable"
-                                                 style="width: 100%;height:250px;overflow-y:scroll;overflow-x:scroll;">
+                                                 style="width:100%;height:250px;overflow-y:scroll;overflow-x:scroll;">
                                                 <table id="fixTable" class="row-border hover order-column"
-                                                       cellspacing="0" width="100%">
-                                                    <thead id="table_head">
+                                                       cellspacing="0" >
+                                                    <thead id="table_head" >
 
                                                     </thead>
                                                     <tbody id="table_body">
@@ -1154,6 +1159,7 @@
         }
 
         function set_color() {
+
             return (function (m, s, c) {
                 return (c ? arguments.callee(m, s, c - 1) : '#') +
                         s[m.floor(m.random() * 16)]
@@ -1216,7 +1222,7 @@
                             "processing": "查询中…",
                             "search": "检索:",
                             "lengthMenu": "每页 _MENU_ 条",
-                            "zeroRecords": "没有数据",
+{#                            "zeroRecords": "没有数据",#}
                             "paginate": {
                                 "first": "第一页",
                                 "last": "最后一页",
@@ -1568,28 +1574,7 @@
                 head += "<th >" + i + "</th>"
             }
             $("#table_head").append("<tr >" + head + "</tr>")
-            $('#fixTable').DataTable({
-                "info": false,
-                "processing": true,
-                "searching": true,
-                "language": {
-                    "emptyTable": "没有数据",
-                    "loadingRecords": "加载中…",
-                    "processing": "查询中…",
-                    "search": "检索:",
-                    "lengthMenu": "每页 _MENU_ 条",
-                    "zeroRecords": "没有数据",
-                    "paginate": {
-                        "first": "第一页",
-                        "last": "最后一页",
-                        "next": "",
-                        "previous": ""
-                    },
-                    "info": "第 _PAGE_ 页 / 总 _PAGES_ 页",
-                    "infoEmpty": "没有数据",
-                    "infoFiltered": "(过滤总件数 _MAX_ 条)"
-                }
-            })
+
             for (j = 0; j < stock_code_list.length; j++) {
                 code = stock_code_list[j]
                 $.ajax({
@@ -1612,23 +1597,51 @@
                             for (k = 0; k < results.length; k++) {
                                 line += "<td >" + (results[k] / unit).toFixed(2) + "</td>"
                             }
-                            $("#table_body").append("<tr>" + line + "</tr>")
+                            $("#table_body").append("<tr >" + line + "</tr>")
                         }
                     }
                 });
             }
-
+$('#fixTable').DataTable({
+                "info": false,
+                "processing": true,
+                "searching": true,
+                "language": {
+                    "emptyTable": "没有数据",
+                    "loadingRecords": "加载中…",
+                    "processing": "查询中…",
+                    "search": "检索:",
+                    "lengthMenu": "每页 _MENU_ 条",
+                    "zeroRecords": "没有数据",
+                    "paginate": {
+                        "first": "第一页",
+                        "last": "最后一页",
+                        "next": "",
+                        "previous": ""
+                    },
+                    "info": "第 _PAGE_ 页 / 总 _PAGES_ 页",
+                    "infoEmpty": "没有数据",
+                    "infoFiltered": "(过滤总件数 _MAX_ 条)"
+                }
+            })
         }
 
         function RequestTable() {
             var myChart = echarts.init(document.getElementById('echart1'));
             var opt = myChart.getOption();
             var dz = opt.dataZoom[0];
+             var selected_code = new Array()
+            $(".checkbox").each(function () {
+                        if ($(this).is(':checked')) {
+                            selected_code.push($(this).attr('id'))
+                        }
+                    })
+
             if (order == 'desc') {
-                creattable(code_list, Uint, opt.xAxis[0].data[dz.endValue], opt.xAxis[0].data[dz.startValue])
+                creattable(selected_code, Uint, opt.xAxis[0].data[dz.endValue], opt.xAxis[0].data[dz.startValue])
             }
             else if (order == 'asc') {
-                creattable(code_list, Uint, opt.xAxis[0].data[dz.startValue], opt.xAxis[0].data[dz.endValue])
+                creattable(selected_code, Uint, opt.xAxis[0].data[dz.startValue], opt.xAxis[0].data[dz.endValue])
             }
 
         }
@@ -1853,6 +1866,7 @@
                                     tooltip: {
                                         trigger: 'axis'
                                     },
+
                                     {#                                    legend: {#}
                                     {#                                        type: 'scroll',#}
                                     {#                                        orient: 'vertical',#}
@@ -1868,7 +1882,8 @@
                                         {#                                        bottom: '3%',#}
                                         {#                                        containLabel: true#}
                                     },
-                                    toolbox: {
+                                    toolbox:
+                                    {
 
                                         feature: {
                                             saveAsImage: {},
@@ -1914,6 +1929,7 @@
                                 var nendyear = 1991 + Math.ceil(params.end / 100 * 25) - 1
                                 set_timepicker(nstartyear, nendyear)
                             });
+
                         }
                     })
 
@@ -2062,6 +2078,9 @@
                 createchart(code_list, Uint, '2010', '2015')
                 {#                    绘制行业分布#}
                 {#                    creat_code_wind(code_list)#}
+
+                creattable(code_list, Uint, 2010, 2015)
+
             }
 
             first_visit()
