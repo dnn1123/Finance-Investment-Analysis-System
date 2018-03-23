@@ -42,13 +42,119 @@
             margin-left: 10px;
         }
 
+        .mybutton {
+            height: 30px;
+            width: 95px;
+            background-color: grey;
+            border: none;
+            color: white;
+            text-align: center;
+            font-kerning: normal;
+            text-decoration: none;
+            display: inline-block;
+            border-radius: 18px;
+            font-size: 16px;
+            font-family: KaiTi;
+            float: right;
+            margin-top: 10px;
+            margin-right: 10px;
+            margin-bottom: 20px;
+        }
+
+        .modalbutton {
+            height: 30px;
+            width: 95px;
+            background-color: grey;
+            border: none;
+            color: white;
+            text-align: center;
+            font-kerning: normal;
+            text-decoration: none;
+            display: inline-block;
+            border-radius: 18px;
+            font-size: 16px;
+            font-family: KaiTi;
+            float: right;
+            margin-top: 10px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+
+        .name {
+            margin-top: 5px;
+            margin-left: 20px;
+            float: left;
+            font-size: 15px;
+        }
+
+        .text {
+            width: 50%;
+            height: 30px;
+            margin-top: 5px;
+            margin-left: 20px;
+            float: left;
+            font-size: 20px;
+            border-radius: 12px;
+        }
+
     </style>
+
+    <div class="modal hide fade" id="update_message_modal" tabindex="-1" role="dialog"
+         aria-labelledby="myModalLabel"
+         aria-hidden="true" style="display: none; ">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title" id="myModalLabel">修改个人信息</h4>
+                </div>
+                <div class="modal-body">
+                    <h4 style="font-size:25px;margin-top:10px;margin-bottom: 27px;margin-left:20px"><b
+                            style="font-size:25px;">基本信息</b></h4>
+                    <div style="width:100%;height:30px;margin-top:15px">
+                        <label class="name">联系电话：</label>
+                        <input type="text" class="text" id="input_number" value=""/>
+                    </div>
+                    <div style="width:100%;height:30px;margin-top:15px">
+                        <label class="name">电子邮箱：</label>
+                        <input type="text" class="text" id="input_mail" value=""/>
+                    </div>
+                    <div style="width:100%;height:30px;margin-top:15px">
+                        <label class="name">居住地址：</label>
+                        <input type="text" class="text" id="input_address" value=""/>
+                    </div>
+                    <div style="width:100%;height:50px;margin-top:15px">
+                        <label class="name">个人简介：</label>
+                        <input type="text" class="text" id="input_person" value=""/>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="to_submit" class="modalbutton" data-dismiss="modal" aria-hidden="true">确定提交</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div>
 
     <div class="span9">
         <div class="content">
             <div class="btn-controls">
-                <!--上传头像-->
                 <div class="btn-box-row row-fluid">
+                    <div class="module span6">
+                        <div class="module-body">
+                            <div class="theright">
+                                <h4 style="font-size:25px;margin-top:10px;margin-bottom: 25px;margin-left:20px"><b
+                                        style="font-size:20px;">基本信息</b></h4>
+                                <div style="width:100%;height:25px;margin-top:15px" id="user_name"></div>
+                                <div style="width:100%;height:25px;margin-top:15px" id="user_phone"></div>
+                                <div style="width:100%;height:25px;margin-top:15px" id="user_mail"></div>
+                                <div style="width:100%;height:25px;margin-top:15px" id="user_address"></div>
+                                <div style="width:100%;height:30px;margin-top:15px" id="user_introduce"></div>
+                                <button data-toggle="modal" data-target="#update_message_modal" class="mybutton">点击修改
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="module span4">
                         <div class="module-body">
                             <img class="my_profile" id="img-change" src="">
@@ -58,7 +164,9 @@
                                       method='POST'>
                                     <input type="file" id="my_avatar" style="display:none" name="file"
                                            onchange="filechange(event)"/>
-                                    <button type="submit" id="to_upload" class="thebutton" onclick="upload_avatar()">上传头像</button>
+                                    <button type="submit" id="to_upload" class="thebutton" onclick="upload_avatar()">
+                                        上传头像
+                                    </button>
                                 </form>
                             </div>
                         </div>
@@ -70,7 +178,7 @@
 
     <!-- 事件模块 -->
     <script>
-        var myavatar, myfile;
+        var myavatar, myfile, inputaddress, inputnumber, inputmail, inputintroduce;
         //选择图片预览
         $("#to_choose").click(function () {//点击导入按钮，使files触发点击事件，然后完成读取文件的操作。
             $("#my_avatar").click();
@@ -94,7 +202,36 @@
                 // 如需释放内存：URL.revokeObjectURL(imgURL);
             }
         };
-        function upload_avatar(){
+        //提交个人信息
+        $("#to_submit").click(function () {//点击导入按钮，使files触发点击事件，然后完成读取文件的操作。
+            inputaddress = $("#input_address").val();
+            inputnumber = $("#input_number").val();
+            inputmail = $("#input_mail").val();
+            inputintroduce = $("#input_person").val();
+            $.ajax({
+                type: 'POST',
+                url: '{{url_for("message_api.to_submit")}}',
+                data: {
+                    input_address: inputaddress,
+                    input_number: inputnumber,
+                    input_mail: inputmail,
+                    input_introduce: inputintroduce,
+                },
+                dataType: 'json',
+                success: function (data) {
+                    $("#user_name").empty();
+                    $("#user_phone").empty();
+                    $("#user_mail").empty();
+                    $("#user_address").empty();
+                    $("#user_introduce").empty();
+                    update_information();
+                    $("#update_message_modal").fadeOut();
+                }
+            });
+
+        });
+        //上传头像
+        function upload_avatar() {
             $.ajax({
                 type: 'POST',
                 url: '{{url_for("message_api.to_upload")}}',
@@ -104,10 +241,6 @@
                 }
             });
         }
-    </script>
-
-    <!-- 功能模块 -->
-    <script>
         //文件下载
         function saveFile(data, fileName) {
             var saveLink = document.createElementNS('http://www.w3.org/1999/xhtml', 'a');
@@ -115,6 +248,41 @@
             saveLink.download = fileName;
             saveLink.click();
         }
+        //信息重写
+        function update_information() {
+            $.ajax({
+                type: 'GET',
+                url: '{{url_for("message_api.query_person")}}',
+                dataType: 'json',
+                success: function (data) {
+                    $("#user_name").append("<label class='name'>用户名：" + data.usersname + "</label>");
+                    $("#user_phone").append("<label class='name'>联系电话：" + data.phone + "</label>");
+                    $("#user_mail").append("<label class='name'>电子邮箱：" + data.mail + "</label>");
+                    $("#user_address").append("<label class='name'>居住地址：" + data.address + "</label>");
+                    $("#user_introduce").append("<label class='name'>个人简介：" + data.introduce + "</label>");
+                }
+            });
+        }
+    </script>
+
+    <!-- 初始模块 -->
+    <script>
+        $(document).ready(function () {
+            $.ajax({
+                type: 'GET',
+                url: '{{url_for("message_api.query_person")}}',
+                dataType: 'json',
+                success: function (data) {
+                    var imgsrc = "../static/avatar/" + data.avatar + "?timestamp=" + new Date().getTime()
+                    $("#img-change").attr("src", imgsrc);
+                    $("#user_name").append("<label class='name'>用户名：" + data.usersname + "</label>");
+                    $("#user_phone").append("<label class='name'>联系电话：" + data.phone + "</label>");
+                    $("#user_mail").append("<label class='name'>电子邮箱：" + data.mail + "</label>");
+                    $("#user_address").append("<label class='name'>居住地址：" + data.address + "</label>");
+                    $("#user_introduce").append("<label class='name'>个人简介：" + data.introduce + "</label>");
+                }
+            });
+        })
     </script>
 
 {% endblock %}

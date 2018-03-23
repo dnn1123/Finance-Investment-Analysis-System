@@ -108,11 +108,11 @@
         }
 
         .divcheckbox {
-        {#            float: left;#} margin-left: 3px;
-            margin-top: 3px;
+            margin-left: 10px;
+            margin-top: 5px;
             display: block;
-
-            font-size: 20px;
+            font-size: 18px;
+            text-align: left;
         }
 
         .checkbox {
@@ -125,6 +125,7 @@
     </style>
 {% endblock %}
 {% block body %}
+    <!--个人消息侧栏-->
     <div class="J-global-toolbar">
         <div class="toolbar-wrap J-wrap">
             <div class="toolbar">
@@ -153,7 +154,7 @@
                             <a style="display:block;float:left;color: black;margin-left: 10px;margin-top: 10px;font-size: 20px">身份：{{ rolename }}</a>
                             {% if user.permissions==1 %}
                                 <div style="float: left;width: 100%;margin-top:10px;background-color:#d3d7d4">
-                                    <legend>管理员权限</legend>
+                                    <legend>我的权限</legend>
                                     <div style="margin: 10px">
                                         <a href="/admin">管理员权限</a>
                                     </div>
@@ -165,86 +166,85 @@
 
                 <div class="toolbar-header"></div>
 
+
                 <div class="toolbar-tabs J-tab">
-                    <div class="toolbar-tab tbar-tab-cart" >
-{#                        <i class="tab-ico"></i>#}
+                    <div class="toolbar-tab tbar-tab-cart">
+                        {#                        <i class="tab-ico"></i>#}
                         <img src="/static/5_24.png" style="margin-top: 7px;margin-left: 2px">
                         <em class="tab-text ">个人信息</em>
                     </div>
-
                 </div>
-
-{#                <div class="toolbar-footer">#}
-{#                    <div class="toolbar-tab tbar-tab-top"><a href="#"> <i class="tab-ico  "></i> <em#}
-{#                            class="footer-tab-text">顶部</em> </a></div>#}
-{#                </div>#}
-
-
             </div>
-
-
         </div>
     </div>
 
-    <div id="div_favoritecode"
-         style="width: 80%;height:300px;margin: 0 auto; ">
-        <legend>关注股票列表</legend>
-        <div class="container-fluid" style="float: left;width: 30%;height: 200px">
-            <legend>添加关注股票</legend>
-            <form id="searchform" class="navbar-form navbar-left" role="search" method="post"
-                  action="{{ url_for('restfulapi.add_code') }}">
-                <div class="input-group">
-                    <input id="stockcode" type="text" class="form-control" placeholder="Search" name="stockcode">
-                    <div class="input-group-btn">
-                        <button id="submitbtn" class="btn btn-default" type="submit"
-                                style="padding: 8.5px 12px"><span
-                                class="glyphicon glyphicon-search"></span></button>
-                        <ul class="dropdown-menu dropdown-menu-right" role="menu">
-                        </ul>
+    <!--主页面功能栏-->
+    <div class="span9">
+        <div class="content">
+            <div class="btn-controls">
+                <div class="btn-box-row row-fluid">
+                    <div class="module span12">
+                        <div class="module-head">关注股票列表:</div>
+                        <div id="div_favoritecode" class="row-fluid">
+                            <div class="btn-box small span4" style="height:300px;">
+                                <div class="module-head">添加关注股票:</div>
+                                <form id="searchform" class="navbar-form navbar-left" role="search" method="post"
+                                      action="{{ url_for('restfulapi.add_code') }}">
+                                    <div class="input-group"
+                                         style="float:left;margin-top:5px;margin-left:5px;width:95%;">
+                                        <input id="stockcode" type="text" class="form-control" placeholder="Search"
+                                               name="stockcode" style="float:left;width:85%;height:25px;">
+                                        <div class="input-group-btn">
+                                            <button id="submitbtn" class="btn btn-default" type="submit"
+                                                    style="float:left;margin-left: 10px;margin-top:5px;height:25px;padding: 8.5px 12px">
+                                                <span class="glyphicon glyphicon-search"></span></button>
+                                            <ul class="dropdown-menu dropdown-menu-right" role="menu"></ul>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <div class="btn-box small span4" style="height:300px;">
+                                <div class="module-head">已关注股票:</div>
+                                <div id="code_show" style="width: 100%;height:70%;overflow-x: auto;margin-top: 5px;"></div>
+                                <input type="button" id="add_to_analyse" value="添加至投资分析"
+                                       style="font-size: 15px;float: right;margin-right: 5px;margin-top: 5px;">
+                                <input type="button" id="delete_code" value="删除"
+                                       style="font-size: 15px;float: right;margin-right: 5px;margin-top: 5px;">
+                            </div>
+
+                            <div class="btn-box small span4" style="height:300px;">
+                                <div class="module-head">分析股票列表:</div>
+                                <div id="code_show2" style="width: 100%;height:70%;overflow-x: auto;margin-top: 5px;">
+                                </div>
+                                <input type="button" id="analyse" value="投资分析"
+                                       style="font-size: 15px;float: right;margin-right: 5px;margin-top: 5px;">
+                                <input type="button" id="delete_code1" value="删除"
+                                       style="font-size: 15px;float: right;margin-right: 5px;margin-top: 5px;">
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </form>
-        </div>
-        <div style="float: left;width: 30%;height: 200px;margin-left: 20px">
-            <legend>
-                已关注股票
-                <input type="button" id="add_to_analyse" value="添加至投资分析" style="font-size: 15px;float: right">
-                <input type="button" id="delete_code" value="删除" style="font-size: 15px;float: right;margin-right: 5px">
-            </legend>
-            <div id="code_show"
-                 style="width: 100%;height:80%;overflow-x: auto;">
 
-            </div>
-        </div>
-        <div style="float: left;width: 30%;height: 200px;margin-left: 20px;">
-            <legend>
-                分析股票列表
-                <input type="button" id="analyse" value="投资分析" style="font-size: 15px;float: right">
-                <input type="button" id="delete_code1" value="删除"
-                       style="font-size: 15px;float: right;margin-right: 5px">
-            </legend>
-            <div id="code_show2"
-                 style="width: 100%;height:80%;overflow-x: auto;">
-
+                <div class="btn-box-row row-fluid">
+                    <div class="module span12">
+                        <div class="module-head">投资组合:</div>
+                        <div id="div_portfolio"></div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-    <div id="div_portfolio"
-         style="width: 80%;height:40%;margin: 10px auto; ">
-        <legend>投资组合</legend>
-    </div>
+
     <script>
-{#        $("#test").click(function () {#}
-{#            $("#div_personalinfo").toggle("slide_left");#}
-{#        });#}
         $("#delete_code").click(function () {
-            var selected = []
+            var selected = [];
             $(".checkbox").each(function () {
                 if ($(this).is(':checked')) {
                     selected.push($(this).attr('value'))
                 }
-            })
-            console.log(selected)
+            });
+            console.log(selected);
             $.ajax({
                 type: 'POST',
                 url: '{{url_for("restfulapi.delete_code")}}',
@@ -257,7 +257,8 @@
                         window.location.href = ""
                 }
             })
-        })
+        });
+
         $("#add_to_analyse").click(function () {
             var selected_code = []
             var selected_name = []
@@ -272,6 +273,7 @@
                 $("#code_show2").append("<div class='divcheckbox' id='analyse_div_" + selected_code[i] + "'><input type='checkbox' class='checkbox' value='" + selected_code[i] + "' id='" + selected_code[i] + "' >" + selected_name[i] + "—" + selected_code[i] + "</div>")
             }
         })
+
         $("#delete_code1").click(function () {
             var selected = []
             $(".checkbox").each(function () {
@@ -281,9 +283,11 @@
             })
 
         })
+
         $("#analyse").click(function () {
             alert('功能维护')
         })
+
         var stocksuggest = $("input[name='stockcode']").bsSuggest({
             indexKey: 1,
             allowNoKeyword: false,
@@ -307,6 +311,7 @@
                 return data;
             }
         })
+
         $("#submitbtn").click(function () {
             $.ajax({
                 type: 'POST',
@@ -340,6 +345,7 @@
                 }
             })
         })
+
         function creatindex() {
             $.ajax({
                 type: 'POST',
@@ -356,9 +362,11 @@
                 }
             })
         }
+
         function first_visit() {
             creatindex()
         }
+
         $(document).ready(function () {
             first_visit()
         })

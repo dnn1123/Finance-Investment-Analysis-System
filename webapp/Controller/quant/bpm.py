@@ -14,6 +14,7 @@ from webapp.Library.pyalgotrade_custom import dataFramefeed,plotter,positionReco
 from webapp.Library.process_bar import ShowProcess
 import tushare as ts
 import base64,datetime,time
+
 def handle_form(form):
     type=form.get('type')
     if type=="Pair_Strategy_Based_Bank":
@@ -101,6 +102,7 @@ class Strategy(Enum):
     # @unique装饰器可以帮助我们检查保证没有重复值
 
 # 策略管理器 当前为变量传递问题未解决的写法 已经解决了传值问题 以后采用新的传值方式，不再使用self.__来保存变量 直接传递到函数 善用解铃 系铃
+
 class Strategy_Manager():
     def __init__(self, StrategyType,live=False,**args):
         self.__strategy_type = StrategyType
@@ -174,7 +176,6 @@ class Strategy_Manager():
         brk.setFillStrategy(fill_stra)  # 将成交策略传给brk
         # 4.把策略跑起来
         self.__strategy_entity = Pair_Strategy_Based_Bank(feed, brk, self.__i1, self.__i2, self.__startdate,50)
-
         self.__retAnalyzer = returns.Returns()
         self.__strategy_entity.attachAnalyzer(self.__retAnalyzer)
         self.__sharpeRatioAnalyzer = sharpe.SharpeRatio()
@@ -293,7 +294,6 @@ class Strategy_Manager():
         brk.setFillStrategy(fill_stra)  # 将成交策略传给brk
         # 4.把策略跑起来
         self.__strategy_entity = Buy_Everyday_Live(feed, brk, self.__i,self.__builddate)
-
         self.__retAnalyzer = returns.Returns()
         self.__strategy_entity.attachAnalyzer(self.__retAnalyzer)
         self.__sharpeRatioAnalyzer = sharpe.SharpeRatio()
@@ -777,6 +777,13 @@ class Buy_Everyday_Live(strategy.BacktestingStrategy):
             if self.__text != "":
                 self.__textlist.setdefault(bars.getDateTime().date(), self.__text)
 
+class Stock_Picking_Strategy_Based_Value_By_Steve(strategy.BacktestingStrategy):
+    def __init__(self,feed,brk,instrument,malength_1,malength_2):
+        super(Stock_Picking_Strategy_Based_Value_By_Steve, self).__init__(feed, brk)
+        self.__DataCalculator = ''
+        self.__T = 20  #调仓周期
+        self.__margin = instrument  #调仓标记 代表距离调仓还有多少天
+
 class DataCalculator_For_Stock_Picking_Strategy_Based_Value_By_Steve_A():
     def __init__(self):
         pass
@@ -894,6 +901,7 @@ class Stock_Picking_Strategy_Based_Value_By_Steve_A(strategy.BacktestingStrategy
         self.__margin = 0  #调仓标记 代表距离调仓还有多少天
         self.__startdate =datetime.datetime.strptime(startdate,"%Y-%m-%d")
         self.__position = None
+
     def onEnterOk(self, position):
         pass
 

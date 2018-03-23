@@ -109,8 +109,10 @@ class personal(db.Model):
     __tablename__ = 'personal'
     username = db.Column(db.String(20), primary_key=True)
     avatar = db.Column(db.String(25))
+    phonenumber = db.Column(db.String(25))
+    mail = db.Column(db.String(100))
+    address = db.Column(db.String(100))
     introduce = db.Column(db.Text)
-    sex = db.Column(db.String(10))
 
 
 # 用户个人消息

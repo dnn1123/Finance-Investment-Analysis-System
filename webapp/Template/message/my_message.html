@@ -6,6 +6,10 @@
 {% block body %}
     <style>
 
+        ul li {
+            list-style: none
+        }
+
         .mytext {
             height: 150px;
             width: 96%;
@@ -50,7 +54,7 @@
         .box_top {
             height: 110px;
             width: 260px;
-            float: right;
+            float: left;
             background-color: aliceblue;
             margin-top: 0;
             position: absolute;
@@ -64,7 +68,7 @@
             overflow: hidden;
             margin-top: 60px;
             float: left;
-            margin-left: 90.5px;
+            margin-left: 90px;
             background-color: white;
             position: absolute;
         }
@@ -96,37 +100,50 @@
         .box_bottom {
             height: 60px;
             width: 260px;
-            margin-top: 175px;
+            margin-top: 155px;
             position: absolute;
+            text-align: center;
         }
 
         .item_prose {
             height: 50px;
             width: 60px;
             float: left;
-            margin-left: 21px;
+            margin-top: 5px;
+            margin-left: -2px;
+            text-align: center;
+            list-style: none;
+            list-style-type: none;
         }
 
         .item_follow {
             height: 50px;
             width: 60px;
             float: left;
-            margin-left: 10px;
+            margin-top: 5px;
+            margin-left: 8px;
+            text-align: center;
+            list-style: none;
+            list-style-type: none;
         }
 
         .item_fans {
             height: 50px;
             width: 60px;
             float: left;
-            margin-left: 10px;
+            margin-top: 5px;
+            margin-left: 8px;
+            text-align: center;
+            list-style: none;
+            list-style-type: none;
         }
 
         .text_count {
             height: 19px;
             width: 36px;
-            text-align: center;
+            float: left;
             margin-top: 5px;
-            margin-left: 15px;
+            margin-left: 12px;
             font-size: 18px;
             font-family: 'Adobe Heiti Std';
             color: black;
@@ -136,6 +153,7 @@
             height: 19px;
             width: 36px;
             text-align: center;
+            float: left;
             margin-top: 2px;
             margin-left: 12px;
             font-size: 15px;
@@ -148,7 +166,7 @@
             width: 1px;
             float: left;
             margin-top: 5px;
-            margin-left: 10px;
+            margin-left: 8px;
             background-color: black;
         }
 
@@ -276,7 +294,7 @@
             width: auto;
             height: 18px;
             float: left;
-            font-size: 17px;
+            font-size: 15px;
             font-weight: 800;
             color: black;
         }
@@ -384,13 +402,13 @@
                             <div class="nav" style="float:left;margin:auto;width:100%;background-color:white">
                                 <ul id="mynav" class="nav nav-tabs nav-justified">
                                     <li><a href="#all_message" data-toggle="tab"
-                                                          onclick="all_message_show()">全部动态</a></li>
+                                           onclick="all_message_show()">全部动态</a></li>
                                     <li><a href="#follow_message" data-toggle="tab"
                                            onclick="follow_message_show()">我的关注</a></li>
                                     <li><a href="#my_message" data-toggle="tab" onclick="myown_message_show()">我的动态</a>
                                     </li>
                                     <li class="active"><a href="#accept_message" data-toggle="tab"
-                                           onclick="accept_message_show()">消息私信</a></li>
+                                                          onclick="accept_message_show()">消息私信</a></li>
                                 </ul>
                             </div>
                             <div id="mytext" class="tab-content" style="margin-left:0 ;width:100%;height:auto;">
@@ -524,7 +542,8 @@
                                                         <tr class="heading">
                                                             <td class="cell-icon"></td>
                                                             <td class="cell-title">消息</td>
-                                                            <td class="cell-status hidden-phone hidden-tablet" style="text-align: center">状态
+                                                            <td class="cell-status hidden-phone hidden-tablet"
+                                                                style="text-align: center">状态
                                                             </td>
                                                             <td class="cell-text align-right">时间</td>
                                                         </tr>
@@ -630,11 +649,11 @@
                     var myimg = "../static/avatar/" + data.my_avatar + "?timestamp=" + new Date().getTime()
                     $(".box_photo").attr("src", myimg);
                     $("#fb").empty();
-                    $("#fb").append("<b style='float:left;font-size: 18px;width: 36px;text-align: center;'>" + data.postnum + "</b>")
+                    $("#fb").append("<b style='float:left;width:36px;font-size: 18px;text-align: center;'>" + data.postnum + "</b>");
                     $("#gz").empty();
-                    $("#gz").append("<b style='float:left;font-size: 18px;width: 36px;text-align: center;'>" + data.followednum + "</b>")
+                    $("#gz").append("<b style='float:left;width:36px;font-size: 18px;text-align: center;'>" + data.followednum + "</b>");
                     $("#fs").empty();
-                    $("#fs").append("<b style='float:left;font-size: 18px;width: 36px;text-align: center;'>" + data.followernum + "</b>")
+                    $("#fs").append("<b style='float:left;width:36px;font-size: 18px;text-align: center;'>" + data.followernum + "</b>");
                 }
             });
 
@@ -1102,8 +1121,8 @@
                     if (followindex == 0) {
                         $('#all_post').append("<div class='module span12' style='width:100%;height:auto;float:left;margin-left:0;background-color:white;border:0' id='" + mydata.po_id[i] + "'>" +
                             "<div style='width:8%;float:left;margin-top:10;'><img class='my_photo' src='../static/avatar/" + mydata.avatar[i] + "?timestamp=" + new Date().getTime() + "'></div>" +
-                            "<div style='width:92%;float:right;margin-top:10;'><button class='to_follow'><b>+关注</b></button><span class='person' id='poster_" + mydata.po_id[i] + "'>" + mydata.po_user[i] + "</span><h10 style='font-size:5px;color:gray;float:left;width:90%'>" + mydata.po_time[i] + "</h10>" +
-                            "<h5><strong style='font-size:16px;float:left;width:100%;margin-top:5px'>" + mydata.po_text[i] + "</strong></h5></div>" +
+                            "<div style='width:92%;float:right;margin-top:10;'><button class='to_follow'><b>+关注</b></button><span class='person' id='poster_" + mydata.po_id[i] + "'>" + mydata.po_user[i] + "</span><h10 style='font-size:10px;color:gray;float:left;width:90%'>" + mydata.po_time[i] + "</h10>" +
+                            "<h5><strong style='font-size:12px;float:left;width:100%;margin-top:5px'>" + mydata.po_text[i] + "</strong></h5></div>" +
 
                             "<div class='post_function'><button class='to_retrant' data-toggle='modal' data-target='#all_message_modal' id='retrant_" + mydata.po_id[i] + "'><b>转发" + mydata.po_retrant[i] + "</b></button><div class='line'></div><button class='to_comment' id='comment_" + mydata.po_id[i] + "'><b>评论" + mydata.po_comment[i] + "</b></button><div class='line'></div><button class='to_upvote' id='upvote_" + mydata.po_id[i] + "'><b>点赞" + mydata.po_upvote[i] + "</b></button></div>" +
                             "<div class='post_comment' id='post_comment_" + mydata.po_id[i] + "'>" +
@@ -1116,8 +1135,8 @@
                     else if (followindex == 1) {
                         $('#all_post').append("<div class='module span12' style='width:100%;height:auto;float:left;margin-left:0;background-color:white;border:0' id='" + mydata.po_id[i] + "'>" +
                             "<div style='width:8%;float:left;margin-top:10;'><img class='my_photo' src='../static/avatar/" + mydata.avatar[i] + "?timestamp=" + new Date().getTime() + "'></div>" +
-                            "<div style='width:92%;float:right;margin-top:10;'><button class='no_follow'><b>取消关注</b></button><span class='person' id='poster_" + mydata.po_id[i] + "'>" + mydata.po_user[i] + "</span><h10 style='font-size:5px;color:gray;float:left;width:90%'>" + mydata.po_time[i] + "</h10>" +
-                            "<h5><strong style='font-size:16px;float:left;width:100%;margin-top:5px'>" + mydata.po_text[i] + "</strong></h5></div>" +
+                            "<div style='width:92%;float:right;margin-top:10;'><button class='no_follow'><b>取消关注</b></button><span class='person' id='poster_" + mydata.po_id[i] + "'>" + mydata.po_user[i] + "</span><h10 style='font-size:10px;color:gray;float:left;width:90%'>" + mydata.po_time[i] + "</h10>" +
+                            "<h5><strong style='font-size:12px;float:left;width:100%;margin-top:5px'>" + mydata.po_text[i] + "</strong></h5></div>" +
 
                             "<div class='post_function'><button class='to_retrant' data-toggle='modal' data-target='#all_message_modal' id='retrant_" + mydata.po_id[i] + "'><b>转发" + mydata.po_retrant[i] + "</b></button><div class='line'></div><button class='to_comment' class='to_comment' id='comment_" + mydata.po_id[i] + "'><b>评论" + mydata.po_comment[i] + "</b></button><div class='line'></div><button class='to_upvote' id='upvote_" + mydata.po_id[i] + "'><b>点赞" + mydata.po_upvote[i] + "</b></button></div>" +
 
@@ -1131,8 +1150,8 @@
                     else {
                         $('#all_post').append("<div class='module span12' style='width:100%;height:auto;float:left;margin-left:0;background-color:white;border:0' id='" + mydata.po_id[i] + "'>" +
                             "<div style='width:8%;float:left;margin-top:10;'><img class='my_photo' src='../static/avatar/" + mydata.avatar[i] + "?timestamp=" + new Date().getTime() + "'></div>" +
-                            "<div style='width:92%;float:right;margin-top:10;'><span class='person' id='poster_" + mydata.po_id[i] + "'>" + mydata.po_user[i] + "</span><h10 style='font-size:5px;color:gray;float:left;width:100%'>" + mydata.po_time[i] + "</h10>" +
-                            "<h5><strong style='font-size:16px;float:left;width:100%;margin-top:5px'>" + mydata.po_text[i] + "</strong></h5></div>" +
+                            "<div style='width:92%;float:right;margin-top:10;'><span class='person' id='poster_" + mydata.po_id[i] + "'>" + mydata.po_user[i] + "</span><h10 style='font-size:10px;color:gray;float:left;width:100%'>" + mydata.po_time[i] + "</h10>" +
+                            "<h5><strong style='font-size:12px;float:left;width:100%;margin-top:5px'>" + mydata.po_text[i] + "</strong></h5></div>" +
 
                             "<div class='post_function'><button class='to_retrant' id='retrant_" + mydata.po_id[i] + "'><b>转发" + mydata.po_retrant[i] + "</b></button><div class='line'></div><button class='to_comment' id='comment_" + mydata.po_id[i] + "'><b>评论" + mydata.po_comment[i] + "</b></button><div class='line'></div><button class='to_upvote' id='upvote_" + mydata.po_id[i] + "'><b>点赞" + mydata.po_upvote[i] + "</b></button></div>" +
                             "<div class='post_comment' id='post_comment_" + mydata.po_id[i] + "'>" +
@@ -1146,11 +1165,11 @@
                     if (followindex == 0) {
                         $('#all_post').append("<div class='module span12' style='width:100%;height:auto;float:left;margin-left:0;background-color:white;border:0' id='" + mydata.po_id[i] + "'>" +
                             "<div style='width:8%;float:left;margin-top:10;'><img class='my_photo' src='../static/avatar/" + mydata.avatar[i] + "?timestamp=" + new Date().getTime() + "'></div>" +
-                            "<div style='width:92%;float:right;margin-top:10;'><button class='to_follow'><b>+关注</b></button><span class='person' id='poster_" + mydata.po_id[i] + "'>" + mydata.po_user[i] + "</span><h10 style='font-size:5px;color:gray;float:left;width:90%'>" + mydata.po_time[i] + "</h10>" +
-                            "<h5><strong style='font-size:16px;float:left;width:100%;margin-top:5px'>" + mydata.po_text[i] + "</strong></h5></div>" +
+                            "<div style='width:92%;float:right;margin-top:10;'><button class='to_follow'><b>+关注</b></button><span class='person' id='poster_" + mydata.po_id[i] + "'>" + mydata.po_user[i] + "</span><h10 style='font-size:12px;color:gray;float:left;width:90%'>" + mydata.po_time[i] + "</h10>" +
+                            "<h5><strong style='font-size:12px;float:left;width:100%;margin-top:5px'>" + mydata.po_text[i] + "</strong></h5></div>" +
 
-                            "<div style='width:100%;background-color: #FFFDEE;'><h5 style='float:left;width:100%;margin-left:0;margin-top:5px;background-color: #FFFDEE;'><strong style='font-size:18px;float:left;width:92%;margin-left:8%;margin-top:5px;background-color: #FFFDEE;'>" + "@" + mydata.po_retrant_poster[i] + "</strong>" +
-                            "<strong style='font-size:16px;float:left;width:92%;margin-left:8%;margin-top:5px;margin-bottom:5px;background-color: #FFFDEE;'>" + mydata.po_retrant_text[i] + "</strong></h5></div>" +
+                            "<div style='width:100%;background-color: #FFFDEE;'><h5 style='float:left;width:100%;margin-left:0;margin-top:5px;background-color: #FFFDEE;'><strong style='font-size:15px;float:left;width:92%;margin-left:8%;margin-top:5px;background-color: #FFFDEE;'>" + "@" + mydata.po_retrant_poster[i] + "</strong>" +
+                            "<strong style='font-size:12px;float:left;width:92%;margin-left:8%;margin-top:5px;margin-bottom:5px;background-color: #FFFDEE;'>" + mydata.po_retrant_text[i] + "</strong></h5></div>" +
 
                             "<div class='post_function'><button class='to_retrant' data-toggle='modal' data-target='#all_message_modal' id='retrant_" + mydata.po_id[i] + "'><b>转发" + mydata.po_retrant[i] + "</b></button><div class='line'></div><button class='to_comment' id='comment_" + mydata.po_id[i] + "'><b>评论" + mydata.po_comment[i] + "</b></button><div class='line'></div><button class='to_upvote' id='upvote_" + mydata.po_id[i] + "'><b>点赞" + mydata.po_upvote[i] + "</b></button></div>" +
                             "<div class='post_comment' id='post_comment_" + mydata.po_id[i] + "'>" +
@@ -1162,11 +1181,11 @@
                     else if (followindex == 1) {
                         $('#all_post').append("<div class='module span12' style='width:100%;height:auto;float:left;margin-left:0;background-color:white;border:0' id='" + mydata.po_id[i] + "'>" +
                             "<div style='width:8%;float:left;margin-top:10;'><img class='my_photo' src='../static/avatar/" + mydata.avatar[i] + "?timestamp=" + new Date().getTime() + "'></div>" +
-                            "<div style='width:92%;float:left;margin-top:10;'><button class='no_follow'><b>取消关注</b></button><span class='person' id='poster_" + mydata.po_id[i] + "'>" + mydata.po_user[i] + "</span><h10 style='font-size:5px;color:gray;float:left;width:90%'>" + mydata.po_time[i] + "</h10>" +
-                            "<h5><strong style='font-size:16px;float:left;width:100%;margin-top:5px'>" + mydata.po_text[i] + "</strong></h5></div>" +
+                            "<div style='width:92%;float:left;margin-top:10;'><button class='no_follow'><b>取消关注</b></button><span class='person' id='poster_" + mydata.po_id[i] + "'>" + mydata.po_user[i] + "</span><h10 style='font-size:10px;color:gray;float:left;width:90%'>" + mydata.po_time[i] + "</h10>" +
+                            "<h5><strong style='font-size:12px;float:left;width:100%;margin-top:5px'>" + mydata.po_text[i] + "</strong></h5></div>" +
 
-                            "<div style='width:100%;background-color: #FFFDEE;'><h5 style='float:left;width:100%;margin-left:0;margin-top:5px;background-color: #FFFDEE;'><strong style='font-size:18px;float:left;width:92%;margin-left:8%;margin-top:5px;background-color: #FFFDEE;'>" + "@" + mydata.po_retrant_poster[i] + "</strong>" +
-                            "<strong style='font-size:16px;float:left;width:92%;margin-left:8%;margin-top:5px;margin-bottom:5px;background-color: #FFFDEE;'>" + mydata.po_retrant_text[i] + "</strong></h5></div>" +
+                            "<div style='width:100%;background-color: #FFFDEE;'><h5 style='float:left;width:100%;margin-left:0;margin-top:5px;background-color: #FFFDEE;'><strong style='font-size:15px;float:left;width:92%;margin-left:8%;margin-top:5px;background-color: #FFFDEE;'>" + "@" + mydata.po_retrant_poster[i] + "</strong>" +
+                            "<strong style='font-size:12px;float:left;width:92%;margin-left:8%;margin-top:5px;margin-bottom:5px;background-color: #FFFDEE;'>" + mydata.po_retrant_text[i] + "</strong></h5></div>" +
 
                             "<div class='post_function'><button class='to_retrant' data-toggle='modal' data-target='#all_message_modal' id='retrant_" + mydata.po_id[i] + "'><b>转发" + mydata.po_retrant[i] + "</b></button><div class='line'></div><button class='to_comment' id='comment_" + mydata.po_id[i] + "'><b>评论" + mydata.po_comment[i] + "</b></button><div class='line'></div><button class='to_upvote' id='upvote_" + mydata.po_id[i] + "'><b>点赞" + mydata.po_upvote[i] + "</b></button></div>" +
                             "<div class='post_comment' id='post_comment_" + mydata.po_id[i] + "'>" +
@@ -1178,11 +1197,11 @@
                     else {
                         $('#all_post').append("<div class='module span12' style='width:100%;height:auto;float:left;margin-left:0;background-color:white;border:0' id='" + mydata.po_id[i] + "'>" +
                             "<div style='width:8%;float:left;margin-top:10;'><img class='my_photo' src='../static/avatar/" + mydata.avatar[i] + "?timestamp=" + new Date().getTime() + "'></div>" +
-                            "<div style='width:92%;float:left;margin-top:10;'><span class='person' id='poster_" + mydata.po_id[i] + "'>" + mydata.po_user[i] + "</span><h10 style='font-size:5px;color:gray;float:left;width:100%'>" + mydata.po_time[i] + "</h10>" +
-                            "<h5><strong style='font-size:16px;float:left;width:100%;margin-top:5px'>" + mydata.po_text[i] + "</strong></h5></div>" +
+                            "<div style='width:92%;float:left;margin-top:10;'><span class='person' id='poster_" + mydata.po_id[i] + "'>" + mydata.po_user[i] + "</span><h10 style='font-size:10px;color:gray;float:left;width:100%'>" + mydata.po_time[i] + "</h10>" +
+                            "<h5><strong style='font-size:12px;float:left;width:100%;margin-top:5px'>" + mydata.po_text[i] + "</strong></h5></div>" +
 
-                            "<div style='width:100%;background-color: #FFFDEE;'><h5 style='float:left;width:100%;margin-left:0;margin-top:5px;background-color: #FFFDEE;'><strong style='font-size:18px;float:left;width:92%;margin-left:8%;margin-top:5px;background-color: #FFFDEE;'>" + "@" + mydata.po_retrant_poster[i] + "</strong>" +
-                            "<strong style='font-size:16px;float:left;width:92%;margin-left:8%;margin-top:5px;margin-bottom:5px;background-color: #FFFDEE;'>" + mydata.po_retrant_text[i] + "</strong></h5></div>" +
+                            "<div style='width:100%;background-color: #FFFDEE;'><h5 style='float:left;width:100%;margin-left:0;margin-top:5px;background-color: #FFFDEE;'><strong style='font-size:15px;float:left;width:92%;margin-left:8%;margin-top:5px;background-color: #FFFDEE;'>" + "@" + mydata.po_retrant_poster[i] + "</strong>" +
+                            "<strong style='font-size:12px;float:left;width:92%;margin-left:8%;margin-top:5px;margin-bottom:5px;background-color: #FFFDEE;'>" + mydata.po_retrant_text[i] + "</strong></h5></div>" +
 
                             "<div class='post_function'><button class='to_retrant' id='retrant_" + mydata.po_id[i] + "'><b>转发" + mydata.po_retrant[i] + "</b></button><div class='line'></div><button class='to_comment' id='comment_" + mydata.po_id[i] + "'><b>评论" + mydata.po_comment[i] + "</b></button><div class='line'></div><button class='to_upvote' id='upvote_" + mydata.po_id[i] + "'><b>点赞" + mydata.po_upvote[i] + "</b></button></div>" +
                             "<div class='post_comment' id='post_comment_" + mydata.po_id[i] + "'>" +
@@ -1203,8 +1222,8 @@
                 if (mydata.po_ifretrant[i] == 0) {
                     $('#follow_post').append("<div class='module span12' style='width:100%;height:auto;float:left;margin-left:0;background-color:white;border:0' id='F_" + mydata.po_id[i] + "'>" +
                         "<div style='width:8%;float:left;margin-top:10;'><img class='my_photo' src='../static/avatar/" + mydata.avatar[i] + "?timestamp=" + new Date().getTime() + "'></div>" +
-                        "<div style='width:92%;float:right;margin-top:10;'><button class='no_follow'><b>取消关注</b></button><span class='person' id='F_poster_" + mydata.po_id[i] + "'>" + mydata.po_user[i] + "</span><h10 style='font-size:5px;color:gray;float:left;width:90%'>" + mydata.po_time[i] + "</h10>" +
-                        "<h5><strong style='font-size:16px;float:left;width:100%;margin-top:5px'>" + mydata.po_text[i] + "</strong></h5></div>" +
+                        "<div style='width:92%;float:right;margin-top:10;'><button class='no_follow'><b>取消关注</b></button><span class='person' id='F_poster_" + mydata.po_id[i] + "'>" + mydata.po_user[i] + "</span><h10 style='font-size:10px;color:gray;float:left;width:90%'>" + mydata.po_time[i] + "</h10>" +
+                        "<h5><strong style='font-size:12px;float:left;width:100%;margin-top:5px'>" + mydata.po_text[i] + "</strong></h5></div>" +
 
                         "<div class='post_function'><button class='to_retrant' data-toggle='modal' data-target='#all_message_modal' id='F_comment_" + mydata.po_id[i] + "'><b>转发" + mydata.po_retrant[i] + "</b></button><div class='line'></div><button class='to_comment' id='F_comment_" + mydata.po_id[i] + "'><b>评论" + mydata.po_comment[i] + "</b></button><div class='line'></div><button class='to_upvote' id='F_upvote_" + mydata.po_id[i] + "'><b>点赞" + mydata.po_upvote[i] + "</b></button></div>" +
                         "<div class='post_comment' id='F_post_comment_" + mydata.po_id[i] + "'>" +
@@ -1216,11 +1235,11 @@
                 else {
                     $('#follow_post').append("<div class='module span12' style='width:100%;height:auto;float:left;margin-left:0;background-color:white;border:0' id='F_" + mydata.po_id[i] + "'>" +
                         "<div style='width:8%;float:left;margin-top:10;'><img class='my_photo' src='../static/avatar/" + mydata.avatar[i] + "?timestamp=" + new Date().getTime() + "'></div>" +
-                        "<div style='width:92%;float:left;margin-top:10;'><button class='no_follow'><b>取消关注</b></button><span class='person' id='F_poster_" + mydata.po_id[i] + "'>" + mydata.po_user[i] + "</span><h10 style='font-size:5px;color:gray;float:left;width:90%'>" + mydata.po_time[i] + "</h10>" +
-                        "<h5><strong style='font-size:16px;float:left;width:100%;margin-top:5px'>" + mydata.po_text[i] + "</strong></h5></div>" +
+                        "<div style='width:92%;float:left;margin-top:10;'><button class='no_follow'><b>取消关注</b></button><span class='person' id='F_poster_" + mydata.po_id[i] + "'>" + mydata.po_user[i] + "</span><h10 style='font-size:10px;color:gray;float:left;width:90%'>" + mydata.po_time[i] + "</h10>" +
+                        "<h5><strong style='font-size:12px;float:left;width:100%;margin-top:5px'>" + mydata.po_text[i] + "</strong></h5></div>" +
 
-                        "<div style='width:100%;background-color: #FFFDEE;'><h5 style='float:left;width:100%;margin-left:0;margin-top:5px;background-color: #FFFDEE;'><strong style='font-size:18px;float:left;width:92%;margin-left:8%;margin-top:5px;background-color: #FFFDEE;'>" + "@" + mydata.po_retrant_poster[i] + "</strong>" +
-                        "<strong style='font-size:16px;float:left;width:92%;margin-left:8%;margin-top:5px;margin-bottom:5px;background-color: #FFFDEE;'>" + mydata.po_retrant_text[i] + "</strong></h5></div>" +
+                        "<div style='width:100%;background-color: #FFFDEE;'><h5 style='float:left;width:100%;margin-left:0;margin-top:5px;background-color: #FFFDEE;'><strong style='font-size:15px;float:left;width:92%;margin-left:8%;margin-top:5px;background-color: #FFFDEE;'>" + "@" + mydata.po_retrant_poster[i] + "</strong>" +
+                        "<strong style='font-size:12px;float:left;width:92%;margin-left:8%;margin-top:5px;margin-bottom:5px;background-color: #FFFDEE;'>" + mydata.po_retrant_text[i] + "</strong></h5></div>" +
 
                         "<div class='post_function'><button class='to_retrant' data-toggle='modal' data-target='#all_message_modal' id='F_comment_" + mydata.po_id[i] + "'><b>转发" + mydata.po_retrant[i] + "</b></button><div class='line'></div><button class='to_comment' id='F_comment_" + mydata.po_id[i] + "'><b>评论" + mydata.po_comment[i] + "</b></button><div class='line'></div><button class='to_upvote' id='F_upvote_" + mydata.po_id[i] + "'><b>点赞" + mydata.po_upvote[i] + "</b></button></div>" +
                         "<div class='post_comment' id='F_post_comment_" + mydata.po_id[i] + "'>" +
@@ -1238,8 +1257,8 @@
                 if (mydata.po_ifretrant[i] == 0) {
                     $('#my_own_post').append("<div class='module span12' style='width:100%;height:auto;float:left;margin-left:0;background-color:white;border:0' id='M_" + mydata.po_id[i] + "'>" +
                         "<div style='width:8%;float:left;margin-top:10;'><img class='my_photo' src='../static/avatar/" + mydata.avatar[i] + "?timestamp=" + new Date().getTime() + "'></div>" +
-                        "<div style='width:92%;float:right;margin-top:10;'><span class='person' id='M_poster_" + mydata.po_id[i] + "'>" + mydata.po_user[i] + "</span><h10 style='font-size:5px;color:gray;float:left;width:100%'>" + mydata.po_time[i] + "</h10>" +
-                        "<h5><strong style='font-size:16px;float:left;width:100%;margin-top:5px'>" + mydata.po_text[i] + "</strong></h5></div>" +
+                        "<div style='width:92%;float:right;margin-top:10;'><span class='person' id='M_poster_" + mydata.po_id[i] + "'>" + mydata.po_user[i] + "</span><h10 style='font-size:10px;color:gray;float:left;width:100%'>" + mydata.po_time[i] + "</h10>" +
+                        "<h5><strong style='font-size:12px;float:left;width:100%;margin-top:5px'>" + mydata.po_text[i] + "</strong></h5></div>" +
 
                         "<div class='post_function'><button class='to_retrant'><b>转发" + mydata.po_retrant[i] + "</b></button><div class='line'></div><button class='to_comment' id='M_comment_" + mydata.po_id[i] + "'><b>评论" + mydata.po_comment[i] + "</b></button><div class='line'></div><button class='to_upvote' id='M_upvote_" + mydata.po_id[i] + "'><b>点赞" + mydata.po_upvote[i] + "</b></button></div>" +
                         "<div class='post_comment' id='M_post_comment_" + mydata.po_id[i] + "'>" +
@@ -1251,11 +1270,11 @@
                 else {
                     $('#my_own_post').append("<div class='module span12' style='width:100%;height:auto;float:left;margin-left:0;background-color:white;border:0' id='M_" + mydata.po_id[i] + "'>" +
                         "<div style='width:8%;float:left;margin-top:10;'><img class='my_photo' src='../static/avatar/" + mydata.avatar[i] + "?timestamp=" + new Date().getTime() + "'></div>" +
-                        "<div style='width:92%;float:left;margin-top:10;'><span class='person' id='M_poster_" + mydata.po_id[i] + "'>" + mydata.po_user[i] + "</span><h10 style='font-size:5px;color:gray;float:left;width:100%'>" + mydata.po_time[i] + "</h10>" +
-                        "<h5><strong style='font-size:16px;float:left;width:100%;margin-top:5px'>" + mydata.po_text[i] + "</strong></h5></div>" +
+                        "<div style='width:92%;float:left;margin-top:10;'><span class='person' id='M_poster_" + mydata.po_id[i] + "'>" + mydata.po_user[i] + "</span><h10 style='font-size:10px;color:gray;float:left;width:100%'>" + mydata.po_time[i] + "</h10>" +
+                        "<h5><strong style='font-size:12px;float:left;width:100%;margin-top:5px'>" + mydata.po_text[i] + "</strong></h5></div>" +
 
-                        "<div style='width:100%;background-color: #FFFDEE;'><h5 style='float:left;width:100%;margin-left:0;margin-top:5px;background-color: #FFFDEE;'><strong style='font-size:18px;float:left;width:92%;margin-left:8%;margin-top:5px;background-color: #FFFDEE;'>" + "@" + mydata.po_retrant_poster[i] + "</strong>" +
-                        "<strong style='font-size:16px;float:left;width:92%;margin-left:8%;margin-top:5px;margin-bottom:5px;background-color: #FFFDEE;'>" + mydata.po_retrant_text[i] + "</strong></h5></div>" +
+                        "<div style='width:100%;background-color: #FFFDEE;'><h5 style='float:left;width:100%;margin-left:0;margin-top:5px;background-color: #FFFDEE;'><strong style='font-size:15px;float:left;width:92%;margin-left:8%;margin-top:5px;background-color: #FFFDEE;'>" + "@" + mydata.po_retrant_poster[i] + "</strong>" +
+                        "<strong style='font-size:12px;float:left;width:92%;margin-left:8%;margin-top:5px;margin-bottom:5px;background-color: #FFFDEE;'>" + mydata.po_retrant_text[i] + "</strong></h5></div>" +
 
                         "<div class='post_function'><button class='to_retrant'><b>转发" + mydata.po_retrant[i] + "</b></button><div class='line'></div><button class='to_comment' id='M_comment_" + mydata.po_id[i] + "'><b>评论" + mydata.po_comment[i] + "</b></button><div class='line'></div><button class='to_upvote' id='M_upvote_" + mydata.po_id[i] + "'><b>点赞" + mydata.po_upvote[i] + "</b></button></div>" +
                         "<div class='post_comment' id='M_post_comment_" + mydata.po_id[i] + "'>" +

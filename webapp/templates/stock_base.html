@@ -201,10 +201,8 @@
                         {% block current_user %}{% endblock %}
                         <b class="caret"></b></a>
                         <ul class="dropdown-menu">
-                            <li><a href="{{ url_for('main.personal') }}">个人信息</a></li>
-                            <li><a href="#">编辑资料</a></li>
-                            <li><a href="#">账户设置</a></li>
-                            <li><a href="{{ url_for('main.profilephoto') }}">上传头像</a></li>
+                            <li><a href="{{ url_for('stock.home') }}">个人信息</a></li>
+                            <li><a href="{{ url_for('main.profilephoto') }}">编辑资料</a></li>
                             <li><a href= {{ url_for('main.admin') }}>用户权限管理</a></li>
                             <li class="divider"></li>
                             <li><a href={{ url_for('main.logout') }}>退出登录</a></li>
@@ -319,7 +317,7 @@
             url: '{{ url_for("message_api.get_message_count") }}',
             dataType: 'json',
             success: function (data) {
-                console.log(data)
+                console.log(data);
                 if (data.count > 0) {
                     $("#personal_message_count").text(data.count)
                 }
