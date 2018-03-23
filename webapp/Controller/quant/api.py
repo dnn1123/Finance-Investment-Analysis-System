@@ -1,7 +1,7 @@
 # coding=utf-8
 from flask import Blueprint,request,render_template,jsonify
 from flask_login import current_user
-from .bpm import handle_form,handle_liveform,dict_to_sql,sql_to_dict,Strategy_Manager,Strategy,create_position_records
+from .bpm import handle_form,handle_liveform,dict_to_sql,sql_to_dict,Strategy_Manager,Strategy,create_position_records,get_stock_list,get_fiducial_value_data
 from webapp.stratlib import Profit_monitoring
 from webapp.models import strategy,subscriber,db,stock_basics,basic_stock
 from webapp.config import paths
@@ -27,9 +27,7 @@ def request_form():
 
 @quant_api.route('/backtest', methods=('GET', 'POST'))
 def back_test():
-    data,history = handle_form(request.form)
-    getdata = Profit_monitoring(history)
-    results = getdata.start()
+    data,history,Portfolio_data=handle_form(request.form)
     #position history
     namelist = []
     for i in range(len(history)):
@@ -40,11 +38,6 @@ def back_test():
         record = [history[i].code, namelist[i], history[i].position, history[i].price,
                   history[i].amount, history[i].time.strftime('%Y-%m-%d')]
         t_records.append(record)
-    res = {
-        'results': results,
-        'traderec': t_records,
-    }
-
     c_records = []
     for i in range(len(history)):
         record = [history[i].code, namelist[i], history[i].commission, history[i].amount]
@@ -58,8 +51,8 @@ def back_test():
     # get latest closing price
     pricelist = []
     for i in range(len(position_records)):
-        pri = ts.get_hist_data(position_records[i].code,start=request.form.get('edate'),end=request.form.get('edate')).close[0]
-        pricelist.append(pri)
+        pri = ts.get_k_data(position_records[i].code,start=(datetime.datetime.strptime(request.form.get('edate'), "%Y-%m-%d")+datetime.timedelta(days=-30)).strftime("%Y-%m-%d"),end=request.form.get('edate')).iloc[-1:].close
+        pricelist.append(pri.values[0])
     p_records = []
     for i in range(len(position_records)):
         rec = [position_records[i].code, namelist[i], position_records[i].shares, position_records[i].total_cost,
@@ -100,7 +93,17 @@ def back_test():
     for i in range(len(position_records)):
         rec = [namelist[i], grouplist[i]]
         g_records.append(rec)
-
+    #绘图数据
+    plotter_date=Portfolio_data['date']
+    stock_list=get_stock_list(request.form)
+    plotter_data=get_fiducial_value_data(string.atof(request.form.get('cash').encode('utf-8')),plotter_date,stock_list,string.atof(request.form.get('commission').encode('utf-8')))
+    # plotter_data=[]
+    res = {
+        'date': [i.strftime("%Y-%m-%d")   for i in plotter_date],
+        'traderec': t_records,
+        'portfolio':Portfolio_data['data'],
+        'compare':plotter_data
+    }
     results_all = {
         'data':data,
         'res':res,

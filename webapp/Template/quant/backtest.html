@@ -852,7 +852,6 @@
 
         function profittrend(data) {
             var tra_recs = new Array();
-            console.log(data['traderec'])
             for (var i = 0; i < data['traderec'].length; i++) {
                 if (data['traderec'][i][2] == 'buy') {
                     tra_recs.push({
@@ -875,96 +874,16 @@
                 }
             }
             ;
-            var myChart = echarts.init(document.getElementById('profittrend'));
-            var option = {
-                color: ['#6633FF', 'red', '#00008B'],
-                tooltip: {
-                    trigger: 'axis'
-                },
-                legend: {
-                    data: ['收益', '成本', '市值']
-                },
-                toolbox: {
-                    show: true,
-                    feature: {
-                        dataZoom: {
-                            yAxisIndex: 'none'
-                        },
-                        dataView: {readOnly: false},
-                        magicType: {type: ['line', 'bar']},
-                        restore: {},
-                        saveAsImage: {}
-                    }
-                },
-                xAxis: {
-                    type: 'category',
-                    boundaryGap: false,
-                    data: data['results']['date']
-                },
-                yAxis: {
-                    type: 'value',
-                    axisLabel: {
-                        formatter: '{value} 元'
-                    }
-                },
-                series: [
-                    {
-                        name: '收益',
-
-                        type: 'bar',
-                        data: data['results']['profit'],
-                        {#                    markPoint: {#}
-                        {#                        data: [#}
-                        {#                            {type: 'max', name: '最大值'},#}
-                        {#                            {type: 'min', name: '最小值'}#}
-                        {#                        ]#}
-                        {#                    },#}
-                        {#                    markLine: {#}
-                        {#                        data: [#}
-                        {#                            {type: 'average', name: '平均值'}#}
-                        {#                        ]#}
-                        {#                    }#}
-                    },
-                    {
-                        name: '成本',
+            legend_data=['策略收益', '基准收益']
+            for (var key in data.compare){
+                if (key != 'index'){
+                    legend_data.push("全仓"+key)
+                }
+            }
+            data_series=[{
+                        name: '策略收益',
                         type: 'line',
-                        data: data['results']['cost'],
-                        markPoint: {
-                            label: {
-                                normal: {
-                                    show: false,
-                                    position: 'bottom',
-                                },
-                            },
-                            data: tra_recs,
-
-                        },
-                        markLine: {
-
-                            data: [
-                                {type: 'average', name: '平均值'},
-                                [{
-                                    symbol: 'none',
-                                    x: '90%',
-                                    yAxis: 'max'
-                                }, {
-                                    symbol: 'circle',
-                                    label: {
-                                        normal: {
-                                            position: 'start',
-                                            formatter: '最大值'
-                                        }
-                                    },
-                                    type: 'max',
-                                    name: '最高点'
-                                }]
-                            ]
-                        }
-                    },
-                    {
-                        name: '市值',
-                        type: 'line',
-                        data: data['results']['value'],
+                        data: data['portfolio']
                         {#                    markPoint: {#}
                         {#                        data: [#}
                         {#                            {name: '周最低', value: -2, xAxis: 1, yAxis: -1.5}#}
@@ -990,10 +909,62 @@
                         {#                            }]#}
                         {#                        ]#}
                         {#                    }#}
+                    }]
+            for (var key in data.compare){
+                if (key == 'index'){
+                    dict={
+                        name: '基准收益',
+                        type: 'line',
+                        data: data['compare']['index'],
                     }
-                ]
+                    data_series.push(dict)
+                }else {
+                     dict={
+                        name:"全仓"+key,
+                        type: 'line',
+                        data: data['compare'][key],
+                    }
+                    data_series.push(dict)
+                }
+
+            }
+
+            console.log(data_series)
+            var myChart = echarts.init(document.getElementById('profittrend'));
+            var option = {
+                color: ['#6633FF', 'red','green','#00008B'],
+                tooltip: {
+                    trigger: 'axis'
+                },
+                legend: {
+                    data: legend_data
+                },
+                toolbox: {
+                    show: true,
+                    feature: {
+                        dataZoom: {
+                            yAxisIndex: 'none'
+                        },
+                        dataView: {readOnly: false},
+                        magicType: {type: ['line', 'bar']},
+                        restore: {},
+                        saveAsImage: {}
+                    }
+                },
+                xAxis: {
+                    type: 'category',
+                    boundaryGap: false,
+                    data: data['date']
+                },
+                yAxis: {
+                    type: 'value',
+                    axisLabel: {
+                        formatter: '{value} 元'
+                    }
+                },
+                series: data_series
             };
-            myChart.setOption(option);
+            myChart.setOption(option,true);
         }
     </script>
 {% endblock %}
