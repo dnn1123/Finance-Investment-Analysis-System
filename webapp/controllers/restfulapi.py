@@ -76,9 +76,96 @@ def change_money():
     }
     return jsonify(results)
 
+# 获取数据库中所有财务指标
+@api_blueprint.route("/finance_target/", methods=('GET', 'POST'))
+def finance_target():
+    results1 =cns_financial_target_1 .query.all()
+    results2 =cns_financial_target_2 .query.all()
+    results3 =cns_financial_target_3 .query.all()
+    results4 =cns_financial_target_4 .query.all()
+
+    data={}
+    id_list=[]
+    cn_name_list=[]
+    en_name_list=[]
+    id_belong_to_list=[]
+    for result1 in results1:
+        id_list.append(result1.id_1)
+        cn_name_list.append(result1.cn_name_1)
+        en_name_list.append(result1.en_name_1)
+        id_belong_to_list.append('00')
+        for result2 in results2:
+            if result2.id_belong_to_1 == result1.id_1:
+                id_list.append(result2.id_2)
+                cn_name_list.append(result2.cn_name_2)
+                en_name_list.append(result2.en_name_2)
+                id_belong_to_list.append(result2.id_belong_to_1)
+                for  result3 in results3:
+                      if result3.id_belong_to_2 == result2.id_2:
+                          id_list.append(result3.id_3)
+                          cn_name_list.append(result3.cn_name_3)
+                          en_name_list.append(result3.en_name_3)
+                          id_belong_to_list.append(result3.id_belong_to_2)
+                          for  result4 in results4:
+                               if result4.id_belong_to_3 == result3.id_3:
+                                   id_list.append(result4.id_4)
+                                   cn_name_list.append(result4.cn_name_4)
+                                   en_name_list.append(result4.en_name_4)
+                                   id_belong_to_list.append(result4.id_belong_to_3)
+
+    data['id']=id_list
+    data['cn_name']=cn_name_list
+    data['en_name']=en_name_list
+    data['id_belong_to']=id_belong_to_list
+    return jsonify(data)
+
+
+
+
+
 
 # 数据库查询api 用于Ajax数据返回 json格式数据
 @api_blueprint.route("/finance_data/", methods=('GET', 'POST'))
+# def finance_data():
+#     stockcode = request.args.get('stockcode')
+#     starttime = request.args.get('starttime')
+#     endtime = request.args.get('endtime')
+#     indexes = request.args.getlist('indexes[]')
+#     filters1 = {
+#         cns_income_statement.stock_code == stockcode,
+#         cns_income_statement.the_date >= starttime,
+#         cns_income_statement.the_date <= endtime,
+#     }
+#     filters2 = {
+#         cns_statement_of_cash_flows.trade_code == stockcode,
+#         cns_statement_of_cash_flows.the_date >= starttime,
+#         cns_statement_of_cash_flows.the_date <= endtime,
+#     }
+#     results = finance_basics.query.filter(*filters1).all()
+#     result1 = finance_basics.query.filter_by(trade_code=stockcode).first_or_404()
+#
+#
+#     data = {}
+#     year_list = []
+#     data['the_name'] = result1.sec_name
+#     for index in indexes:
+#         exec (index + "_list=[]")
+#
+#     for result in results:
+#         year_list.append(result.the_year)
+#         for index in indexes:
+#             if eval("result." + index) is None:
+#                 exec (index + "_list.append(result." + index + ")")
+#             else:
+#                 exec (index + "_list.append(float(result." + index + "))")
+#
+#     data['stock_code'] = stockcode
+#     data['the_year'] = year_list
+#     data['indexes'] = indexes
+#     for index in indexes:
+#         exec ("data['" + index + "']=" + index + "_list")
+#     return jsonify(data)
+
 def finance_data():
     stockcode = request.args.get('stockcode')
     starttime = request.args.get('starttime')
@@ -112,7 +199,6 @@ def finance_data():
     for index in indexes:
         exec ("data['" + index + "']=" + index + "_list")
     return jsonify(data)
-
 
 @api_blueprint.route("/code_wind/", methods=('GET', 'POST'))
 def code_wind():
