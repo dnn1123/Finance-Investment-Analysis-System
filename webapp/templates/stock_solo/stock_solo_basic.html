@@ -1097,8 +1097,10 @@
 
         $(document).ready(function () {
             var index_cn_name_list = []
+            var index_en_name_list = []
             var index_id_list = []
             var index_id_belong_to_list = []
+            var including_list_1 = []
             creatindex()
             $('input').iCheck({
                 checkboxClass: 'icheckbox_minimal-blue',
@@ -1121,6 +1123,7 @@
                 CreateTable();
             });
             getindex()
+            getindex_data()
             getdata()
             tree()
         });
@@ -1155,10 +1158,13 @@
                 success: function (data) {
                     console.log(data)
                     index_cn_name_list = data['cn_name']
+                    index_en_name_list = data['en_name']
                     index_id_list = data['id']
                     index_id_belong_to_list = data['id_belong_to']
+
                     console.log(index_cn_name_list)
                     console.log(index_id_list)
+                    console.log(index_id_belong_to_list)
                 }
             })
         }
@@ -1166,806 +1172,887 @@
         function tree() {
             tree = new dTree('tree')
             for (var i = 0; i < index_id_list.length; i++) {
-                tree.add(index_id_list[i], index_id_belong_to_list[i], "<input type='checkbox' name=\"check\" id=\""+index_id_list[i]+"\" value=\"0\" class=\"index_checked\" onClick=\"index_check(this.id)\"> " + index_cn_name_list[i])
+                tree.add(index_id_list[i], index_id_belong_to_list[i], "<input type='checkbox' name=\"check\" id=\"" + index_id_list[i] + "\" value=\"" + index_id_belong_to_list[i] + "\" class=\"index_checked\" onClick=\"index_check(this.id,this.value)\"> " + index_cn_name_list[i])
             }
             tree.closeAll()
             document.getElementById("mytree").innerHTML = tree;
             {#                    document.write(tree)#}
         }
-        function index_check(id){
-            var index=id
-            var a=id.length
-            
-        }
-        function getdata() {
-            $.ajax({
-                type: 'GET',
-                url: '{{url_for("restfulapi.finance_data")}}',
-                data: {
-                    stockcode: currentcode,
-                    starttime: '19901231',
-                    endtime: '20161231',
-                    indexes: ['tot_oper_rev', 'tot_oper_cost', 'fin_exp_is', 'tot_profit', 'net_profit_is', 'wgsd_net_inc', 'tot_assets', 'tot_cur_assets', 'tot_non_cur_assets', 'tot_liab', 'tot_cur_liab', 'tot_non_cur_liab', 'wgsd_com_eq', 'operatecashflow_ttm2', 'investcashflow_ttm2', 'financecashflow_ttm2', 'cashflow_ttm2', 'monetary_cap', 'grossprofitmargin', 'roic', 'turndays', 'invturndays', 'arturndays', 'apturndays']
-                },
-                dataType: 'json',//希望服务器返回json格式的数据
-                success: function (data) {
-                    console.log(data)
-                    if (orderflag == "asc") {
-                        for (var i = 0; i < data.indexes.length; i++) {
-                            eval("data." + data.indexes[i]).reverse();
-                        }
-                        data.the_year.reverse();
+{#        指标点击事件#}
+        function index_check(id, id_belong_to) {
+            var including_list = []
+            var en_name_list = []
+            var cn_name_list = []
+            var a = id.length
+            var check = document.getElementById(id).checked
+            for (var i = 0; i < index_id_list.length; i++) {
+                if (index_id_list[i].substring(0, a) == id) {
+                    including_list.push(index_id_list[i])
+                    en_name_list.push(index_en_name_list[i])
+                    cn_name_list.push(index_cn_name_list[i])
+                }
+            }
+            for (var i = 0; i < including_list.length; i++) {
+                if (check) {
+                    var chosen = document.getElementById(including_list[i])
+                    chosen.checked = true
+                }
+                if(!check){
+                    var chosen = document.getElementById(including_list[i])
+                    chosen.checked = false
+                }
+            }
+            including_list_1=including_list
+            console.log(including_list_1)
+            getindex_data(including_list_1,cn_name_list,en_name_list)
+            }
+        function getindex_data(index_id_list,cn_name_list,en_name_list){
+             $.ajax({
+                    type: 'GET',
+                    url: '{{url_for("restfulapi.finance_index_data")}}',
+                    data: {
+                        stockcode: currentcode,
+                        starttime: '19901231',
+                        endtime: '20161231',
+                        id_list:index_id_list,
+                        cn_name_list:cn_name_list,
+                        en_name_list:en_name_list
+                    },
+                    dataType: 'json',//希望服务器返回json格式的数据
+                    success: function (data) {
+                        console.log(data)
+{#                        if (orderflag == "asc") {#}
+{#                            for (var i = 0; i < data.indexes.length; i++) {#}
+{#                                eval("data." + data.indexes[i]).reverse();#}
+{#                            }#}
+{#                            data.the_year.reverse();#}
+{#                        }#}
+{#                        finance_results = data;#}
+{#                        finance_results_t = data;#}
+{#                        $.ajax({#}
+{#                            type: 'GET',#}
+{#                            url: '{{url_for("restfulapi.invest_data")}}',#}
+{#                            data: {#}
+{#                                stockcode: currentcode,#}
+{#                                starttime: '19901231',#}
+{#                                endtime: '20161231',#}
+{#                                indexes: ['total_shares', 'div_cashandstock', 'ev', 'employee', 'dividendyield2', 'ev1', 'ev2']#}
+{#                            },#}
+{#                            dataType: 'json',//希望服务器返回json格式的数据#}
+{#                            success: function (data) {#}
+{#                                console.log(data)#}
+{#                                if (orderflag == "asc") {#}
+{#                                    for (var i = 0; i < data.indexes.length; i++) {#}
+{#                                        eval("data." + data.indexes[i]).reverse();#}
+{#                                    }#}
+{#                                    data.the_year.reverse();#}
+{#                                }#}
+{#                                invest_results = data;#}
+{#                                invest_results_t = data;#}
+{#                                CreateChart();#}
+{#                                $("input#cl_tot_oper_cost").iCheck('check')#}
+{#                            }#}
+{#                        })#}
                     }
-                    finance_results = data;
-                    finance_results_t = data;
-                    $.ajax({
-                        type: 'GET',
-                        url: '{{url_for("restfulapi.invest_data")}}',
-                        data: {
-                            stockcode: currentcode,
-                            starttime: '19901231',
-                            endtime: '20161231',
-                            indexes: ['total_shares', 'div_cashandstock', 'ev', 'employee', 'dividendyield2', 'ev1', 'ev2']
-                        },
-                        dataType: 'json',//希望服务器返回json格式的数据
-                        success: function (data) {
-                            console.log(data)
-                            if (orderflag == "asc") {
-                                for (var i = 0; i < data.indexes.length; i++) {
-                                    eval("data." + data.indexes[i]).reverse();
-                                }
-                                data.the_year.reverse();
+                })
+
+        }
+            function getdata() {
+                $.ajax({
+                    type: 'GET',
+                    url: '{{url_for("restfulapi.finance_data")}}',
+                    data: {
+                        stockcode: currentcode,
+                        starttime: '19901231',
+                        endtime: '20161231',
+                        indexes: ['tot_oper_rev', 'tot_oper_cost', 'fin_exp_is', 'tot_profit', 'net_profit_is', 'wgsd_net_inc', 'tot_assets', 'tot_cur_assets', 'tot_non_cur_assets', 'tot_liab', 'tot_cur_liab', 'tot_non_cur_liab', 'wgsd_com_eq', 'operatecashflow_ttm2', 'investcashflow_ttm2', 'financecashflow_ttm2', 'cashflow_ttm2', 'monetary_cap', 'grossprofitmargin', 'roic', 'turndays', 'invturndays', 'arturndays', 'apturndays']
+                    },
+                    dataType: 'json',//希望服务器返回json格式的数据
+                    success: function (data) {
+                        console.log(data)
+                        if (orderflag == "asc") {
+                            for (var i = 0; i < data.indexes.length; i++) {
+                                eval("data." + data.indexes[i]).reverse();
                             }
-                            invest_results = data;
-                            invest_results_t = data;
-                            CreateChart();
-                            $("input#cl_tot_oper_cost").iCheck('check')
+                            data.the_year.reverse();
                         }
-                    })
+                        finance_results = data;
+                        finance_results_t = data;
+                        $.ajax({
+                            type: 'GET',
+                            url: '{{url_for("restfulapi.invest_data")}}',
+                            data: {
+                                stockcode: currentcode,
+                                starttime: '19901231',
+                                endtime: '20161231',
+                                indexes: ['total_shares', 'div_cashandstock', 'ev', 'employee', 'dividendyield2', 'ev1', 'ev2']
+                            },
+                            dataType: 'json',//希望服务器返回json格式的数据
+                            success: function (data) {
+                                console.log(data)
+                                if (orderflag == "asc") {
+                                    for (var i = 0; i < data.indexes.length; i++) {
+                                        eval("data." + data.indexes[i]).reverse();
+                                    }
+                                    data.the_year.reverse();
+                                }
+                                invest_results = data;
+                                invest_results_t = data;
+                                CreateChart();
+                                $("input#cl_tot_oper_cost").iCheck('check')
+                            }
+                        })
+                    }
+                })
+            }
+
+            function CreateChart() {
+                dataSeries = [];
+                for (var i = 0; i < finance_results.indexes.length; i++) {
+                    if (Chosenindexes.hasOwnProperty(finance_results.indexes[i])) {
+                        temp = {
+                            name: finance_results.indexes[i],
+                            type: 'line',
+                            lineStyle: {normal: {width: 2}},
+                            itemStyle: {normal: {color: Chosenindexes[finance_results.indexes[i]]}},
+                            symbolSize: 8,
+                            smooth: true,
+                            data: numfilter(eval("finance_results." + finance_results.indexes[i]))
+                        };
+                        dataSeries.push(temp);
+
+                    }
                 }
-            })
-        }
-        function CreateChart() {
-            dataSeries = [];
-            for (var i = 0; i < finance_results.indexes.length; i++) {
-                if (Chosenindexes.hasOwnProperty(finance_results.indexes[i])) {
+                for (var i = 0; i < invest_results.indexes.length; i++) {
+                    if (Chosenindexes.hasOwnProperty(invest_results.indexes[i])) {
+                        temp = {
+                            name: invest_results.indexes[i],
+                            type: 'line',
+                            lineStyle: {normal: {width: 2}},
+                            itemStyle: {normal: {color: Chosenindexes[invest_results.indexes[i]]}},
+                            symbolSize: 8,
+                            smooth: true,
+                            data: numfilter(eval("invest_results." + invest_results.indexes[i]))
+                        };
+                        dataSeries.push(temp);
+                    }
+                }
+                if (Chosenindexes.hasOwnProperty("net_inc_eq_rate")) {
+                    tempdata = []
+                    for (i = 0; i < finance_results.the_year.length; i++) {
+                        datavalue = finance_results.wgsd_net_inc[i] / finance_results.wgsd_com_eq[i]
+                        tempdata.push(datavalue)
+                    }
                     temp = {
-                        name: finance_results.indexes[i],
+                        name: "net_inc_eq_rate",
                         type: 'line',
                         lineStyle: {normal: {width: 2}},
-                        itemStyle: {normal: {color: Chosenindexes[finance_results.indexes[i]]}},
+                        itemStyle: {normal: {color: Chosenindexes["net_inc_eq_rate"]}},
                         symbolSize: 8,
                         smooth: true,
-                        data: numfilter(eval("finance_results." + finance_results.indexes[i]))
+                        data: numfilter(tempdata)
                     };
                     dataSeries.push(temp);
-
                 }
-            }
-            for (var i = 0; i < invest_results.indexes.length; i++) {
-                if (Chosenindexes.hasOwnProperty(invest_results.indexes[i])) {
+                if (Chosenindexes.hasOwnProperty("earnings_per_share")) {
+                    tempdata = []
+                    for (i = 0; i < finance_results.the_year.length; i++) {
+                        datavalue = finance_results.wgsd_net_inc[i] / invest_results.total_shares[i]
+                        tempdata.push(datavalue)
+                    }
                     temp = {
-                        name: invest_results.indexes[i],
+                        name: "earnings_per_share",
                         type: 'line',
                         lineStyle: {normal: {width: 2}},
-                        itemStyle: {normal: {color: Chosenindexes[invest_results.indexes[i]]}},
+                        itemStyle: {normal: {color: Chosenindexes["earnings_per_share"]}},
                         symbolSize: 8,
                         smooth: true,
-                        data: numfilter(eval("invest_results." + invest_results.indexes[i]))
+                        data: numfilter(tempdata)
                     };
                     dataSeries.push(temp);
                 }
-            }
-            if (Chosenindexes.hasOwnProperty("net_inc_eq_rate")) {
-                tempdata = []
-                for (i = 0; i < finance_results.the_year.length; i++) {
-                    datavalue = finance_results.wgsd_net_inc[i] / finance_results.wgsd_com_eq[i]
-                    tempdata.push(datavalue)
-                }
-                temp = {
-                    name: "net_inc_eq_rate",
-                    type: 'line',
-                    lineStyle: {normal: {width: 2}},
-                    itemStyle: {normal: {color: Chosenindexes["net_inc_eq_rate"]}},
-                    symbolSize: 8,
-                    smooth: true,
-                    data: numfilter(tempdata)
-                };
-                dataSeries.push(temp);
-            }
-            if (Chosenindexes.hasOwnProperty("earnings_per_share")) {
-                tempdata = []
-                for (i = 0; i < finance_results.the_year.length; i++) {
-                    datavalue = finance_results.wgsd_net_inc[i] / invest_results.total_shares[i]
-                    tempdata.push(datavalue)
-                }
-                temp = {
-                    name: "earnings_per_share",
-                    type: 'line',
-                    lineStyle: {normal: {width: 2}},
-                    itemStyle: {normal: {color: Chosenindexes["earnings_per_share"]}},
-                    symbolSize: 8,
-                    smooth: true,
-                    data: numfilter(tempdata)
-                };
-                dataSeries.push(temp);
-            }
-            if (Chosenindexes.hasOwnProperty("net_assets_per_share")) {
-                tempdata = []
-                for (i = 0; i < finance_results.the_year.length; i++) {
-                    datavalue = finance_results.wgsd_com_eq[i] / invest_results.total_shares[i]
-                    tempdata.push(datavalue)
-                }
-                temp = {
-                    name: "net_assets_per_share",
-                    type: 'line',
-                    lineStyle: {normal: {width: 2}},
-                    itemStyle: {normal: {color: Chosenindexes["net_assets_per_share"]}},
-                    symbolSize: 8,
-                    smooth: true,
-                    data: numfilter(tempdata)
-                };
-                dataSeries.push(temp);
-            }
-            if (Chosenindexes.hasOwnProperty("cash_per_share")) {
-                tempdata = []
-                for (i = 0; i < finance_results.the_year.length; i++) {
-                    datavalue = finance_results.monetary_cap[i] / invest_results.total_shares[i]
-                    tempdata.push(datavalue)
-                }
-                temp = {
-                    name: "cash_per_share",
-                    type: 'line',
-                    lineStyle: {normal: {width: 2}},
-                    itemStyle: {normal: {color: Chosenindexes["cash_per_share"]}},
-                    symbolSize: 8,
-                    smooth: true,
-                    data: numfilter(tempdata)
-                };
-                dataSeries.push(temp);
-            }
-            if (Chosenindexes.hasOwnProperty("payment_proportion")) {
-                tempdata = []
-                for (i = 0; i < finance_results.the_year.length; i++) {
-                    datavalue = (invest_results.total_shares[i] * invest_results.div_cashandstock[i]) / finance_results.wgsd_net_inc[i]
-                    tempdata.push(datavalue)
-                }
-                temp = {
-                    name: "payment_proportion",
-                    type: 'line',
-                    lineStyle: {normal: {width: 2}},
-                    itemStyle: {normal: {color: Chosenindexes["payment_proportion"]}},
-                    symbolSize: 8,
-                    smooth: true,
-                    data: numfilter(tempdata)
-                };
-                dataSeries.push(temp);
-            }
-            if (Chosenindexes.hasOwnProperty("equal_earning_rate")) {
-                tempdata = []
-                for (i = 0; i < finance_results.the_year.length; i++) {
-                    datavalue = 1 / (Math.pow(1 - finance_results.wgsd_net_inc[i] / finance_results.wgsd_com_eq[i], 5)) / (finance_results.wgsd_net_inc[i] / finance_results.wgsd_com_eq[i])
-                    tempdata.push(datavalue)
-                }
-                temp = {
-                    name: "equal_earning_rate",
-                    type: 'line',
-                    lineStyle: {normal: {width: 2}},
-                    itemStyle: {normal: {color: Chosenindexes["equal_earning_rate"]}},
-                    symbolSize: 8,
-                    smooth: true,
-                    data: numfilter(tempdata)
-                };
-                dataSeries.push(temp);
-            }
-            if (Chosenindexes.hasOwnProperty("equal_market_rate")) {
-                tempdata = []
-                for (i = 0; i < finance_results.the_year.length; i++) {
-                    datavalue = 1 / ( Math.pow(1 - finance_results.wgsd_net_inc[i] / finance_results.wgsd_com_eq[i], 5))
-                    tempdata.push(datavalue)
-                }
-                temp = {
-                    name: "equal_market_rate",
-                    type: 'line',
-                    lineStyle: {normal: {width: 2}},
-                    itemStyle: {normal: {color: Chosenindexes["equal_market_rate"]}},
-                    symbolSize: 8,
-                    smooth: true,
-                    data: numfilter(tempdata)
-                };
-                dataSeries.push(temp);
-            }
-            if (Chosenindexes.hasOwnProperty("com_value_evaluate")) {
-                tempdata = []
-                for (i = 0; i < finance_results.the_year.length; i++) {
-                    datavalue = finance_results.wgsd_net_inc[i] *
-                            (1 / (Math.pow(1 - finance_results.wgsd_net_inc[i] / finance_results.wgsd_com_eq[i], 5)) / (finance_results.wgsd_net_inc[i] / finance_results.wgsd_com_eq[i]))
-                    tempdata.push(datavalue)
-                }
-                temp = {
-                    name: "com_value_evaluate",
-                    type: 'line',
-                    lineStyle: {normal: {width: 2}},
-                    itemStyle: {normal: {color: Chosenindexes["com_value_evaluate"]}},
-                    symbolSize: 8,
-                    smooth: true,
-                    data: numfilter(tempdata)
-                };
-                dataSeries.push(temp);
-            }
-            if (Chosenindexes.hasOwnProperty("per_com_value_evaluate")) {
-                tempdata = []
-                for (i = 0; i < finance_results.the_year.length; i++) {
-                    datavalue = (finance_results.wgsd_net_inc[i] *
-                            (1 / (Math.pow(1 - finance_results.wgsd_net_inc[i] / finance_results.wgsd_com_eq[i], 5)) / (finance_results.wgsd_net_inc[i] / finance_results.wgsd_com_eq[i]))) / invest_results.total_shares[i]
-                    tempdata.push(datavalue)
-                }
-                temp = {
-                    name: "per_com_value_evaluate",
-                    type: 'line',
-                    lineStyle: {normal: {width: 2}},
-                    itemStyle: {normal: {color: Chosenindexes["per_com_value_evaluate"]}},
-                    symbolSize: 8,
-                    smooth: true,
-                    data: numfilter(tempdata)
-                };
-                dataSeries.push(temp);
-            }
-            if (Chosenindexes.hasOwnProperty("fre_cash_evaluate")) {
-                tempdata = []
-                for (i = 0; i < finance_results.the_year.length; i++) {
-                    datavalue = finance_results.operatecashflow_ttm2[i] + finance_results.investcashflow_ttm2[i]
-                    tempdata.push(datavalue)
-                }
-                temp = {
-                    name: "fre_cash_evaluate",
-                    type: 'line',
-                    lineStyle: {normal: {width: 2}},
-                    itemStyle: {normal: {color: Chosenindexes["fre_cash_evaluate"]}},
-                    symbolSize: 8,
-                    smooth: true,
-                    data: numfilter(tempdata)
-                };
-                dataSeries.push(temp);
-            }
-            if (Chosenindexes.hasOwnProperty("earning_rate")) {
-                tempdata = []
-                for (i = 0; i < finance_results.the_year.length; i++) {
-                    datavalue = invest_results.ev[i] / finance_results.wgsd_net_inc[i]
-                    tempdata.push(datavalue)
-                }
-                temp = {
-                    name: "earning_rate",
-                    type: 'line',
-                    lineStyle: {normal: {width: 2}},
-                    itemStyle: {normal: {color: Chosenindexes["earning_rate"]}},
-                    symbolSize: 8,
-                    smooth: true,
-                    data: numfilter(tempdata)
-                };
-                dataSeries.push(temp);
-            }
-            if (Chosenindexes.hasOwnProperty("net_rate")) {
-                tempdata = []
-                for (i = 0; i < finance_results.the_year.length; i++) {
-                    datavalue = invest_results.ev[i] / finance_results.wgsd_com_eq[i]
-                    tempdata.push(datavalue)
-                }
-                temp = {
-                    name: "net_rate",
-                    type: 'line',
-                    lineStyle: {normal: {width: 2}},
-                    itemStyle: {normal: {color: Chosenindexes["net_rate"]}},
-                    symbolSize: 8,
-                    smooth: true,
-                    data: numfilter(tempdata)
-                };
-                dataSeries.push(temp);
-            }
-            if (Chosenindexes.hasOwnProperty("sale_rate")) {
-                tempdata = []
-                for (i = 0; i < finance_results.the_year.length; i++) {
-                    datavalue = invest_results.ev[i] / finance_results.tot_oper_rev[i]
-                    tempdata.push(datavalue)
-                }
-                temp = {
-                    name: "sale_rate",
-                    type: 'line',
-                    lineStyle: {normal: {width: 2}},
-                    itemStyle: {normal: {color: Chosenindexes["sale_rate"]}},
-                    symbolSize: 8,
-                    smooth: true,
-                    data: numfilter(tempdata)
-                };
-                dataSeries.push(temp);
-            }
-            if (Chosenindexes.hasOwnProperty("cash_rate")) {
-                tempdata = []
-                for (i = 0; i < finance_results.the_year.length; i++) {
-                    datavalue = invest_results.ev[i] / finance_results.operatecashflow_ttm2[i]
-                    tempdata.push(datavalue)
-                }
-                temp = {
-                    name: "cash_rate",
-                    type: 'line',
-                    lineStyle: {normal: {width: 2}},
-                    itemStyle: {normal: {color: Chosenindexes["cash_rate"]}},
-                    symbolSize: 8,
-                    smooth: true,
-                    data: numfilter(tempdata)
-                };
-                dataSeries.push(temp);
-            }
-            if (Chosenindexes.hasOwnProperty("cash_yield_evaluate")) {
-                tempdata = []
-                for (i = 0; i < finance_results.the_year.length; i++) {
-                    datavalue = (finance_results.operatecashflow_ttm2[i] + finance_results.investcashflow_ttm2[i]) / invest_results.ev[i]
-                    tempdata.push(datavalue)
-                }
-                temp = {
-                    name: "cash_yield_evaluate",
-                    type: 'line',
-                    lineStyle: {normal: {width: 2}},
-                    itemStyle: {normal: {color: Chosenindexes["cash_yield_evaluate"]}},
-                    symbolSize: 8,
-                    smooth: true,
-                    data: numfilter(tempdata)
-                };
-                dataSeries.push(temp);
-            }
-            myChart_option = {
-                title: {
-                    text: finance_results['the_name'] + '指标数据及分析',
-                    left: '0'
-                },
-
-                tooltip: {
-                    trigger: 'item',
-                    formatter: function (params) {
-                        return dict[params.seriesName] + "</br>" + "时间：" + params.name + "</br>" + "数据：" + params.data
-
+                if (Chosenindexes.hasOwnProperty("net_assets_per_share")) {
+                    tempdata = []
+                    for (i = 0; i < finance_results.the_year.length; i++) {
+                        datavalue = finance_results.wgsd_com_eq[i] / invest_results.total_shares[i]
+                        tempdata.push(datavalue)
                     }
-                },
-                legend: {
-                    data: [],
-                    orient: 'vertical',
-                    left: '85%',
-                    top: '10%',
-                    formatter: function (name) {
-                        return dict[name];
+                    temp = {
+                        name: "net_assets_per_share",
+                        type: 'line',
+                        lineStyle: {normal: {width: 2}},
+                        itemStyle: {normal: {color: Chosenindexes["net_assets_per_share"]}},
+                        symbolSize: 8,
+                        smooth: true,
+                        data: numfilter(tempdata)
+                    };
+                    dataSeries.push(temp);
+                }
+                if (Chosenindexes.hasOwnProperty("cash_per_share")) {
+                    tempdata = []
+                    for (i = 0; i < finance_results.the_year.length; i++) {
+                        datavalue = finance_results.monetary_cap[i] / invest_results.total_shares[i]
+                        tempdata.push(datavalue)
                     }
+                    temp = {
+                        name: "cash_per_share",
+                        type: 'line',
+                        lineStyle: {normal: {width: 2}},
+                        itemStyle: {normal: {color: Chosenindexes["cash_per_share"]}},
+                        symbolSize: 8,
+                        smooth: true,
+                        data: numfilter(tempdata)
+                    };
+                    dataSeries.push(temp);
+                }
+                if (Chosenindexes.hasOwnProperty("payment_proportion")) {
+                    tempdata = []
+                    for (i = 0; i < finance_results.the_year.length; i++) {
+                        datavalue = (invest_results.total_shares[i] * invest_results.div_cashandstock[i]) / finance_results.wgsd_net_inc[i]
+                        tempdata.push(datavalue)
+                    }
+                    temp = {
+                        name: "payment_proportion",
+                        type: 'line',
+                        lineStyle: {normal: {width: 2}},
+                        itemStyle: {normal: {color: Chosenindexes["payment_proportion"]}},
+                        symbolSize: 8,
+                        smooth: true,
+                        data: numfilter(tempdata)
+                    };
+                    dataSeries.push(temp);
+                }
+                if (Chosenindexes.hasOwnProperty("equal_earning_rate")) {
+                    tempdata = []
+                    for (i = 0; i < finance_results.the_year.length; i++) {
+                        datavalue = 1 / (Math.pow(1 - finance_results.wgsd_net_inc[i] / finance_results.wgsd_com_eq[i], 5)) / (finance_results.wgsd_net_inc[i] / finance_results.wgsd_com_eq[i])
+                        tempdata.push(datavalue)
+                    }
+                    temp = {
+                        name: "equal_earning_rate",
+                        type: 'line',
+                        lineStyle: {normal: {width: 2}},
+                        itemStyle: {normal: {color: Chosenindexes["equal_earning_rate"]}},
+                        symbolSize: 8,
+                        smooth: true,
+                        data: numfilter(tempdata)
+                    };
+                    dataSeries.push(temp);
+                }
+                if (Chosenindexes.hasOwnProperty("equal_market_rate")) {
+                    tempdata = []
+                    for (i = 0; i < finance_results.the_year.length; i++) {
+                        datavalue = 1 / ( Math.pow(1 - finance_results.wgsd_net_inc[i] / finance_results.wgsd_com_eq[i], 5))
+                        tempdata.push(datavalue)
+                    }
+                    temp = {
+                        name: "equal_market_rate",
+                        type: 'line',
+                        lineStyle: {normal: {width: 2}},
+                        itemStyle: {normal: {color: Chosenindexes["equal_market_rate"]}},
+                        symbolSize: 8,
+                        smooth: true,
+                        data: numfilter(tempdata)
+                    };
+                    dataSeries.push(temp);
+                }
+                if (Chosenindexes.hasOwnProperty("com_value_evaluate")) {
+                    tempdata = []
+                    for (i = 0; i < finance_results.the_year.length; i++) {
+                        datavalue = finance_results.wgsd_net_inc[i] *
+                                (1 / (Math.pow(1 - finance_results.wgsd_net_inc[i] / finance_results.wgsd_com_eq[i], 5)) / (finance_results.wgsd_net_inc[i] / finance_results.wgsd_com_eq[i]))
+                        tempdata.push(datavalue)
+                    }
+                    temp = {
+                        name: "com_value_evaluate",
+                        type: 'line',
+                        lineStyle: {normal: {width: 2}},
+                        itemStyle: {normal: {color: Chosenindexes["com_value_evaluate"]}},
+                        symbolSize: 8,
+                        smooth: true,
+                        data: numfilter(tempdata)
+                    };
+                    dataSeries.push(temp);
+                }
+                if (Chosenindexes.hasOwnProperty("per_com_value_evaluate")) {
+                    tempdata = []
+                    for (i = 0; i < finance_results.the_year.length; i++) {
+                        datavalue = (finance_results.wgsd_net_inc[i] *
+                                (1 / (Math.pow(1 - finance_results.wgsd_net_inc[i] / finance_results.wgsd_com_eq[i], 5)) / (finance_results.wgsd_net_inc[i] / finance_results.wgsd_com_eq[i]))) / invest_results.total_shares[i]
+                        tempdata.push(datavalue)
+                    }
+                    temp = {
+                        name: "per_com_value_evaluate",
+                        type: 'line',
+                        lineStyle: {normal: {width: 2}},
+                        itemStyle: {normal: {color: Chosenindexes["per_com_value_evaluate"]}},
+                        symbolSize: 8,
+                        smooth: true,
+                        data: numfilter(tempdata)
+                    };
+                    dataSeries.push(temp);
+                }
+                if (Chosenindexes.hasOwnProperty("fre_cash_evaluate")) {
+                    tempdata = []
+                    for (i = 0; i < finance_results.the_year.length; i++) {
+                        datavalue = finance_results.operatecashflow_ttm2[i] + finance_results.investcashflow_ttm2[i]
+                        tempdata.push(datavalue)
+                    }
+                    temp = {
+                        name: "fre_cash_evaluate",
+                        type: 'line',
+                        lineStyle: {normal: {width: 2}},
+                        itemStyle: {normal: {color: Chosenindexes["fre_cash_evaluate"]}},
+                        symbolSize: 8,
+                        smooth: true,
+                        data: numfilter(tempdata)
+                    };
+                    dataSeries.push(temp);
+                }
+                if (Chosenindexes.hasOwnProperty("earning_rate")) {
+                    tempdata = []
+                    for (i = 0; i < finance_results.the_year.length; i++) {
+                        datavalue = invest_results.ev[i] / finance_results.wgsd_net_inc[i]
+                        tempdata.push(datavalue)
+                    }
+                    temp = {
+                        name: "earning_rate",
+                        type: 'line',
+                        lineStyle: {normal: {width: 2}},
+                        itemStyle: {normal: {color: Chosenindexes["earning_rate"]}},
+                        symbolSize: 8,
+                        smooth: true,
+                        data: numfilter(tempdata)
+                    };
+                    dataSeries.push(temp);
+                }
+                if (Chosenindexes.hasOwnProperty("net_rate")) {
+                    tempdata = []
+                    for (i = 0; i < finance_results.the_year.length; i++) {
+                        datavalue = invest_results.ev[i] / finance_results.wgsd_com_eq[i]
+                        tempdata.push(datavalue)
+                    }
+                    temp = {
+                        name: "net_rate",
+                        type: 'line',
+                        lineStyle: {normal: {width: 2}},
+                        itemStyle: {normal: {color: Chosenindexes["net_rate"]}},
+                        symbolSize: 8,
+                        smooth: true,
+                        data: numfilter(tempdata)
+                    };
+                    dataSeries.push(temp);
+                }
+                if (Chosenindexes.hasOwnProperty("sale_rate")) {
+                    tempdata = []
+                    for (i = 0; i < finance_results.the_year.length; i++) {
+                        datavalue = invest_results.ev[i] / finance_results.tot_oper_rev[i]
+                        tempdata.push(datavalue)
+                    }
+                    temp = {
+                        name: "sale_rate",
+                        type: 'line',
+                        lineStyle: {normal: {width: 2}},
+                        itemStyle: {normal: {color: Chosenindexes["sale_rate"]}},
+                        symbolSize: 8,
+                        smooth: true,
+                        data: numfilter(tempdata)
+                    };
+                    dataSeries.push(temp);
+                }
+                if (Chosenindexes.hasOwnProperty("cash_rate")) {
+                    tempdata = []
+                    for (i = 0; i < finance_results.the_year.length; i++) {
+                        datavalue = invest_results.ev[i] / finance_results.operatecashflow_ttm2[i]
+                        tempdata.push(datavalue)
+                    }
+                    temp = {
+                        name: "cash_rate",
+                        type: 'line',
+                        lineStyle: {normal: {width: 2}},
+                        itemStyle: {normal: {color: Chosenindexes["cash_rate"]}},
+                        symbolSize: 8,
+                        smooth: true,
+                        data: numfilter(tempdata)
+                    };
+                    dataSeries.push(temp);
+                }
+                if (Chosenindexes.hasOwnProperty("cash_yield_evaluate")) {
+                    tempdata = []
+                    for (i = 0; i < finance_results.the_year.length; i++) {
+                        datavalue = (finance_results.operatecashflow_ttm2[i] + finance_results.investcashflow_ttm2[i]) / invest_results.ev[i]
+                        tempdata.push(datavalue)
+                    }
+                    temp = {
+                        name: "cash_yield_evaluate",
+                        type: 'line',
+                        lineStyle: {normal: {width: 2}},
+                        itemStyle: {normal: {color: Chosenindexes["cash_yield_evaluate"]}},
+                        symbolSize: 8,
+                        smooth: true,
+                        data: numfilter(tempdata)
+                    };
+                    dataSeries.push(temp);
+                }
+                myChart_option = {
+                    title: {
+                        text: finance_results['the_name'] + '指标数据及分析',
+                        left: '0'
+                    },
 
-                },
-                grid: {
-                    left: '3%',
-                    right: '4%',
-                    bottom: '10%',
-                    containLabel: true
-                },
-                toolbox: {
-                    feature: {
-                        magicType: {
-                            type: ['line', 'bar', 'stack', 'tiled']
+                    tooltip: {
+                        trigger: 'item',
+                        formatter: function (params) {
+                            return dict[params.seriesName] + "</br>" + "时间：" + params.name + "</br>" + "数据：" + params.data
+
                         }
-                    }
+                    },
+                    legend: {
+                        data: [],
+                        orient: 'vertical',
+                        left: '85%',
+                        top: '10%',
+                        formatter: function (name) {
+                            return dict[name];
+                        }
 
-                },
-                xAxis: {
-                    type: 'category',
-                    boundaryGap: false,
-                    axisTick: {
-                        show: false
                     },
-                    data: dateformat(finance_results.the_year),
-                    Interval: 5
-                },
-                yAxis: {
-                    type: 'value',
-                    axisTick: {
-                        show: false
+                    grid: {
+                        left: '3%',
+                        right: '4%',
+                        bottom: '10%',
+                        containLabel: true
                     },
-                },
-                dataZoom: [
-                    {   // 这个dataZoom组件，默认控制x轴。
-                        type: 'slider', // 这个 dataZoom 组件是 slider 型 dataZoom 组件
-                        xAxisIndex: [0],
-                        height: 20,
-                        startValue: "2016年Q4",
-                        {#                        start: 0,      // 左边在 10% 的位置。#}
-                        {#                        end: 50,         // 右边在 60% 的位置。#}
-                        {#                            top: '93%',#}
-                        endValue: "2006年Q4",
-                        filterMode: 'filter',
+                    toolbox: {
+                        feature: {
+                            magicType: {
+                                type: ['line', 'bar', 'stack', 'tiled']
+                            }
+                        }
+
                     },
-                    {   // 这个dataZoom组件，默认控制x轴。
-                        type: 'inside', // 这个 dataZoom 组件是 slider 型 dataZoom 组件
-                        xAxisIndex: [0],
-                        {#   start: 0,      // 左边在 10% 的位置。
-                            end: 100,         // 右边在 60% 的位置。
-                            top: '93%'#}
-                        filterMode: 'filter',
-                    }
-                ],
-                series: dataSeries
-            };
-            myChart.setOption(myChart_option, true);
-            $('#starttime_picker').val('2016年Q4');
-            $('#endtime_picker').val('2006年Q4')
-            myChart.on('datazoom', function (params) {
+                    xAxis: {
+                        type: 'category',
+                        boundaryGap: false,
+                        axisTick: {
+                            show: false
+                        },
+                        data: dateformat(finance_results.the_year),
+                        Interval: 5
+                    },
+                    yAxis: {
+                        type: 'value',
+                        axisTick: {
+                            show: false
+                        },
+                    },
+                    dataZoom: [
+                        {   // 这个dataZoom组件，默认控制x轴。
+                            type: 'slider', // 这个 dataZoom 组件是 slider 型 dataZoom 组件
+                            xAxisIndex: [0],
+                            height: 20,
+                            startValue: "2016年Q4",
+                            {#                        start: 0,      // 左边在 10% 的位置。#}
+                            {#                        end: 50,         // 右边在 60% 的位置。#}
+                            {#                            top: '93%',#}
+                            endValue: "2006年Q4",
+                            filterMode: 'filter',
+                        },
+                        {   // 这个dataZoom组件，默认控制x轴。
+                            type: 'inside', // 这个 dataZoom 组件是 slider 型 dataZoom 组件
+                            xAxisIndex: [0],
+                            {#   start: 0,      // 左边在 10% 的位置。
+                                end: 100,         // 右边在 60% 的位置。
+                                top: '93%'#}
+                            filterMode: 'filter',
+                        }
+                    ],
+                    series: dataSeries
+                };
+                myChart.setOption(myChart_option, true);
+                $('#starttime_picker').val('2016年Q4');
+                $('#endtime_picker').val('2006年Q4')
+                myChart.on('datazoom', function (params) {
+                    var opt = myChart.getOption();
+                    var dz = opt.dataZoom[0];
+                    var s = opt.xAxis[0].data[dz.startValue];
+                    var e = opt.xAxis[0].data[dz.endValue];
+                    $('#starttime_picker').val(s);
+                    $('#endtime_picker').val(e)
+                })
+            }
+
+            function RequestTable() {
                 var opt = myChart.getOption();
                 var dz = opt.dataZoom[0];
-                var s = opt.xAxis[0].data[dz.startValue];
-                var e = opt.xAxis[0].data[dz.endValue];
-                $('#starttime_picker').val(s);
-                $('#endtime_picker').val(e)
-            })
-        }
-        function RequestTable() {
-            var opt = myChart.getOption();
-            var dz = opt.dataZoom[0];
-            $.ajax({
-                type: 'GET',
-                url: '{{url_for("restfulapi.finance_data")}}',
-                data: {
-                    stockcode: currentcode,
-                    starttime: parseInt(opt.xAxis[0].data[dz.startValue]) <= parseInt(opt.xAxis[0].data[dz.endValue]) ? opt.xAxis[0].data[dz.startValue] : opt.xAxis[0].data[dz.endValue],
-                    endtime: parseInt(opt.xAxis[0].data[dz.startValue]) >= parseInt(opt.xAxis[0].data[dz.endValue]) ? opt.xAxis[0].data[dz.startValue] : opt.xAxis[0].data[dz.endValue],
-                    indexes: ['tot_oper_rev', 'tot_oper_cost', 'fin_exp_is', 'tot_profit', 'net_profit_is', 'wgsd_net_inc', 'tot_assets', 'tot_cur_assets', 'tot_non_cur_assets', 'tot_liab', 'tot_cur_liab', 'tot_non_cur_liab', 'wgsd_com_eq', 'operatecashflow_ttm2', 'investcashflow_ttm2', 'financecashflow_ttm2', 'cashflow_ttm2', 'monetary_cap', 'grossprofitmargin', 'roic', 'turndays', 'invturndays', 'arturndays', 'apturndays']
-                },
-                dataType: 'json',//希望服务器返回json格式的数据
-                success: function (data) {
-                    if (orderflag == "asc") {
-                        for (var i = 0; i < data.indexes.length; i++) {
-                            eval("data." + data.indexes[i]).reverse();
-                        }
-                        data.the_year.reverse();
-                    }
-                    finance_results_t = data;
-                    $.ajax({
-                        type: 'GET',
-                        url: '{{url_for("restfulapi.invest_data")}}',
-                        data: {
-                            stockcode: currentcode,
-                            starttime: opt.xAxis[0].data[dz.endValue],
-                            endtime: opt.xAxis[0].data[dz.startValue],
-                            indexes: ['total_shares', 'div_cashandstock', 'ev', 'employee', 'dividendyield2', 'ev1', 'ev2']
-                        },
-                        dataType: 'json',//希望服务器返回json格式的数据
-                        success: function (data) {
-                            if (orderflag == "asc") {
-                                for (var i = 0; i < data.indexes.length; i++) {
-                                    eval("data." + data.indexes[i]).reverse();
-                                }
-                                data.the_year.reverse();
-                            }
-                            invest_results_t = data;
-                            CreateTable();
-                        }
-                    })
-                }
-            })
-        }
-        function CreateTable() {
-            $("#datatable").empty();
-            var table = $("<table id=\"temptable\" class=\"row-border hover order-column\" cellspacing=\"0\" width=\"100%\"  >");
-            table.appendTo($("#datatable"));
-            th = $("<thead></thead>");
-            th.appendTo(table);
-            var tr = $("<tr></tr>");
-            tr.appendTo(th);
-            var td = $("<td id=\"subject\">" + "项目" + "</td>");
-            td.appendTo(tr);
-            theyear = dateformat(finance_results_t.the_year)
-            for (var j = 0; j < theyear.length; j++) {
-                var td = $("<td>" + theyear[j] + "</td>");
-                td.appendTo(tr);
-            }
-            tb = $("<tbody></tbody>");
-            tb.appendTo(table);
-            $("#datatable").append("</table>");
-            var mydatatb = $('#temptable').DataTable({
-                "info": false,
-                "processing": true,
-                "scrollX": true,
-                "searching": true,
-                "fixedColumns": { //固定列的配置项
-                    "leftColumns": 1//固定左边第一列
-                },
-                "language": {
-                    "emptyTable": "没有数据",
-                    "loadingRecords": "加载中…",
-                    "processing": "查询中…",
-                    "search": "检索:",
-                    "lengthMenu": "每页 _MENU_ 条",
-                    "zeroRecords": "没有数据",
-                    "paginate": {
-                        "first": "第一页",
-                        "last": "最后一页",
-                        "next": "",
-                        "previous": ""
+                $.ajax({
+                    type: 'GET',
+                    url: '{{url_for("restfulapi.finance_data")}}',
+                    data: {
+                        stockcode: currentcode,
+                        starttime: parseInt(opt.xAxis[0].data[dz.startValue]) <= parseInt(opt.xAxis[0].data[dz.endValue]) ? opt.xAxis[0].data[dz.startValue] : opt.xAxis[0].data[dz.endValue],
+                        endtime: parseInt(opt.xAxis[0].data[dz.startValue]) >= parseInt(opt.xAxis[0].data[dz.endValue]) ? opt.xAxis[0].data[dz.startValue] : opt.xAxis[0].data[dz.endValue],
+                        indexes: ['tot_oper_rev', 'tot_oper_cost', 'fin_exp_is', 'tot_profit', 'net_profit_is', 'wgsd_net_inc', 'tot_assets', 'tot_cur_assets', 'tot_non_cur_assets', 'tot_liab', 'tot_cur_liab', 'tot_non_cur_liab', 'wgsd_com_eq', 'operatecashflow_ttm2', 'investcashflow_ttm2', 'financecashflow_ttm2', 'cashflow_ttm2', 'monetary_cap', 'grossprofitmargin', 'roic', 'turndays', 'invturndays', 'arturndays', 'apturndays']
                     },
-                    "info": "第 _PAGE_ 页 / 总 _PAGES_ 页",
-                    "infoEmpty": "没有数据",
-                    "infoFiltered": "(过滤总件数 _MAX_ 条)"
-                },
-                dom: 'Bfrtip',
-                buttons: {
-                    buttons: [
-                        {extend: 'copy', 'text': '复制', 'className': 'btn btn-default btn-xs',},
-                        {extend: 'excel', 'text': '导出Excel', 'className': 'btn btn-default btn-xs',}
-                    ]
+                    dataType: 'json',//希望服务器返回json格式的数据
+                    success: function (data) {
+                        if (orderflag == "asc") {
+                            for (var i = 0; i < data.indexes.length; i++) {
+                                eval("data." + data.indexes[i]).reverse();
+                            }
+                            data.the_year.reverse();
+                        }
+                        finance_results_t = data;
+                        $.ajax({
+                            type: 'GET',
+                            url: '{{url_for("restfulapi.invest_data")}}',
+                            data: {
+                                stockcode: currentcode,
+                                starttime: opt.xAxis[0].data[dz.endValue],
+                                endtime: opt.xAxis[0].data[dz.startValue],
+                                indexes: ['total_shares', 'div_cashandstock', 'ev', 'employee', 'dividendyield2', 'ev1', 'ev2']
+                            },
+                            dataType: 'json',//希望服务器返回json格式的数据
+                            success: function (data) {
+                                if (orderflag == "asc") {
+                                    for (var i = 0; i < data.indexes.length; i++) {
+                                        eval("data." + data.indexes[i]).reverse();
+                                    }
+                                    data.the_year.reverse();
+                                }
+                                invest_results_t = data;
+                                CreateTable();
+                            }
+                        })
+                    }
+                })
+            }
+
+            function CreateTable() {
+                $("#datatable").empty();
+                var table = $("<table id=\"temptable\" class=\"row-border hover order-column\" cellspacing=\"0\" width=\"100%\"  >");
+                table.appendTo($("#datatable"));
+                th = $("<thead></thead>");
+                th.appendTo(table);
+                var tr = $("<tr></tr>");
+                tr.appendTo(th);
+                var td = $("<td id=\"subject\">" + "项目" + "</td>");
+                td.appendTo(tr);
+                theyear = dateformat(finance_results_t.the_year)
+                for (var j = 0; j < theyear.length; j++) {
+                    var td = $("<td>" + theyear[j] + "</td>");
+                    td.appendTo(tr);
                 }
-            });
-            setTimeout("$(\"#subject\").trigger(\"click\")", 100);
-            for (var i = 0; i < finance_results_t.indexes.length; i++) {
-                if (Chosenindexes.hasOwnProperty(finance_results.indexes[i])) {
+                tb = $("<tbody></tbody>");
+                tb.appendTo(table);
+                $("#datatable").append("</table>");
+                var mydatatb = $('#temptable').DataTable({
+                    "info": false,
+                    "processing": true,
+                    "scrollX": true,
+                    "searching": true,
+                    "fixedColumns": { //固定列的配置项
+                        "leftColumns": 1//固定左边第一列
+                    },
+                    "language": {
+                        "emptyTable": "没有数据",
+                        "loadingRecords": "加载中…",
+                        "processing": "查询中…",
+                        "search": "检索:",
+                        "lengthMenu": "每页 _MENU_ 条",
+                        "zeroRecords": "没有数据",
+                        "paginate": {
+                            "first": "第一页",
+                            "last": "最后一页",
+                            "next": "",
+                            "previous": ""
+                        },
+                        "info": "第 _PAGE_ 页 / 总 _PAGES_ 页",
+                        "infoEmpty": "没有数据",
+                        "infoFiltered": "(过滤总件数 _MAX_ 条)"
+                    },
+                    dom: 'Bfrtip',
+                    buttons: {
+                        buttons: [
+                            {extend: 'copy', 'text': '复制', 'className': 'btn btn-default btn-xs',},
+                            {extend: 'excel', 'text': '导出Excel', 'className': 'btn btn-default btn-xs',}
+                        ]
+                    }
+                });
+                setTimeout("$(\"#subject\").trigger(\"click\")", 100);
+                for (var i = 0; i < finance_results_t.indexes.length; i++) {
+                    if (Chosenindexes.hasOwnProperty(finance_results.indexes[i])) {
+                        var rowNode = mydatatb
+                                .row.add([indexdict_finance[finance_results_t.indexes[i]]].concat(numfilter(eval("finance_results_t." + finance_results_t.indexes[i]))))
+                                .draw()
+                                .node();
+                        $(rowNode)
+                                .attr('id', finance_results_t.indexes[i]);
+
+                    }
+                }
+                for (var i = 0; i < invest_results_t.indexes.length; i++) {
+                    if (Chosenindexes.hasOwnProperty(invest_results_t.indexes[i])) {
+                        var rowNode = mydatatb
+                                .row.add([indexdict_invest[invest_results_t.indexes[i]]].concat(numfilter(eval("invest_results_t." + invest_results_t.indexes[i]))))
+                                .draw()
+                                .node();
+                        $(rowNode)
+                                .attr('id', invest_results_t.indexes[i]);
+                    }
+                }
+                if (Chosenindexes.hasOwnProperty("net_inc_eq_rate")) {
+                    tempdata = []
+                    for (i = 0; i < finance_results_t.the_year.length; i++) {
+                        datavalue = finance_results_t.wgsd_net_inc[i] / finance_results_t.wgsd_com_eq[i]
+                        tempdata.push(datavalue)
+                    }
                     var rowNode = mydatatb
-                            .row.add([indexdict_finance[finance_results_t.indexes[i]]].concat(numfilter(eval("finance_results_t." + finance_results_t.indexes[i]))))
+                            .row.add([dict["net_inc_eq_rate"]].concat(numfilter(tempdata)))
                             .draw()
                             .node();
                     $(rowNode)
-                            .attr('id', finance_results_t.indexes[i]);
-
+                            .attr('id', "net_inc_eq_rate");
                 }
-            }
-            for (var i = 0; i < invest_results_t.indexes.length; i++) {
-                if (Chosenindexes.hasOwnProperty(invest_results_t.indexes[i])) {
+                if (Chosenindexes.hasOwnProperty("earnings_per_share")) {
+                    tempdata = []
+                    for (i = 0; i < finance_results_t.the_year.length; i++) {
+                        datavalue = finance_results_t.wgsd_net_inc[i] / invest_results_t.total_shares[i]
+                        tempdata.push(datavalue)
+                    }
+
                     var rowNode = mydatatb
-                            .row.add([indexdict_invest[invest_results_t.indexes[i]]].concat(numfilter(eval("invest_results_t." + invest_results_t.indexes[i]))))
+                            .row.add([dict["earnings_per_share"]].concat(numfilter(tempdata)))
                             .draw()
                             .node();
                     $(rowNode)
-                            .attr('id', invest_results_t.indexes[i]);
+                            .attr('id', "earnings_per_share");
                 }
-            }
-            if (Chosenindexes.hasOwnProperty("net_inc_eq_rate")) {
-                tempdata = []
-                for (i = 0; i < finance_results_t.the_year.length; i++) {
-                    datavalue = finance_results_t.wgsd_net_inc[i] / finance_results_t.wgsd_com_eq[i]
-                    tempdata.push(datavalue)
-                }
-                var rowNode = mydatatb
-                        .row.add([dict["net_inc_eq_rate"]].concat(numfilter(tempdata)))
-                        .draw()
-                        .node();
-                $(rowNode)
-                        .attr('id', "net_inc_eq_rate");
-            }
-            if (Chosenindexes.hasOwnProperty("earnings_per_share")) {
-                tempdata = []
-                for (i = 0; i < finance_results_t.the_year.length; i++) {
-                    datavalue = finance_results_t.wgsd_net_inc[i] / invest_results_t.total_shares[i]
-                    tempdata.push(datavalue)
-                }
+                if (Chosenindexes.hasOwnProperty("net_assets_per_share")) {
+                    tempdata = []
+                    for (i = 0; i < finance_results_t.the_year.length; i++) {
+                        datavalue = finance_results_t.wgsd_com_eq[i] / invest_results_t.total_shares[i]
+                        tempdata.push(datavalue)
+                    }
 
-                var rowNode = mydatatb
-                        .row.add([dict["earnings_per_share"]].concat(numfilter(tempdata)))
-                        .draw()
-                        .node();
-                $(rowNode)
-                        .attr('id', "earnings_per_share");
-            }
-            if (Chosenindexes.hasOwnProperty("net_assets_per_share")) {
-                tempdata = []
-                for (i = 0; i < finance_results_t.the_year.length; i++) {
-                    datavalue = finance_results_t.wgsd_com_eq[i] / invest_results_t.total_shares[i]
-                    tempdata.push(datavalue)
+                    var rowNode = mydatatb
+                            .row.add([dict["net_assets_per_share"]].concat(numfilter(tempdata)))
+                            .draw()
+                            .node();
+                    $(rowNode)
+                            .attr('id', "net_assets_per_share");
                 }
+                if (Chosenindexes.hasOwnProperty("cash_per_share")) {
+                    tempdata = []
+                    for (i = 0; i < finance_results_t.the_year.length; i++) {
+                        datavalue = finance_results_t.monetary_cap[i] / invest_results_t.total_shares[i]
+                        tempdata.push(datavalue)
+                    }
 
-                var rowNode = mydatatb
-                        .row.add([dict["net_assets_per_share"]].concat(numfilter(tempdata)))
-                        .draw()
-                        .node();
-                $(rowNode)
-                        .attr('id', "net_assets_per_share");
-            }
-            if (Chosenindexes.hasOwnProperty("cash_per_share")) {
-                tempdata = []
-                for (i = 0; i < finance_results_t.the_year.length; i++) {
-                    datavalue = finance_results_t.monetary_cap[i] / invest_results_t.total_shares[i]
-                    tempdata.push(datavalue)
+                    var rowNode = mydatatb
+                            .row.add([dict["cash_per_share"]].concat(numfilter(tempdata)))
+                            .draw()
+                            .node();
+                    $(rowNode)
+                            .attr('id', "cash_per_share");
                 }
+                if (Chosenindexes.hasOwnProperty("payment_proportion")) {
+                    tempdata = []
+                    for (i = 0; i < finance_results_t.the_year.length; i++) {
+                        datavalue = (invest_results_t.total_shares[i] * invest_results_t.div_cashandstock[i]) / finance_results_t.wgsd_net_inc[i]
+                        tempdata.push(datavalue)
+                    }
 
-                var rowNode = mydatatb
-                        .row.add([dict["cash_per_share"]].concat(numfilter(tempdata)))
-                        .draw()
-                        .node();
-                $(rowNode)
-                        .attr('id', "cash_per_share");
-            }
-            if (Chosenindexes.hasOwnProperty("payment_proportion")) {
-                tempdata = []
-                for (i = 0; i < finance_results_t.the_year.length; i++) {
-                    datavalue = (invest_results_t.total_shares[i] * invest_results_t.div_cashandstock[i]) / finance_results_t.wgsd_net_inc[i]
-                    tempdata.push(datavalue)
+                    var rowNode = mydatatb
+                            .row.add([dict["payment_proportion"]].concat(numfilter(tempdata)))
+                            .draw()
+                            .node();
+                    $(rowNode)
+                            .attr('id', "payment_proportion");
                 }
+                if (Chosenindexes.hasOwnProperty("equal_earning_rate")) {
+                    tempdata = []
+                    for (i = 0; i < finance_results_t.the_year.length; i++) {
+                        datavalue = 1 / (Math.pow(1 - finance_results_t.wgsd_net_inc[i] / finance_results_t.wgsd_com_eq[i], 5)) / (finance_results_t.wgsd_net_inc[i] / finance_results_t.wgsd_com_eq[i])
+                        tempdata.push(datavalue)
+                    }
 
-                var rowNode = mydatatb
-                        .row.add([dict["payment_proportion"]].concat(numfilter(tempdata)))
-                        .draw()
-                        .node();
-                $(rowNode)
-                        .attr('id', "payment_proportion");
-            }
-            if (Chosenindexes.hasOwnProperty("equal_earning_rate")) {
-                tempdata = []
-                for (i = 0; i < finance_results_t.the_year.length; i++) {
-                    datavalue = 1 / (Math.pow(1 - finance_results_t.wgsd_net_inc[i] / finance_results_t.wgsd_com_eq[i], 5)) / (finance_results_t.wgsd_net_inc[i] / finance_results_t.wgsd_com_eq[i])
-                    tempdata.push(datavalue)
+                    var rowNode = mydatatb
+                            .row.add([dict["equal_earning_rate"]].concat(numfilter(tempdata)))
+                            .draw()
+                            .node();
+                    $(rowNode)
+                            .attr('id', "equal_earning_rate");
                 }
+                if (Chosenindexes.hasOwnProperty("equal_market_rate")) {
+                    tempdata = []
+                    for (i = 0; i < finance_results_t.the_year.length; i++) {
+                        datavalue = 1 / ( Math.pow(1 - finance_results_t.wgsd_net_inc[i] / finance_results_t.wgsd_com_eq[i], 5))
+                        tempdata.push(datavalue)
+                    }
 
-                var rowNode = mydatatb
-                        .row.add([dict["equal_earning_rate"]].concat(numfilter(tempdata)))
-                        .draw()
-                        .node();
-                $(rowNode)
-                        .attr('id', "equal_earning_rate");
-            }
-            if (Chosenindexes.hasOwnProperty("equal_market_rate")) {
-                tempdata = []
-                for (i = 0; i < finance_results_t.the_year.length; i++) {
-                    datavalue = 1 / ( Math.pow(1 - finance_results_t.wgsd_net_inc[i] / finance_results_t.wgsd_com_eq[i], 5))
-                    tempdata.push(datavalue)
+                    var rowNode = mydatatb
+                            .row.add([dict["equal_market_rate"]].concat(numfilter(tempdata)))
+                            .draw()
+                            .node();
+                    $(rowNode)
+                            .attr('id', "equal_market_rate");
                 }
+                if (Chosenindexes.hasOwnProperty("com_value_evaluate")) {
+                    tempdata = []
+                    for (i = 0; i < finance_results_t.the_year.length; i++) {
+                        datavalue = finance_results_t.wgsd_net_inc[i] *
+                                (1 / (Math.pow(1 - finance_results_t.wgsd_net_inc[i] / finance_results_t.wgsd_com_eq[i], 5)) / (finance_results_t.wgsd_net_inc[i] / finance_results_t.wgsd_com_eq[i]))
+                        tempdata.push(datavalue)
+                    }
 
-                var rowNode = mydatatb
-                        .row.add([dict["equal_market_rate"]].concat(numfilter(tempdata)))
-                        .draw()
-                        .node();
-                $(rowNode)
-                        .attr('id', "equal_market_rate");
-            }
-            if (Chosenindexes.hasOwnProperty("com_value_evaluate")) {
-                tempdata = []
-                for (i = 0; i < finance_results_t.the_year.length; i++) {
-                    datavalue = finance_results_t.wgsd_net_inc[i] *
-                            (1 / (Math.pow(1 - finance_results_t.wgsd_net_inc[i] / finance_results_t.wgsd_com_eq[i], 5)) / (finance_results_t.wgsd_net_inc[i] / finance_results_t.wgsd_com_eq[i]))
-                    tempdata.push(datavalue)
+                    var rowNode = mydatatb
+                            .row.add([dict["com_value_evaluate"]].concat(numfilter(tempdata)))
+                            .draw()
+                            .node();
+                    $(rowNode)
+                            .attr('id', "com_value_evaluate");
                 }
+                if (Chosenindexes.hasOwnProperty("per_com_value_evaluate")) {
+                    tempdata = []
+                    for (i = 0; i < finance_results_t.the_year.length; i++) {
+                        datavalue = (finance_results_t.wgsd_net_inc[i] *
+                                (1 / (Math.pow(1 - finance_results_t.wgsd_net_inc[i] / finance_results_t.wgsd_com_eq[i], 5)) / (finance_results_t.wgsd_net_inc[i] / finance_results_t.wgsd_com_eq[i]))) / invest_results_t.total_shares[i]
+                        tempdata.push(datavalue)
+                    }
 
-                var rowNode = mydatatb
-                        .row.add([dict["com_value_evaluate"]].concat(numfilter(tempdata)))
-                        .draw()
-                        .node();
-                $(rowNode)
-                        .attr('id', "com_value_evaluate");
-            }
-            if (Chosenindexes.hasOwnProperty("per_com_value_evaluate")) {
-                tempdata = []
-                for (i = 0; i < finance_results_t.the_year.length; i++) {
-                    datavalue = (finance_results_t.wgsd_net_inc[i] *
-                            (1 / (Math.pow(1 - finance_results_t.wgsd_net_inc[i] / finance_results_t.wgsd_com_eq[i], 5)) / (finance_results_t.wgsd_net_inc[i] / finance_results_t.wgsd_com_eq[i]))) / invest_results_t.total_shares[i]
-                    tempdata.push(datavalue)
+                    var rowNode = mydatatb
+                            .row.add([dict["per_com_value_evaluate"]].concat(numfilter(tempdata)))
+                            .draw()
+                            .node();
+                    $(rowNode)
+                            .attr('id', "per_com_value_evaluate");
                 }
+                if (Chosenindexes.hasOwnProperty("fre_cash_evaluate")) {
+                    tempdata = []
+                    for (i = 0; i < finance_results_t.the_year.length; i++) {
+                        datavalue = finance_results_t.operatecashflow_ttm2[i] + finance_results_t.investcashflow_ttm2[i]
+                        tempdata.push(datavalue)
+                    }
 
-                var rowNode = mydatatb
-                        .row.add([dict["per_com_value_evaluate"]].concat(numfilter(tempdata)))
-                        .draw()
-                        .node();
-                $(rowNode)
-                        .attr('id', "per_com_value_evaluate");
-            }
-            if (Chosenindexes.hasOwnProperty("fre_cash_evaluate")) {
-                tempdata = []
-                for (i = 0; i < finance_results_t.the_year.length; i++) {
-                    datavalue = finance_results_t.operatecashflow_ttm2[i] + finance_results_t.investcashflow_ttm2[i]
-                    tempdata.push(datavalue)
+                    var rowNode = mydatatb
+                            .row.add([dict["fre_cash_evaluate"]].concat(numfilter(tempdata)))
+                            .draw()
+                            .node();
+                    $(rowNode)
+                            .attr('id', "fre_cash_evaluate");
                 }
+                if (Chosenindexes.hasOwnProperty("earning_rate")) {
+                    tempdata = []
+                    for (i = 0; i < finance_results_t.the_year.length; i++) {
+                        datavalue = invest_results_t.ev[i] / finance_results_t.wgsd_net_inc[i]
+                        tempdata.push(datavalue)
+                    }
 
-                var rowNode = mydatatb
-                        .row.add([dict["fre_cash_evaluate"]].concat(numfilter(tempdata)))
-                        .draw()
-                        .node();
-                $(rowNode)
-                        .attr('id', "fre_cash_evaluate");
-            }
-            if (Chosenindexes.hasOwnProperty("earning_rate")) {
-                tempdata = []
-                for (i = 0; i < finance_results_t.the_year.length; i++) {
-                    datavalue = invest_results_t.ev[i] / finance_results_t.wgsd_net_inc[i]
-                    tempdata.push(datavalue)
+                    var rowNode = mydatatb
+                            .row.add([dict["earning_rate"]].concat(numfilter(tempdata)))
+                            .draw()
+                            .node();
+                    $(rowNode)
+                            .attr('id', "earning_rate");
                 }
+                if (Chosenindexes.hasOwnProperty("net_rate")) {
+                    tempdata = []
+                    for (i = 0; i < finance_results_t.the_year.length; i++) {
+                        datavalue = invest_results_t.ev[i] / finance_results_t.wgsd_com_eq[i]
+                        tempdata.push(datavalue)
+                    }
 
-                var rowNode = mydatatb
-                        .row.add([dict["earning_rate"]].concat(numfilter(tempdata)))
-                        .draw()
-                        .node();
-                $(rowNode)
-                        .attr('id', "earning_rate");
-            }
-            if (Chosenindexes.hasOwnProperty("net_rate")) {
-                tempdata = []
-                for (i = 0; i < finance_results_t.the_year.length; i++) {
-                    datavalue = invest_results_t.ev[i] / finance_results_t.wgsd_com_eq[i]
-                    tempdata.push(datavalue)
+                    var rowNode = mydatatb
+                            .row.add([dict["net_rate"]].concat(numfilter(tempdata)))
+                            .draw()
+                            .node();
+                    $(rowNode)
+                            .attr('id', "net_rate");
                 }
+                if (Chosenindexes.hasOwnProperty("sale_rate")) {
+                    tempdata = []
+                    for (i = 0; i < finance_results_t.the_year.length; i++) {
+                        datavalue = invest_results_t.ev[i] / finance_results_t.tot_oper_rev[i]
+                        tempdata.push(datavalue)
+                    }
 
-                var rowNode = mydatatb
-                        .row.add([dict["net_rate"]].concat(numfilter(tempdata)))
-                        .draw()
-                        .node();
-                $(rowNode)
-                        .attr('id', "net_rate");
-            }
-            if (Chosenindexes.hasOwnProperty("sale_rate")) {
-                tempdata = []
-                for (i = 0; i < finance_results_t.the_year.length; i++) {
-                    datavalue = invest_results_t.ev[i] / finance_results_t.tot_oper_rev[i]
-                    tempdata.push(datavalue)
+                    var rowNode = mydatatb
+                            .row.add([dict["sale_rate"]].concat(numfilter(tempdata)))
+                            .draw()
+                            .node();
+                    $(rowNode)
+                            .attr('id', "sale_rate");
                 }
+                if (Chosenindexes.hasOwnProperty("cash_rate")) {
+                    tempdata = []
+                    for (i = 0; i < finance_results_t.the_year.length; i++) {
+                        datavalue = invest_results_t.ev[i] / finance_results_t.operatecashflow_ttm2[i]
+                        tempdata.push(datavalue)
+                    }
 
-                var rowNode = mydatatb
-                        .row.add([dict["sale_rate"]].concat(numfilter(tempdata)))
-                        .draw()
-                        .node();
-                $(rowNode)
-                        .attr('id', "sale_rate");
-            }
-            if (Chosenindexes.hasOwnProperty("cash_rate")) {
-                tempdata = []
-                for (i = 0; i < finance_results_t.the_year.length; i++) {
-                    datavalue = invest_results_t.ev[i] / finance_results_t.operatecashflow_ttm2[i]
-                    tempdata.push(datavalue)
+                    var rowNode = mydatatb
+                            .row.add([dict["cash_rate"]].concat(numfilter(tempdata)))
+                            .draw()
+                            .node();
+                    $(rowNode)
+                            .attr('id', "cash_rate");
                 }
+                if (Chosenindexes.hasOwnProperty("cash_yield_evaluate")) {
+                    tempdata = []
+                    for (i = 0; i < finance_results_t.the_year.length; i++) {
+                        datavalue = (finance_results_t.operatecashflow_ttm2[i] + finance_results_t.investcashflow_ttm2[i]) / invest_results_t.ev[i]
+                        tempdata.push(datavalue)
+                    }
 
-                var rowNode = mydatatb
-                        .row.add([dict["cash_rate"]].concat(numfilter(tempdata)))
-                        .draw()
-                        .node();
-                $(rowNode)
-                        .attr('id', "cash_rate");
-            }
-            if (Chosenindexes.hasOwnProperty("cash_yield_evaluate")) {
-                tempdata = []
-                for (i = 0; i < finance_results_t.the_year.length; i++) {
-                    datavalue = (finance_results_t.operatecashflow_ttm2[i] + finance_results_t.investcashflow_ttm2[i]) / invest_results_t.ev[i]
-                    tempdata.push(datavalue)
+                    var rowNode = mydatatb
+                            .row.add([dict["cash_yield_evaluate"]].concat(numfilter(tempdata)))
+                            .draw()
+                            .node();
+                    $(rowNode)
+                            .attr('id', "cash_yield_evaluate");
                 }
+                for (var key in Chosenindexes) {
+                    $('tr#' + key).css('color', Chosenindexes[key])
+                }
+            }
 
-                var rowNode = mydatatb
-                        .row.add([dict["cash_yield_evaluate"]].concat(numfilter(tempdata)))
-                        .draw()
-                        .node();
-                $(rowNode)
-                        .attr('id', "cash_yield_evaluate");
+            function NewColor() {
+                var colorElements = "0,1,2,3,4,5,6,7,8,9,a,b,c,d,e,f";
+                var colorArray = colorElements.split(",");
+                var color = "#";
+                for (var i = 0; i < 6; i++) {
+                    color += colorArray[Math.floor(Math.random() * 16)];
+                }
+                return color;
             }
-            for (var key in Chosenindexes) {
-                $('tr#' + key).css('color', Chosenindexes[key])
+
+            function numfilter(oldnum) {
+                newnum = []
+                for (i = 0; i < oldnum.length; i++) {
+                    temp = oldnum[i] / denominator;
+                    temp.toFixed(2);
+                    newnum.push(temp)
+                }
+                return newnum;
             }
-        }
-        function NewColor() {
-            var colorElements = "0,1,2,3,4,5,6,7,8,9,a,b,c,d,e,f";
-            var colorArray = colorElements.split(",");
-            var color = "#";
-            for (var i = 0; i < 6; i++) {
-                color += colorArray[Math.floor(Math.random() * 16)];
+
+            function dateformat(olddate) {
+                newdate = []
+                for (i = 0; i < olddate.length; i++) {
+                    var str = olddate[i];
+                    var reg = /1231/g;
+                    str = str.replace(reg, '年Q4');
+                    newdate.push(str)
+                }
+                return newdate
             }
-            return color;
-        }
-        function numfilter(oldnum) {
-            newnum = []
-            for (i = 0; i < oldnum.length; i++) {
-                temp = oldnum[i] / denominator;
-                temp.toFixed(2);
-                newnum.push(temp)
-            }
-            return newnum;
-        }
-        function dateformat(olddate) {
-            newdate = []
-            for (i = 0; i < olddate.length; i++) {
-                var str = olddate[i];
-                var reg = /1231/g;
-                str = str.replace(reg, '年Q4');
-                newdate.push(str)
-            }
-            return newdate
-        }
-        $("#head1").click(function () {
-            $("#body1").toggle()
-        })
-        $("#moreinfobtn").click(function () {
-            $("#moreinfo").fadeToggle()
-        })
+
+            $("#head1").click(function () {
+                $("#body1").toggle()
+            })
+            $("#moreinfobtn").click(function () {
+                $("#moreinfo").fadeToggle()
+            })
     </script>
 {% endblock %}
