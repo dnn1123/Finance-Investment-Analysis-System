@@ -41,8 +41,6 @@
                         <img id='personal_img'
                              style="height:30px;width:30px;margin-top:2px;margin-left:10px;margin-right:10px;float:left;border-radius: 50%;border: none;overflow: hidden;"
                              src="">
-                        <div id="vip_type"
-                             style="height:25px;width:80px;margin-top:5px;margin-left:3px;margin-right:10px;float:left;border-radius: 10px;background-color: #555555;color:white;font-family:'Microsoft JhengHei';font-size: 18px;text-align: center;padding-top: 3px"></div>
                         <div id="user_info" style="float:top;margin-top:50px;margin-left: 20px"></div>
                     </div>
                 </div>
@@ -145,19 +143,16 @@
                     $("#myprofits").text(data.position_profit.toFixed(2));
                     $("#mytraderec").text(data.trade_rec_count);
                     if (data.member_type == null) {
-                        $("#vip_type").text('普通用户');
                         $("#user_info").text('您的账户尚未开通会员服务');
                     }
                     else if (data.member_type == 'month') {
                         var imgsrc = "../static/personal_img/vip.png";
                         $("#personal_img").attr("src", imgsrc);
-                        $("#vip_type").text('包月会员');
                         $("#user_info").text('您的账户目前是包月会员，可免费下载数据，当前账户余额：');
                     }
                     else if (data.member_type == 'year') {
                         var imgsrc = "../static/personal_img/vip.png";
                         $("#personal_img").attr("src", imgsrc);
-                        $("#vip_type").text('年费会员');
                         $("#user_info").text('您的账户目前是年费会员，可免费下载数据，当前账户余额：');
                     }
                     $("#user_info").append(data.user_money + '元，<a data-toggle=\"modal\" data-target=\"#modal_recharge\" style=\'\'>点此充值</button>');

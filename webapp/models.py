@@ -111,6 +111,7 @@ class personal(db.Model):
     avatar = db.Column(db.String(25))
     phonenumber = db.Column(db.String(25))
     mail = db.Column(db.String(100))
+    validate = db.Column(db.String(16))
     address = db.Column(db.String(100))
     introduce = db.Column(db.Text)
 
