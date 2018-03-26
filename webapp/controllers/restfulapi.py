@@ -93,7 +93,7 @@ def finance_target():
         id_list.append(result1.id_1)
         cn_name_list.append(result1.cn_name_1)
         en_name_list.append(result1.en_name_1)
-        id_belong_to_list.append('00')
+        id_belong_to_list.append('-1')
         for result2 in results2:
             if result2.id_belong_to_1 == result1.id_1:
                 id_list.append(result2.id_2)
