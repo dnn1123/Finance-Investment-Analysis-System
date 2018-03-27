@@ -41,6 +41,8 @@
     <script type="text/javascript" src="{{ url_for('static',filename='js/bootstrap-suggest.min.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static',filename='js/jquery.cookie.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static',filename='js/nav.js') }}"></script>
+{#    生成树插件#}
+    <script type="text/javascript" src="{{ url_for('static',filename='js/dtree.js') }}"></script>
 
     <link href="{{ url_for('static',filename='bootstrap_select/css/bootstrap-select.css') }}" rel="stylesheet"
           type="text/css">
@@ -60,23 +62,24 @@
 
     {#    library for new  templates#}
     <link href="{{ url_for('static',filename='bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" media="screen">
-{#    <link href="{{ url_for('static',filename='bootstrap/css/bootstrap-responsive.min.css') }}" rel="stylesheet"#}
-{#          media="screen">#}
+    {#    <link href="{{ url_for('static',filename='bootstrap/css/bootstrap-responsive.min.css') }}" rel="stylesheet"#}
+    {#          media="screen">#}
     <link href="{{ url_for('static',filename='css/nav.css') }}" rel="stylesheet" media="screen">
     <link type="text/css" href="{{ url_for('static',filename='css/theme.css') }}" rel="stylesheet">
     <link type="text/css" href="{{ url_for('static',filename='images/icons/css/font-awesome.css') }}" rel="stylesheet">
     <link type="text/css" href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,400,600'
           rel='stylesheet'>
+    <link type="text/css" href="{{ url_for('static',filename='css/dtree.css') }}" rel="stylesheet">
     <!--自动补全-->
 
     <script>
         $(function () {
             var availableTags =
-                [{% for x in list_len %} <!--这里直接写range(list_len)不行，会在返回功能主页时出错"list_len is undefined"-->
-                    {% for i in (0,1) %}
-                        "{{ rs[x][i] }}",
-                    {% endfor %}
-                {% endfor %}];
+                    [{% for x in list_len %} <!--这里直接写range(list_len)不行，会在返回功能主页时出错"list_len is undefined"-->
+                        {% for i in (0,1) %}
+                            "{{ rs[x][i] }}",
+                        {% endfor %}
+                    {% endfor %}];
             $("#tags").autocomplete({
                 source: availableTags
             });
@@ -308,8 +311,8 @@
         var navheight = $("div.navbar").height();
         $("#container").css("margin-top", navheight);
     })
-    setInterval(aa, 30000);
-    setInterval(bb, 30000);
+    setInterval(aa, 300000);
+    setInterval(bb, 300000);
 
     function aa() {
         $.ajax({
