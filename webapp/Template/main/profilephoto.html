@@ -61,26 +61,8 @@
             margin-bottom: 20px;
         }
 
-        .modalbutton {
-            height: 30px;
-            width: 95px;
-            background-color: grey;
-            border: none;
-            color: white;
-            text-align: center;
-            font-kerning: normal;
-            text-decoration: none;
-            display: inline-block;
-            border-radius: 18px;
-            font-size: 16px;
-            font-family: KaiTi;
-            float: right;
-            margin-top: 10px;
-            margin-right: 10px;
-            margin-bottom: 10px;
-        }
-
         .name {
+            width: 80px;
             margin-top: 5px;
             margin-left: 20px;
             float: left;
@@ -97,39 +79,49 @@
             border-radius: 12px;
         }
 
+        .theleft {
+            float: left;
+            width: 240px;
+            margin-left: 20px;
+        }
+
+        .line {
+            height: 250px;
+            width: 1px;
+            float: left;
+            margin-top: 20px;
+            margin-left: 40px;
+            background-color: black;
+        }
+
+        .theright {
+            height: 250px;
+            float: left;
+            margin-top: 0;
+            margin-left: 40px;
+        }
+
     </style>
 
-    <div class="modal hide fade" id="update_message_modal" tabindex="-1" role="dialog"
+    <div class="modal hide fade" id="validate_mail_modal" tabindex="-1" role="dialog"
          aria-labelledby="myModalLabel"
-         aria-hidden="true" style="display: none; ">
+         aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                    <h4 class="modal-title" id="myModalLabel">修改个人信息</h4>
+                    <h4 class="modal-title" id="myModalLabel">请输入验证码</h4>
                 </div>
                 <div class="modal-body">
-                    <h4 style="font-size:25px;margin-top:10px;margin-bottom: 27px;margin-left:20px"><b
-                            style="font-size:25px;">基本信息</b></h4>
-                    <div style="width:100%;height:30px;margin-top:15px">
-                        <label class="name">联系电话：</label>
-                        <input type="text" class="text" id="input_number" value=""/>
+                    <div class="input-group" style="margin-left:10px;width:100%">
+                        <input type="text" class="span3 form-control" id="validate_number"
+                               style="float:left;height: 30px;width:85%"
+                               placeholder="请输入验证码" name="receiver">
+                        <button type="button" class="btn btn-default"
+                                style="float:left;margin-left:15px"
+                                onclick="validate_mail()">确定
+                        </button>
                     </div>
-                    <div style="width:100%;height:30px;margin-top:15px">
-                        <label class="name">电子邮箱：</label>
-                        <input type="text" class="text" id="input_mail" value=""/>
-                    </div>
-                    <div style="width:100%;height:30px;margin-top:15px">
-                        <label class="name">居住地址：</label>
-                        <input type="text" class="text" id="input_address" value=""/>
-                    </div>
-                    <div style="width:100%;height:50px;margin-top:15px">
-                        <label class="name">个人简介：</label>
-                        <input type="text" class="text" id="input_person" value=""/>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button id="to_submit" class="modalbutton" data-dismiss="modal" aria-hidden="true">确定提交</button>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
@@ -139,35 +131,51 @@
         <div class="content">
             <div class="btn-controls">
                 <div class="btn-box-row row-fluid">
-                    <div class="module span6">
+                    <div class="module span12">
                         <div class="module-body">
-                            <div class="theright">
-                                <h4 style="font-size:25px;margin-top:10px;margin-bottom: 25px;margin-left:20px"><b
-                                        style="font-size:20px;">基本信息</b></h4>
-                                <div style="width:100%;height:25px;margin-top:15px" id="user_name"></div>
-                                <div style="width:100%;height:25px;margin-top:15px" id="user_phone"></div>
-                                <div style="width:100%;height:25px;margin-top:15px" id="user_mail"></div>
-                                <div style="width:100%;height:25px;margin-top:15px" id="user_address"></div>
-                                <div style="width:100%;height:30px;margin-top:15px" id="user_introduce"></div>
-                                <button data-toggle="modal" data-target="#update_message_modal" class="mybutton">点击修改
-                                </button>
+                            <div class="theleft">
+                                <img class="my_profile" id="img-change" src="">
+                                <div class="my_function">
+                                    <button id="to_choose" class="thebutton">选择文件</button>
+                                    <form action="{{ url_for("main.profilephoto") }}" enctype='multipart/form-data'
+                                          method='POST'>
+                                        <input type="file" id="my_avatar" style="display:none" name="file"
+                                               onchange="filechange(event)"/>
+                                        <button type="submit" id="to_upload" class="thebutton"
+                                                onclick="upload_avatar()">
+                                            上传头像
+                                        </button>
+                                    </form>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-
-                    <div class="module span4">
-                        <div class="module-body">
-                            <img class="my_profile" id="img-change" src="">
-                            <div class="my_function">
-                                <button id="to_choose" class="thebutton">选择文件</button>
-                                <form action="{{ url_for("main.profilephoto") }}" enctype='multipart/form-data'
-                                      method='POST'>
-                                    <input type="file" id="my_avatar" style="display:none" name="file"
-                                           onchange="filechange(event)"/>
-                                    <button type="submit" id="to_upload" class="thebutton" onclick="upload_avatar()">
-                                        上传头像
-                                    </button>
-                                </form>
+                            <div class="line"></div>
+                            <div class="theright">
+                                <h4 style="font-size:20px;margin-top:10px;margin-bottom: 20px;margin-left:20px"><b
+                                        style="font-size:20px;">基本信息</b></h4>
+                                <div style="width:100%;height:25px;margin-top:15px" id="user_name">
+                                    <label class="name">用户名：</label>
+                                    <input type="text" class="text" id="input_name" value="" disabled="disabled"
+                                           readonly="readonly"/>
+                                </div>
+                                <div style="width:100%;height:25px;margin-top:15px" id="user_phone">
+                                    <label class="name">联系电话：</label>
+                                    <input type="text" class="text" id="input_number" value=""/>
+                                </div>
+                                <div style="width:100%;height:25px;margin-top:15px;" id="user_mail">
+                                    <label class="name">电子邮箱：</label>
+                                    <input type="text" class="text" id="input_mail" value=""/>
+                                    <span style="height:25px;float:left;margin-left:10px;margin-top:5px;" id="to_validate">
+                                        <a data-toggle="modal" data-target="#validate_mail_modal" onclick="send_number()">点击验证</a></span>
+                                </div>
+                                <div style="width:100%;height:25px;margin-top:15px" id="user_address">
+                                    <label class="name">居住地址：</label>
+                                    <input type="text" class="text" id="input_address" value=""/>
+                                </div>
+                                <div style="width:100%;height:30px;margin-top:15px" id="user_introduce">
+                                    <label class="name">个人简介：</label>
+                                    <input type="text" class="text" id="input_person" value=""/>
+                                </div>
+                                <button class="mybutton" id="to_submit">点击提交</button>
                             </div>
                         </div>
                     </div>
@@ -178,7 +186,7 @@
 
     <!-- 事件模块 -->
     <script>
-        var myavatar, myfile, inputaddress, inputnumber, inputmail, inputintroduce;
+        var myavatar, myfile, inputaddress, inputnumber, inputmail, inputintroduce, validate_number;
         //选择图片预览
         $("#to_choose").click(function () {//点击导入按钮，使files触发点击事件，然后完成读取文件的操作。
             $("#my_avatar").click();
@@ -203,7 +211,7 @@
             }
         };
         //提交个人信息
-        $("#to_submit").click(function () {//点击导入按钮，使files触发点击事件，然后完成读取文件的操作。
+        $("#to_submit").click(function () {
             inputaddress = $("#input_address").val();
             inputnumber = $("#input_number").val();
             inputmail = $("#input_mail").val();
@@ -219,16 +227,10 @@
                 },
                 dataType: 'json',
                 success: function (data) {
-                    $("#user_name").empty();
-                    $("#user_phone").empty();
-                    $("#user_mail").empty();
-                    $("#user_address").empty();
-                    $("#user_introduce").empty();
+                    alert("个人信息已提交");
                     update_information();
-                    $("#update_message_modal").fadeOut();
                 }
             });
-
         });
         //上传头像
         function upload_avatar() {
@@ -255,11 +257,50 @@
                 url: '{{url_for("message_api.query_person")}}',
                 dataType: 'json',
                 success: function (data) {
-                    $("#user_name").append("<label class='name'>用户名：" + data.usersname + "</label>");
-                    $("#user_phone").append("<label class='name'>联系电话：" + data.phone + "</label>");
-                    $("#user_mail").append("<label class='name'>电子邮箱：" + data.mail + "</label>");
-                    $("#user_address").append("<label class='name'>居住地址：" + data.address + "</label>");
-                    $("#user_introduce").append("<label class='name'>个人简介：" + data.introduce + "</label>");
+                    $("#input_name").val(data.usersname);
+                    $("#input_number").val(data.phone);
+                    $("#input_mail").val(data.mail);
+                    $("#input_address").val(data.address);
+                    $("#input_person").val(data.introduce);
+                }
+            });
+        }
+        //发送验证
+        function send_number(){
+            inputmail = $("#input_mail").val();
+            $("#validate_number").val('');
+            $.ajax({
+                type: 'POST',
+                url: '{{url_for("main_api.send_number")}}',
+                data: {
+                    input_number: inputmail
+                },
+                dataType: 'json',
+                success: function (data) {
+                    alert("验证码已发送至邮箱")
+                }
+            });
+        }
+        //邮箱验证
+        function validate_mail() {
+            validate_number = $("#validate_number").val();
+            $.ajax({
+                type: 'GET',
+                url: '{{url_for("main_api.validate_number")}}',
+                data: {
+                    input_number: validate_number
+                },
+                dataType: 'json',
+                success: function (data) {
+                    if(data=='success'){
+                        alert('验证成功');
+                        $("#validate_mail_modal").modal('hide');
+                        $("#to_validate").empty();
+                        $("#to_validate").append("<a data-toggle='modal' data-target='#validate_mail_modal' onclick='send_number()'>更新验证</a>");
+                    }
+                    else{
+                        alert('验证码错误，请重新输入')
+                    }
                 }
             });
         }
@@ -275,11 +316,11 @@
                 success: function (data) {
                     var imgsrc = "../static/avatar/" + data.avatar + "?timestamp=" + new Date().getTime()
                     $("#img-change").attr("src", imgsrc);
-                    $("#user_name").append("<label class='name'>用户名：" + data.usersname + "</label>");
-                    $("#user_phone").append("<label class='name'>联系电话：" + data.phone + "</label>");
-                    $("#user_mail").append("<label class='name'>电子邮箱：" + data.mail + "</label>");
-                    $("#user_address").append("<label class='name'>居住地址：" + data.address + "</label>");
-                    $("#user_introduce").append("<label class='name'>个人简介：" + data.introduce + "</label>");
+                    $("#input_name").val(data.usersname);
+                    $("#input_number").val(data.phone);
+                    $("#input_mail").val(data.mail);
+                    $("#input_address").val(data.address);
+                    $("#input_person").val(data.introduce);
                 }
             });
         })

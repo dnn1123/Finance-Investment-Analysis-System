@@ -13,6 +13,7 @@ from webapp.Library.pyalgotrade_custom import dataFramefeed,plotter,positionReco
 from webapp.Library.process_bar import ShowProcess
 import tushare as ts
 import base64,datetime,string
+
 def handle_form(form):
     type=form.get('type')
     if type=="Pair_Strategy_Based_Bank":
