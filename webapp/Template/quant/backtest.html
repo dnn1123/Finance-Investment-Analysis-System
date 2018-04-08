@@ -96,6 +96,7 @@
     </style>
 {% endblock %}
 {% block content %}
+    <!--选择策略，输入参数-->
     <div class="module">
         <div class="module-head">回测参数</div>
         <div class="module-body">
@@ -103,6 +104,7 @@
                 <option disabled selected value>请选择……</option>
                 <option value="Pair_Strategy_Based_Bank">配对策略</option>
                 <option value="DoubleMA_Strategy">双均线策略</option>
+                <option value="My_Pair_Strategy">股票配对策略</option>
             </select>
             <div id="div_form"></div>
         </div>
@@ -252,6 +254,7 @@
 {% endblock %}
 {% block scripts %}
     <script>
+        //选择策略类型
         $("#form_type").on('change', function (e) {
             $.ajax({
                 type: "GET",
@@ -264,6 +267,7 @@
             })
         });
 
+        //提交数据，回测
         $("#div_form").on('click', '.submit', function () {
             $.ajax({
                 type: "POST",//方法类型
@@ -273,16 +277,16 @@
                 success: function (result) {
                     $('#loading').empty();
                     $('#div_result').css('display','inline');
-                    $("#portfolio").text(result.portfolio.toFixed(2));
-                    $("#culrtn").text(result.culrtn.toFixed(4));
-                    $("#meanrtn").text(result.meanrtn.toFixed(4));
-                    $("#stdrtn").text(result.stdrtn.toFixed(4));
-                    $("#sharp").text(result.sharp.toFixed(4));
-                    $("#MDD").text(result.MDD.toFixed(4));
+                    $("#portfolio").text(result.portfolio);
+                    $("#culrtn").text(result.culrtn);
+                    $("#meanrtn").text(result.meanrtn);
+                    $("#stdrtn").text(result.stdrtn);
+                    $("#sharp").text(result.sharp);
+                    $("#MDD").text(result.MDD);
                     $("#stimes").text(result.stimes);
                     $("#gtimes").text(result.gtimes);
                     $("#ltimes").text(result.ltimes);
-                    show_values(result.data)
+                    show_values(result.data);
                     createTable("mytable", result);
                     createPosTable("postable", result);
                     costDist(result);
@@ -326,26 +330,27 @@
         })
     </script>
 
+    <!--指标函数-->
     <script>
         function show_values(result) {
-            $('#loading').empty()
-            $('#div_result').css('display', 'inline')
-            $('#more_results').css('display', 'inline')
-            $("#portfolio").text(result.portfolio.toFixed(2))
-            $("#culrtn").text(result.culrtn.toFixed(4))
-            $("#meanrtn").text(result.meanrtn.toFixed(4))
-            $("#stdrtn").text(result.stdrtn.toFixed(4))
-            $("#sharp").text(result.sharp.toFixed(4))
-            $("#MDD").text(result.MDD.toFixed(4))
-            $("#stimes").text(result.stimes)
-            $("#gtimes").text(result.gtimes)
+            $('#loading').empty();
+            $('#div_result').css('display', 'inline');
+            $('#more_results').css('display', 'inline');
+            $("#portfolio").text(result.portfolio.toFixed(2));
+            $("#culrtn").text(result.culrtn.toFixed(4));
+            $("#meanrtn").text(result.meanrtn.toFixed(4));
+            $("#stdrtn").text(result.stdrtn.toFixed(4));
+            $("#sharp").text(result.sharp.toFixed(4));
+            $("#MDD").text(result.MDD.toFixed(4));
+            $("#stimes").text(result.stimes);
+            $("#gtimes").text(result.gtimes);
             $("#ltimes").text(result.ltimes)
         }
 
         {#    createtable for trade records#}
 
         function createTable(divid, data) {
-            var tablename = "#" + divid
+            var tablename = "#" + divid;
             $(tablename).empty();
             var table = $("<table id=\"temptable\" class=\"row-border hover order-column\" cellspacing=\"0\" margin=\"auto\" width=\"100%\"  >");
             table.appendTo($(tablename));
@@ -929,7 +934,7 @@
 
             }
 
-            console.log(data_series)
+            console.log(data_series);
             var myChart = echarts.init(document.getElementById('profittrend'));
             var option = {
                 color: ['#6633FF', 'red','green','#00008B'],
