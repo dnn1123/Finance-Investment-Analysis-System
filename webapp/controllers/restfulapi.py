@@ -93,7 +93,7 @@ def finance_target():
         id_list.append(result1.id_1)
         cn_name_list.append(result1.cn_name_1)
         en_name_list.append(result1.en_name_1)
-        id_belong_to_list.append('00')
+        id_belong_to_list.append('-1')
         for result2 in results2:
             if result2.id_belong_to_1 == result1.id_1:
                 id_list.append(result2.id_2)
@@ -119,52 +119,74 @@ def finance_target():
     data['id_belong_to']=id_belong_to_list
     return jsonify(data)
 
+# 新数据库中根据指标获取数据
+@api_blueprint.route("/finance_index_data/", methods=('GET', 'POST'))
 
+def finance_index_data():
+    stockcode = request.form.get('stockcode')
+    starttime = request.form.get('starttime')
+    endtime = request.form.get('endtime')
+    id = request.form.getlist('id_list[]')
+    cn_name_list =  request.form.getlist('cn_name_List[]')
+    en_name_list =  request.form.getlist('en_name_List[]')
+    filters_cns_balance_sheet = {
+        cns_balance_sheet.stock_code == stockcode,
+        cns_balance_sheet.the_date.replace('-', '') >= starttime,
+        cns_balance_sheet.the_date.replace('-', '') <= endtime,
+    }
+    results_cns_balance_sheet = cns_balance_sheet.query.filter(*filters_cns_balance_sheet).all()
+    filters_cns_income_statement = {
+        cns_income_statement.stock_code == stockcode,
+        cns_income_statement.the_date.replace('-', '') >= starttime,
+        cns_income_statement.the_date.replace('-', '') <= endtime,
+    }
+    results_cns_income_statement = cns_income_statement.query.filter(*filters_cns_income_statement).all()
+    filters_cns_statement_of_cash_flows = {
+        cns_statement_of_cash_flows.stock_code == stockcode,
+        cns_statement_of_cash_flows.the_date.replace('-', '') >= starttime,
+        cns_statement_of_cash_flows.the_date.replace('-', '') <= endtime,
+    }
+    results_cns_statement_of_cash_flows = cns_statement_of_cash_flows.query.filter(*filters_cns_statement_of_cash_flows).all()
 
+    data = {}
+    year_list = []
+    indexes = []
+
+    for i in range(0,len(id)):
+        if id[i][0:1]=="01":
+            if hasattr(cns_balance_sheet,en_name_list[i]):
+                temp_list = []
+                exec (en_name_list[i] + "_list=[]")
+                exec("temp_list = results_cns_balance_sheet."+en_name_list[i])
+                data[en_name_list[i] + "_list"] = temp_list
+                data[en_name_list[i]] = cn_name_list[i]
+                indexes.append(en_name_list[i])
+        elif id[i][0:1]=="02":
+            if hasattr(cns_income_statement,en_name_list[i]):
+                temp_list = []
+                exec (en_name_list[i] + "_list=[]")
+                exec("temp_list = results_cns_income_statement."+en_name_list[i])
+                data[en_name_list[i] + "_list"] = temp_list
+                data[en_name_list[i] ] = cn_name_list[i]
+                indexes.append(en_name_list[i])
+        elif id[i][0:1]=="03":
+            if hasattr(cns_statement_of_cash_flows,en_name_list[i]):
+                temp_list = []
+                exec (en_name_list[i] + "_list=[]")
+                exec("temp_list = results_cns_statement_of_cash_flows."+en_name_list[i])
+                data[en_name_list[i] + "_list"] = temp_list
+                data[en_name_list[i]] = cn_name_list[i]
+                indexes.append(en_name_list[i])
+    data['stock_code'] = stockcode
+    data['the_year'] = year_list
+    data['indexes'] = indexes
+
+    return jsonify(data)
 
 
 
 # 数据库查询api 用于Ajax数据返回 json格式数据
 @api_blueprint.route("/finance_data/", methods=('GET', 'POST'))
-# def finance_data():
-#     stockcode = request.args.get('stockcode')
-#     starttime = request.args.get('starttime')
-#     endtime = request.args.get('endtime')
-#     indexes = request.args.getlist('indexes[]')
-#     filters1 = {
-#         cns_income_statement.stock_code == stockcode,
-#         cns_income_statement.the_date >= starttime,
-#         cns_income_statement.the_date <= endtime,
-#     }
-#     filters2 = {
-#         cns_statement_of_cash_flows.trade_code == stockcode,
-#         cns_statement_of_cash_flows.the_date >= starttime,
-#         cns_statement_of_cash_flows.the_date <= endtime,
-#     }
-#     results = finance_basics.query.filter(*filters1).all()
-#     result1 = finance_basics.query.filter_by(trade_code=stockcode).first_or_404()
-#
-#
-#     data = {}
-#     year_list = []
-#     data['the_name'] = result1.sec_name
-#     for index in indexes:
-#         exec (index + "_list=[]")
-#
-#     for result in results:
-#         year_list.append(result.the_year)
-#         for index in indexes:
-#             if eval("result." + index) is None:
-#                 exec (index + "_list.append(result." + index + ")")
-#             else:
-#                 exec (index + "_list.append(float(result." + index + "))")
-#
-#     data['stock_code'] = stockcode
-#     data['the_year'] = year_list
-#     data['indexes'] = indexes
-#     for index in indexes:
-#         exec ("data['" + index + "']=" + index + "_list")
-#     return jsonify(data)
 
 def finance_data():
     stockcode = request.args.get('stockcode')

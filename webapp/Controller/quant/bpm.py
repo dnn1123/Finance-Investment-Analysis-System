@@ -414,11 +414,12 @@ class Strategy_Manager():
 
     def __init_Stock_Picking_Strategy_Based_Value_By_Steve_A(self):
         feed = dataFramefeed.Feed(bar.Frequency.DAY)
-        data = w.wset("sectorconstituent", "date=" + self.__startdate + ";sectorid=a001010100000000")
-        stock_list = data.Data[1][0:20]
+        data = None
+        stock_list = data.Data[1]
         self.__process_bar = ShowProcess(len(stock_list))
         for stock in stock_list:
-            stock_data = w.wsd(stock, "open,high,low,close,volume", self.__startdate, self.__enddate, "")
+            # stock_data=w.wsd(stock, "open,high,low,close,volume", self.__startdate, self.__enddate, "")
+            stock_data = None
             self.__time_period = len(stock_data.Times)
             feed.addBarsFromDataFrame(stock, WindData_to_DataFrame(stock_data))
             self.__process_bar.show_process()
@@ -1164,6 +1165,115 @@ class DataCalculator_For_Stock_Picking_Strategy_Based_Value_By_Steve_A():
         return list
 
 
+class DataCalculator_For_Stock_Picking_Strategy_Based_Value_By_Steve_A():
+    def __init__(self):
+        pass
+        # def suggest_code_list_old(self,date, quarter, count):
+        #     list = []
+        #     w.start();
+        #     AllAStock = w.wset("sectorconstituent", "sectorid=a001010100000000;field=wind_code");
+        #     score_list = {}
+        #     gxsyl_all = 0
+        #     gjxjllb_all = 0
+        #     i = 0
+        #     # 计算 股息收益率市场均值 股价现金流量比均值
+        #     for stock in AllAStock.Data[0]:
+        #     # for i in range(0, 5):
+        #     #     stock = AllAStock.Data[0][i]
+        #         data_tmp1 = w.wsd(stock, "dividendyield2,close",
+        #                           date, date, "unit=1;rptType=1;Days=Alldays;Fill=Previous")
+        #         data_tmp2 = w.wsd(stock, "cfps",
+        #                           quarter, date, "currencyType=;Period=Q;Days=Alldays")
+        #
+        #         for n in data_tmp1.Data:
+        #             if (str(n[0]) != 'nan' and str(data_tmp2.Data[0][0]) != 'nan'):
+        #                 gxsyl_all += n[0]
+        #                 gjxjllb_all += n[0] / data_tmp2.Data[0][0]
+        #                 i += 1
+        #
+        #     gxsyl_avg = gxsyl_all / i
+        #     gjxjllb_avg = gjxjllb_all / i
+        #
+        #     # 获取 市净率（算术平均） 市盈率（算术平均） 流动比率（算术平均）
+        #     # 此处时间格式为yyyymmdd
+        #     date_1 = date.replace('-', '')
+        #     data_3 = w.wsee("a001010100000000", "sec_pb_avg_chn,sec_pe_avg_chn,sec_current_avg_chn",
+        #                     "tradeDate=" + date_1 + ";ruleType=11;excludeRule=1;DynamicTime=1;rptDate=20161231")
+        #     sec_pb_avg_chn = data_3.Data[0][0]
+        #     sec_pe_ttm_avg_glb = data_3.Data[1][0]
+        #     sec_current_avg_chn = data_3.Data[2][0]
+        #
+        #     # print(AllAStock)
+        #     # for stock in AllAStock.Data[0]:
+        #     for i in range(0, 5):
+        #         stock = AllAStock.Data[0][i]
+        #         score_1 = 0
+        #         score_2 = 0
+        #         score_3 = 0
+        #         score_4 = 0
+        #         score_5 = 0
+        #         score_6 = 0
+        #         score_7 = 0
+        #
+        #         # 获取 市净率，市盈率，每股流动资产，股息率，每股现金流量急净额，收盘价，
+        #         data_1 = w.wsd(stock, "pb_lf,pe_lyr,wgsd_bps,dividendyield2,close",
+        #                        date, date, "unit=1;rptType=1;Days=Alldays;Fill=Previous")
+        #         # 获取 长期借贷，流动比率,总资本
+        #         data_2 = w.wsd(stock, "lt_borrow,wgsd_current,cap_stk,cfps",
+        #                        quarter, date, "unit=1;rptType=1;Period=Q;Days=Alldays;Fill=Previous")
+        #
+        #         for n in data_1.Data[0]:
+        #             if (str(n) != 'nan'):
+        #                 pb_lf = data_1.Data[0][0]
+        #                 pe_lyr = data_1.Data[1][0]
+        #                 wgsd_bps = data_1.Data[2][0]
+        #                 dividendyield2 = data_1.Data[3][0]
+        #                 close = data_1.Data[4][0]
+        #
+        #                 lt_borrow = data_2.Data[0][0]
+        #                 wgsd_current = data_2.Data[1][0]
+        #                 cap_stk = data_2.Data[2][0]
+        #                 cfps = data_2.Data[3][0]
+        #
+        #             # 市净率低于全市场平均值 （全市场平均值-市净率）/ 全市场平均值
+        #             if (pb_lf < sec_pb_avg_chn):
+        #                 score_1 = (sec_pb_avg_chn - pb_lf) / sec_pb_avg_chn
+        #
+        #             # 以五年平均盈余计算的PE低于全市场平均值 （全市场平均值-PE）/ 全市场平均值
+        #             if (pe_lyr < sec_pe_ttm_avg_glb):
+        #                 score_2 = (sec_pe_ttm_avg_glb - pe_lyr) / sec_pe_ttm_avg_glb
+        #
+        #             # 每股流动资产至少是股价的30%
+        #             if ((wgsd_bps / close) >= 0.3):
+        #                 score_3 = (wgsd_bps - close) / wgsd_bps
+        #
+        #             # 股息收益率不低于全市场平均值
+        #             if (dividendyield2 > gxsyl_avg):
+        #                 score_4 = (dividendyield2 - gxsyl_avg) / dividendyield2
+        #
+        #             # 股价现金流量比低于全市场平均值
+        #             if ((close / cfps) < gjxjllb_avg):
+        #                 score_5 = (gjxjllb_avg - (close / cfps)) / gjxjllb_avg
+        #
+        #             # 长期借款占总资本比例低于50% 此处出现离群点
+        #             if ((lt_borrow / cap_stk) < 0.5):
+        #                 score_6 = (cap_stk - lt_borrow) / cap_stk
+        #             #  流动比例高于全市场平均值（无调整）
+        #             if (wgsd_current >= sec_current_avg_chn):
+        #                 score_7 = (wgsd_current - sec_current_avg_chn) / wgsd_current
+        #
+        #         #     总分数
+        #         score = score_1 + score_2 + score_3 + score_4 + score_5 + score_6 + score_7
+        #         score_list[stock] = score
+        #     # 将字典转化为元组并从小到大排序
+        #     scorted_list = sorted(zip(score_list.values(), score_list.keys()))
+        #
+        #     # for i in (len(scorted_list)-2,len(scorted_list)-1):
+        #     # list.append(scorted_list[i][1])
+        #     print(scorted_list)
+        #     return list
+
+
 class Stock_Picking_Strategy_Based_Value_By_Steve_A(strategy.BacktestingStrategy):
     def __init__(self, feed, brk, startdate, time_period, T=20):
         super(Stock_Picking_Strategy_Based_Value_By_Steve_A, self).__init__(feed, brk)
@@ -1195,8 +1305,8 @@ class Stock_Picking_Strategy_Based_Value_By_Steve_A(strategy.BacktestingStrategy
             today = bars.getDateTime().strftime("%Y-%m-%d")
             if self.__margin == 0:
                 cur_pos = self.getBroker().getPositions().keys()
-                # sug_pos=[] #生成推荐列表
-                sug_pos = self.__DataCalculator.suggest_code_list(today, get_last_quarter_date(today), 20)
+                sug_pos = []  # 生成推荐列表
+                # sug_pos=suggest_code_list(today,get_last_quarter_date(today),20)
                 sell_list = list(set(cur_pos) - set(sug_pos))
                 buy_list = list(set(sug_pos) - set(cur_pos))
                 if sell_list != []:
@@ -1207,10 +1317,12 @@ class Stock_Picking_Strategy_Based_Value_By_Steve_A(strategy.BacktestingStrategy
                 if buy_list != []:
                     budget = self.getBroker().getCash(False) / len(buy_list)
                     for stock in buy_list:
-                        price = bars[stock].getPrice()
-                        volume = count_shares(budget / price)
-                        if volume != 0:
-                            self.enterLongLimit(stock, price, volume)
+                        stockbar = bars.getBar(stock)
+                        if stockbar is not None:
+                            price = stockbar.getPrice()
+                            volume = count_shares(budget / price / (1.0 + 0.001))
+                            if volume != 0:
+                                self.enterLongLimit(stock, price, volume)
                 self.__margin = self.__T
             else:
                 self.__margin = self.__margin - 1
