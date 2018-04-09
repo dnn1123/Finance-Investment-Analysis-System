@@ -13,7 +13,7 @@ import pandas as pd
 from datetime import datetime
 from datetime import timedelta
 from  webapp.stratlib import *
-from webapp.Library.wind_mysql.get_company_list import *
+# from webapp.Library.wind_mysql.get_company_list import *
 
 api_blueprint = Blueprint(
     'restfulapi',
@@ -1035,5 +1035,5 @@ def updata_company_list():
     data={}
     # upData_company_list()
     # upData_cns_stock_basics()
-    data = upData_cns_balance_sheet()
+    # data = upData_cns_balance_sheet()
     return jsonify(data)
