@@ -143,6 +143,8 @@
                     $("#myprofits").text(data.position_profit.toFixed(2));
                     $("#mytraderec").text(data.trade_rec_count);
                     if (data.member_type == null) {
+                        var userimgsrc = "../static/personal_img/user.jpg";
+                        $("#personal_img").attr("src", userimgsrc);
                         $("#user_info").text('您的账户尚未开通会员服务');
                     }
                     else if (data.member_type == 'month') {
