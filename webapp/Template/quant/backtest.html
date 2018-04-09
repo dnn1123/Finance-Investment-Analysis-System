@@ -276,17 +276,6 @@
                 url: "{{ url_for("quant_api.back_test") }}",//url
                 data: $('#backtest_form').serialize(),
                 success: function (result) {
-                    $('#loading').empty();
-                    $('#div_result').css('display', 'inline');
-                    $("#portfolio").text(result.portfolio);
-                    $("#culrtn").text(result.culrtn);
-                    $("#meanrtn").text(result.meanrtn);
-                    $("#stdrtn").text(result.stdrtn);
-                    $("#sharp").text(result.sharp);
-                    $("#MDD").text(result.MDD);
-                    $("#stimes").text(result.stimes);
-                    $("#gtimes").text(result.gtimes);
-                    $("#ltimes").text(result.ltimes);
                     show_values(result.data);
                     createTable("mytable", result);
                     createPosTable("postable", result);
