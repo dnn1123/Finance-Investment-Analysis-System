@@ -15,6 +15,7 @@ quant_api = Blueprint(
     url_prefix="/quant_api"
 )
 
+#选择策略类型
 @quant_api.route('/backtest_form', methods=('GET', 'POST'))
 def request_form():
     type=request.args.get('type')
@@ -22,9 +23,12 @@ def request_form():
         return render_template('/form/form_Pair_Strategy_Based_Bank.html')
     if type=="DoubleMA_Strategy":
         return render_template('/form/form_DoubleMA_Strategy.html')
+    if type=="My_Pair_Strategy":
+        return render_template('/form/form_My_Pair_Strategy.html')
     if type=="Stock_Picking_Strategy_Based_Value_By_Steve_A":
         return render_template('/form/form_Stock_Picking_Strategy_Based_Value_By_Steve_A.html')
 
+#回测
 @quant_api.route('/backtest', methods=('GET', 'POST'))
 def back_test():
     data,history,Portfolio_data=handle_form(request.form)
@@ -123,6 +127,8 @@ def request_liveform():
         return render_template('/form/liveform_Pair_Strategy_Based_Bank.html')
     if type=="DoubleMA_Strategy":
         return render_template('/form/liveform_DoubleMA_Strategy.html')
+    if type=="My_Pair_Strategy":
+        return render_template('/form/liveform_My_Pair_Strategy.html')
     if type=="Buy_Everyday":
         return render_template('form/liveform_Buy_Everyday.html')
 

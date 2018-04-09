@@ -314,8 +314,8 @@
                 url: '{{url_for("message_api.query_person")}}',
                 dataType: 'json',
                 success: function (data) {
-                    var imgsrc = "../static/avatar/" + data.avatar + "?timestamp=" + new Date().getTime()
-                    $("#img-change").attr("src", imgsrc);
+                    var imgavatar = "../static/avatar/" + data.avatar + "?timestamp=" + new Date().getTime();
+                    $("#img-change").attr("src", imgavatar);
                     $("#input_name").val(data.usersname);
                     $("#input_number").val(data.phone);
                     $("#input_mail").val(data.mail);
