@@ -1,9 +1,10 @@
 {% extends "quant_base.html" %}
 {% block styles %}
     <style>
-        .dataTable{
+        .dataTable {
             text-align: center;
         }
+
         .loader {
             text-align: center;
         }
@@ -96,6 +97,7 @@
     </style>
 {% endblock %}
 {% block content %}
+    <!--选择策略，输入参数-->
     <div class="module">
         <div class="module-head">回测参数</div>
         <div class="module-body">
@@ -103,6 +105,7 @@
                 <option disabled selected value>请选择……</option>
                 <option value="Pair_Strategy_Based_Bank">配对策略</option>
                 <option value="DoubleMA_Strategy">双均线策略</option>
+                <option value="My_Pair_Strategy">股票配对策略</option>
             </select>
             <div id="div_form"></div>
         </div>
@@ -163,95 +166,96 @@
     </div>
 
     <div id="more_results" style="display: none">
-    <div class="btn-controls">
-        <div class="row">
-            <div class="span9">
-                <div class="btn-box-row row-fluid">
-                    <div class="module span12">
-                        <div class="module-head">
-                            <button id="head1" class="btn btn-primary" data-toggle="button">我的交易记录</button>
+        <div class="btn-controls">
+            <div class="row">
+                <div class="span9">
+                    <div class="btn-box-row row-fluid">
+                        <div class="module span12">
+                            <div class="module-head">
+                                <button id="head1" class="btn btn-primary" data-toggle="button">我的交易记录</button>
+                            </div>
+                            <div class="module-body" id="body1">
+                                <div id="mytable" style="margin: auto;width:95%"></div>
+                            </div>
                         </div>
-                        <div class="module-body" id="body1">
-                            <div id="mytable" style="margin: auto;width:95%"></div>
+
+                    </div>
+                </div>
+            </div>
+            {#            datatable for trade records#}
+
+            {#            chart for trade distribution#}
+            <div class="btn-box-row row-fluid">
+                <div class="module span12" style="background-color: transparent">
+                    {#                        <div class="module-head">交易状况分析</div>#}
+                    <div class="module-head">
+                        <button id="head2" class="btn btn-primary" data-toggle="button">交易状况分析</button>
+                    </div>
+                    <div class="modal-body" id="body2">
+                        {#                        <div class="row-fluid" id="body2">#}
+
+                        <div class="btn-box small span6">
+                            <div id="frequencyDist" style="width:100%;height:200px;background-color: white"></div>
+                        </div>
+                        <div class="btn-box small span6">
+                            <div id="commissionDist" style="width:100%;height:200px;background-color: white"></div>
                         </div>
                     </div>
-
                 </div>
             </div>
-        </div>
-        {#            datatable for trade records#}
 
-        {#            chart for trade distribution#}
-        <div class="btn-box-row row-fluid">
-            <div class="module span12" style="background-color: transparent">
-                {#                        <div class="module-head">交易状况分析</div>#}
-                <div class="module-head">
-                    <button id="head2" class="btn btn-primary" data-toggle="button">交易状况分析</button>
-                </div>
-                <div class="modal-body" id="body2">
-                    {#                        <div class="row-fluid" id="body2">#}
-
-                    <div class="btn-box small span6">
-                        <div id="frequencyDist" style="width:100%;height:200px;background-color: white"></div>
+            {#            datatable for position records#}
+            <div class="btn-box-row row-fluid">
+                <div class="module span12">
+                    <div class="module-head">
+                        {#                        <a href="#postable" aria-expanded="false" data-toggle="collapse">持仓盈利情况</a>#}
+                        <button id="head3" class="btn btn-primary" data-toggle="button">持仓盈利情况</button>
                     </div>
-                    <div class="btn-box small span6">
-                        <div id="commissionDist" style="width:100%;height:200px;background-color: white"></div>
+                    <div class="modal-body" id="body3">
+                        <div id="postable" style="margin: auto;width:95%"></div>
                     </div>
                 </div>
             </div>
-        </div>
-
-        {#            datatable for position records#}
-        <div class="btn-box-row row-fluid">
-            <div class="module span12">
-                <div class="module-head">
-                    {#                        <a href="#postable" aria-expanded="false" data-toggle="collapse">持仓盈利情况</a>#}
-                    <button id="head3" class="btn btn-primary" data-toggle="button">持仓盈利情况</button>
-                </div>
-                <div class="modal-body" id="body3">
-                    <div id="postable" style="margin: auto;width:95%"></div>
-                </div>
-            </div>
-        </div>
-        {#            chart for position distribution#}
-        <div class="btn-box-row row-fluid">
-            <div class="module span12" style="background-color: transparent">
-                <div class="module-head">
-                    <button id="head4" class="btn btn-primary" data-toggle="button">持仓分析图表</button>
-                </div>
-                <div class="modal-body" id="body4">
-                    {#                        <div class="row-fluid" >#}
-
-                    <div class="btn-box small span3">
-                        <div id="costDist" style="width:100%;height:200px;background-color: white"></div>
+            {#            chart for position distribution#}
+            <div class="btn-box-row row-fluid">
+                <div class="module span12" style="background-color: transparent">
+                    <div class="module-head">
+                        <button id="head4" class="btn btn-primary" data-toggle="button">持仓分析图表</button>
                     </div>
-                    <div class="btn-box small span3">
-                        <div id="mvDist" style="width:100%;height:200px;background-color: white"></div>
-                    </div>
-                    <div class="btn-box small span6">
-                        <div id="profitDist" style="width:100%;height:200px;background-color: white"></div>
+                    <div class="modal-body" id="body4">
+                        {#                        <div class="row-fluid" >#}
+
+                        <div class="btn-box small span3">
+                            <div id="costDist" style="width:100%;height:200px;background-color: white"></div>
+                        </div>
+                        <div class="btn-box small span3">
+                            <div id="mvDist" style="width:100%;height:200px;background-color: white"></div>
+                        </div>
+                        <div class="btn-box small span6">
+                            <div id="profitDist" style="width:100%;height:200px;background-color: white"></div>
+                        </div>
+
                     </div>
 
                 </div>
 
             </div>
+        </div>
+        <!--/#btn-controls-->
+        <div class="module">
+            <div class="module-head">
+                <button id="head5" class="btn btn-primary" data-toggle="button">持仓收益图</button>
 
+            </div>
+            <div class="module-body" id="body5">
+                <div id="profittrend" style="width:100%;height:300px;background-color: white"></div>
+            </div>
         </div>
-    </div>
-    <!--/#btn-controls-->
-    <div class="module">
-        <div class="module-head">
-            <button id="head5" class="btn btn-primary" data-toggle="button">持仓收益图</button>
-
-        </div>
-        <div class="module-body" id="body5">
-            <div id="profittrend" style="width:100%;height:300px;background-color: white"></div>
-        </div>
-    </div>
     </div>
 {% endblock %}
 {% block scripts %}
     <script>
+        //选择策略类型
         $("#form_type").on('change', function (e) {
             $.ajax({
                 type: "GET",
@@ -264,6 +268,7 @@
             })
         });
 
+        //提交数据，回测
         $("#div_form").on('click', '.submit', function () {
             $.ajax({
                 type: "POST",//方法类型
@@ -271,7 +276,18 @@
                 url: "{{ url_for("quant_api.back_test") }}",//url
                 data: $('#backtest_form').serialize(),
                 success: function (result) {
-                    show_values(result.data)
+                    $('#loading').empty();
+                    $('#div_result').css('display', 'inline');
+                    $("#portfolio").text(result.portfolio);
+                    $("#culrtn").text(result.culrtn);
+                    $("#meanrtn").text(result.meanrtn);
+                    $("#stdrtn").text(result.stdrtn);
+                    $("#sharp").text(result.sharp);
+                    $("#MDD").text(result.MDD);
+                    $("#stimes").text(result.stimes);
+                    $("#gtimes").text(result.gtimes);
+                    $("#ltimes").text(result.ltimes);
+                    show_values(result.data);
                     createTable("mytable", result);
                     createPosTable("postable", result);
                     costDist(result);
@@ -315,26 +331,27 @@
         })
     </script>
 
+    <!--指标函数-->
     <script>
         function show_values(result) {
-            $('#loading').empty()
-            $('#div_result').css('display', 'inline')
-            $('#more_results').css('display', 'inline')
-            $("#portfolio").text(result.portfolio.toFixed(2))
-            $("#culrtn").text(result.culrtn.toFixed(4))
-            $("#meanrtn").text(result.meanrtn.toFixed(4))
-            $("#stdrtn").text(result.stdrtn.toFixed(4))
-            $("#sharp").text(result.sharp.toFixed(4))
-            $("#MDD").text(result.MDD.toFixed(4))
-            $("#stimes").text(result.stimes)
-            $("#gtimes").text(result.gtimes)
+            $('#loading').empty();
+            $('#div_result').css('display', 'inline');
+            $('#more_results').css('display', 'inline');
+            $("#portfolio").text(result.portfolio.toFixed(2));
+            $("#culrtn").text(result.culrtn.toFixed(4));
+            $("#meanrtn").text(result.meanrtn.toFixed(4));
+            $("#stdrtn").text(result.stdrtn.toFixed(4));
+            $("#sharp").text(result.sharp.toFixed(4));
+            $("#MDD").text(result.MDD.toFixed(4));
+            $("#stimes").text(result.stimes);
+            $("#gtimes").text(result.gtimes);
             $("#ltimes").text(result.ltimes)
         }
 
         {#    createtable for trade records#}
 
         function createTable(divid, data) {
-            var tablename = "#" + divid
+            var tablename = "#" + divid;
             $(tablename).empty();
             var table = $("<table id=\"temptable\" class=\"row-border hover order-column\" cellspacing=\"0\" margin=\"auto\" width=\"100%\"  >");
             table.appendTo($(tablename));
@@ -863,53 +880,53 @@
                 }
             }
             ;
-            legend_data=['策略收益', '基准收益']
-            for (var key in data.compare){
-                if (key != 'index'){
-                    legend_data.push("全仓"+key)
+            legend_data = ['策略收益', '基准收益']
+            for (var key in data.compare) {
+                if (key != 'index') {
+                    legend_data.push("全仓" + key)
                 }
             }
-            data_series=[{
-                        name: '策略收益',
-                        type: 'line',
-                        data: data['portfolio']
-                        {#                    markPoint: {#}
-                        {#                        data: [#}
-                        {#                            {name: '周最低', value: -2, xAxis: 1, yAxis: -1.5}#}
-                        {#                        ]#}
-                        {#                    },#}
-                        {#                    markLine: {#}
-                        {#                        data: [#}
-                        {#                            {type: 'average', name: '平均值'},#}
-                        {#                            [{#}
-                        {#                                symbol: 'none',#}
-                        {#                                x: '90%',#}
-                        {#                                yAxis: 'max'#}
-                        {#                            }, {#}
-                        {#                                symbol: 'circle',#}
-                        {#                                label: {#}
-                        {#                                    normal: {#}
-                        {#                                        position: 'start',#}
-                        {#                                        formatter: '最大值'#}
-                        {#                                    }#}
-                        {#                                },#}
-                        {#                                type: 'max',#}
-                        {#                                name: '最高点'#}
-                        {#                            }]#}
-                        {#                        ]#}
-                        {#                    }#}
-                    }]
-            for (var key in data.compare){
-                if (key == 'index'){
-                    dict={
+            data_series = [{
+                name: '策略收益',
+                type: 'line',
+                data: data['portfolio']
+                {#                    markPoint: {#}
+                {#                        data: [#}
+                {#                            {name: '周最低', value: -2, xAxis: 1, yAxis: -1.5}#}
+                {#                        ]#}
+                {#                    },#}
+                {#                    markLine: {#}
+                {#                        data: [#}
+                {#                            {type: 'average', name: '平均值'},#}
+                {#                            [{#}
+                {#                                symbol: 'none',#}
+                {#                                x: '90%',#}
+                {#                                yAxis: 'max'#}
+                {#                            }, {#}
+                {#                                symbol: 'circle',#}
+                {#                                label: {#}
+                {#                                    normal: {#}
+                {#                                        position: 'start',#}
+                {#                                        formatter: '最大值'#}
+                {#                                    }#}
+                {#                                },#}
+                {#                                type: 'max',#}
+                {#                                name: '最高点'#}
+                {#                            }]#}
+                {#                        ]#}
+                {#                    }#}
+            }]
+            for (var key in data.compare) {
+                if (key == 'index') {
+                    dict = {
                         name: '基准收益',
                         type: 'line',
                         data: data['compare']['index'],
                     }
                     data_series.push(dict)
-                }else {
-                     dict={
-                        name:"全仓"+key,
+                } else {
+                    dict = {
+                        name: "全仓" + key,
                         type: 'line',
                         data: data['compare'][key],
                     }
@@ -918,10 +935,10 @@
 
             }
 
-            console.log(data_series)
+            console.log(data_series);
             var myChart = echarts.init(document.getElementById('profittrend'));
             var option = {
-                color: ['#6633FF', 'red','green','#00008B'],
+                color: ['#6633FF', 'red', 'green', '#00008B'],
                 tooltip: {
                     trigger: 'axis'
                 },
@@ -953,7 +970,7 @@
                 },
                 series: data_series
             };
-            myChart.setOption(option,true);
+            myChart.setOption(option, true);
         }
     </script>
 {% endblock %}

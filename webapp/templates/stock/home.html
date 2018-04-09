@@ -146,13 +146,13 @@
                         $("#user_info").text('您的账户尚未开通会员服务');
                     }
                     else if (data.member_type == 'month') {
-                        var imgsrc = "../static/personal_img/vip.png";
-                        $("#personal_img").attr("src", imgsrc);
+                        var vipimgsrc = "../static/personal_img/vip.png";
+                        $("#personal_img").attr("src", vipimgsrc);
                         $("#user_info").text('您的账户目前是包月会员，可免费下载数据，当前账户余额：');
                     }
                     else if (data.member_type == 'year') {
-                        var imgsrc = "../static/personal_img/vip.png";
-                        $("#personal_img").attr("src", imgsrc);
+                        var vipimgsrc = "../static/personal_img/vip.png";
+                        $("#personal_img").attr("src", vipimgsrc);
                         $("#user_info").text('您的账户目前是年费会员，可免费下载数据，当前账户余额：');
                     }
                     $("#user_info").append(data.user_money + '元，<a data-toggle=\"modal\" data-target=\"#modal_recharge\" style=\'\'>点此充值</button>');

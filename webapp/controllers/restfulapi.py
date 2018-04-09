@@ -76,112 +76,8 @@ def change_money():
     }
     return jsonify(results)
 
-# 获取数据库中所有财务指标
-@api_blueprint.route("/finance_target/", methods=('GET', 'POST'))
-def finance_target():
-    results1 =cns_financial_target_1 .query.all()
-    results2 =cns_financial_target_2 .query.all()
-    results3 =cns_financial_target_3 .query.all()
-    results4 =cns_financial_target_4 .query.all()
 
-    data={}
-    id_list=[]
-    cn_name_list=[]
-    en_name_list=[]
-    id_belong_to_list=[]
-    for result1 in results1:
-        id_list.append(result1.id_1)
-        cn_name_list.append(result1.cn_name_1)
-        en_name_list.append(result1.en_name_1)
-        id_belong_to_list.append('-1')
-        for result2 in results2:
-            if result2.id_belong_to_1 == result1.id_1:
-                id_list.append(result2.id_2)
-                cn_name_list.append(result2.cn_name_2)
-                en_name_list.append(result2.en_name_2)
-                id_belong_to_list.append(result2.id_belong_to_1)
-                for  result3 in results3:
-                      if result3.id_belong_to_2 == result2.id_2:
-                          id_list.append(result3.id_3)
-                          cn_name_list.append(result3.cn_name_3)
-                          en_name_list.append(result3.en_name_3)
-                          id_belong_to_list.append(result3.id_belong_to_2)
-                          for  result4 in results4:
-                               if result4.id_belong_to_3 == result3.id_3:
-                                   id_list.append(result4.id_4)
-                                   cn_name_list.append(result4.cn_name_4)
-                                   en_name_list.append(result4.en_name_4)
-                                   id_belong_to_list.append(result4.id_belong_to_3)
 
-    data['id']=id_list
-    data['cn_name']=cn_name_list
-    data['en_name']=en_name_list
-    data['id_belong_to']=id_belong_to_list
-    return jsonify(data)
-
-# 新数据库中根据指标获取数据
-@api_blueprint.route("/finance_index_data/", methods=('GET', 'POST'))
-
-def finance_index_data():
-    stockcode = request.form.get('stockcode')
-    starttime = request.form.get('starttime')
-    endtime = request.form.get('endtime')
-    id = request.form.getlist('id_list[]')
-    cn_name_list =  request.form.getlist('cn_name_List[]')
-    en_name_list =  request.form.getlist('en_name_List[]')
-    filters_cns_balance_sheet = {
-        cns_balance_sheet.stock_code == stockcode,
-        cns_balance_sheet.the_date.replace('-', '') >= starttime,
-        cns_balance_sheet.the_date.replace('-', '') <= endtime,
-    }
-    results_cns_balance_sheet = cns_balance_sheet.query.filter(*filters_cns_balance_sheet).all()
-    filters_cns_income_statement = {
-        cns_income_statement.stock_code == stockcode,
-        cns_income_statement.the_date.replace('-', '') >= starttime,
-        cns_income_statement.the_date.replace('-', '') <= endtime,
-    }
-    results_cns_income_statement = cns_income_statement.query.filter(*filters_cns_income_statement).all()
-    filters_cns_statement_of_cash_flows = {
-        cns_statement_of_cash_flows.stock_code == stockcode,
-        cns_statement_of_cash_flows.the_date.replace('-', '') >= starttime,
-        cns_statement_of_cash_flows.the_date.replace('-', '') <= endtime,
-    }
-    results_cns_statement_of_cash_flows = cns_statement_of_cash_flows.query.filter(*filters_cns_statement_of_cash_flows).all()
-
-    data = {}
-    year_list = []
-    indexes = []
-
-    for i in range(0,len(id)):
-        if id[i][0:1]=="01":
-            if hasattr(cns_balance_sheet,en_name_list[i]):
-                temp_list = []
-                exec (en_name_list[i] + "_list=[]")
-                exec("temp_list = results_cns_balance_sheet."+en_name_list[i])
-                data[en_name_list[i] + "_list"] = temp_list
-                data[en_name_list[i]] = cn_name_list[i]
-                indexes.append(en_name_list[i])
-        elif id[i][0:1]=="02":
-            if hasattr(cns_income_statement,en_name_list[i]):
-                temp_list = []
-                exec (en_name_list[i] + "_list=[]")
-                exec("temp_list = results_cns_income_statement."+en_name_list[i])
-                data[en_name_list[i] + "_list"] = temp_list
-                data[en_name_list[i] ] = cn_name_list[i]
-                indexes.append(en_name_list[i])
-        elif id[i][0:1]=="03":
-            if hasattr(cns_statement_of_cash_flows,en_name_list[i]):
-                temp_list = []
-                exec (en_name_list[i] + "_list=[]")
-                exec("temp_list = results_cns_statement_of_cash_flows."+en_name_list[i])
-                data[en_name_list[i] + "_list"] = temp_list
-                data[en_name_list[i]] = cn_name_list[i]
-                indexes.append(en_name_list[i])
-    data['stock_code'] = stockcode
-    data['the_year'] = year_list
-    data['indexes'] = indexes
-
-    return jsonify(data)
 
 
 
@@ -1036,4 +932,166 @@ def updata_company_list():
     # upData_company_list()
     # upData_cns_stock_basics()
     # data = upData_cns_balance_sheet()
+    return jsonify(data)
+
+# 获取数据库中所有财务指标
+@api_blueprint.route("/finance_target/", methods=('GET', 'POST'))
+def finance_target():
+    results1 = cns_financial_target_1.query.all()
+    results2 = cns_financial_target_2.query.all()
+    results3 = cns_financial_target_3.query.all()
+    results4 = cns_financial_target_4.query.all()
+
+    data = {}
+    id_list = []
+    cn_name_list = []
+    en_name_list = []
+    id_belong_to_list = []
+    for result1 in results1:
+        id_list.append(result1.id_1)
+        cn_name_list.append(result1.cn_name_1)
+        en_name_list.append(result1.en_name_1)
+        id_belong_to_list.append('-1')
+        for result2 in results2:
+            if result2.id_belong_to_1 == result1.id_1:
+                id_list.append(result2.id_2)
+                cn_name_list.append(result2.cn_name_2)
+                en_name_list.append(result2.en_name_2)
+                id_belong_to_list.append(result2.id_belong_to_1)
+                for result3 in results3:
+                    if result3.id_belong_to_2 == result2.id_2:
+                        id_list.append(result3.id_3)
+                        cn_name_list.append(result3.cn_name_3)
+                        en_name_list.append(result3.en_name_3)
+                        id_belong_to_list.append(result3.id_belong_to_2)
+                        for result4 in results4:
+                            if result4.id_belong_to_3 == result3.id_3:
+                                id_list.append(result4.id_4)
+                                cn_name_list.append(result4.cn_name_4)
+                                en_name_list.append(result4.en_name_4)
+                                id_belong_to_list.append(result4.id_belong_to_3)
+
+    data['id'] = id_list
+    data['cn_name'] = cn_name_list
+    data['en_name'] = en_name_list
+    data['id_belong_to'] = id_belong_to_list
+    return jsonify(data)
+
+
+# 新数据库中根据指标获取数据
+@api_blueprint.route("/finance_index_data/", methods=('GET', 'POST'))
+def finance_index_data():
+    stockcode = request.args.get('stockcode')
+    starttime = request.args.get('starttime')
+    endtime = request.args.get('endtime')
+    id = request.args.getlist('id_list[]')
+    cn_name_list = request.args.getlist('cn_name_list[]')
+    en_name_list = request.args.getlist('en_name_list[]')
+    print id
+    print en_name_list
+    print cn_name_list
+    filters_cns_balance_sheet = {
+        cns_balance_sheet.stock_code == stockcode,
+        cns_balance_sheet.the_date >= starttime,
+        cns_balance_sheet.the_date <= endtime,
+    }
+    results_cns_balance_sheet = cns_balance_sheet.query.filter(*filters_cns_balance_sheet).order_by(db.asc( cns_balance_sheet.the_date)).all()
+   # 获取当前股票名称
+    results_cns_balance_sheet_name = cns_balance_sheet.query.filter_by(stock_code=stockcode).first_or_404()
+    filters_cns_income_statement = {
+        cns_income_statement.stock_code == stockcode,
+        cns_income_statement.the_date >= starttime,
+        cns_income_statement.the_date <= endtime,
+    }
+    results_cns_income_statement = cns_income_statement.query.filter(*filters_cns_income_statement).order_by(db.asc(cns_income_statement.the_date)).all()
+    filters_cns_statement_of_cash_flows = {
+        cns_statement_of_cash_flows.stock_code == stockcode,
+        cns_statement_of_cash_flows.the_date >= starttime,
+        cns_statement_of_cash_flows.the_date <= endtime,
+    }
+    results_cns_statement_of_cash_flows = cns_statement_of_cash_flows.query.filter(
+        *filters_cns_statement_of_cash_flows).order_by(db.asc(cns_statement_of_cash_flows.the_date)).all()
+    data = {}
+    year_list = []
+    indexes = []
+
+    start_year = eval(starttime[0:4])
+    start_M = starttime[5:7]
+    end_year = eval(endtime[0:4])
+    end_M = endtime[5:7]
+
+
+    if start_M < '04':
+        start_Q = 1
+    elif start_M < '07':
+        start_Q = 2
+    elif start_M < '10':
+        start_Q = 3
+    elif start_M < '13':
+        start_Q = 4
+
+    if end_M < '04':
+        end_Q = 1
+    elif end_M < '07':
+        end_Q = 2
+    elif end_M < '10':
+        end_Q = 3
+    elif end_M < '13':
+        end_Q = 4
+
+    for i in range(start_Q, 5):
+        year_list.append(str(start_year) + "年Q" + str(i))
+    if (end_year - start_year) > 1:
+        for i in range(start_year + 1, end_year):
+            for j in range(1, 5):
+                year_list.append(str(i) + "年Q" + str(j))
+    for i in range(1, end_Q + 1):
+        year_list.append(str(end_year) + "年Q" + str(i))
+
+    for i in range(0, len(id)):
+
+     if id[i][0:2] == "01":
+        print id[i]
+        if hasattr(cns_balance_sheet, en_name_list[i]):
+            temp_list = []
+            exec (en_name_list[i] + "_list=[]")
+            for result in results_cns_balance_sheet:
+                if eval("result." + en_name_list[i]) is None:
+                    exec ("temp_list.append(result." + en_name_list[i] + ")")
+                else:
+                    exec ("temp_list.append(float(result." + en_name_list[i] + "))")
+            data[en_name_list[i] + "_list"] = temp_list
+            data[en_name_list[i]] = cn_name_list[i]
+            indexes.append(en_name_list[i])
+     elif id[i][0:2] == "02":
+        print id[i]
+        if hasattr(cns_income_statement, en_name_list[i]):
+            temp_list = []
+            exec (en_name_list[i] + "_list=[]")
+            for result in results_cns_income_statement:
+                if eval("result." + en_name_list[i]) is None:
+                    exec ("temp_list.append(result." + en_name_list[i] + ")")
+                else:
+                    exec ("temp_list.append(float(result." + en_name_list[i] + "))")
+            data[en_name_list[i] + "_list"] = temp_list
+            data[en_name_list[i]] = cn_name_list[i]
+            indexes.append(en_name_list[i])
+     elif id[i][0:2] == "03":
+        print id[i]
+        if hasattr(cns_statement_of_cash_flows, en_name_list[i]):
+            temp_list = []
+            exec (en_name_list[i] + "_list=[]")
+            for result in results_cns_statement_of_cash_flows:
+                if eval("result." + en_name_list[i]) is None:
+                    exec ("temp_list.append(result." + en_name_list[i] + ")")
+                else:
+                    exec ("temp_list.append(float(result." + en_name_list[i] + "))")
+            data[en_name_list[i] + "_list"] = temp_list
+            data[en_name_list[i]] = cn_name_list[i]
+            indexes.append(en_name_list[i])
+    data['the_name'] = results_cns_balance_sheet_name.sec_name
+    data['stock_code'] = stockcode
+    data['the_year'] = year_list
+    data['indexes'] = indexes
+    data['id'] = id
     return jsonify(data)
