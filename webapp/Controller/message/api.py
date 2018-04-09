@@ -857,10 +857,10 @@ def query_person():
             avatar = 'user.png'
     else:
         username = current_user.username
-        phone = '暂无个人信息'
-        mail = '暂无个人信息'
-        address = '暂无个人信息'
-        introduce = '暂无个人信息'
+        phone = ''
+        mail = ''
+        address = ''
+        introduce = ''
         avatar = 'user.png'
 
     data['usersname'] = username
