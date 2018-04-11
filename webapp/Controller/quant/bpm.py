@@ -641,6 +641,12 @@ class DataCalculator_For_My_Pair_Strategy():
         self.__spreadMean = None
         self.__spreadStd = None
         self.__zScore = None
+        self.__threshold = None
+        self.__params_1 = None
+        self.__params_2 = None
+
+    def getThreshold(self):
+        return self.__threshold
 
     def getSpread(self):
         return self.__spread
@@ -678,6 +684,11 @@ class DataCalculator_For_My_Pair_Strategy():
         if len(self.__ds1) >= self.__windowSize:
             values1 = np.asarray(self.__ds1[-1 * self.__windowSize:])
             values2 = np.asarray(self.__ds2[-1 * self.__windowSize:])
+            self.__params_1 = regression(values2, values1)
+            self.__params_2 = regression(values1, values2)
+            error_1 = self.__ds1[-1] - (self.__params_2[1] * self.__ds2[-1] + self.__params_2[0])
+            error_2 = self.__ds2[-1] - (self.__params_1[1] * self.__ds1[-1] + self.__params_1[0])
+            self.__threshold = error_1 - error_2
             self.__updateHedgeRatio(values1, values2)
             self.__updateSpread()
             self.__updateSpreadMeanAndStd(values1, values2)
@@ -694,6 +705,9 @@ class My_Pair_Strategy(strategy.BacktestingStrategy):
         self.__startdate = datetime.datetime.strptime(startdate, "%Y-%m-%d")
         self.__i1 = instrument1
         self.__i2 = instrument2
+
+        self.__a1 = 0
+        self.__a2 = 0
 
         # These are used only for plotting purposes.
         self.__spread = dataseries.SequenceDataSeries()
@@ -718,13 +732,23 @@ class My_Pair_Strategy(strategy.BacktestingStrategy):
 
     def buySpread(self, bars, hedgeRatio):
         amount1, amount2 = self.__getOrderSize(bars, hedgeRatio)
-        self.marketOrder(self.__i1, amount1)
-        self.marketOrder(self.__i2, amount2 * -1)
+        self.__a1 = int(amount1)
+        self.__a2 = int(amount2 * -1)
+        if self.__a2 > 0:
+            self.marketOrder(self.__i1, amount1)
+            self.marketOrder(self.__i2, (amount2 + self.__a2) * -1)
+        else:
+            self.marketOrder(self.__i1, amount1)
 
     def sellSpread(self, bars, hedgeRatio):
         amount1, amount2 = self.__getOrderSize(bars, hedgeRatio)
-        self.marketOrder(self.__i1, amount1 * -1)
-        self.marketOrder(self.__i2, amount2)
+        self.__a1 = int(amount1 * -1)
+        self.__a2 = int(amount2)
+        if self.__a1 > 0:
+            self.marketOrder(self.__i1, (amount1 + self.__a1) * -1)
+            self.marketOrder(self.__i2, amount2)
+        else:
+            self.marketOrder(self.__i2, amount2)
 
     def reducePosition(self, instrument):
         currentPos = self.getBroker().getShares(instrument)
@@ -734,24 +758,26 @@ class My_Pair_Strategy(strategy.BacktestingStrategy):
             self.marketOrder(instrument, currentPos * -1)
 
     def onBars(self, bars):
-        self.__statArbHelper.update()
-
-        # These is used only for plotting purposes.
-        self.__spread.appendWithDateTime(bars.getDateTime(), self.__statArbHelper.getSpread())
-        self.__hedgeRatio.appendWithDateTime(bars.getDateTime(), self.__statArbHelper.getHedgeRatio())
-
-        if bars.getBar(self.__i1) and bars.getBar(self.__i2):
-            hedgeRatio = self.__statArbHelper.getHedgeRatio()
-            zScore = self.__statArbHelper.getZScore()
-            if zScore is not None:
-                currentPos = abs(self.getBroker().getShares(self.__i1)) + abs(self.getBroker().getShares(self.__i2))
-                if abs(zScore) <= 1 and currentPos != 0:
-                    self.reducePosition(self.__i1)
-                    self.reducePosition(self.__i2)
-                elif zScore <= -2 and currentPos == 0:  # Buy spread when its value drops below 2 standard deviations.
-                    self.buySpread(bars, hedgeRatio)
-                elif zScore >= 2 and currentPos == 0:  # Short spread when its value rises above 2 standard deviations.
-                    self.sellSpread(bars, hedgeRatio)
+        if bars.getDateTime() >= self.__startdate:
+            self.__statArbHelper.update()
+            self.__spread.appendWithDateTime(bars.getDateTime(), self.__statArbHelper.getSpread())
+            self.__hedgeRatio.appendWithDateTime(bars.getDateTime(), self.__statArbHelper.getHedgeRatio())
+            if bars.getBar(self.__i1) and bars.getBar(self.__i2):
+                hedgeRatio = self.__statArbHelper.getHedgeRatio()
+                zScore = self.__statArbHelper.getZScore()
+                threshold = self.__statArbHelper.getThreshold()
+                if threshold is not None and zScore is not None:
+                    currentPos = abs(self.getBroker().getShares(self.__i1)) + abs(
+                        self.getBroker().getShares(self.__i2))
+                    if abs(zScore) <= 1 and currentPos != 0:
+                        self.reducePosition(self.__i1)
+                        self.reducePosition(self.__i2)
+                    elif zScore <= -2 and currentPos == 0:
+                        self.buySpread(bars, hedgeRatio)
+                    elif zScore >= 2 and currentPos == 0:
+                        self.sellSpread(bars, hedgeRatio)
+        else:
+            pass
 
 
 # 配对策略-fzj
