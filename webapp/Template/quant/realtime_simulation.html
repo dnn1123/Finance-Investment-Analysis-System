@@ -108,6 +108,7 @@
                 <option value="Pair_Strategy_Based_Bank">配对策略</option>
                 <option value="DoubleMA_Strategy">双均线策略</option>
                 <option value="Buy_Everyday">每日一买</option>
+                <option value="My_Pair_Strategy">双股票策略</option>
             </select>
             <div id="div_form"></div>
         </div>
@@ -164,13 +165,14 @@
                         }
                 }],
 
-        })
+        });
         getdata()
     })
 
     </script>
 
     <script>
+        //选择订阅策略
         $("#form_type").on('change', function (e) {
             $.ajax({
                 type: "GET",
@@ -181,21 +183,22 @@
                     $("#div_form").html(data)
                 }
             })
-        })
+        });
 
         $("#div_form").on('click', '.submit', function () {
-            $('#subscribe').modal('hide')
+            $('#subscribe').modal('hide');
             $.ajax({
                 type: "POST",//方法类型
                 dataType: "json",//预期服务器返回的数据类型
                 url: "{{ url_for("quant_api.subscribe") }}",//url
                 data: $('#backtest_form').serialize(),
                 success: function (result) {
-                    alert(result.data)
+                    alert(result.data);
                     getdata()
                 }
             })
-        })
+        });
+
     $("#mytable").on('click','.delete_subscribe',function () {
         $.ajax({
                 type: "GET",//方法类型
@@ -203,12 +206,12 @@
                 url: "{{ url_for("quant_api.delete_subscribe") }}",//url
                 data:{"id":$(this).attr('id')},
                 success: function (result) {
-                    alert(result.result)
+                    alert(result.result);
                     getdata()
                     }
                 })
             }
-    )
+    );
         $("#mytable").on('click','.start_subscribe',function () {
         $.ajax({
                 type: "GET",//方法类型
@@ -216,12 +219,12 @@
                 url: "{{ url_for("quant_api.start_subscribe") }}",//url
                 data:{"id":$(this).attr('id')},
                 success: function (result) {
-                    alert(result.result)
+                    alert(result.result);
                     getdata()
                     }
                 })
             }
-    )
+    );
 
     $("#mytable").on('click','.stop_subscribe',function () {
         $.ajax({
@@ -230,7 +233,7 @@
                 url: "{{ url_for("quant_api.stop_subscribe") }}",//url
                 data:{"id":$(this).attr('id')},
                 success: function (result) {
-                    alert(result.result)
+                    alert(result.result);
                     getdata()
                     }
                 })
