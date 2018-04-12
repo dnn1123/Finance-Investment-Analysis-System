@@ -794,27 +794,31 @@ class My_Pair_Strategy(strategy.BacktestingStrategy):
 
 
 class My_Pair_Strategy_Live(strategy.BacktestingStrategy):
-    def __init__(self, feed, brk, instrument1, instrument2, builddate, interval):
-        super(Pair_Strategy_Based_Bank_Live, self).__init__(feed, brk)
-        self.__DataCalculator = DataCalculator_For_Pair_Strategy_Based_Bank(
-            feed[instrument1].getAdjCloseDataSeries(),
-            feed[instrument2].getAdjCloseDataSeries(),
-            interval)
+    def __init__(self, feed, brk, instrument1, instrument2, builddate, windowSize):
+        super(My_Pair_Strategy, self).__init__(feed, brk)
+        self.setUseAdjustedValues(True)
+        self.__statArbHelper = DataCalculator_For_My_Pair_Strategy(feed[instrument1].getAdjCloseDataSeries(),
+                                                                   feed[instrument2].getAdjCloseDataSeries(),
+                                                                   windowSize)
+        self.__builddate = builddate
         self.__i1 = instrument1
         self.__i2 = instrument2
-        self.__builddate = builddate
-        self.__thresholdStd = 0
-        self.__position = None
+
+        self.__a1 = 0
+        self.__a2 = 0
+
+        # These are used only for plotting purposes.
+        self.__spread = dataseries.SequenceDataSeries()
+        self.__hedgeRatio = dataseries.SequenceDataSeries()
+
         self.__text = ""
         self.__textlist = {}
 
-    def buyUseAllMoney(self, instrument, bars):
-        cash = self.getBroker().getCash(False) * 0.5
-        price = bars[instrument].getPrice()
-        volume = count_shares(cash / price)
-        if volume != 0:
-            self.enterLongLimit(instrument, price, volume)
-            self.__text += u"买入" + self.__i1 + u"股票" + str(volume) + u"股"
+    def getSpreadDS(self):
+        return self.__spread
+
+    def getHedgeRatioDS(self):
+        return self.__hedgeRatio
 
     def getStartdate(self):
         return self.__builddate
@@ -822,43 +826,71 @@ class My_Pair_Strategy_Live(strategy.BacktestingStrategy):
     def getTextlist(self):
         return self.__textlist
 
-    def onEnterOk(self, position):
-        # print position.getEntryOrder().getAction()
-        execInfo = position.getEntryOrder().getExecutionInfo()
-        self.info("Trade %.2f" % (execInfo.getPrice()))
+    def __getOrderSize(self, bars, hedgeRatio):
+        cash = self.getBroker().getCash(False)
+        price1 = bars[self.__i1].getAdjClose()
+        price2 = bars[self.__i2].getAdjClose()
+        size1 = int(cash / (price1 + hedgeRatio * price2))
+        size2 = int(size1 * hedgeRatio)
+        return (size1, size2)
 
-    def onEnterCanceled(self, position):
-        self.__position = None
+    def buySpread(self, bars, hedgeRatio):
+        amount1, amount2 = self.__getOrderSize(bars, hedgeRatio)
+        self.__a1 = int(amount1)
+        self.__a2 = int(amount2 * -1)
+        if self.__a2 > 0:
+            self.marketOrder(self.__i1, amount1)
+            self.marketOrder(self.__i2, (amount2 + self.__a2) * -1)
+            self.__text += u"买入" + self.__i1 + u"股票" + str(amount1) + u"股"
+            self.__text += u"卖出" + self.__i2 + u"股票" + str(amount2 + self.__a2) + u"股"
+        else:
+            self.marketOrder(self.__i1, amount1)
+            self.__text += u"买入" + self.__i1 + u"股票" + str(amount1) + u"股"
 
-    def onExitOk(self, position):
-        execInfo = position.getExitOrder().getExecutionInfo()
-        self.info("SELL at $%.2f" % (execInfo.getPrice()))
-        self.__position = None
+    def sellSpread(self, bars, hedgeRatio):
+        amount1, amount2 = self.__getOrderSize(bars, hedgeRatio)
+        self.__a1 = int(amount1 * -1)
+        self.__a2 = int(amount2)
+        if self.__a1 > 0:
+            self.marketOrder(self.__i1, (amount1 + self.__a1) * -1)
+            self.marketOrder(self.__i2, amount2)
+            self.__text += u"卖出" + self.__i1 + u"股票" + str(amount1 + self.__a1) + u"股"
+            self.__text += u"买入" + self.__i2 + u"股票" + str(amount2) + u"股"
+        else:
+            self.marketOrder(self.__i2, amount2)
+            self.__text += u"买入" + self.__i2 + u"股票" + str(amount2) + u"股"
 
-    def onExitCanceled(self, position):
-        self.__position.exitMarket()
+    def reducePosition(self, instrument):
+        currentPos = self.getBroker().getShares(instrument)
+        if currentPos > 0:
+            self.marketOrder(instrument, currentPos * -1)
+        elif currentPos < 0:
+            self.marketOrder(instrument, currentPos * -1)
 
     def onBars(self, bars):
-        if bars.getDateTime() > self.__builddate:
+        if bars.getDateTime() >= self.__builddate:
             self.__text = ""
-            self.__DataCalculator.update()  # 计算所有需要指标
+            self.__statArbHelper.update()
+            self.__spread.appendWithDateTime(bars.getDateTime(), self.__statArbHelper.getSpread())
+            self.__hedgeRatio.appendWithDateTime(bars.getDateTime(), self.__statArbHelper.getHedgeRatio())
             if bars.getBar(self.__i1) and bars.getBar(self.__i2):
-                threshold = self.__DataCalculator.getThreshold()
-                if threshold is not None:
-                    currentPos_i1 = self.getBroker().getShares(self.__i1)
-                    currentPos_i2 = self.getBroker().getShares(self.__i2)
-                    if threshold < -1 * self.__thresholdStd:
-                        if currentPos_i2 > 0:
-                            self.enterShort(self.__i2, currentPos_i2)
-                            self.__text += u"卖出" + self.__i2 + u"股票" + str(currentPos_i2) + u"股"
-                        self.buyUseAllMoney(self.__i1, bars)
-                    elif threshold > self.__thresholdStd:  # Buy spread when its value drops below 2 standard deviations.
-                        if currentPos_i1 > 0:
-                            self.enterShort(self.__i1, currentPos_i1)
-                            self.__text += u"卖出" + self.__i1 + u"股票" + str(currentPos_i1) + u"股"
-                        self.buyUseAllMoney(self.__i2, bars)
+                hedgeRatio = self.__statArbHelper.getHedgeRatio()
+                zScore = self.__statArbHelper.getZScore()
+                threshold = self.__statArbHelper.getThreshold()
+                if threshold is not None and zScore is not None:
+                    currentPos = abs(self.getBroker().getShares(self.__i1)) + abs(
+                        self.getBroker().getShares(self.__i2))
+                    if abs(zScore) <= 1 and currentPos != 0:
+                        self.reducePosition(self.__i1)
+                        self.reducePosition(self.__i2)
+                    elif zScore <= -2 and currentPos == 0:
+                        self.buySpread(bars, hedgeRatio)
+                    elif zScore >= 2 and currentPos == 0:
+                        self.sellSpread(bars, hedgeRatio)
             if self.__text != "":
                 self.__textlist.setdefault(bars.getDateTime().date(), self.__text)
+        else:
+            pass
 
 
 # 配对策略-fzj
