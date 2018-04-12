@@ -150,12 +150,12 @@
                     else if (data.member_type == 'month') {
                         var vipimgsrc = "../static/personal_img/vip.png";
                         $("#personal_img").attr("src", vipimgsrc);
-                        $("#user_info").text('您的账户目前是包月会员，可免费下载数据，当前账户余额：'+data.user_money + '元，');
+                        $("#user_info").text('您的账户目前是包月会员，可免费下载数据，当前账户余额：' + data.user_money + '元，');
                     }
                     else if (data.member_type == 'year') {
                         var vipimgsrc = "../static/personal_img/vip.png";
                         $("#personal_img").attr("src", vipimgsrc);
-                        $("#user_info").text('您的账户目前是年费会员，可免费下载数据，当前账户余额：'+data.user_money + '元，');
+                        $("#user_info").text('您的账户目前是年费会员，可免费下载数据，当前账户余额：' + data.user_money + '元，');
                     }
                     $("#user_info").append('<a data-toggle=\"modal\" data-target=\"#modal_recharge\" style=\'\'>点此充值</button>');
                     cityDist(data);
@@ -177,7 +177,7 @@
                 }
             })
 
-        })
+        });
 
 
         {#        充值#}
@@ -192,23 +192,21 @@
                 },
                 dataType: 'json',
                 success: function (data) {
-                    console.log(data)
-                    alert('充值成功！')
+                    console.log(data);
+                    alert('充值成功！');
                     location.reload()
                 }
             })
-        })
+        });
+
         function cityDist(data) {
             var valueDist = new Array();
             for (var i = 0; i < data['cityrec'].length; i++) {
-
                 valueDist.push({
                     name: data['cityrec'][i][0].substr(0, data['cityrec'][i][0].length - 1),
                     value: data['cityrec'][i][1]
                 })
             }
-            ;
-
             console.log(valueDist);
             var myChart = echarts.init(document.getElementById('cityDist'));
             var option = {
@@ -222,7 +220,10 @@
                     }
                 },
                 tooltip: {
-                    trigger: 'item'
+                    trigger: 'item',
+                    formatter: function (param) {
+                        return param.name + " : " + param.value[2];
+                    }
                 },
                 legend: {
                     orient: 'vertical',
@@ -277,7 +278,6 @@
                         }
                     },
                     {
-                        name: 'Top 2',
                         type: 'effectScatter',
                         coordinateSystem: 'geo',
                         data: convertData(valueDist.sort(function (a, b) {
@@ -310,7 +310,7 @@
                 ]
             };
             myChart.setOption(option);
-        }
+        };
         function profittrend(data) {
 
             var myChart = echarts.init(document.getElementById('profittrend'));
@@ -635,7 +635,7 @@
             '武汉': [114.31, 30.52],
             '大庆': [125.03, 46.58]
         };
-        {#        convert cityname to coordinates#}
+
         var convertData = function (data) {
             var res = [];
             for (var i = 0; i < data.length; i++) {
