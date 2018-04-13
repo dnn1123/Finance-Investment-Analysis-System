@@ -163,6 +163,7 @@
         }
 
     </style>
+
     {% block styles %}{% endblock %}
 </head>
 <body>
@@ -306,10 +307,11 @@
         var navheight = $("div.navbar").height();
         $("#container").css("margin-top", navheight);
     })
-    setInterval(aa, 300000);
-    setInterval(bb, 300000);
+    setInterval(aa, 50000);
+    setInterval(bb, 50000);
 
     function aa() {
+
         $.ajax({
             type: 'GET',
             url: '{{ url_for("message_api.get_message_count") }}',
@@ -318,6 +320,7 @@
                 console.log(data);
                 if (data.count > 0) {
                     $("#personal_message_count").text(data.count)
+                    console.log(data.count)
                 }
                 else {
                     $("#personal_message_count").text('暂无未读')

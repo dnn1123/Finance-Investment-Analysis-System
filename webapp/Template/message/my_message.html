@@ -378,7 +378,25 @@
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div>
+    {#    更多消息模态框#}
+    <div class="modal hide fade" id="more_info_modal" tabindex="-1" role="dialog"
+         aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title" id="myModalLabel">消息</h4>
+                </div>
+                <div class="modal-body" id = 'div_more_message'>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
 
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div>
 
     <div class="span9">
         <div class="content">
@@ -529,11 +547,16 @@
                                             <div class="module message">
                                                 <div class="module-option clearfix" id="send_message_div">
                                                     <h3 style="float:left">消息列表</h3>
-                                                    <div class="pull-right">
+                                                    <div class="pull-right" style="margin-left: 5px">
+                                                        <a  onclick="refresh()"
+                                                           class="btn btn-primary">刷新列表</a>
+                                                    </div>
+                                                    <div class="pull-right" style="margin-left: 5px">
                                                         <a data-toggle="modal"
                                                            data-target="#send_personal_message_modal"
                                                            class="btn btn-primary">发送私信</a>
                                                     </div>
+
                                                 </div>
                                                 <div class="module-body table">
                                                     <table class="table table-message" id="table_message"
@@ -1120,94 +1143,94 @@
                 if (mydata.po_ifretrant[i] == 0) {
                     if (followindex == 0) {
                         $('#all_post').append("<div class='module span12' style='width:100%;height:auto;float:left;margin-left:0;background-color:white;border:0' id='" + mydata.po_id[i] + "'>" +
-                            "<div style='width:8%;float:left;margin-top:10;'><img class='my_photo' src='../static/avatar/" + mydata.avatar[i] + "?timestamp=" + new Date().getTime() + "'></div>" +
-                            "<div style='width:92%;float:right;margin-top:10;'><button class='to_follow'><b>+关注</b></button><span class='person' id='poster_" + mydata.po_id[i] + "'>" + mydata.po_user[i] + "</span><h10 style='font-size:10px;color:gray;float:left;width:90%'>" + mydata.po_time[i] + "</h10>" +
-                            "<h5><strong style='font-size:12px;float:left;width:100%;margin-top:5px'>" + mydata.po_text[i] + "</strong></h5></div>" +
+                                "<div style='width:8%;float:left;margin-top:10;'><img class='my_photo' src='../static/avatar/" + mydata.avatar[i] + "?timestamp=" + new Date().getTime() + "'></div>" +
+                                "<div style='width:92%;float:right;margin-top:10;'><button class='to_follow'><b>+关注</b></button><span class='person' id='poster_" + mydata.po_id[i] + "'>" + mydata.po_user[i] + "</span><h10 style='font-size:10px;color:gray;float:left;width:90%'>" + mydata.po_time[i] + "</h10>" +
+                                "<h5><strong style='font-size:12px;float:left;width:100%;margin-top:5px'>" + mydata.po_text[i] + "</strong></h5></div>" +
 
-                            "<div class='post_function'><button class='to_retrant' data-toggle='modal' data-target='#all_message_modal' id='retrant_" + mydata.po_id[i] + "'><b>转发" + mydata.po_retrant[i] + "</b></button><div class='line'></div><button class='to_comment' id='comment_" + mydata.po_id[i] + "'><b>评论" + mydata.po_comment[i] + "</b></button><div class='line'></div><button class='to_upvote' id='upvote_" + mydata.po_id[i] + "'><b>点赞" + mydata.po_upvote[i] + "</b></button></div>" +
-                            "<div class='post_comment' id='post_comment_" + mydata.po_id[i] + "'>" +
+                                "<div class='post_function'><button class='to_retrant' data-toggle='modal' data-target='#all_message_modal' id='retrant_" + mydata.po_id[i] + "'><b>转发" + mydata.po_retrant[i] + "</b></button><div class='line'></div><button class='to_comment' id='comment_" + mydata.po_id[i] + "'><b>评论" + mydata.po_comment[i] + "</b></button><div class='line'></div><button class='to_upvote' id='upvote_" + mydata.po_id[i] + "'><b>点赞" + mydata.po_upvote[i] + "</b></button></div>" +
+                                "<div class='post_comment' id='post_comment_" + mydata.po_id[i] + "'>" +
 
-                            "<div style='width:100%;float:left'><img class='comment_avatar' src='../static/avatar/" + mydata.current_user + "?timestamp=" + new Date().getTime() + "'><input type='text' class='comment_input' id='comment_input" + mydata.po_id[i] + "'></input><button class='to_release'><b>发布</b></button><button class='to_withdraw'><b>收起</b></button></div>" +
-                            "<div id='comment_area_" + mydata.po_id[i] + "'></div>" +
-                            "<div id='comment_pagination_" + mydata.po_id[i] + "' class='pagination' style='float:right;margin-top: 0'></div></div></div>");
+                                "<div style='width:100%;float:left'><img class='comment_avatar' src='../static/avatar/" + mydata.current_user + "?timestamp=" + new Date().getTime() + "'><input type='text' class='comment_input' id='comment_input" + mydata.po_id[i] + "'></input><button class='to_release'><b>发布</b></button><button class='to_withdraw'><b>收起</b></button></div>" +
+                                "<div id='comment_area_" + mydata.po_id[i] + "'></div>" +
+                                "<div id='comment_pagination_" + mydata.po_id[i] + "' class='pagination' style='float:right;margin-top: 0'></div></div></div>");
                     }
 
                     else if (followindex == 1) {
                         $('#all_post').append("<div class='module span12' style='width:100%;height:auto;float:left;margin-left:0;background-color:white;border:0' id='" + mydata.po_id[i] + "'>" +
-                            "<div style='width:8%;float:left;margin-top:10;'><img class='my_photo' src='../static/avatar/" + mydata.avatar[i] + "?timestamp=" + new Date().getTime() + "'></div>" +
-                            "<div style='width:92%;float:right;margin-top:10;'><button class='no_follow'><b>取消关注</b></button><span class='person' id='poster_" + mydata.po_id[i] + "'>" + mydata.po_user[i] + "</span><h10 style='font-size:10px;color:gray;float:left;width:90%'>" + mydata.po_time[i] + "</h10>" +
-                            "<h5><strong style='font-size:12px;float:left;width:100%;margin-top:5px'>" + mydata.po_text[i] + "</strong></h5></div>" +
+                                "<div style='width:8%;float:left;margin-top:10;'><img class='my_photo' src='../static/avatar/" + mydata.avatar[i] + "?timestamp=" + new Date().getTime() + "'></div>" +
+                                "<div style='width:92%;float:right;margin-top:10;'><button class='no_follow'><b>取消关注</b></button><span class='person' id='poster_" + mydata.po_id[i] + "'>" + mydata.po_user[i] + "</span><h10 style='font-size:10px;color:gray;float:left;width:90%'>" + mydata.po_time[i] + "</h10>" +
+                                "<h5><strong style='font-size:12px;float:left;width:100%;margin-top:5px'>" + mydata.po_text[i] + "</strong></h5></div>" +
 
-                            "<div class='post_function'><button class='to_retrant' data-toggle='modal' data-target='#all_message_modal' id='retrant_" + mydata.po_id[i] + "'><b>转发" + mydata.po_retrant[i] + "</b></button><div class='line'></div><button class='to_comment' class='to_comment' id='comment_" + mydata.po_id[i] + "'><b>评论" + mydata.po_comment[i] + "</b></button><div class='line'></div><button class='to_upvote' id='upvote_" + mydata.po_id[i] + "'><b>点赞" + mydata.po_upvote[i] + "</b></button></div>" +
+                                "<div class='post_function'><button class='to_retrant' data-toggle='modal' data-target='#all_message_modal' id='retrant_" + mydata.po_id[i] + "'><b>转发" + mydata.po_retrant[i] + "</b></button><div class='line'></div><button class='to_comment' class='to_comment' id='comment_" + mydata.po_id[i] + "'><b>评论" + mydata.po_comment[i] + "</b></button><div class='line'></div><button class='to_upvote' id='upvote_" + mydata.po_id[i] + "'><b>点赞" + mydata.po_upvote[i] + "</b></button></div>" +
 
-                            "<div class='post_comment' id='post_comment_" + mydata.po_id[i] + "'>" +
-                            "<div style='width:100%;float:left'><img class='comment_avatar' src='../static/avatar/" + mydata.current_user + "?timestamp=" + new Date().getTime() + "'><input type='text' class='comment_input' id='comment_input" + mydata.po_id[i] + "'></input><button class='to_release'><b>发布</b></button><button class='to_withdraw'><b>收起</b></button></div>" +
-                            "<div id='comment_area_" + mydata.po_id[i] + "'></div>" +
-                            "<div id='comment_pagination_" + mydata.po_id[i] + "' class='pagination' style='float:right;margin-top: 0'></div></div></div>");
+                                "<div class='post_comment' id='post_comment_" + mydata.po_id[i] + "'>" +
+                                "<div style='width:100%;float:left'><img class='comment_avatar' src='../static/avatar/" + mydata.current_user + "?timestamp=" + new Date().getTime() + "'><input type='text' class='comment_input' id='comment_input" + mydata.po_id[i] + "'></input><button class='to_release'><b>发布</b></button><button class='to_withdraw'><b>收起</b></button></div>" +
+                                "<div id='comment_area_" + mydata.po_id[i] + "'></div>" +
+                                "<div id='comment_pagination_" + mydata.po_id[i] + "' class='pagination' style='float:right;margin-top: 0'></div></div></div>");
 
                     }
 
                     else {
                         $('#all_post').append("<div class='module span12' style='width:100%;height:auto;float:left;margin-left:0;background-color:white;border:0' id='" + mydata.po_id[i] + "'>" +
-                            "<div style='width:8%;float:left;margin-top:10;'><img class='my_photo' src='../static/avatar/" + mydata.avatar[i] + "?timestamp=" + new Date().getTime() + "'></div>" +
-                            "<div style='width:92%;float:right;margin-top:10;'><span class='person' id='poster_" + mydata.po_id[i] + "'>" + mydata.po_user[i] + "</span><h10 style='font-size:10px;color:gray;float:left;width:100%'>" + mydata.po_time[i] + "</h10>" +
-                            "<h5><strong style='font-size:12px;float:left;width:100%;margin-top:5px'>" + mydata.po_text[i] + "</strong></h5></div>" +
+                                "<div style='width:8%;float:left;margin-top:10;'><img class='my_photo' src='../static/avatar/" + mydata.avatar[i] + "?timestamp=" + new Date().getTime() + "'></div>" +
+                                "<div style='width:92%;float:right;margin-top:10;'><span class='person' id='poster_" + mydata.po_id[i] + "'>" + mydata.po_user[i] + "</span><h10 style='font-size:10px;color:gray;float:left;width:100%'>" + mydata.po_time[i] + "</h10>" +
+                                "<h5><strong style='font-size:12px;float:left;width:100%;margin-top:5px'>" + mydata.po_text[i] + "</strong></h5></div>" +
 
-                            "<div class='post_function'><button class='to_retrant' id='retrant_" + mydata.po_id[i] + "'><b>转发" + mydata.po_retrant[i] + "</b></button><div class='line'></div><button class='to_comment' id='comment_" + mydata.po_id[i] + "'><b>评论" + mydata.po_comment[i] + "</b></button><div class='line'></div><button class='to_upvote' id='upvote_" + mydata.po_id[i] + "'><b>点赞" + mydata.po_upvote[i] + "</b></button></div>" +
-                            "<div class='post_comment' id='post_comment_" + mydata.po_id[i] + "'>" +
-                            "<div style='width:100%;float:left'><img class='comment_avatar' src='../static/avatar/" + mydata.current_user + "?timestamp=" + new Date().getTime() + "'><input type='text' class='comment_input' id='comment_input" + mydata.po_id[i] + "'></input><button class='to_release'><b>发布</b></button><button class='to_withdraw'><b>收起</b></button></div>" +
-                            "<div id='comment_area_" + mydata.po_id[i] + "'></div>" +
-                            "<div id='comment_pagination_" + mydata.po_id[i] + "' class='pagination' style='float:right;margin-top: 0'></div></div></div>");
+                                "<div class='post_function'><button class='to_retrant' id='retrant_" + mydata.po_id[i] + "'><b>转发" + mydata.po_retrant[i] + "</b></button><div class='line'></div><button class='to_comment' id='comment_" + mydata.po_id[i] + "'><b>评论" + mydata.po_comment[i] + "</b></button><div class='line'></div><button class='to_upvote' id='upvote_" + mydata.po_id[i] + "'><b>点赞" + mydata.po_upvote[i] + "</b></button></div>" +
+                                "<div class='post_comment' id='post_comment_" + mydata.po_id[i] + "'>" +
+                                "<div style='width:100%;float:left'><img class='comment_avatar' src='../static/avatar/" + mydata.current_user + "?timestamp=" + new Date().getTime() + "'><input type='text' class='comment_input' id='comment_input" + mydata.po_id[i] + "'></input><button class='to_release'><b>发布</b></button><button class='to_withdraw'><b>收起</b></button></div>" +
+                                "<div id='comment_area_" + mydata.po_id[i] + "'></div>" +
+                                "<div id='comment_pagination_" + mydata.po_id[i] + "' class='pagination' style='float:right;margin-top: 0'></div></div></div>");
                     }
                 }
 
                 else {
                     if (followindex == 0) {
                         $('#all_post').append("<div class='module span12' style='width:100%;height:auto;float:left;margin-left:0;background-color:white;border:0' id='" + mydata.po_id[i] + "'>" +
-                            "<div style='width:8%;float:left;margin-top:10;'><img class='my_photo' src='../static/avatar/" + mydata.avatar[i] + "?timestamp=" + new Date().getTime() + "'></div>" +
-                            "<div style='width:92%;float:right;margin-top:10;'><button class='to_follow'><b>+关注</b></button><span class='person' id='poster_" + mydata.po_id[i] + "'>" + mydata.po_user[i] + "</span><h10 style='font-size:12px;color:gray;float:left;width:90%'>" + mydata.po_time[i] + "</h10>" +
-                            "<h5><strong style='font-size:12px;float:left;width:100%;margin-top:5px'>" + mydata.po_text[i] + "</strong></h5></div>" +
+                                "<div style='width:8%;float:left;margin-top:10;'><img class='my_photo' src='../static/avatar/" + mydata.avatar[i] + "?timestamp=" + new Date().getTime() + "'></div>" +
+                                "<div style='width:92%;float:right;margin-top:10;'><button class='to_follow'><b>+关注</b></button><span class='person' id='poster_" + mydata.po_id[i] + "'>" + mydata.po_user[i] + "</span><h10 style='font-size:12px;color:gray;float:left;width:90%'>" + mydata.po_time[i] + "</h10>" +
+                                "<h5><strong style='font-size:12px;float:left;width:100%;margin-top:5px'>" + mydata.po_text[i] + "</strong></h5></div>" +
 
-                            "<div style='width:100%;background-color: #FFFDEE;'><h5 style='float:left;width:100%;margin-left:0;margin-top:5px;background-color: #FFFDEE;'><strong style='font-size:15px;float:left;width:92%;margin-left:8%;margin-top:5px;background-color: #FFFDEE;'>" + "@" + mydata.po_retrant_poster[i] + "</strong>" +
-                            "<strong style='font-size:12px;float:left;width:92%;margin-left:8%;margin-top:5px;margin-bottom:5px;background-color: #FFFDEE;'>" + mydata.po_retrant_text[i] + "</strong></h5></div>" +
+                                "<div style='width:100%;background-color: #FFFDEE;'><h5 style='float:left;width:100%;margin-left:0;margin-top:5px;background-color: #FFFDEE;'><strong style='font-size:15px;float:left;width:92%;margin-left:8%;margin-top:5px;background-color: #FFFDEE;'>" + "@" + mydata.po_retrant_poster[i] + "</strong>" +
+                                "<strong style='font-size:12px;float:left;width:92%;margin-left:8%;margin-top:5px;margin-bottom:5px;background-color: #FFFDEE;'>" + mydata.po_retrant_text[i] + "</strong></h5></div>" +
 
-                            "<div class='post_function'><button class='to_retrant' data-toggle='modal' data-target='#all_message_modal' id='retrant_" + mydata.po_id[i] + "'><b>转发" + mydata.po_retrant[i] + "</b></button><div class='line'></div><button class='to_comment' id='comment_" + mydata.po_id[i] + "'><b>评论" + mydata.po_comment[i] + "</b></button><div class='line'></div><button class='to_upvote' id='upvote_" + mydata.po_id[i] + "'><b>点赞" + mydata.po_upvote[i] + "</b></button></div>" +
-                            "<div class='post_comment' id='post_comment_" + mydata.po_id[i] + "'>" +
-                            "<div style='width:100%;float:left'><img class='comment_avatar' src='../static/avatar/" + mydata.current_user + "?timestamp=" + new Date().getTime() + "'><input type='text' class='comment_input' id='comment_input" + mydata.po_id[i] + "'></input><button class='to_release'><b>发布</b></button><button class='to_withdraw'><b>收起</b></button></div>" +
-                            "<div id='comment_area_" + mydata.po_id[i] + "'></div>" +
-                            "<div id='comment_pagination_" + mydata.po_id[i] + "' class='pagination' style='float:right;margin-top: 0'></div></div></div>");
+                                "<div class='post_function'><button class='to_retrant' data-toggle='modal' data-target='#all_message_modal' id='retrant_" + mydata.po_id[i] + "'><b>转发" + mydata.po_retrant[i] + "</b></button><div class='line'></div><button class='to_comment' id='comment_" + mydata.po_id[i] + "'><b>评论" + mydata.po_comment[i] + "</b></button><div class='line'></div><button class='to_upvote' id='upvote_" + mydata.po_id[i] + "'><b>点赞" + mydata.po_upvote[i] + "</b></button></div>" +
+                                "<div class='post_comment' id='post_comment_" + mydata.po_id[i] + "'>" +
+                                "<div style='width:100%;float:left'><img class='comment_avatar' src='../static/avatar/" + mydata.current_user + "?timestamp=" + new Date().getTime() + "'><input type='text' class='comment_input' id='comment_input" + mydata.po_id[i] + "'></input><button class='to_release'><b>发布</b></button><button class='to_withdraw'><b>收起</b></button></div>" +
+                                "<div id='comment_area_" + mydata.po_id[i] + "'></div>" +
+                                "<div id='comment_pagination_" + mydata.po_id[i] + "' class='pagination' style='float:right;margin-top: 0'></div></div></div>");
                     }
 
                     else if (followindex == 1) {
                         $('#all_post').append("<div class='module span12' style='width:100%;height:auto;float:left;margin-left:0;background-color:white;border:0' id='" + mydata.po_id[i] + "'>" +
-                            "<div style='width:8%;float:left;margin-top:10;'><img class='my_photo' src='../static/avatar/" + mydata.avatar[i] + "?timestamp=" + new Date().getTime() + "'></div>" +
-                            "<div style='width:92%;float:left;margin-top:10;'><button class='no_follow'><b>取消关注</b></button><span class='person' id='poster_" + mydata.po_id[i] + "'>" + mydata.po_user[i] + "</span><h10 style='font-size:10px;color:gray;float:left;width:90%'>" + mydata.po_time[i] + "</h10>" +
-                            "<h5><strong style='font-size:12px;float:left;width:100%;margin-top:5px'>" + mydata.po_text[i] + "</strong></h5></div>" +
+                                "<div style='width:8%;float:left;margin-top:10;'><img class='my_photo' src='../static/avatar/" + mydata.avatar[i] + "?timestamp=" + new Date().getTime() + "'></div>" +
+                                "<div style='width:92%;float:left;margin-top:10;'><button class='no_follow'><b>取消关注</b></button><span class='person' id='poster_" + mydata.po_id[i] + "'>" + mydata.po_user[i] + "</span><h10 style='font-size:10px;color:gray;float:left;width:90%'>" + mydata.po_time[i] + "</h10>" +
+                                "<h5><strong style='font-size:12px;float:left;width:100%;margin-top:5px'>" + mydata.po_text[i] + "</strong></h5></div>" +
 
-                            "<div style='width:100%;background-color: #FFFDEE;'><h5 style='float:left;width:100%;margin-left:0;margin-top:5px;background-color: #FFFDEE;'><strong style='font-size:15px;float:left;width:92%;margin-left:8%;margin-top:5px;background-color: #FFFDEE;'>" + "@" + mydata.po_retrant_poster[i] + "</strong>" +
-                            "<strong style='font-size:12px;float:left;width:92%;margin-left:8%;margin-top:5px;margin-bottom:5px;background-color: #FFFDEE;'>" + mydata.po_retrant_text[i] + "</strong></h5></div>" +
+                                "<div style='width:100%;background-color: #FFFDEE;'><h5 style='float:left;width:100%;margin-left:0;margin-top:5px;background-color: #FFFDEE;'><strong style='font-size:15px;float:left;width:92%;margin-left:8%;margin-top:5px;background-color: #FFFDEE;'>" + "@" + mydata.po_retrant_poster[i] + "</strong>" +
+                                "<strong style='font-size:12px;float:left;width:92%;margin-left:8%;margin-top:5px;margin-bottom:5px;background-color: #FFFDEE;'>" + mydata.po_retrant_text[i] + "</strong></h5></div>" +
 
-                            "<div class='post_function'><button class='to_retrant' data-toggle='modal' data-target='#all_message_modal' id='retrant_" + mydata.po_id[i] + "'><b>转发" + mydata.po_retrant[i] + "</b></button><div class='line'></div><button class='to_comment' id='comment_" + mydata.po_id[i] + "'><b>评论" + mydata.po_comment[i] + "</b></button><div class='line'></div><button class='to_upvote' id='upvote_" + mydata.po_id[i] + "'><b>点赞" + mydata.po_upvote[i] + "</b></button></div>" +
-                            "<div class='post_comment' id='post_comment_" + mydata.po_id[i] + "'>" +
-                            "<div style='width:100%;float:left'><img class='comment_avatar' src='../static/avatar/" + mydata.current_user + "?timestamp=" + new Date().getTime() + "'><input type='text' class='comment_input' id='comment_input" + mydata.po_id[i] + "'></input><button class='to_release'><b>发布</b></button><button class='to_withdraw'><b>收起</b></button></div>" +
-                            "<div id='comment_area_" + mydata.po_id[i] + "'></div>" +
-                            "<div id='comment_pagination_" + mydata.po_id[i] + "' class='pagination' style='float:right;margin-top: 0'></div></div></div>");
+                                "<div class='post_function'><button class='to_retrant' data-toggle='modal' data-target='#all_message_modal' id='retrant_" + mydata.po_id[i] + "'><b>转发" + mydata.po_retrant[i] + "</b></button><div class='line'></div><button class='to_comment' id='comment_" + mydata.po_id[i] + "'><b>评论" + mydata.po_comment[i] + "</b></button><div class='line'></div><button class='to_upvote' id='upvote_" + mydata.po_id[i] + "'><b>点赞" + mydata.po_upvote[i] + "</b></button></div>" +
+                                "<div class='post_comment' id='post_comment_" + mydata.po_id[i] + "'>" +
+                                "<div style='width:100%;float:left'><img class='comment_avatar' src='../static/avatar/" + mydata.current_user + "?timestamp=" + new Date().getTime() + "'><input type='text' class='comment_input' id='comment_input" + mydata.po_id[i] + "'></input><button class='to_release'><b>发布</b></button><button class='to_withdraw'><b>收起</b></button></div>" +
+                                "<div id='comment_area_" + mydata.po_id[i] + "'></div>" +
+                                "<div id='comment_pagination_" + mydata.po_id[i] + "' class='pagination' style='float:right;margin-top: 0'></div></div></div>");
                     }
 
                     else {
                         $('#all_post').append("<div class='module span12' style='width:100%;height:auto;float:left;margin-left:0;background-color:white;border:0' id='" + mydata.po_id[i] + "'>" +
-                            "<div style='width:8%;float:left;margin-top:10;'><img class='my_photo' src='../static/avatar/" + mydata.avatar[i] + "?timestamp=" + new Date().getTime() + "'></div>" +
-                            "<div style='width:92%;float:left;margin-top:10;'><span class='person' id='poster_" + mydata.po_id[i] + "'>" + mydata.po_user[i] + "</span><h10 style='font-size:10px;color:gray;float:left;width:100%'>" + mydata.po_time[i] + "</h10>" +
-                            "<h5><strong style='font-size:12px;float:left;width:100%;margin-top:5px'>" + mydata.po_text[i] + "</strong></h5></div>" +
+                                "<div style='width:8%;float:left;margin-top:10;'><img class='my_photo' src='../static/avatar/" + mydata.avatar[i] + "?timestamp=" + new Date().getTime() + "'></div>" +
+                                "<div style='width:92%;float:left;margin-top:10;'><span class='person' id='poster_" + mydata.po_id[i] + "'>" + mydata.po_user[i] + "</span><h10 style='font-size:10px;color:gray;float:left;width:100%'>" + mydata.po_time[i] + "</h10>" +
+                                "<h5><strong style='font-size:12px;float:left;width:100%;margin-top:5px'>" + mydata.po_text[i] + "</strong></h5></div>" +
 
-                            "<div style='width:100%;background-color: #FFFDEE;'><h5 style='float:left;width:100%;margin-left:0;margin-top:5px;background-color: #FFFDEE;'><strong style='font-size:15px;float:left;width:92%;margin-left:8%;margin-top:5px;background-color: #FFFDEE;'>" + "@" + mydata.po_retrant_poster[i] + "</strong>" +
-                            "<strong style='font-size:12px;float:left;width:92%;margin-left:8%;margin-top:5px;margin-bottom:5px;background-color: #FFFDEE;'>" + mydata.po_retrant_text[i] + "</strong></h5></div>" +
+                                "<div style='width:100%;background-color: #FFFDEE;'><h5 style='float:left;width:100%;margin-left:0;margin-top:5px;background-color: #FFFDEE;'><strong style='font-size:15px;float:left;width:92%;margin-left:8%;margin-top:5px;background-color: #FFFDEE;'>" + "@" + mydata.po_retrant_poster[i] + "</strong>" +
+                                "<strong style='font-size:12px;float:left;width:92%;margin-left:8%;margin-top:5px;margin-bottom:5px;background-color: #FFFDEE;'>" + mydata.po_retrant_text[i] + "</strong></h5></div>" +
 
-                            "<div class='post_function'><button class='to_retrant' id='retrant_" + mydata.po_id[i] + "'><b>转发" + mydata.po_retrant[i] + "</b></button><div class='line'></div><button class='to_comment' id='comment_" + mydata.po_id[i] + "'><b>评论" + mydata.po_comment[i] + "</b></button><div class='line'></div><button class='to_upvote' id='upvote_" + mydata.po_id[i] + "'><b>点赞" + mydata.po_upvote[i] + "</b></button></div>" +
-                            "<div class='post_comment' id='post_comment_" + mydata.po_id[i] + "'>" +
-                            "<div style='width:100%;float:left'><img class='comment_avatar' src='../static/avatar/" + mydata.current_user + "?timestamp=" + new Date().getTime() + "'><input type='text' class='comment_input' id='comment_input" + mydata.po_id[i] + "'></input><button class='to_release'><b>发布</b></button><button class='to_withdraw'><b>收起</b></button></div>" +
-                            "<div id='comment_area_" + mydata.po_id[i] + "'></div>" +
-                            "<div id='comment_pagination_" + mydata.po_id[i] + "' class='pagination' style='float:right;margin-top: 0'></div></div></div>");
+                                "<div class='post_function'><button class='to_retrant' id='retrant_" + mydata.po_id[i] + "'><b>转发" + mydata.po_retrant[i] + "</b></button><div class='line'></div><button class='to_comment' id='comment_" + mydata.po_id[i] + "'><b>评论" + mydata.po_comment[i] + "</b></button><div class='line'></div><button class='to_upvote' id='upvote_" + mydata.po_id[i] + "'><b>点赞" + mydata.po_upvote[i] + "</b></button></div>" +
+                                "<div class='post_comment' id='post_comment_" + mydata.po_id[i] + "'>" +
+                                "<div style='width:100%;float:left'><img class='comment_avatar' src='../static/avatar/" + mydata.current_user + "?timestamp=" + new Date().getTime() + "'><input type='text' class='comment_input' id='comment_input" + mydata.po_id[i] + "'></input><button class='to_release'><b>发布</b></button><button class='to_withdraw'><b>收起</b></button></div>" +
+                                "<div id='comment_area_" + mydata.po_id[i] + "'></div>" +
+                                "<div id='comment_pagination_" + mydata.po_id[i] + "' class='pagination' style='float:right;margin-top: 0'></div></div></div>");
                     }
                 }
             }
@@ -1221,31 +1244,31 @@
 
                 if (mydata.po_ifretrant[i] == 0) {
                     $('#follow_post').append("<div class='module span12' style='width:100%;height:auto;float:left;margin-left:0;background-color:white;border:0' id='F_" + mydata.po_id[i] + "'>" +
-                        "<div style='width:8%;float:left;margin-top:10;'><img class='my_photo' src='../static/avatar/" + mydata.avatar[i] + "?timestamp=" + new Date().getTime() + "'></div>" +
-                        "<div style='width:92%;float:right;margin-top:10;'><button class='no_follow'><b>取消关注</b></button><span class='person' id='F_poster_" + mydata.po_id[i] + "'>" + mydata.po_user[i] + "</span><h10 style='font-size:10px;color:gray;float:left;width:90%'>" + mydata.po_time[i] + "</h10>" +
-                        "<h5><strong style='font-size:12px;float:left;width:100%;margin-top:5px'>" + mydata.po_text[i] + "</strong></h5></div>" +
+                            "<div style='width:8%;float:left;margin-top:10;'><img class='my_photo' src='../static/avatar/" + mydata.avatar[i] + "?timestamp=" + new Date().getTime() + "'></div>" +
+                            "<div style='width:92%;float:right;margin-top:10;'><button class='no_follow'><b>取消关注</b></button><span class='person' id='F_poster_" + mydata.po_id[i] + "'>" + mydata.po_user[i] + "</span><h10 style='font-size:10px;color:gray;float:left;width:90%'>" + mydata.po_time[i] + "</h10>" +
+                            "<h5><strong style='font-size:12px;float:left;width:100%;margin-top:5px'>" + mydata.po_text[i] + "</strong></h5></div>" +
 
-                        "<div class='post_function'><button class='to_retrant' data-toggle='modal' data-target='#all_message_modal' id='F_comment_" + mydata.po_id[i] + "'><b>转发" + mydata.po_retrant[i] + "</b></button><div class='line'></div><button class='to_comment' id='F_comment_" + mydata.po_id[i] + "'><b>评论" + mydata.po_comment[i] + "</b></button><div class='line'></div><button class='to_upvote' id='F_upvote_" + mydata.po_id[i] + "'><b>点赞" + mydata.po_upvote[i] + "</b></button></div>" +
-                        "<div class='post_comment' id='F_post_comment_" + mydata.po_id[i] + "'>" +
-                        "<div style='width:100%;float:left'><img class='comment_avatar' src='../static/avatar/" + mydata.current_user + "?timestamp=" + new Date().getTime() + "'><input type='text' class='comment_input' id='F_comment_input" + mydata.po_id[i] + "'></input><button class='to_release'><b>发布</b></button><button class='to_withdraw'><b>收起</b></button></div>" +
-                        "<div id='F_comment_area_" + mydata.po_id[i] + "'></div>" +
-                        "<div id='F_comment_pagination_" + mydata.po_id[i] + "' class='pagination' style='float:right;margin-top: 0'></div></div></div>");
+                            "<div class='post_function'><button class='to_retrant' data-toggle='modal' data-target='#all_message_modal' id='F_comment_" + mydata.po_id[i] + "'><b>转发" + mydata.po_retrant[i] + "</b></button><div class='line'></div><button class='to_comment' id='F_comment_" + mydata.po_id[i] + "'><b>评论" + mydata.po_comment[i] + "</b></button><div class='line'></div><button class='to_upvote' id='F_upvote_" + mydata.po_id[i] + "'><b>点赞" + mydata.po_upvote[i] + "</b></button></div>" +
+                            "<div class='post_comment' id='F_post_comment_" + mydata.po_id[i] + "'>" +
+                            "<div style='width:100%;float:left'><img class='comment_avatar' src='../static/avatar/" + mydata.current_user + "?timestamp=" + new Date().getTime() + "'><input type='text' class='comment_input' id='F_comment_input" + mydata.po_id[i] + "'></input><button class='to_release'><b>发布</b></button><button class='to_withdraw'><b>收起</b></button></div>" +
+                            "<div id='F_comment_area_" + mydata.po_id[i] + "'></div>" +
+                            "<div id='F_comment_pagination_" + mydata.po_id[i] + "' class='pagination' style='float:right;margin-top: 0'></div></div></div>");
                 }
 
                 else {
                     $('#follow_post').append("<div class='module span12' style='width:100%;height:auto;float:left;margin-left:0;background-color:white;border:0' id='F_" + mydata.po_id[i] + "'>" +
-                        "<div style='width:8%;float:left;margin-top:10;'><img class='my_photo' src='../static/avatar/" + mydata.avatar[i] + "?timestamp=" + new Date().getTime() + "'></div>" +
-                        "<div style='width:92%;float:left;margin-top:10;'><button class='no_follow'><b>取消关注</b></button><span class='person' id='F_poster_" + mydata.po_id[i] + "'>" + mydata.po_user[i] + "</span><h10 style='font-size:10px;color:gray;float:left;width:90%'>" + mydata.po_time[i] + "</h10>" +
-                        "<h5><strong style='font-size:12px;float:left;width:100%;margin-top:5px'>" + mydata.po_text[i] + "</strong></h5></div>" +
+                            "<div style='width:8%;float:left;margin-top:10;'><img class='my_photo' src='../static/avatar/" + mydata.avatar[i] + "?timestamp=" + new Date().getTime() + "'></div>" +
+                            "<div style='width:92%;float:left;margin-top:10;'><button class='no_follow'><b>取消关注</b></button><span class='person' id='F_poster_" + mydata.po_id[i] + "'>" + mydata.po_user[i] + "</span><h10 style='font-size:10px;color:gray;float:left;width:90%'>" + mydata.po_time[i] + "</h10>" +
+                            "<h5><strong style='font-size:12px;float:left;width:100%;margin-top:5px'>" + mydata.po_text[i] + "</strong></h5></div>" +
 
-                        "<div style='width:100%;background-color: #FFFDEE;'><h5 style='float:left;width:100%;margin-left:0;margin-top:5px;background-color: #FFFDEE;'><strong style='font-size:15px;float:left;width:92%;margin-left:8%;margin-top:5px;background-color: #FFFDEE;'>" + "@" + mydata.po_retrant_poster[i] + "</strong>" +
-                        "<strong style='font-size:12px;float:left;width:92%;margin-left:8%;margin-top:5px;margin-bottom:5px;background-color: #FFFDEE;'>" + mydata.po_retrant_text[i] + "</strong></h5></div>" +
+                            "<div style='width:100%;background-color: #FFFDEE;'><h5 style='float:left;width:100%;margin-left:0;margin-top:5px;background-color: #FFFDEE;'><strong style='font-size:15px;float:left;width:92%;margin-left:8%;margin-top:5px;background-color: #FFFDEE;'>" + "@" + mydata.po_retrant_poster[i] + "</strong>" +
+                            "<strong style='font-size:12px;float:left;width:92%;margin-left:8%;margin-top:5px;margin-bottom:5px;background-color: #FFFDEE;'>" + mydata.po_retrant_text[i] + "</strong></h5></div>" +
 
-                        "<div class='post_function'><button class='to_retrant' data-toggle='modal' data-target='#all_message_modal' id='F_comment_" + mydata.po_id[i] + "'><b>转发" + mydata.po_retrant[i] + "</b></button><div class='line'></div><button class='to_comment' id='F_comment_" + mydata.po_id[i] + "'><b>评论" + mydata.po_comment[i] + "</b></button><div class='line'></div><button class='to_upvote' id='F_upvote_" + mydata.po_id[i] + "'><b>点赞" + mydata.po_upvote[i] + "</b></button></div>" +
-                        "<div class='post_comment' id='F_post_comment_" + mydata.po_id[i] + "'>" +
-                        "<div style='width:100%;float:left'><img class='comment_avatar' src='../static/avatar/" + mydata.current_user + "?timestamp=" + new Date().getTime() + "'><input type='text' class='comment_input' id='F_comment_input" + mydata.po_id[i] + "'></input><button class='to_release'><b>发布</b></button><button class='to_withdraw'><b>收起</b></button></div>" +
-                        "<div id='F_comment_area_" + mydata.po_id[i] + "'></div>" +
-                        "<div id='F_comment_pagination_" + mydata.po_id[i] + "' class='pagination' style='float:right;margin-top: 0'></div></div></div>");
+                            "<div class='post_function'><button class='to_retrant' data-toggle='modal' data-target='#all_message_modal' id='F_comment_" + mydata.po_id[i] + "'><b>转发" + mydata.po_retrant[i] + "</b></button><div class='line'></div><button class='to_comment' id='F_comment_" + mydata.po_id[i] + "'><b>评论" + mydata.po_comment[i] + "</b></button><div class='line'></div><button class='to_upvote' id='F_upvote_" + mydata.po_id[i] + "'><b>点赞" + mydata.po_upvote[i] + "</b></button></div>" +
+                            "<div class='post_comment' id='F_post_comment_" + mydata.po_id[i] + "'>" +
+                            "<div style='width:100%;float:left'><img class='comment_avatar' src='../static/avatar/" + mydata.current_user + "?timestamp=" + new Date().getTime() + "'><input type='text' class='comment_input' id='F_comment_input" + mydata.po_id[i] + "'></input><button class='to_release'><b>发布</b></button><button class='to_withdraw'><b>收起</b></button></div>" +
+                            "<div id='F_comment_area_" + mydata.po_id[i] + "'></div>" +
+                            "<div id='F_comment_pagination_" + mydata.po_id[i] + "' class='pagination' style='float:right;margin-top: 0'></div></div></div>");
                 }
             }
         }
@@ -1256,31 +1279,31 @@
             for (var i = mydata.po_id.length - 1; i >= 0; i--) {
                 if (mydata.po_ifretrant[i] == 0) {
                     $('#my_own_post').append("<div class='module span12' style='width:100%;height:auto;float:left;margin-left:0;background-color:white;border:0' id='M_" + mydata.po_id[i] + "'>" +
-                        "<div style='width:8%;float:left;margin-top:10;'><img class='my_photo' src='../static/avatar/" + mydata.avatar[i] + "?timestamp=" + new Date().getTime() + "'></div>" +
-                        "<div style='width:92%;float:right;margin-top:10;'><span class='person' id='M_poster_" + mydata.po_id[i] + "'>" + mydata.po_user[i] + "</span><h10 style='font-size:10px;color:gray;float:left;width:100%'>" + mydata.po_time[i] + "</h10>" +
-                        "<h5><strong style='font-size:12px;float:left;width:100%;margin-top:5px'>" + mydata.po_text[i] + "</strong></h5></div>" +
+                            "<div style='width:8%;float:left;margin-top:10;'><img class='my_photo' src='../static/avatar/" + mydata.avatar[i] + "?timestamp=" + new Date().getTime() + "'></div>" +
+                            "<div style='width:92%;float:right;margin-top:10;'><span class='person' id='M_poster_" + mydata.po_id[i] + "'>" + mydata.po_user[i] + "</span><h10 style='font-size:10px;color:gray;float:left;width:100%'>" + mydata.po_time[i] + "</h10>" +
+                            "<h5><strong style='font-size:12px;float:left;width:100%;margin-top:5px'>" + mydata.po_text[i] + "</strong></h5></div>" +
 
-                        "<div class='post_function'><button class='to_retrant'><b>转发" + mydata.po_retrant[i] + "</b></button><div class='line'></div><button class='to_comment' id='M_comment_" + mydata.po_id[i] + "'><b>评论" + mydata.po_comment[i] + "</b></button><div class='line'></div><button class='to_upvote' id='M_upvote_" + mydata.po_id[i] + "'><b>点赞" + mydata.po_upvote[i] + "</b></button></div>" +
-                        "<div class='post_comment' id='M_post_comment_" + mydata.po_id[i] + "'>" +
-                        "<div style='width:100%;float:left'><img class='comment_avatar' src='../static/avatar/" + mydata.current_user + "?timestamp=" + new Date().getTime() + "'><input type='text' class='comment_input' id='M_comment_input" + mydata.po_id[i] + "'></input><button class='to_release'><b>发布</b></button><button class='to_withdraw'><b>收起</b></button></div>" +
-                        "<div id='M_comment_area_" + mydata.po_id[i] + "'></div>" +
-                        "<div id='M_comment_pagination_" + mydata.po_id[i] + "' class='pagination' style='float:right;margin-top: 0'></div></div></div>");
+                            "<div class='post_function'><button class='to_retrant'><b>转发" + mydata.po_retrant[i] + "</b></button><div class='line'></div><button class='to_comment' id='M_comment_" + mydata.po_id[i] + "'><b>评论" + mydata.po_comment[i] + "</b></button><div class='line'></div><button class='to_upvote' id='M_upvote_" + mydata.po_id[i] + "'><b>点赞" + mydata.po_upvote[i] + "</b></button></div>" +
+                            "<div class='post_comment' id='M_post_comment_" + mydata.po_id[i] + "'>" +
+                            "<div style='width:100%;float:left'><img class='comment_avatar' src='../static/avatar/" + mydata.current_user + "?timestamp=" + new Date().getTime() + "'><input type='text' class='comment_input' id='M_comment_input" + mydata.po_id[i] + "'></input><button class='to_release'><b>发布</b></button><button class='to_withdraw'><b>收起</b></button></div>" +
+                            "<div id='M_comment_area_" + mydata.po_id[i] + "'></div>" +
+                            "<div id='M_comment_pagination_" + mydata.po_id[i] + "' class='pagination' style='float:right;margin-top: 0'></div></div></div>");
                 }
 
                 else {
                     $('#my_own_post').append("<div class='module span12' style='width:100%;height:auto;float:left;margin-left:0;background-color:white;border:0' id='M_" + mydata.po_id[i] + "'>" +
-                        "<div style='width:8%;float:left;margin-top:10;'><img class='my_photo' src='../static/avatar/" + mydata.avatar[i] + "?timestamp=" + new Date().getTime() + "'></div>" +
-                        "<div style='width:92%;float:left;margin-top:10;'><span class='person' id='M_poster_" + mydata.po_id[i] + "'>" + mydata.po_user[i] + "</span><h10 style='font-size:10px;color:gray;float:left;width:100%'>" + mydata.po_time[i] + "</h10>" +
-                        "<h5><strong style='font-size:12px;float:left;width:100%;margin-top:5px'>" + mydata.po_text[i] + "</strong></h5></div>" +
+                            "<div style='width:8%;float:left;margin-top:10;'><img class='my_photo' src='../static/avatar/" + mydata.avatar[i] + "?timestamp=" + new Date().getTime() + "'></div>" +
+                            "<div style='width:92%;float:left;margin-top:10;'><span class='person' id='M_poster_" + mydata.po_id[i] + "'>" + mydata.po_user[i] + "</span><h10 style='font-size:10px;color:gray;float:left;width:100%'>" + mydata.po_time[i] + "</h10>" +
+                            "<h5><strong style='font-size:12px;float:left;width:100%;margin-top:5px'>" + mydata.po_text[i] + "</strong></h5></div>" +
 
-                        "<div style='width:100%;background-color: #FFFDEE;'><h5 style='float:left;width:100%;margin-left:0;margin-top:5px;background-color: #FFFDEE;'><strong style='font-size:15px;float:left;width:92%;margin-left:8%;margin-top:5px;background-color: #FFFDEE;'>" + "@" + mydata.po_retrant_poster[i] + "</strong>" +
-                        "<strong style='font-size:12px;float:left;width:92%;margin-left:8%;margin-top:5px;margin-bottom:5px;background-color: #FFFDEE;'>" + mydata.po_retrant_text[i] + "</strong></h5></div>" +
+                            "<div style='width:100%;background-color: #FFFDEE;'><h5 style='float:left;width:100%;margin-left:0;margin-top:5px;background-color: #FFFDEE;'><strong style='font-size:15px;float:left;width:92%;margin-left:8%;margin-top:5px;background-color: #FFFDEE;'>" + "@" + mydata.po_retrant_poster[i] + "</strong>" +
+                            "<strong style='font-size:12px;float:left;width:92%;margin-left:8%;margin-top:5px;margin-bottom:5px;background-color: #FFFDEE;'>" + mydata.po_retrant_text[i] + "</strong></h5></div>" +
 
-                        "<div class='post_function'><button class='to_retrant'><b>转发" + mydata.po_retrant[i] + "</b></button><div class='line'></div><button class='to_comment' id='M_comment_" + mydata.po_id[i] + "'><b>评论" + mydata.po_comment[i] + "</b></button><div class='line'></div><button class='to_upvote' id='M_upvote_" + mydata.po_id[i] + "'><b>点赞" + mydata.po_upvote[i] + "</b></button></div>" +
-                        "<div class='post_comment' id='M_post_comment_" + mydata.po_id[i] + "'>" +
-                        "<div style='width:100%;float:left'><img class='comment_avatar' src='../static/avatar/" + mydata.current_user + "?timestamp=" + new Date().getTime() + "'><input type='text' class='comment_input' id='M_comment_input" + mydata.po_id[i] + "'></input><button class='to_release'><b>发布</b></button><button class='to_withdraw'><b>收起</b></button></div>" +
-                        "<div id='M_comment_area_" + mydata.po_id[i] + "'></div>" +
-                        "<div id='M_comment_pagination_" + mydata.po_id[i] + "' class='pagination' style='float:right;margin-top: 0'></div></div></div>");
+                            "<div class='post_function'><button class='to_retrant'><b>转发" + mydata.po_retrant[i] + "</b></button><div class='line'></div><button class='to_comment' id='M_comment_" + mydata.po_id[i] + "'><b>评论" + mydata.po_comment[i] + "</b></button><div class='line'></div><button class='to_upvote' id='M_upvote_" + mydata.po_id[i] + "'><b>点赞" + mydata.po_upvote[i] + "</b></button></div>" +
+                            "<div class='post_comment' id='M_post_comment_" + mydata.po_id[i] + "'>" +
+                            "<div style='width:100%;float:left'><img class='comment_avatar' src='../static/avatar/" + mydata.current_user + "?timestamp=" + new Date().getTime() + "'><input type='text' class='comment_input' id='M_comment_input" + mydata.po_id[i] + "'></input><button class='to_release'><b>发布</b></button><button class='to_withdraw'><b>收起</b></button></div>" +
+                            "<div id='M_comment_area_" + mydata.po_id[i] + "'></div>" +
+                            "<div id='M_comment_pagination_" + mydata.po_id[i] + "' class='pagination' style='float:right;margin-top: 0'></div></div></div>");
                 }
             }
         }
@@ -1590,12 +1613,11 @@
         //发送私信
         function send_personal_message() {
             receiver = $("#reciver").val();
-            message_content = document.getElementById('message_content').value;
+            message_text = document.getElementById('message_content').value;
             var username_list = new Array()
-            {#            var message_content_list = new Array()#}
+
             username_list.push(receiver);
-            {#            message_content_list.push(message_content)#}
-            {#            console.log(receiver)#}
+
             $.ajax({
                 type: 'GET',
                 url: '{{ url_for("message_api.is_username") }}',
@@ -1610,12 +1632,30 @@
                             url: '{{ url_for("message_api.send_message") }}',
                             data: {
                                 "username_list": username_list,
-                                "message_content": message_content
+                                "message_text": message_text
                             },
                             dataType: 'json',
                             success: function (data) {
                                 console.log(data)
                                 alert('发送成功！')
+                                $("#send_personal_message_modal").modal('hide')
+                                $.ajax({
+                                    type: 'GET',
+                                    url: '{{ url_for("message_api.get_message_count") }}',
+                                    dataType: 'json',
+                                    success: function (data) {
+                                        console.log(data);
+                                        if (data.count > 0) {
+                                            $("#personal_message_count").text(data.count)
+                                            console.log(data.count)
+                                        }
+                                        else {
+                                            $("#personal_message_count").text('暂无未读')
+                                        }
+
+                                    }
+                                })
+                                refresh()
                             }
                         })
                     }
@@ -1732,7 +1772,8 @@
                 });
             }
         }
-
+{#        全局变量用于存储当前用户所有消息#}
+        data_message = {}
         //消息私信面板切换
         function accept_message_show() {
             $.ajax({
@@ -1740,6 +1781,7 @@
                 url: '{{ url_for("message_api.request_page") }}',
                 dataType: 'json',
                 success: function (data) {
+                    data_message = data
                     creat_table_for_accept_message(data);
                 }
             });
@@ -1748,28 +1790,33 @@
         //消息私信呈现
         function creat_table_for_accept_message(data) {
             $('#table_message_tbody').empty();
-            for (i = data.info_list.length; i >= 0; i--) {
-                if (data.state_list[i] == 'N') {
-                    $('#table_message_tbody').append(
-                        "<tr class=\"task\" id=\"info_" + data.id_list[i] + "\">" +
-                        "<td class=\"cell-icon\"><i class=\"icon-checker high\"></td>" +
-                        "<td class=\"cell-title\">" + data.sender_list[i] + data.info_list[i] + "<br/>" + data.text_list[i] + "</td>" +
-                        "<td class=\"cell-status hidden-phone hidden-tablet\">未读</td>" +
-                        "<td class=\"cell-text align-right\">" + data.time_list[i] + "</td>" +
-                        "</tr>"
-                    )
-                }
-                else if (data.state_list[i] == 'Y') {
-                    $('#table_message_tbody').append(
-                        "<tr class=\"task resolved\" id=\"" + data.id_list[i] + "\">" +
-                        "<td class=\"cell-icon\"><i class=\"icon-checker high\"></td>" +
-                        "<td class=\"cell-title\">" + data.sender_list[i] + data.info_list[i] + "<br/>" + data.text_list[i] + "</td>" +
-                        "<td class=\"cell-status hidden-phone hidden-tablet\">已读</td>" +
-                        "<td class=\"cell-text align-right\">" + data.time_list[i] + "</td>" +
-                        "</tr>"
-                    )
-                }
+            for (i = data.info_list.length-1; i >= 0; i--) {
+
+
+                    if (data.state_list[i] == 'N') {
+                        $('#table_message_tbody').append(
+                                "<tr class=\"task\" id=\"info_" + data.id_list[i] + "\">" +
+                                "<td class=\"cell-icon\"><i class=\"icon-checker high\"></td>" +
+                                "<td class=\"cell-title\">" + data.sender_list[i] + data.info_list[i] + "<br/>" + data.text_list[i].substr(0,10) + "<a id="+ i+" onclick = more_info(this.id)>..</a></td>" +
+                                "<td class=\"cell-status hidden-phone hidden-tablet\">未读</td>" +
+                                "<td class=\"cell-text align-right\">" + data.time_list[i] + "</td>" +
+                                "</tr>"
+                        )
+                    }
+                    else if (data.state_list[i] == 'Y') {
+                        $('#table_message_tbody').append(
+                                "<tr class=\"task resolved\" id=\"" + data.id_list[i] + "\">" +
+                                "<td class=\"cell-icon\"><i class=\"icon-checker high\"></td>" +
+                                "<td class=\"cell-title\">" + data.sender_list[i] + data.info_list[i] + "<br/>" + data.text_list[i].substr(0,10) + "<a id="+ i+" onclick = more_info(this.id)>..</a></td>" +
+                                "<td class=\"cell-status hidden-phone hidden-tablet\">已读</td>" +
+                                "<td class=\"cell-text align-right\">" + data.time_list[i] + "</td>" +
+                                "</tr>"
+                        )
+                    }
+
+
             }
+
             var table = $('#table_message').DataTable({
                 "lengthChange": false,
                 "pageLength": 5,
@@ -1793,33 +1840,74 @@
 
                 },
             });
-
-
             <!-- 阅读消息 -->
             $('#table_message_tbody tr').click(
-                function () {
-                    var content = jQuery(this).children("td:eq(2)").text();
+                    function () {
+                        var content = jQuery(this).children("td:eq(2)").text();
+                        if (content == "未读") {
+                            $(this).children("td:eq(2)").text('已读');
+                            $(this).toggleClass('resolved');
+                            str = $(this).attr('id');
+                            var pos = str.indexOf('_');
+                            var info_id = str.substring(pos + 1, str.length);
+                            $.ajax({
+                                type: 'GET',
+                                url: '{{ url_for("message_api.read_message") }}',
+                                data: {
+                                    "info_id": info_id
+                                },
+                                dataType: 'json',
+                                success: function (data) {
+                                    console.log(data);
+                                    $.ajax({
+                                    type: 'GET',
+                                    url: '{{ url_for("message_api.get_message_count") }}',
+                                    dataType: 'json',
+                                    success: function (data) {
+                                        console.log(data);
+                                        if (data.count > 0) {
+                                            $("#personal_message_count").text(data.count)
+                                            console.log(data.count)
+                                        }
+                                        else {
+                                            $("#personal_message_count").text('暂无未读')
+                                        }
 
-                    if (content == "未读") {
-                        $(this).children("td:eq(2)").text('已读');
-                        $(this).toggleClass('resolved');
-                        str = $(this).attr('id');
-                        var pos = str.indexOf('_');
-                        var info_id = str.substring(pos + 1, str.length);
-                        $.ajax({
-                            type: 'GET',
-                            url: '{{ url_for("message_api.read_message") }}',
-                            data: {
-                                "info_id": info_id
-                            },
-                            dataType: 'json',
-                            success: function (data) {
-                                console.log(data);
-                            }
-                        });
+                                    }
+                                })
+                                }
+                            });
+                        }
                     }
-                }
             )
+        }
+        //消息过长显示模态框
+    function  more_info(position){
+        $("#div_more_message").empty()
+        html = '<div class="alert alert-block alert-success" ><h5>'+data_message.sender_list[position]+data_message.info_list[position]+'&nbsp&nbsp&nbsp&nbsp时间：' +data_message.time_list[position] + '</h5>' + data_message.text_list[position] + '</div>'
+        $("#div_more_message").append(html)
+
+        $('#more_info_modal').modal('show')
+    }
+    //刷新消息列表
+    function refresh(){
+        $.ajax({
+                                    type: 'GET',
+                                    url: '{{ url_for("message_api.get_message_count") }}',
+                                    dataType: 'json',
+                                    success: function (data) {
+                                        console.log(data);
+                                        if (data.count > 0) {
+                                            $("#personal_message_count").text(data.count)
+                                            console.log(data.count)
+                                        }
+                                        else {
+                                            $("#personal_message_count").text('暂无未读')
+                                        }
+
+                                    }
+                                })
+            accept_message_show()
         }
     </script>
 
@@ -1837,11 +1925,11 @@
                 success: function (data) {
                     if (data.role == 1) {
                         $("#send_message_div").append(
-                            "<div class=\"pull-right\">" +
-                            "<a data-toggle=\"modal\"" +
-                            "data-target=\"#send_admin_message_modal\"" +
-                            " class=\"btn btn-primary\">群发消息（管理员）</a>" +
-                            "</div>"
+                                "<div class=\"pull-right\">" +
+                                "<a data-toggle=\"modal\"" +
+                                "data-target=\"#send_admin_message_modal\"" +
+                                " class=\"btn btn-primary\">群发消息（管理员）</a>" +
+                                "</div>"
                         )
                         $.ajax({
                             type: 'GET',
@@ -1880,12 +1968,29 @@
                     url: '{{ url_for("message_api.send_message") }}',
                     data: {
                         "username_list": send_list,
-                        "message_content": document.getElementById('admin_message_content').value
+                        "message_text": document.getElementById('admin_message_content').value
                     },
                     dataType: 'json',
                     success: function (data) {
-                        console.log(data);
                         alert('发送成功！')
+                        $("#send_admin_message_modal").modal('hide')
+                        $.ajax({
+                            type: 'GET',
+                            url: '{{ url_for("message_api.get_message_count") }}',
+                            dataType: 'json',
+                            success: function (data) {
+                                console.log(data);
+                                if (data.count > 0) {
+                                    $("#personal_message_count").text(data.count)
+                                    console.log(data.count)
+                                }
+                                else {
+                                    $("#personal_message_count").text('暂无未读')
+                                }
+
+                            }
+                        })
+                        refresh()
                     }
                 })
             }

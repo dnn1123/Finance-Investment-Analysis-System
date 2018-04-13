@@ -390,7 +390,7 @@ class cns_stock_industry(db.Model):
     industry_gicscode_4 = db.Column(db.String(40))
     industry_gics_4 = db.Column(db.String(40))
     belong = db.Column(db.String(40), db.ForeignKey('cns_sub_industry.industry_gicscode_4'))
-    ipo_date = db.Column(db.DateTime)
+    ipo_date = db.Column(db.String(40))
     business = db.Column(db.String(5000))
     province = db.Column(db.String(40))
     city = db.Column(db.String(40))
@@ -415,11 +415,12 @@ class stock_grade_l(db.Model):
     grade_id = db.Column(db.String(40), db.ForeignKey('invest_grade.grade_id'))
 
 
+
 class stock_grade_h(db.Model):
     __tablename__ = 'stock_grade_h'
     trade_code = db.Column(db.String(40))
     sec_name = db.Column(db.String(40))
-    grade_time = db.Column(db.DateTime(6), primary_key=True)
+    grade_time = db.Column(db.String(40), primary_key=True)
     grade_id = db.Column(db.String(40), db.ForeignKey('invest_grade.grade_id'))
 
 

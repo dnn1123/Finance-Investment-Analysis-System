@@ -1,6 +1,6 @@
-# coding: UTF-8
-
-# 初始化接口#
+# # coding: UTF-8
+#
+# # 初始化接口#
 # from WindPy import *
 # import pandas as pd
 # import json
@@ -9,32 +9,58 @@
 # import time as Time
 # from sqlalchemy import create_engine, or_, func, desc, distinct  # me func用于计数,desc用于逆序找max值
 # from sqlalchemy.orm import sessionmaker
+# import numpy as np
+# import xlrd,os
 #
 # # 测试期间所有函数只读取两条股票
 #
 # def upData_company_list():
-#     db_engine = create_engine('mysql://root:0000@localhost/company_list?charset=utf8')
+#     data ={}
+#     db_engine = create_engine('mysql://root:0000@localhost/test?charset=utf8')
 #     Session = sessionmaker(bind=db_engine)
 #     session = Session()
-#     w.start();
-#     # 获取所有A股代码#
-#     AllAStock = w.wset("sectorconstituent", "sectorid=a001010100000000;field=wind_code");
-#     if AllAStock.ErrorCode != 0:
-#         print("Get Data failed! exit!")
-#         exit()
-#     for stock in AllAStock.Data[0]:
-#         # for i in range(0,20):
-#         #     stock = AllAStock.Data[0][i]
-#         wdata = w.wsd(stock, "sec_name,ipo_date", "2018-01-04", "2018-03-03", "Period=Y;Days=Weekdays")
-#         # 存入数据库
-#         # 更新company_list
-#         updata = company_list()
-#         updata.Code = stock[0:6]
-#         updata.Name = wdata.Data[0]
-#         updata.IPO_Date = wdata.Data[1]
-#         updata.Up_Date = Time.strftime('%Y-%m-%d %H:%M:%S', Time.localtime(Time.time()))
-#         db.session.add(updata)
-#     db.session.commit()
+#     data = xlrd.open_workbook(os.path.abspath(os.path.dirname(__file__))+'/new.xlsx')
+#     # 获取分数表
+#     table = data.sheet_by_name(u'sheet_score')
+#     list_stock_code = np.array(table.col_values(0))
+#     list_score = np.array(table.col_values(8))
+#     print list_score
+#     list_score.astype('float64')
+#     # 取大于得分20%，40%，60%，80%分位数
+#     quantile_20 =np.percentile(list_score,20)
+#     quantile_40 = np.percentile(list_score,40)
+#     quantile_60 = np.percentile(list_score,60)
+#     quantile_80 = np.percentile(list_score,80)
+#     print quantile_80
+#     for i in range(0,len(list_stock_code)):
+#         result = stock_grade_l.query.filter_by(trade_code=list_stock_code[i]).first()
+#         if result is None:
+#             continue
+#         else:
+#             position = np.where(list_stock_code == result.trade_code)
+#             print list_score[position]
+#             if list_score[position] >= quantile_80:
+#                 result.grade_id='1'
+#                 db.session.commit()
+#                 print result.trade_code
+#             elif list_score[position] >= quantile_60:
+#                 result.grade_id='4'
+#                 db.session.commit()
+#                 print result.trade_code
+#             elif list_score[position] >= quantile_40:
+#                 result.grade_id='7'
+#                 db.session.commit()
+#                 print result.trade_code
+#             elif list_score[position] >= quantile_20:
+#                 result.grade_id='10'
+#                 db.session.commit()
+#                 print result.trade_code
+#             else:
+#                 result.grade_id='11'
+#                 db.session.commit()
+#                 print result.trade_code
+#
+#     return data
 #
 #
 # def upData_cns_stock_basics():
@@ -158,4 +184,4 @@
 #             db.session.add(updata)
 #     db.session.commit()
 #     return wdata.Data
-
+#

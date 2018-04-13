@@ -21,15 +21,11 @@ message_api = Blueprint(
 @message_api.route('/request_page', methods=['GET', 'POST'])
 def request_page():
     data = {}
-
     db_engine = create_engine('mysql://root:0000@localhost/my_message?charset=utf8')
     Session = sessionmaker(bind=db_engine)
     session = Session()
-
     result = session.query(func.count(input_message.post_id).label("page_num")).first()
-
     data['page_num'] = math.ceil((result.page_num) / float(5))
-
     # 查询用户未读消息
     sender_list = []
     info_list = []
@@ -962,14 +958,15 @@ def send_message():
     Session = sessionmaker(bind=db_engine)
     session = Session()
     username_list = request.form.getlist('username_list[]')
-    message_content = request.form.get('message_content')
+    message_text = request.form.get('message_text')
 
     # 发送消息
     for username in username_list:
         information = personal_information()
         information.receiver = username
         information.sender = current_user.username
-        information.message_content = message_content
+        information.message_text = message_text
+        information.message_content = ':'
         information.time = Time.strftime('%Y-%m-%d %H:%M:%S', Time.localtime(Time.time()))
         information.state = 'N'
         db.session.add(information)
@@ -1015,7 +1012,7 @@ def get_message_count():
     data['count'] = results
     return jsonify(data)
 
-
+# bug
 @message_api.route('/get_system_message_count', methods=['GET', 'POST'])
 def get_system_message_count():
     data = {}
