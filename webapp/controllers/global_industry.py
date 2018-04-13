@@ -19,14 +19,12 @@ globalindustry_blueprint = Blueprint(
 
 
 @globalindustry_blueprint.route('/', methods=('GET', 'POST'))
-@login_required
 def basic():
     return render_template("global_industry/global_industry_basic.html")
 
 
 @globalindustry_blueprint.route('/cns_market', methods=('GET', 'POST'))
 @globalindustry_blueprint.route('/cns_market/<string:query_history>/<string:trade_code>/<string:sec_name>', methods=('GET', 'POST'))
-@login_required
 def cns_market(sec_name=None, trade_code=None, query_history=None):
     sec_name = sec_name
     trade_code = trade_code
@@ -62,7 +60,6 @@ def cns_market(sec_name=None, trade_code=None, query_history=None):
 # 修改:股票的评级
 @globalindustry_blueprint.route('/invest_update/', methods=('GET', 'POST'))
 # @globalindustry_blueprint.route('/invest_update/<string:sec_name>', methods=('GET', 'POST'))
-@login_required
 def invest_update(sec_name=None):  # 疑问：这一行是什么意思？
     if request.method == 'POST':
         grade_id = request.form.get('grade_id')  # 从表单中的form.grade_id获得
@@ -88,7 +85,6 @@ def invest_update(sec_name=None):  # 疑问：这一行是什么意思？
 
 @globalindustry_blueprint.route('/cns_history', methods=('GET', 'POST'))
 @globalindustry_blueprint.route('/cns_history/<string:trade_code>', methods=('GET', 'POST'))
-@login_required
 def cns_history(trade_code=None):
     trade_code = trade_code
     rs = stock_grade_l.query.join(invest_grade).add_columns(invest_grade.investment_name).filter(
@@ -115,7 +111,6 @@ def cns_history(trade_code=None):
 @globalindustry_blueprint.route('/usa_market', methods=('GET', 'POST'))
 @globalindustry_blueprint.route('/usa_market/<string:query_history>/<string:trade_code>/<string:sec_name>',
                                 methods=('GET', 'POST'))
-@login_required
 def usa_market(sec_name=None, trade_code=None, query_history=None):
     sec_name = sec_name
     trade_code = trade_code

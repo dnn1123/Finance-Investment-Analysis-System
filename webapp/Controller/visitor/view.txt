@@ -1,0 +1,35 @@
+﻿#encoding:utf-8
+from flask import Blueprint,render_template,current_app,redirect,url_for,request
+from flask_login import login_required,logout_user,current_user
+from flask_principal import identity_changed,AnonymousIdentity
+from webapp.decorators import permission_required
+from webapp.models import users_roles,Role,Permission
+from webapp.config import paths
+import os
+
+visitor_view = Blueprint(
+    'visitor',
+    __name__,
+    template_folder=os.path.abspath(os.path.join(paths.project_path, 'Template', 'visitor')),
+    url_prefix="/visitor/"
+)
+
+
+@visitor_view.route('stock_solo/',methods=('GET','POST'))
+@visitor_view.route('stock_solo/<string:data>',methods=('GET','POST'))
+def basic(data=""):
+    if data=="":
+        if session.has_key('stockcode'):
+            data = session['stockcode']
+        else:
+            data = '000001'
+    if (request.method == 'POST'):
+        stockcode=request.form.get("stockcode","000001")
+        session['stockcode'] = stockcode
+        return redirect(url_for('stock_solo.basic', current_user=current_user, data=stockcode))
+    match = zhPattern.search(data)
+    if match:
+        stock = stock_basics.query.filter_by(sec_name=data).first_or_404()
+    else:
+        stock = stock_basics.query.filter_by(trade_code=data).first_or_404()
+    return render_template("stock_solo/stock_solo_basic.html", current_user=current_user,stock=stock)

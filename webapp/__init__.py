@@ -1,4 +1,4 @@
-# coding=utf-8
+﻿# coding=utf-8
 from flask import Flask, redirect, url_for, render_template
 from flask_principal import identity_loaded, UserNeed, RoleNeed
 from flask_apscheduler import APScheduler
@@ -34,6 +34,8 @@ from Controller.industry_analysis.api import industry_analysis_api
 from Controller.message.view import message_view
 from Controller.message.api import message_api
 
+# from Controller.visitor.view import visitor_view
+
 def create_app(object_name):
     scheduler = APScheduler()
     api_server=Api_Server()
@@ -65,6 +67,7 @@ def create_app(object_name):
     app.register_blueprint(industry_analysis_api)
     app.register_blueprint(message_view)
     app.register_blueprint(message_api)
+    # app.register_blueprint(visitor_view)
     #添加jinjia2全局变量
     app.add_template_global(api_server.get_server_address(), 'Api_Server')
     @identity_loaded.connect_via(app)

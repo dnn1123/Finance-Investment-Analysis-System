@@ -1,4 +1,8 @@
-{% extends "stock_base.html" %}
+{% if current_user.is_authenticated %}
+    {% extends "stock_base.html" %}
+{% else %}
+    {% extends "stock_base_visitor.html" %}
+{% endif %}
 {% block current_user %}
     当前用户：{{ current_user.username }}
 {% endblock %}
