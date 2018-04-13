@@ -84,7 +84,7 @@ def handle_liveform(form):
     if type == "My_Pair_Strategy":
         params = {"commission": float(form.get('commission')), "cash": float(form.get('cash')),
                   "instrument_1": form.get('instrument_1'), "instrument_2": form.get('instrument_2')}
-        data = {"strategy_id": Strategy.Pair_Strategy_Based_Bank.value, "strategy_name": form.get('strategy_name'),
+        data = {"strategy_id": Strategy.My_Pair_Strategy.value, "strategy_name": form.get('strategy_name'),
                 "params": params, "build_date": datetime.datetime.now()}
         return data
     if type == "Buy_Everyday":
