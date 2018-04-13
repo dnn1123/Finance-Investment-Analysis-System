@@ -1,7 +1,7 @@
 {% if current_user.is_authenticated %}
-    {% extends "stock_base_visitor.html" %}
-{% else %}
     {% extends "stock_base.html" %}
+{% else %}
+    {% extends "stock_base_visitor.html" %}
 {% endif %}
 {% block searchForm %}
     <form id="searchform" class="navbar-search pull-left input-append" role="search" method="post"

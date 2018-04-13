@@ -1,7 +1,7 @@
-{% if current_user.is_anonymous %}
-    {% extends "stock_base_visitor.html" %}
-{% else %}
+{% if current_user.is_authenticated %}
     {% extends "stock_base.html" %}
+{% else %}
+    {% extends "stock_base_visitor.html" %}
 {% endif %}
 
 {% block current_user %}
