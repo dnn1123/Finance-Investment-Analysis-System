@@ -196,8 +196,8 @@
             if (files && files.length > 0) {
                 // 获取目前上传的文件
                 file = files[0];// 文件大小校验的动作
-                if (file.size > 1024 * 1024 * 5) {
-                    alert('图片大小不能超过5MB!');
+                if (file.size > 1024 * 1024 * 2) {
+                    alert('图片大小不能超过2MB!');
                     return false;
                 }
                 // 获取 window 的 URL 工具
@@ -314,7 +314,7 @@
                 url: '{{url_for("message_api.query_person")}}',
                 dataType: 'json',
                 success: function (data) {
-                    var imgavatar = "../static/avatar/" + data.avatar + "?timestamp=" + new Date().getTime();
+                    var imgavatar = "/static/avatar/" + data.avatar + "?timestamp=" + new Date().getTime();
                     $("#img-change").attr("src", imgavatar);
                     $("#input_name").val(data.usersname);
                     $("#input_number").val(data.phone);

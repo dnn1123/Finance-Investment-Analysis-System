@@ -216,7 +216,7 @@
                     url: '{{ url_for("message_api.query_avatar") }}',
                     dataType: 'json',//希望服务器返回json格式的数据
                     success: function (data) {
-                        var imgsrc = "../static/avatar/" + data.avatar + "?timestamp=" + new Date().getTime();
+                        var imgsrc = "/static/avatar/" + data.avatar + "?timestamp=" + new Date().getTime();
                         $("#myavatar").attr("src", imgsrc);
                         console.log(data);
                     }
@@ -311,7 +311,6 @@
     setInterval(bb, 50000);
 
     function aa() {
-
         $.ajax({
             type: 'GET',
             url: '{{ url_for("message_api.get_message_count") }}',
@@ -325,7 +324,6 @@
                 else {
                     $("#personal_message_count").text('暂无未读')
                 }
-
             }
         })
     }

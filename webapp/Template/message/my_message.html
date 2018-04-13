@@ -669,7 +669,7 @@
                 },
                 dataType: 'json',
                 success: function (data) {
-                    var myimg = "../static/avatar/" + data.my_avatar + "?timestamp=" + new Date().getTime()
+                    var myimg = "/static/avatar/" + data.my_avatar + "?timestamp=" + new Date().getTime()
                     $(".box_photo").attr("src", myimg);
                     $("#fb").empty();
                     $("#fb").append("<b style='float:left;width:36px;font-size: 18px;text-align: center;'>" + data.postnum + "</b>");
@@ -857,7 +857,7 @@
                 },
                 dataType: 'json',
                 success: function (data) {
-                    var myimg = "../static/avatar/" + data.my_avatar + "?timestamp=" + new Date().getTime()
+                    var myimg = "/static/avatar/" + data.my_avatar + "?timestamp=" + new Date().getTime()
                     $(".box_photo").attr("src", myimg);
                     $("#fb").empty();
                     $("#fb").append("<b style='float:left;font-size: 18px;width: 36px;text-align: center;'>" + data.postnum + "</b>")
@@ -1013,7 +1013,7 @@
                 },
                 dataType: 'json',
                 success: function (data) {
-                    var myimg = "../static/avatar/" + data.my_avatar + "?timestamp=" + new Date().getTime()
+                    var myimg = "/static/avatar/" + data.my_avatar + "?timestamp=" + new Date().getTime()
                     $(".box_photo").attr("src", myimg);
                     $("#fb").empty();
                     $("#fb").append("<b style='float:left;font-size: 18px;width: 36px;text-align: center;'>" + data.postnum + "</b>")
@@ -1143,28 +1143,28 @@
                 if (mydata.po_ifretrant[i] == 0) {
                     if (followindex == 0) {
                         $('#all_post').append("<div class='module span12' style='width:100%;height:auto;float:left;margin-left:0;background-color:white;border:0' id='" + mydata.po_id[i] + "'>" +
-                                "<div style='width:8%;float:left;margin-top:10;'><img class='my_photo' src='../static/avatar/" + mydata.avatar[i] + "?timestamp=" + new Date().getTime() + "'></div>" +
+                                "<div style='width:8%;float:left;margin-top:10;'><img class='my_photo' src='/static/avatar/" + mydata.avatar[i] + "?timestamp=" + new Date().getTime() + "'></div>" +
                                 "<div style='width:92%;float:right;margin-top:10;'><button class='to_follow'><b>+关注</b></button><span class='person' id='poster_" + mydata.po_id[i] + "'>" + mydata.po_user[i] + "</span><h10 style='font-size:10px;color:gray;float:left;width:90%'>" + mydata.po_time[i] + "</h10>" +
                                 "<h5><strong style='font-size:12px;float:left;width:100%;margin-top:5px'>" + mydata.po_text[i] + "</strong></h5></div>" +
 
                                 "<div class='post_function'><button class='to_retrant' data-toggle='modal' data-target='#all_message_modal' id='retrant_" + mydata.po_id[i] + "'><b>转发" + mydata.po_retrant[i] + "</b></button><div class='line'></div><button class='to_comment' id='comment_" + mydata.po_id[i] + "'><b>评论" + mydata.po_comment[i] + "</b></button><div class='line'></div><button class='to_upvote' id='upvote_" + mydata.po_id[i] + "'><b>点赞" + mydata.po_upvote[i] + "</b></button></div>" +
                                 "<div class='post_comment' id='post_comment_" + mydata.po_id[i] + "'>" +
 
-                                "<div style='width:100%;float:left'><img class='comment_avatar' src='../static/avatar/" + mydata.current_user + "?timestamp=" + new Date().getTime() + "'><input type='text' class='comment_input' id='comment_input" + mydata.po_id[i] + "'></input><button class='to_release'><b>发布</b></button><button class='to_withdraw'><b>收起</b></button></div>" +
+                                "<div style='width:100%;float:left'><img class='comment_avatar' src='/static/avatar/" + mydata.current_user + "?timestamp=" + new Date().getTime() + "'><input type='text' class='comment_input' id='comment_input" + mydata.po_id[i] + "'></input><button class='to_release'><b>发布</b></button><button class='to_withdraw'><b>收起</b></button></div>" +
                                 "<div id='comment_area_" + mydata.po_id[i] + "'></div>" +
                                 "<div id='comment_pagination_" + mydata.po_id[i] + "' class='pagination' style='float:right;margin-top: 0'></div></div></div>");
                     }
 
                     else if (followindex == 1) {
                         $('#all_post').append("<div class='module span12' style='width:100%;height:auto;float:left;margin-left:0;background-color:white;border:0' id='" + mydata.po_id[i] + "'>" +
-                                "<div style='width:8%;float:left;margin-top:10;'><img class='my_photo' src='../static/avatar/" + mydata.avatar[i] + "?timestamp=" + new Date().getTime() + "'></div>" +
+                                "<div style='width:8%;float:left;margin-top:10;'><img class='my_photo' src='/static/avatar/" + mydata.avatar[i] + "?timestamp=" + new Date().getTime() + "'></div>" +
                                 "<div style='width:92%;float:right;margin-top:10;'><button class='no_follow'><b>取消关注</b></button><span class='person' id='poster_" + mydata.po_id[i] + "'>" + mydata.po_user[i] + "</span><h10 style='font-size:10px;color:gray;float:left;width:90%'>" + mydata.po_time[i] + "</h10>" +
                                 "<h5><strong style='font-size:12px;float:left;width:100%;margin-top:5px'>" + mydata.po_text[i] + "</strong></h5></div>" +
 
                                 "<div class='post_function'><button class='to_retrant' data-toggle='modal' data-target='#all_message_modal' id='retrant_" + mydata.po_id[i] + "'><b>转发" + mydata.po_retrant[i] + "</b></button><div class='line'></div><button class='to_comment' class='to_comment' id='comment_" + mydata.po_id[i] + "'><b>评论" + mydata.po_comment[i] + "</b></button><div class='line'></div><button class='to_upvote' id='upvote_" + mydata.po_id[i] + "'><b>点赞" + mydata.po_upvote[i] + "</b></button></div>" +
 
                                 "<div class='post_comment' id='post_comment_" + mydata.po_id[i] + "'>" +
-                                "<div style='width:100%;float:left'><img class='comment_avatar' src='../static/avatar/" + mydata.current_user + "?timestamp=" + new Date().getTime() + "'><input type='text' class='comment_input' id='comment_input" + mydata.po_id[i] + "'></input><button class='to_release'><b>发布</b></button><button class='to_withdraw'><b>收起</b></button></div>" +
+                                "<div style='width:100%;float:left'><img class='comment_avatar' src='/static/avatar/" + mydata.current_user + "?timestamp=" + new Date().getTime() + "'><input type='text' class='comment_input' id='comment_input" + mydata.po_id[i] + "'></input><button class='to_release'><b>发布</b></button><button class='to_withdraw'><b>收起</b></button></div>" +
                                 "<div id='comment_area_" + mydata.po_id[i] + "'></div>" +
                                 "<div id='comment_pagination_" + mydata.po_id[i] + "' class='pagination' style='float:right;margin-top: 0'></div></div></div>");
 
@@ -1172,13 +1172,13 @@
 
                     else {
                         $('#all_post').append("<div class='module span12' style='width:100%;height:auto;float:left;margin-left:0;background-color:white;border:0' id='" + mydata.po_id[i] + "'>" +
-                                "<div style='width:8%;float:left;margin-top:10;'><img class='my_photo' src='../static/avatar/" + mydata.avatar[i] + "?timestamp=" + new Date().getTime() + "'></div>" +
+                                "<div style='width:8%;float:left;margin-top:10;'><img class='my_photo' src='/static/avatar/" + mydata.avatar[i] + "?timestamp=" + new Date().getTime() + "'></div>" +
                                 "<div style='width:92%;float:right;margin-top:10;'><span class='person' id='poster_" + mydata.po_id[i] + "'>" + mydata.po_user[i] + "</span><h10 style='font-size:10px;color:gray;float:left;width:100%'>" + mydata.po_time[i] + "</h10>" +
                                 "<h5><strong style='font-size:12px;float:left;width:100%;margin-top:5px'>" + mydata.po_text[i] + "</strong></h5></div>" +
 
                                 "<div class='post_function'><button class='to_retrant' id='retrant_" + mydata.po_id[i] + "'><b>转发" + mydata.po_retrant[i] + "</b></button><div class='line'></div><button class='to_comment' id='comment_" + mydata.po_id[i] + "'><b>评论" + mydata.po_comment[i] + "</b></button><div class='line'></div><button class='to_upvote' id='upvote_" + mydata.po_id[i] + "'><b>点赞" + mydata.po_upvote[i] + "</b></button></div>" +
                                 "<div class='post_comment' id='post_comment_" + mydata.po_id[i] + "'>" +
-                                "<div style='width:100%;float:left'><img class='comment_avatar' src='../static/avatar/" + mydata.current_user + "?timestamp=" + new Date().getTime() + "'><input type='text' class='comment_input' id='comment_input" + mydata.po_id[i] + "'></input><button class='to_release'><b>发布</b></button><button class='to_withdraw'><b>收起</b></button></div>" +
+                                "<div style='width:100%;float:left'><img class='comment_avatar' src='/static/avatar/" + mydata.current_user + "?timestamp=" + new Date().getTime() + "'><input type='text' class='comment_input' id='comment_input" + mydata.po_id[i] + "'></input><button class='to_release'><b>发布</b></button><button class='to_withdraw'><b>收起</b></button></div>" +
                                 "<div id='comment_area_" + mydata.po_id[i] + "'></div>" +
                                 "<div id='comment_pagination_" + mydata.po_id[i] + "' class='pagination' style='float:right;margin-top: 0'></div></div></div>");
                     }
@@ -1187,7 +1187,7 @@
                 else {
                     if (followindex == 0) {
                         $('#all_post').append("<div class='module span12' style='width:100%;height:auto;float:left;margin-left:0;background-color:white;border:0' id='" + mydata.po_id[i] + "'>" +
-                                "<div style='width:8%;float:left;margin-top:10;'><img class='my_photo' src='../static/avatar/" + mydata.avatar[i] + "?timestamp=" + new Date().getTime() + "'></div>" +
+                                "<div style='width:8%;float:left;margin-top:10;'><img class='my_photo' src='/static/avatar/" + mydata.avatar[i] + "?timestamp=" + new Date().getTime() + "'></div>" +
                                 "<div style='width:92%;float:right;margin-top:10;'><button class='to_follow'><b>+关注</b></button><span class='person' id='poster_" + mydata.po_id[i] + "'>" + mydata.po_user[i] + "</span><h10 style='font-size:12px;color:gray;float:left;width:90%'>" + mydata.po_time[i] + "</h10>" +
                                 "<h5><strong style='font-size:12px;float:left;width:100%;margin-top:5px'>" + mydata.po_text[i] + "</strong></h5></div>" +
 
@@ -1196,14 +1196,14 @@
 
                                 "<div class='post_function'><button class='to_retrant' data-toggle='modal' data-target='#all_message_modal' id='retrant_" + mydata.po_id[i] + "'><b>转发" + mydata.po_retrant[i] + "</b></button><div class='line'></div><button class='to_comment' id='comment_" + mydata.po_id[i] + "'><b>评论" + mydata.po_comment[i] + "</b></button><div class='line'></div><button class='to_upvote' id='upvote_" + mydata.po_id[i] + "'><b>点赞" + mydata.po_upvote[i] + "</b></button></div>" +
                                 "<div class='post_comment' id='post_comment_" + mydata.po_id[i] + "'>" +
-                                "<div style='width:100%;float:left'><img class='comment_avatar' src='../static/avatar/" + mydata.current_user + "?timestamp=" + new Date().getTime() + "'><input type='text' class='comment_input' id='comment_input" + mydata.po_id[i] + "'></input><button class='to_release'><b>发布</b></button><button class='to_withdraw'><b>收起</b></button></div>" +
+                                "<div style='width:100%;float:left'><img class='comment_avatar' src='/static/avatar/" + mydata.current_user + "?timestamp=" + new Date().getTime() + "'><input type='text' class='comment_input' id='comment_input" + mydata.po_id[i] + "'></input><button class='to_release'><b>发布</b></button><button class='to_withdraw'><b>收起</b></button></div>" +
                                 "<div id='comment_area_" + mydata.po_id[i] + "'></div>" +
                                 "<div id='comment_pagination_" + mydata.po_id[i] + "' class='pagination' style='float:right;margin-top: 0'></div></div></div>");
                     }
 
                     else if (followindex == 1) {
                         $('#all_post').append("<div class='module span12' style='width:100%;height:auto;float:left;margin-left:0;background-color:white;border:0' id='" + mydata.po_id[i] + "'>" +
-                                "<div style='width:8%;float:left;margin-top:10;'><img class='my_photo' src='../static/avatar/" + mydata.avatar[i] + "?timestamp=" + new Date().getTime() + "'></div>" +
+                                "<div style='width:8%;float:left;margin-top:10;'><img class='my_photo' src='/static/avatar/" + mydata.avatar[i] + "?timestamp=" + new Date().getTime() + "'></div>" +
                                 "<div style='width:92%;float:left;margin-top:10;'><button class='no_follow'><b>取消关注</b></button><span class='person' id='poster_" + mydata.po_id[i] + "'>" + mydata.po_user[i] + "</span><h10 style='font-size:10px;color:gray;float:left;width:90%'>" + mydata.po_time[i] + "</h10>" +
                                 "<h5><strong style='font-size:12px;float:left;width:100%;margin-top:5px'>" + mydata.po_text[i] + "</strong></h5></div>" +
 
@@ -1212,14 +1212,14 @@
 
                                 "<div class='post_function'><button class='to_retrant' data-toggle='modal' data-target='#all_message_modal' id='retrant_" + mydata.po_id[i] + "'><b>转发" + mydata.po_retrant[i] + "</b></button><div class='line'></div><button class='to_comment' id='comment_" + mydata.po_id[i] + "'><b>评论" + mydata.po_comment[i] + "</b></button><div class='line'></div><button class='to_upvote' id='upvote_" + mydata.po_id[i] + "'><b>点赞" + mydata.po_upvote[i] + "</b></button></div>" +
                                 "<div class='post_comment' id='post_comment_" + mydata.po_id[i] + "'>" +
-                                "<div style='width:100%;float:left'><img class='comment_avatar' src='../static/avatar/" + mydata.current_user + "?timestamp=" + new Date().getTime() + "'><input type='text' class='comment_input' id='comment_input" + mydata.po_id[i] + "'></input><button class='to_release'><b>发布</b></button><button class='to_withdraw'><b>收起</b></button></div>" +
+                                "<div style='width:100%;float:left'><img class='comment_avatar' src='/static/avatar/" + mydata.current_user + "?timestamp=" + new Date().getTime() + "'><input type='text' class='comment_input' id='comment_input" + mydata.po_id[i] + "'></input><button class='to_release'><b>发布</b></button><button class='to_withdraw'><b>收起</b></button></div>" +
                                 "<div id='comment_area_" + mydata.po_id[i] + "'></div>" +
                                 "<div id='comment_pagination_" + mydata.po_id[i] + "' class='pagination' style='float:right;margin-top: 0'></div></div></div>");
                     }
 
                     else {
                         $('#all_post').append("<div class='module span12' style='width:100%;height:auto;float:left;margin-left:0;background-color:white;border:0' id='" + mydata.po_id[i] + "'>" +
-                                "<div style='width:8%;float:left;margin-top:10;'><img class='my_photo' src='../static/avatar/" + mydata.avatar[i] + "?timestamp=" + new Date().getTime() + "'></div>" +
+                                "<div style='width:8%;float:left;margin-top:10;'><img class='my_photo' src='/static/avatar/" + mydata.avatar[i] + "?timestamp=" + new Date().getTime() + "'></div>" +
                                 "<div style='width:92%;float:left;margin-top:10;'><span class='person' id='poster_" + mydata.po_id[i] + "'>" + mydata.po_user[i] + "</span><h10 style='font-size:10px;color:gray;float:left;width:100%'>" + mydata.po_time[i] + "</h10>" +
                                 "<h5><strong style='font-size:12px;float:left;width:100%;margin-top:5px'>" + mydata.po_text[i] + "</strong></h5></div>" +
 
@@ -1228,7 +1228,7 @@
 
                                 "<div class='post_function'><button class='to_retrant' id='retrant_" + mydata.po_id[i] + "'><b>转发" + mydata.po_retrant[i] + "</b></button><div class='line'></div><button class='to_comment' id='comment_" + mydata.po_id[i] + "'><b>评论" + mydata.po_comment[i] + "</b></button><div class='line'></div><button class='to_upvote' id='upvote_" + mydata.po_id[i] + "'><b>点赞" + mydata.po_upvote[i] + "</b></button></div>" +
                                 "<div class='post_comment' id='post_comment_" + mydata.po_id[i] + "'>" +
-                                "<div style='width:100%;float:left'><img class='comment_avatar' src='../static/avatar/" + mydata.current_user + "?timestamp=" + new Date().getTime() + "'><input type='text' class='comment_input' id='comment_input" + mydata.po_id[i] + "'></input><button class='to_release'><b>发布</b></button><button class='to_withdraw'><b>收起</b></button></div>" +
+                                "<div style='width:100%;float:left'><img class='comment_avatar' src='/static/avatar/" + mydata.current_user + "?timestamp=" + new Date().getTime() + "'><input type='text' class='comment_input' id='comment_input" + mydata.po_id[i] + "'></input><button class='to_release'><b>发布</b></button><button class='to_withdraw'><b>收起</b></button></div>" +
                                 "<div id='comment_area_" + mydata.po_id[i] + "'></div>" +
                                 "<div id='comment_pagination_" + mydata.po_id[i] + "' class='pagination' style='float:right;margin-top: 0'></div></div></div>");
                     }
@@ -1244,20 +1244,20 @@
 
                 if (mydata.po_ifretrant[i] == 0) {
                     $('#follow_post').append("<div class='module span12' style='width:100%;height:auto;float:left;margin-left:0;background-color:white;border:0' id='F_" + mydata.po_id[i] + "'>" +
-                            "<div style='width:8%;float:left;margin-top:10;'><img class='my_photo' src='../static/avatar/" + mydata.avatar[i] + "?timestamp=" + new Date().getTime() + "'></div>" +
+                            "<div style='width:8%;float:left;margin-top:10;'><img class='my_photo' src='/static/avatar/" + mydata.avatar[i] + "?timestamp=" + new Date().getTime() + "'></div>" +
                             "<div style='width:92%;float:right;margin-top:10;'><button class='no_follow'><b>取消关注</b></button><span class='person' id='F_poster_" + mydata.po_id[i] + "'>" + mydata.po_user[i] + "</span><h10 style='font-size:10px;color:gray;float:left;width:90%'>" + mydata.po_time[i] + "</h10>" +
                             "<h5><strong style='font-size:12px;float:left;width:100%;margin-top:5px'>" + mydata.po_text[i] + "</strong></h5></div>" +
 
                             "<div class='post_function'><button class='to_retrant' data-toggle='modal' data-target='#all_message_modal' id='F_comment_" + mydata.po_id[i] + "'><b>转发" + mydata.po_retrant[i] + "</b></button><div class='line'></div><button class='to_comment' id='F_comment_" + mydata.po_id[i] + "'><b>评论" + mydata.po_comment[i] + "</b></button><div class='line'></div><button class='to_upvote' id='F_upvote_" + mydata.po_id[i] + "'><b>点赞" + mydata.po_upvote[i] + "</b></button></div>" +
                             "<div class='post_comment' id='F_post_comment_" + mydata.po_id[i] + "'>" +
-                            "<div style='width:100%;float:left'><img class='comment_avatar' src='../static/avatar/" + mydata.current_user + "?timestamp=" + new Date().getTime() + "'><input type='text' class='comment_input' id='F_comment_input" + mydata.po_id[i] + "'></input><button class='to_release'><b>发布</b></button><button class='to_withdraw'><b>收起</b></button></div>" +
+                            "<div style='width:100%;float:left'><img class='comment_avatar' src='/static/avatar/" + mydata.current_user + "?timestamp=" + new Date().getTime() + "'><input type='text' class='comment_input' id='F_comment_input" + mydata.po_id[i] + "'></input><button class='to_release'><b>发布</b></button><button class='to_withdraw'><b>收起</b></button></div>" +
                             "<div id='F_comment_area_" + mydata.po_id[i] + "'></div>" +
                             "<div id='F_comment_pagination_" + mydata.po_id[i] + "' class='pagination' style='float:right;margin-top: 0'></div></div></div>");
                 }
 
                 else {
                     $('#follow_post').append("<div class='module span12' style='width:100%;height:auto;float:left;margin-left:0;background-color:white;border:0' id='F_" + mydata.po_id[i] + "'>" +
-                            "<div style='width:8%;float:left;margin-top:10;'><img class='my_photo' src='../static/avatar/" + mydata.avatar[i] + "?timestamp=" + new Date().getTime() + "'></div>" +
+                            "<div style='width:8%;float:left;margin-top:10;'><img class='my_photo' src='/static/avatar/" + mydata.avatar[i] + "?timestamp=" + new Date().getTime() + "'></div>" +
                             "<div style='width:92%;float:left;margin-top:10;'><button class='no_follow'><b>取消关注</b></button><span class='person' id='F_poster_" + mydata.po_id[i] + "'>" + mydata.po_user[i] + "</span><h10 style='font-size:10px;color:gray;float:left;width:90%'>" + mydata.po_time[i] + "</h10>" +
                             "<h5><strong style='font-size:12px;float:left;width:100%;margin-top:5px'>" + mydata.po_text[i] + "</strong></h5></div>" +
 
@@ -1266,7 +1266,7 @@
 
                             "<div class='post_function'><button class='to_retrant' data-toggle='modal' data-target='#all_message_modal' id='F_comment_" + mydata.po_id[i] + "'><b>转发" + mydata.po_retrant[i] + "</b></button><div class='line'></div><button class='to_comment' id='F_comment_" + mydata.po_id[i] + "'><b>评论" + mydata.po_comment[i] + "</b></button><div class='line'></div><button class='to_upvote' id='F_upvote_" + mydata.po_id[i] + "'><b>点赞" + mydata.po_upvote[i] + "</b></button></div>" +
                             "<div class='post_comment' id='F_post_comment_" + mydata.po_id[i] + "'>" +
-                            "<div style='width:100%;float:left'><img class='comment_avatar' src='../static/avatar/" + mydata.current_user + "?timestamp=" + new Date().getTime() + "'><input type='text' class='comment_input' id='F_comment_input" + mydata.po_id[i] + "'></input><button class='to_release'><b>发布</b></button><button class='to_withdraw'><b>收起</b></button></div>" +
+                            "<div style='width:100%;float:left'><img class='comment_avatar' src='/static/avatar/" + mydata.current_user + "?timestamp=" + new Date().getTime() + "'><input type='text' class='comment_input' id='F_comment_input" + mydata.po_id[i] + "'></input><button class='to_release'><b>发布</b></button><button class='to_withdraw'><b>收起</b></button></div>" +
                             "<div id='F_comment_area_" + mydata.po_id[i] + "'></div>" +
                             "<div id='F_comment_pagination_" + mydata.po_id[i] + "' class='pagination' style='float:right;margin-top: 0'></div></div></div>");
                 }
@@ -1279,20 +1279,20 @@
             for (var i = mydata.po_id.length - 1; i >= 0; i--) {
                 if (mydata.po_ifretrant[i] == 0) {
                     $('#my_own_post').append("<div class='module span12' style='width:100%;height:auto;float:left;margin-left:0;background-color:white;border:0' id='M_" + mydata.po_id[i] + "'>" +
-                            "<div style='width:8%;float:left;margin-top:10;'><img class='my_photo' src='../static/avatar/" + mydata.avatar[i] + "?timestamp=" + new Date().getTime() + "'></div>" +
+                            "<div style='width:8%;float:left;margin-top:10;'><img class='my_photo' src='/static/avatar/" + mydata.avatar[i] + "?timestamp=" + new Date().getTime() + "'></div>" +
                             "<div style='width:92%;float:right;margin-top:10;'><span class='person' id='M_poster_" + mydata.po_id[i] + "'>" + mydata.po_user[i] + "</span><h10 style='font-size:10px;color:gray;float:left;width:100%'>" + mydata.po_time[i] + "</h10>" +
                             "<h5><strong style='font-size:12px;float:left;width:100%;margin-top:5px'>" + mydata.po_text[i] + "</strong></h5></div>" +
 
                             "<div class='post_function'><button class='to_retrant'><b>转发" + mydata.po_retrant[i] + "</b></button><div class='line'></div><button class='to_comment' id='M_comment_" + mydata.po_id[i] + "'><b>评论" + mydata.po_comment[i] + "</b></button><div class='line'></div><button class='to_upvote' id='M_upvote_" + mydata.po_id[i] + "'><b>点赞" + mydata.po_upvote[i] + "</b></button></div>" +
                             "<div class='post_comment' id='M_post_comment_" + mydata.po_id[i] + "'>" +
-                            "<div style='width:100%;float:left'><img class='comment_avatar' src='../static/avatar/" + mydata.current_user + "?timestamp=" + new Date().getTime() + "'><input type='text' class='comment_input' id='M_comment_input" + mydata.po_id[i] + "'></input><button class='to_release'><b>发布</b></button><button class='to_withdraw'><b>收起</b></button></div>" +
+                            "<div style='width:100%;float:left'><img class='comment_avatar' src='/static/avatar/" + mydata.current_user + "?timestamp=" + new Date().getTime() + "'><input type='text' class='comment_input' id='M_comment_input" + mydata.po_id[i] + "'></input><button class='to_release'><b>发布</b></button><button class='to_withdraw'><b>收起</b></button></div>" +
                             "<div id='M_comment_area_" + mydata.po_id[i] + "'></div>" +
                             "<div id='M_comment_pagination_" + mydata.po_id[i] + "' class='pagination' style='float:right;margin-top: 0'></div></div></div>");
                 }
 
                 else {
                     $('#my_own_post').append("<div class='module span12' style='width:100%;height:auto;float:left;margin-left:0;background-color:white;border:0' id='M_" + mydata.po_id[i] + "'>" +
-                            "<div style='width:8%;float:left;margin-top:10;'><img class='my_photo' src='../static/avatar/" + mydata.avatar[i] + "?timestamp=" + new Date().getTime() + "'></div>" +
+                            "<div style='width:8%;float:left;margin-top:10;'><img class='my_photo' src='/static/avatar/" + mydata.avatar[i] + "?timestamp=" + new Date().getTime() + "'></div>" +
                             "<div style='width:92%;float:left;margin-top:10;'><span class='person' id='M_poster_" + mydata.po_id[i] + "'>" + mydata.po_user[i] + "</span><h10 style='font-size:10px;color:gray;float:left;width:100%'>" + mydata.po_time[i] + "</h10>" +
                             "<h5><strong style='font-size:12px;float:left;width:100%;margin-top:5px'>" + mydata.po_text[i] + "</strong></h5></div>" +
 
@@ -1301,7 +1301,7 @@
 
                             "<div class='post_function'><button class='to_retrant'><b>转发" + mydata.po_retrant[i] + "</b></button><div class='line'></div><button class='to_comment' id='M_comment_" + mydata.po_id[i] + "'><b>评论" + mydata.po_comment[i] + "</b></button><div class='line'></div><button class='to_upvote' id='M_upvote_" + mydata.po_id[i] + "'><b>点赞" + mydata.po_upvote[i] + "</b></button></div>" +
                             "<div class='post_comment' id='M_post_comment_" + mydata.po_id[i] + "'>" +
-                            "<div style='width:100%;float:left'><img class='comment_avatar' src='../static/avatar/" + mydata.current_user + "?timestamp=" + new Date().getTime() + "'><input type='text' class='comment_input' id='M_comment_input" + mydata.po_id[i] + "'></input><button class='to_release'><b>发布</b></button><button class='to_withdraw'><b>收起</b></button></div>" +
+                            "<div style='width:100%;float:left'><img class='comment_avatar' src='/static/avatar/" + mydata.current_user + "?timestamp=" + new Date().getTime() + "'><input type='text' class='comment_input' id='M_comment_input" + mydata.po_id[i] + "'></input><button class='to_release'><b>发布</b></button><button class='to_withdraw'><b>收起</b></button></div>" +
                             "<div id='M_comment_area_" + mydata.po_id[i] + "'></div>" +
                             "<div id='M_comment_pagination_" + mydata.po_id[i] + "' class='pagination' style='float:right;margin-top: 0'></div></div></div>");
                 }
@@ -1394,7 +1394,7 @@
             if (pagecomment.co_id.length - maxpage > 0) {
                 for (var k = pagecomment.co_id.length - minpage - 1; k >= pagecomment.co_id.length - maxpage; k--) {
                     (function (j) {
-                        $('#comment_area_' + pagecomment.co_post).append("<div style='width:100%;height:auto;float:left;margin-left:0;margin-top:10px;'><img class='comment_avatar' src='../static/avatar/" + pagecomment.avatar[j] + "?timestamp=" + new Date().getTime() + "'><div style='float:left;margin-left:10px;margin-top:5px'><strong style='font-size:17px'>" + pagecomment.co_commenter[j] + ": </strong><h10 style='font-size:17px'>" + pagecomment.co_text[j] + "</h10></div><button class='to_reply' data-toggle='modal' data-target='#reply_modal' id='" + pagecomment.co_id[j] + "'><b>回复</b></buttom></div><div class='reply_area' id='reply_" + pagecomment.co_id[j] + "'></div>");
+                        $('#comment_area_' + pagecomment.co_post).append("<div style='width:100%;height:auto;float:left;margin-left:0;margin-top:10px;'><img class='comment_avatar' src='/static/avatar/" + pagecomment.avatar[j] + "?timestamp=" + new Date().getTime() + "'><div style='float:left;margin-left:10px;margin-top:5px'><strong style='font-size:17px'>" + pagecomment.co_commenter[j] + ": </strong><h10 style='font-size:17px'>" + pagecomment.co_text[j] + "</h10></div><button class='to_reply' data-toggle='modal' data-target='#reply_modal' id='" + pagecomment.co_id[j] + "'><b>回复</b></buttom></div><div class='reply_area' id='reply_" + pagecomment.co_id[j] + "'></div>");
                         my_reply(pagecomment.co_id[j])
                     })(k)
                 }
@@ -1402,7 +1402,7 @@
             else {
                 for (var k = pagecomment.co_id.length - minpage - 1; k >= 0; k--) {
                     (function (j) {
-                        $('#comment_area_' + pagecomment.co_post).append("<div style='width:100%;height:auto;float:left;margin-left:0;margin-top:10px;'><img class='comment_avatar' src='../static/avatar/" + pagecomment.avatar[j] + "?timestamp=" + new Date().getTime() + "'><div style='float:left;margin-left:10px;margin-top:5px'><strong style='font-size:17px'>" + pagecomment.co_commenter[j] + ": </strong><h10 style='font-size:17px'>" + pagecomment.co_text[j] + "</h10></div><button class='to_reply' data-toggle='modal' data-target='#reply_modal' id='" + pagecomment.co_id[j] + "'><b>回复</b></buttom></div><div class='reply_area' id='reply_" + pagecomment.co_id[j] + "'></div>");
+                        $('#comment_area_' + pagecomment.co_post).append("<div style='width:100%;height:auto;float:left;margin-left:0;margin-top:10px;'><img class='comment_avatar' src='/static/avatar/" + pagecomment.avatar[j] + "?timestamp=" + new Date().getTime() + "'><div style='float:left;margin-left:10px;margin-top:5px'><strong style='font-size:17px'>" + pagecomment.co_commenter[j] + ": </strong><h10 style='font-size:17px'>" + pagecomment.co_text[j] + "</h10></div><button class='to_reply' data-toggle='modal' data-target='#reply_modal' id='" + pagecomment.co_id[j] + "'><b>回复</b></buttom></div><div class='reply_area' id='reply_" + pagecomment.co_id[j] + "'></div>");
                         my_reply(pagecomment.co_id[j])
                     })(k)
                 }
@@ -1422,7 +1422,7 @@
             if (pagecomment.co_id.length - maxpage > 0) {
                 for (var k = pagecomment.co_id.length - minpage - 1; k >= pagecomment.co_id.length - maxpage; k--) {
                     (function (j) {
-                        $('#F_comment_area_' + pagecomment.co_post).append("<div style='width:100%;height:auto;float:left;margin-left:0;margin-top:10px;'><img class='comment_avatar' src='../static/avatar/" + pagecomment.avatar[j] + "?timestamp=" + new Date().getTime() + "'><div style='float:left;margin-left:10px;margin-top:5px'><strong style='font-size:17px'>" + pagecomment.co_commenter[j] + ": </strong><h10 style='font-size:17px'>" + pagecomment.co_text[j] + "</h10></div><button class='to_reply' data-toggle='modal' data-target='#reply_follow_modal' id='" + pagecomment.co_id[j] + "'><b>回复</b></buttom></div><div class='reply_area' id='F_reply_" + pagecomment.co_id[j] + "'></div>");
+                        $('#F_comment_area_' + pagecomment.co_post).append("<div style='width:100%;height:auto;float:left;margin-left:0;margin-top:10px;'><img class='comment_avatar' src='/static/avatar/" + pagecomment.avatar[j] + "?timestamp=" + new Date().getTime() + "'><div style='float:left;margin-left:10px;margin-top:5px'><strong style='font-size:17px'>" + pagecomment.co_commenter[j] + ": </strong><h10 style='font-size:17px'>" + pagecomment.co_text[j] + "</h10></div><button class='to_reply' data-toggle='modal' data-target='#reply_follow_modal' id='" + pagecomment.co_id[j] + "'><b>回复</b></buttom></div><div class='reply_area' id='F_reply_" + pagecomment.co_id[j] + "'></div>");
                         my_reply_follow(pagecomment.co_id[j])
                     })(k)
                 }
@@ -1430,7 +1430,7 @@
             else {
                 for (var k = pagecomment.co_id.length - minpage - 1; k >= 0; k--) {
                     (function (j) {
-                        $('#F_comment_area_' + pagecomment.co_post).append("<div style='width:100%;height:auto;float:left;margin-left:0;margin-top:10px;'><img class='comment_avatar' src='../static/avatar/" + pagecomment.avatar[j] + "?timestamp=" + new Date().getTime() + "'><div style='float:left;margin-left:10px;margin-top:5px'><strong style='font-size:17px'>" + pagecomment.co_commenter[j] + ": </strong><h10 style='font-size:17px'>" + pagecomment.co_text[j] + "</h10></div><button class='to_reply' data-toggle='modal' data-target='#reply_follow_modal' id='" + pagecomment.co_id[j] + "'><b>回复</b></buttom></div><div class='reply_area' id='F_reply_" + pagecomment.co_id[j] + "'></div>");
+                        $('#F_comment_area_' + pagecomment.co_post).append("<div style='width:100%;height:auto;float:left;margin-left:0;margin-top:10px;'><img class='comment_avatar' src='/static/avatar/" + pagecomment.avatar[j] + "?timestamp=" + new Date().getTime() + "'><div style='float:left;margin-left:10px;margin-top:5px'><strong style='font-size:17px'>" + pagecomment.co_commenter[j] + ": </strong><h10 style='font-size:17px'>" + pagecomment.co_text[j] + "</h10></div><button class='to_reply' data-toggle='modal' data-target='#reply_follow_modal' id='" + pagecomment.co_id[j] + "'><b>回复</b></buttom></div><div class='reply_area' id='F_reply_" + pagecomment.co_id[j] + "'></div>");
                         my_reply_follow(pagecomment.co_id[j])
                     })(k)
                 }
@@ -1451,7 +1451,7 @@
             if (pagecomment.co_id.length - maxpage > 0) {
                 for (var k = pagecomment.co_id.length - minpage - 1; k >= pagecomment.co_id.length - maxpage; k--) {
                     (function (j) {
-                        $('#M_comment_area_' + pagecomment.co_post).append("<div style='width:100%;height:auto;float:left;margin-left:0;margin-top:10px;'><img class='comment_avatar' src='../static/avatar/" + pagecomment.avatar[j] + "?timestamp=" + new Date().getTime() + "'><div style='float:left;margin-left:10px;margin-top:5px'><strong style='font-size:17px'>" + pagecomment.co_commenter[j] + ": </strong><h10 style='font-size:17px'>" + pagecomment.co_text[j] + "</h10></div><button class='to_reply' data-toggle='modal' data-target='#reply_myown_modal' id='" + pagecomment.co_id[j] + "'><b>回复</b></buttom></div><div class='reply_area' id='M_reply_" + pagecomment.co_id[j] + "'></div>");
+                        $('#M_comment_area_' + pagecomment.co_post).append("<div style='width:100%;height:auto;float:left;margin-left:0;margin-top:10px;'><img class='comment_avatar' src='/static/avatar/" + pagecomment.avatar[j] + "?timestamp=" + new Date().getTime() + "'><div style='float:left;margin-left:10px;margin-top:5px'><strong style='font-size:17px'>" + pagecomment.co_commenter[j] + ": </strong><h10 style='font-size:17px'>" + pagecomment.co_text[j] + "</h10></div><button class='to_reply' data-toggle='modal' data-target='#reply_myown_modal' id='" + pagecomment.co_id[j] + "'><b>回复</b></buttom></div><div class='reply_area' id='M_reply_" + pagecomment.co_id[j] + "'></div>");
                         my_reply_myown(pagecomment.co_id[j])
                     })(k)
                 }
@@ -1459,7 +1459,7 @@
             else {
                 for (var k = pagecomment.co_id.length - minpage - 1; k >= 0; k--) {
                     (function (j) {
-                        $('#M_comment_area_' + pagecomment.co_post).append("<div style='width:100%;height:auto;float:left;margin-left:0;margin-top:10px;'><img class='comment_avatar' src='../static/avatar/" + pagecomment.avatar[j] + "?timestamp=" + new Date().getTime() + "'><div style='float:left;margin-left:10px;margin-top:5px'><strong style='font-size:17px'>" + pagecomment.co_commenter[j] + ": </strong><h10 style='font-size:17px'>" + pagecomment.co_text[j] + "</h10></div><button class='to_reply' data-toggle='modal' data-target='#reply_myown_modal' id='" + pagecomment.co_id[j] + "'><b>回复</b></buttom></div><div class='reply_area' id='M_reply_" + pagecomment.co_id[j] + "'></div>");
+                        $('#M_comment_area_' + pagecomment.co_post).append("<div style='width:100%;height:auto;float:left;margin-left:0;margin-top:10px;'><img class='comment_avatar' src='/static/avatar/" + pagecomment.avatar[j] + "?timestamp=" + new Date().getTime() + "'><div style='float:left;margin-left:10px;margin-top:5px'><strong style='font-size:17px'>" + pagecomment.co_commenter[j] + ": </strong><h10 style='font-size:17px'>" + pagecomment.co_text[j] + "</h10></div><button class='to_reply' data-toggle='modal' data-target='#reply_myown_modal' id='" + pagecomment.co_id[j] + "'><b>回复</b></buttom></div><div class='reply_area' id='M_reply_" + pagecomment.co_id[j] + "'></div>");
                         my_reply_myown(pagecomment.co_id[j])
                     })(k)
                 }

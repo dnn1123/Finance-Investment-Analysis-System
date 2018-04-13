@@ -219,7 +219,7 @@
                     url: '{{ url_for("message_api.query_avatar") }}',
                     dataType: 'json',//希望服务器返回json格式的数据
                     success: function (data) {
-                        var imgsrc = "../static/avatar/" + data.avatar + "?timestamp=" + new Date().getTime();
+                        var imgsrc = "/static/avatar/" + data.avatar + "?timestamp=" + new Date().getTime();
                         $("#myavatar").attr("src", imgsrc);
                     }
                 })
