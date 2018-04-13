@@ -251,7 +251,7 @@
                         </i><i class="icon-chevron-down pull-right"></i><i class="icon-chevron-up pull-right">
                         </i>财务分析 </a>
                             <ul id="togglePages" class="collapse unstyled">
-                                <li><a href="{{ url_for('visitor.basic') }}"><i class="icon-inbox"></i>股票个体分析 </a>
+                                <li><a href="{{ url_for('stock_solo.basic') }}"><i class="icon-inbox"></i>股票个体分析 </a>
                                 </li>
                                 <li><a href="{{ url_for('stock_group.navigation') }}"><i class="icon-inbox"></i>股票总体概览
                                 </a></li>
@@ -261,19 +261,19 @@
                                 </a></li>
                             </ul>
                         </li>
-                        <li><a class="collapsed" data-toggle="collapse" href="#togglePages_quant">
-                            <i class="icon-chevron-down pull-right"></i><i class="menu-icon icon-book">
-                        </i>量化模型 </a>
-                            <ul id="togglePages_quant" class="collapse unstyled">
-                                <li><a href="{{ url_for("quant.models") }}"><i class="icon-inbox"></i>量化模型 </a></li>
-                                <li><a href="{{ url_for("quant.backtest") }}"><i class="icon-inbox"></i>历史回测 </a></li>
-                                <li><a href="{{ url_for("quant.realtime_simulation") }}"><i class="icon-inbox"></i>实时模拟
-                                </a></li>
-                            </ul>
-                        </li>
-                        <li><a href="table.html"><i class="menu-icon icon-table"></i>交易模型 </a></li>
-                        <!--<li><a href="charts.html"><i class="menu-icon icon-bar-chart"></i>Charts </a></li>-->
-                    </ul>
+{#                        <li><a class="collapsed" data-toggle="collapse" href="#togglePages_quant">#}
+{#                            <i class="icon-chevron-down pull-right"></i><i class="menu-icon icon-book">#}
+{#                        </i>量化模型 </a>#}
+{#                            <ul id="togglePages_quant" class="collapse unstyled">#}
+{#                                <li><a href="{{ url_for("quant.models") }}"><i class="icon-inbox"></i>量化模型 </a></li>#}
+{#                                <li><a href="{{ url_for("quant.backtest") }}"><i class="icon-inbox"></i>历史回测 </a></li>#}
+{#                                <li><a href="{{ url_for("quant.realtime_simulation") }}"><i class="icon-inbox"></i>实时模拟#}
+{#                                </a></li>#}
+{#                            </ul>#}
+{#                        </li>#}
+{#                        <li><a href="table.html"><i class="menu-icon icon-table"></i>交易模型 </a></li>#}
+{#                        <!--<li><a href="charts.html"><i class="menu-icon icon-bar-chart"></i>Charts </a></li>-->#}
+{#                    </ul>#}
                     <!--/.widget-nav-->
                     <ul class="widget widget-menu unstyled">
 
