@@ -2,10 +2,6 @@
 <head>
     <meta charset='utf-8'>
 
-    <meta HTTP-EQUIV="Pragma" CONTENT="no-cache">
-    <meta HTTP-EQUIV="Cache-Control" CONTENT="no-cache">
-    <meta HTTP-EQUIV="Expires" CONTENT="0">
-
     <script type="text/javascript" src="{{ url_for('static',filename='js/jquery-2.0.0.min.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static',filename='js/jquery-ui') }}"></script>
     <script type="text/javascript" src="{{ url_for('static',filename='js/echarts.js') }}"></script>
@@ -165,7 +161,6 @@
         #zyqnav ul li:hover > ul { /* > 子菜单选择器 鼠标在li上的时候 改变子ul的display属性*/
             display: block;
         }
-
     </style>
     {% block styles %}{% endblock %}
 </head>
@@ -200,7 +195,7 @@
                     </li>
                     <li><a href="{{ url_for('stock.home') }}">返回主页</a></li>
                     <li class="nav-user dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <img id="myavatar" src="" class="nav-avatar"/>
+                        <img id="myavatar" src="/static/avatar/user.png" class="nav-avatar"/>
                         {% block current_user %}{% endblock %}
                         <b class="caret"></b></a>
                         <ul class="dropdown-menu">
@@ -213,17 +208,6 @@
                     </li>
                 </ul>
             </div>
-            <script>
-                $.ajax({
-                    type: 'GET',
-                    url: '{{ url_for("message_api.query_avatar") }}',
-                    dataType: 'json',//希望服务器返回json格式的数据
-                    success: function (data) {
-                        var imgsrc = "/static/avatar/" + data.avatar + "?timestamp=" + new Date().getTime();
-                        $("#myavatar").attr("src", imgsrc);
-                    }
-                })
-            </script>
             <!-- /.nav-collapse -->
         </div>
     </div>
