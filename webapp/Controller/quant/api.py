@@ -60,7 +60,7 @@ def back_test():
     pricelist = []
     for i in range(len(position_records)):
         pri = ts.get_k_data(position_records[i].code, start=(
-        datetime.datetime.strptime(request.form.get('edate'), "%Y-%m-%d") + datetime.timedelta(days=-30)).strftime(
+            datetime.datetime.strptime(request.form.get('edate'), "%Y-%m-%d") + datetime.timedelta(days=-30)).strftime(
             "%Y-%m-%d"), end=request.form.get('edate')).iloc[-1:].close
         pricelist.append(pri.values[0])
     p_records = []
@@ -217,6 +217,12 @@ def get_realtime_simulation_detail_data():
             strategy = Strategy_Manager(Strategy.Buy_Everyday, live=True, cash=params['cash'],
                                         commission=params['commission'], builddate=data.build_date,
                                         instrument=params['instrument'])
+            strategy.run()
+            message = strategy.getMessage()
+        if data.strategy_id == Strategy.My_Pair_Strategy.value:
+            strategy = Strategy_Manager(Strategy.My_Pair_Strategy, live=True, cash=params['cash'],
+                                        commission=params['commission'], builddate=data.build_date,
+                                        instrument_1=params['instrument_1'], instrument_2=params['instrument_2'])
             strategy.run()
             message = strategy.getMessage()
         keys = message.keys()

@@ -279,7 +279,7 @@ class Strategy_Manager():
         brk = broker.backtesting.Broker(self.__cash, feed, broker_commission)  # 初始化
         brk.setFillStrategy(fill_stra)  # 将成交策略传给brk
         # 4.把策略跑起来
-        self.__strategy_entity = My_Pair_Strategy(feed, brk, self.__i1, self.__i2, self.__startdate, 50)
+        self.__strategy_entity = My_Pair_Strategy_Live(feed, brk, self.__i1, self.__i2, self.__builddate, 50)
         self.__retAnalyzer = returns.Returns()
         self.__strategy_entity.attachAnalyzer(self.__retAnalyzer)
         self.__sharpeRatioAnalyzer = sharpe.SharpeRatio()
@@ -796,7 +796,7 @@ class My_Pair_Strategy(strategy.BacktestingStrategy):
 
 class My_Pair_Strategy_Live(strategy.BacktestingStrategy):
     def __init__(self, feed, brk, instrument1, instrument2, builddate, windowSize):
-        super(My_Pair_Strategy, self).__init__(feed, brk)
+        super(My_Pair_Strategy_Live, self).__init__(feed, brk)
         self.setUseAdjustedValues(True)
         self.__statArbHelper = DataCalculator_For_My_Pair_Strategy(feed[instrument1].getAdjCloseDataSeries(),
                                                                    feed[instrument2].getAdjCloseDataSeries(),
