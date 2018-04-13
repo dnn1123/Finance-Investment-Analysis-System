@@ -13,8 +13,8 @@ import pandas as pd
 from datetime import datetime
 from datetime import timedelta
 from  webapp.stratlib import *
-# from webapp.Library.wind_mysql.get_company_list import *
-
+from webapp.Library.wind_mysql.get_company_list import *
+import time as Time
 api_blueprint = Blueprint(
     'restfulapi',
     __name__,
@@ -654,6 +654,66 @@ def position_data():
     else:
         return jsonify(results)
 
+
+@api_blueprint.route('/cns_market_new', methods=('GET', 'POST'))
+def cns_market_new_ajax():
+    data = {}
+    pagination = cns_stock_industry.query.join(cns_sub_industry).add_columns(cns_sub_industry.industry_gics_4).join(
+        cns_industry).add_columns(cns_industry.industry_gics_3).join(cns_group_industry).add_columns(
+        cns_group_industry.industry_gics_2).join(cns_department_industry).add_columns(
+        cns_department_industry.industry_gics_1).join(stock_grade_l).add_columns(stock_grade_l.grade_time).join(
+        invest_grade).add_columns(invest_grade.grade_name).order_by(cns_stock_industry.trade_code).all()
+    data['industry_gics_4'] = []
+    data['industry_gics_3'] = []
+    data['industry_gics_2'] = []
+    data['industry_gics_1'] = []
+    data['grade_time'] = []
+    data['grade_name'] = []
+    data['trade_code'] = []
+    data['sec_name'] = []
+    data['ipo_date'] = []
+    data['hushen_300'] = []
+    result = users_roles.query.filter_by(user_name=current_user.username).first()
+    data['permissions'] = result.permissions
+    time_tep = Time.strftime('%Y-%m-%d',Time.localtime(Time.time()))
+    for i in range(0,len(pagination)):
+        data['industry_gics_4'].append(pagination[i][1])
+        data['industry_gics_3'].append(pagination[i][2])
+        data['industry_gics_2'].append(pagination[i][3])
+        data['industry_gics_1'].append(pagination[i][4])
+        data['grade_time'].append(time_tep+" 00:00:00")
+        data['grade_name'].append(pagination[i][6])
+        data['trade_code'].append(pagination[i][0].trade_code)
+        data['sec_name'].append(pagination[i][0].sec_name)
+        data['ipo_date'].append(pagination[i][0].ipo_date)
+        data['hushen_300'].append(pagination[i][0].hushen_300)
+    return jsonify(data)
+
+
+@api_blueprint.route('/cns_market_change_score', methods=('GET', 'POST'))
+def cns_market_change_score():
+    data = {}
+    trade_code = request.args.get('trade_code')
+    score = request.args.get('score')
+    result = stock_grade_l.query.filter_by(trade_code=trade_code).first_or_404()
+    result.grade_id = score
+    db.session.commit()
+    return jsonify(data)
+
+
+@api_blueprint.route('/cns_market_view_history', methods=('GET', 'POST'))
+def cns_market_view_history():
+    data = {}
+    trade_code = request.args.get('trade_code')
+    history_data = stock_grade_h.query.filter_by(trade_code=trade_code).order_by(
+            stock_grade_h.grade_time.desc()).join(invest_grade).add_columns(invest_grade.grade_name).all()
+    data['time'] = []
+    data['grade'] = []
+    for i in range(0,len(history_data)):
+        data['time'].append(history_data[i][0].grade_time)
+        data['grade'].append(history_data[i][1])
+    db.session.commit()
+    return jsonify(data)
 
 @api_blueprint.route('/analysis/history_data', methods=['GET', 'POST'])
 def history_data():

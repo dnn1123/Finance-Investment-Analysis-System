@@ -1,5 +1,5 @@
 # coding=utf-8
-from flask import Blueprint, redirect, render_template, url_for, request
+from flask import Blueprint, redirect, render_template, url_for, request, jsonify, flash
 from os import path
 from webapp.models import *
 from webapp.forms import CodeForm, invest_updateForm
@@ -8,7 +8,8 @@ from webapp.extensions import finance_analyst_permission  # 这个就是经济�
 from sqlalchemy import create_engine, or_, func, desc, distinct, asc, desc, update, and_  # me func用于计数,desc用于逆序找max值
 from sqlalchemy.orm import sessionmaker  # me
 import MySQLdb, time, datetime, re  # re用于判断是否含中文
-
+import xlrd,os
+import numpy as np
 globalindustry_blueprint = Blueprint(
     'global_industry',
     __name__,
@@ -24,8 +25,7 @@ def basic():
 
 
 @globalindustry_blueprint.route('/cns_market', methods=('GET', 'POST'))
-@globalindustry_blueprint.route('/cns_market/<string:query_history>/<string:trade_code>/<string:sec_name>',
-                                methods=('GET', 'POST'))
+@globalindustry_blueprint.route('/cns_market/<string:query_history>/<string:trade_code>/<string:sec_name>', methods=('GET', 'POST'))
 @login_required
 def cns_market(sec_name=None, trade_code=None, query_history=None):
     sec_name = sec_name
@@ -39,8 +39,9 @@ def cns_market(sec_name=None, trade_code=None, query_history=None):
         cns_group_industry.industry_gics_2).join(cns_department_industry).add_columns(
         cns_department_industry.industry_gics_1).join(stock_grade_l).add_columns(stock_grade_l.grade_time).join(
         invest_grade).add_columns(invest_grade.grade_name).order_by(cns_stock_industry.trade_code).paginate(page,
-                                                                                                            per_page=200,
-                                                                                                            error_out=False)
+                                                                                                            per_page=20000,
+                                                                                     error_out=False)
+
     # 说明：共有3197条记录 此为分页功能 # 改成了3185个记录
     result = pagination.items
     length = len(result)
@@ -142,3 +143,10 @@ def usa_market(sec_name=None, trade_code=None, query_history=None):
     return render_template("global_industry/usa/usa_market.html", form=form, sec_name=sec_name, trade_code=trade_code,
                            query_history=query_history, result=result, pagination=pagination, length=length,
                            history_data=history_data, history_data_len=history_data_len)
+
+
+@globalindustry_blueprint.route('/cns_market_new', methods=('GET', 'POST'))
+@login_required
+def cns_market_new():
+    return render_template("global_industry/cns_market_new.html")
+
