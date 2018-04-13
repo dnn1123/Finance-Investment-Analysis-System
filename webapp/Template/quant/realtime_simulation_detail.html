@@ -37,9 +37,10 @@
     <script>
     var subscribe_id={{ subscribe_id }}
     $(document).ready(function () {
-        get_strategy_info()
+        get_strategy_info();
         get_data()
-    })
+    });
+
     function get_data() {
         $.ajax({
                 type: "GET",

@@ -207,20 +207,60 @@ class Strategy_Manager():
                 self.__init_Stock_Picking_Strategy_Based_Value_By_Steve_A()
 
         if StrategyType == Strategy.My_Pair_Strategy:
-            self.__commission = args.get('commission')
-            self.__builddate = args.get('builddate')
-            self.__startdate = args.get('startdate')
-            self.__enddate = args.get('enddate')
-            self.__cash = args.get('cash')
-            self.__i1 = args.get('instrument_1')
-            self.__i2 = args.get('instrument_2')
-            self.__init_My_Pair_Strategy()
+            if self.__live:
+                self.__commission = args.get('commission')
+                self.__builddate = args.get('builddate')
+                self.__cash = args.get('cash')
+                self.__i1 = args.get('instrument_1')
+                self.__i2 = args.get('instrument_2')
+                self.__init_My_Pair_Strategy_Live()
+            else:
+                self.__commission = args.get('commission')
+                self.__startdate = args.get('startdate')
+                self.__enddate = args.get('enddate')
+                self.__cash = args.get('cash')
+                self.__i1 = args.get('instrument_1')
+                self.__i2 = args.get('instrument_2')
+                self.__init_My_Pair_Strategy()
 
     def __init_My_Pair_Strategy(self):
         # 获取股票1的K线数据
         i1_data = ts.get_k_data(self.__i1, self.__startdate, self.__enddate)
         # 获取股票2的K线数据
         i2_data = ts.get_k_data(self.__i2, self.__startdate, self.__enddate)
+        # 读取数据，频率为天
+        feed = dataFramefeed.Feed(bar.Frequency.DAY)
+        feed.addBarsFromDataFrame(self.__i1, i1_data)
+        feed.addBarsFromDataFrame(self.__i2, i2_data)
+
+        # 手续费率：手续费是每笔交易金额的百分比
+        broker_commission = broker.backtesting.TradePercentage(self.__commission)  # 费率交易金额百分比 也可设置固定费率 无手续费
+        # 3.2 fill strategy设置
+        fill_stra = broker.fillstrategy.DefaultStrategy(volumeLimit=1.0)  # 成交比例 也可以用set方法修改 初始化赋值也可
+        sli_stra = broker.slippage.NoSlippage()  # 滑点模型  此为无滑点
+        # broker.slippage.VolumeShareSlippage(priceImpact=0.1) 设置影响程度
+        fill_stra.setSlippageModel(sli_stra)  # 设置滑点模型
+        # setVolumeLimit(volumeLimit)  更改成交比例
+        # 3.3完善broker类
+        brk = broker.backtesting.Broker(self.__cash, feed, broker_commission)  # 初始化
+        brk.setFillStrategy(fill_stra)  # 将成交策略传给brk
+        # 4.把策略跑起来
+        self.__strategy_entity = My_Pair_Strategy(feed, brk, self.__i1, self.__i2, self.__startdate, 50)
+        self.__retAnalyzer = returns.Returns()
+        self.__strategy_entity.attachAnalyzer(self.__retAnalyzer)
+        self.__sharpeRatioAnalyzer = sharpe.SharpeRatio()
+        self.__strategy_entity.attachAnalyzer(self.__sharpeRatioAnalyzer)
+        self.__drawdownAnalyzer = drawdown.DrawDown()
+        self.__strategy_entity.attachAnalyzer(self.__drawdownAnalyzer)
+        self.__tradeAnalyzer = trades.Trades()
+        self.__strategy_entity.attachAnalyzer(self.__tradeAnalyzer)
+        # 绘图模块
+        self.__plt = plotter.StrategyPlotter(self.__strategy_entity)
+
+    def __init_My_Pair_Strategy_Live(self):
+        # 获取股票K线数据
+        i1_data = ts.get_k_data(self.__i1)
+        i2_data = ts.get_k_data(self.__i2)
         # 读取数据，频率为天
         feed = dataFramefeed.Feed(bar.Frequency.DAY)
         feed.addBarsFromDataFrame(self.__i1, i1_data)
@@ -603,33 +643,6 @@ def get_last_quarter_date(date):
         return third.strftime("%Y-%m-%d")
 
 
-class DataCalculator_For_Pair_Strategy_Based_Bank():
-    def __init__(self, ds1, ds2, interval):
-        # We're going to use datetime aligned versions of the dataseries.
-        self.__ds1, self.__ds2 = aligned.datetime_aligned(ds1, ds2)  # 对齐时间轴
-        self.__interval = interval
-        self.__a = None
-        self.__b = None
-        self.__c = None
-        self.__d = None
-        self.__threshold = None
-        self.__params_1 = None
-        self.__params_2 = None
-
-    def getThreshold(self):
-        return self.__threshold
-
-    def update(self):
-        if len(self.__ds1) >= self.__interval:
-            values1 = np.asarray(self.__ds1[-1 * self.__interval:])
-            values2 = np.asarray(self.__ds2[-1 * self.__interval:])
-            self.__params_1 = regression(values2, values1)
-            self.__params_2 = regression(values1, values2)
-            error_1 = self.__ds1[-1] - (self.__params_2[1] * self.__ds2[-1] + self.__params_2[0])
-            error_2 = self.__ds2[-1] - (self.__params_1[1] * self.__ds1[-1] + self.__params_1[0])
-            self.__threshold = error_1 - error_2
-
-
 # 双股票策略-zyq
 class DataCalculator_For_My_Pair_Strategy():
     def __init__(self, ds1, ds2, windowSize):
@@ -641,6 +654,12 @@ class DataCalculator_For_My_Pair_Strategy():
         self.__spreadMean = None
         self.__spreadStd = None
         self.__zScore = None
+        self.__threshold = None
+        self.__params_1 = None
+        self.__params_2 = None
+
+    def getThreshold(self):
+        return self.__threshold
 
     def getSpread(self):
         return self.__spread
@@ -678,6 +697,11 @@ class DataCalculator_For_My_Pair_Strategy():
         if len(self.__ds1) >= self.__windowSize:
             values1 = np.asarray(self.__ds1[-1 * self.__windowSize:])
             values2 = np.asarray(self.__ds2[-1 * self.__windowSize:])
+            self.__params_1 = regression(values2, values1)
+            self.__params_2 = regression(values1, values2)
+            error_1 = self.__ds1[-1] - (self.__params_2[1] * self.__ds2[-1] + self.__params_2[0])
+            error_2 = self.__ds2[-1] - (self.__params_1[1] * self.__ds1[-1] + self.__params_1[0])
+            self.__threshold = error_1 - error_2
             self.__updateHedgeRatio(values1, values2)
             self.__updateSpread()
             self.__updateSpreadMeanAndStd(values1, values2)
@@ -694,6 +718,9 @@ class My_Pair_Strategy(strategy.BacktestingStrategy):
         self.__startdate = datetime.datetime.strptime(startdate, "%Y-%m-%d")
         self.__i1 = instrument1
         self.__i2 = instrument2
+
+        self.__a1 = 0
+        self.__a2 = 0
 
         # These are used only for plotting purposes.
         self.__spread = dataseries.SequenceDataSeries()
@@ -718,13 +745,23 @@ class My_Pair_Strategy(strategy.BacktestingStrategy):
 
     def buySpread(self, bars, hedgeRatio):
         amount1, amount2 = self.__getOrderSize(bars, hedgeRatio)
-        self.marketOrder(self.__i1, amount1)
-        self.marketOrder(self.__i2, amount2 * -1)
+        self.__a1 = int(amount1)
+        self.__a2 = int(amount2 * -1)
+        if self.__a2 > 0:
+            self.marketOrder(self.__i1, amount1)
+            self.marketOrder(self.__i2, (amount2 + self.__a2) * -1)
+        else:
+            self.marketOrder(self.__i1, amount1)
 
     def sellSpread(self, bars, hedgeRatio):
         amount1, amount2 = self.__getOrderSize(bars, hedgeRatio)
-        self.marketOrder(self.__i1, amount1 * -1)
-        self.marketOrder(self.__i2, amount2)
+        self.__a1 = int(amount1 * -1)
+        self.__a2 = int(amount2)
+        if self.__a1 > 0:
+            self.marketOrder(self.__i1, (amount1 + self.__a1) * -1)
+            self.marketOrder(self.__i2, amount2)
+        else:
+            self.marketOrder(self.__i2, amount2)
 
     def reducePosition(self, instrument):
         currentPos = self.getBroker().getShares(instrument)
@@ -734,27 +771,156 @@ class My_Pair_Strategy(strategy.BacktestingStrategy):
             self.marketOrder(instrument, currentPos * -1)
 
     def onBars(self, bars):
-        self.__statArbHelper.update()
+        if bars.getDateTime() >= self.__startdate:
+            self.__statArbHelper.update()
+            self.__spread.appendWithDateTime(bars.getDateTime(), self.__statArbHelper.getSpread())
+            self.__hedgeRatio.appendWithDateTime(bars.getDateTime(), self.__statArbHelper.getHedgeRatio())
+            if bars.getBar(self.__i1) and bars.getBar(self.__i2):
+                hedgeRatio = self.__statArbHelper.getHedgeRatio()
+                zScore = self.__statArbHelper.getZScore()
+                threshold = self.__statArbHelper.getThreshold()
+                if threshold is not None and zScore is not None:
+                    currentPos = abs(self.getBroker().getShares(self.__i1)) + abs(
+                        self.getBroker().getShares(self.__i2))
+                    if abs(zScore) <= 1 and currentPos != 0:
+                        self.reducePosition(self.__i1)
+                        self.reducePosition(self.__i2)
+                    elif zScore <= -2 and currentPos == 0:
+                        self.buySpread(bars, hedgeRatio)
+                    elif zScore >= 2 and currentPos == 0:
+                        self.sellSpread(bars, hedgeRatio)
+        else:
+            pass
 
-        # These is used only for plotting purposes.
-        self.__spread.appendWithDateTime(bars.getDateTime(), self.__statArbHelper.getSpread())
-        self.__hedgeRatio.appendWithDateTime(bars.getDateTime(), self.__statArbHelper.getHedgeRatio())
 
-        if bars.getBar(self.__i1) and bars.getBar(self.__i2):
-            hedgeRatio = self.__statArbHelper.getHedgeRatio()
-            zScore = self.__statArbHelper.getZScore()
-            if zScore is not None:
-                currentPos = abs(self.getBroker().getShares(self.__i1)) + abs(self.getBroker().getShares(self.__i2))
-                if abs(zScore) <= 1 and currentPos != 0:
-                    self.reducePosition(self.__i1)
-                    self.reducePosition(self.__i2)
-                elif zScore <= -2 and currentPos == 0:  # Buy spread when its value drops below 2 standard deviations.
-                    self.buySpread(bars, hedgeRatio)
-                elif zScore >= 2 and currentPos == 0:  # Short spread when its value rises above 2 standard deviations.
-                    self.sellSpread(bars, hedgeRatio)
+class My_Pair_Strategy_Live(strategy.BacktestingStrategy):
+    def __init__(self, feed, brk, instrument1, instrument2, builddate, windowSize):
+        super(My_Pair_Strategy, self).__init__(feed, brk)
+        self.setUseAdjustedValues(True)
+        self.__statArbHelper = DataCalculator_For_My_Pair_Strategy(feed[instrument1].getAdjCloseDataSeries(),
+                                                                   feed[instrument2].getAdjCloseDataSeries(),
+                                                                   windowSize)
+        self.__builddate = builddate
+        self.__i1 = instrument1
+        self.__i2 = instrument2
+
+        self.__a1 = 0
+        self.__a2 = 0
+
+        # These are used only for plotting purposes.
+        self.__spread = dataseries.SequenceDataSeries()
+        self.__hedgeRatio = dataseries.SequenceDataSeries()
+
+        self.__text = ""
+        self.__textlist = {}
+
+    def getSpreadDS(self):
+        return self.__spread
+
+    def getHedgeRatioDS(self):
+        return self.__hedgeRatio
+
+    def getStartdate(self):
+        return self.__builddate
+
+    def getTextlist(self):
+        return self.__textlist
+
+    def __getOrderSize(self, bars, hedgeRatio):
+        cash = self.getBroker().getCash(False)
+        price1 = bars[self.__i1].getAdjClose()
+        price2 = bars[self.__i2].getAdjClose()
+        size1 = int(cash / (price1 + hedgeRatio * price2))
+        size2 = int(size1 * hedgeRatio)
+        return (size1, size2)
+
+    def buySpread(self, bars, hedgeRatio):
+        amount1, amount2 = self.__getOrderSize(bars, hedgeRatio)
+        self.__a1 = int(amount1)
+        self.__a2 = int(amount2 * -1)
+        if self.__a2 > 0:
+            self.marketOrder(self.__i1, amount1)
+            self.marketOrder(self.__i2, (amount2 + self.__a2) * -1)
+            self.__text += u"买入" + self.__i1 + u"股票" + str(amount1) + u"股"
+            self.__text += u"卖出" + self.__i2 + u"股票" + str(amount2 + self.__a2) + u"股"
+        else:
+            self.marketOrder(self.__i1, amount1)
+            self.__text += u"买入" + self.__i1 + u"股票" + str(amount1) + u"股"
+
+    def sellSpread(self, bars, hedgeRatio):
+        amount1, amount2 = self.__getOrderSize(bars, hedgeRatio)
+        self.__a1 = int(amount1 * -1)
+        self.__a2 = int(amount2)
+        if self.__a1 > 0:
+            self.marketOrder(self.__i1, (amount1 + self.__a1) * -1)
+            self.marketOrder(self.__i2, amount2)
+            self.__text += u"卖出" + self.__i1 + u"股票" + str(amount1 + self.__a1) + u"股"
+            self.__text += u"买入" + self.__i2 + u"股票" + str(amount2) + u"股"
+        else:
+            self.marketOrder(self.__i2, amount2)
+            self.__text += u"买入" + self.__i2 + u"股票" + str(amount2) + u"股"
+
+    def reducePosition(self, instrument):
+        currentPos = self.getBroker().getShares(instrument)
+        if currentPos > 0:
+            self.marketOrder(instrument, currentPos * -1)
+        elif currentPos < 0:
+            self.marketOrder(instrument, currentPos * -1)
+
+    def onBars(self, bars):
+        if bars.getDateTime() >= self.__builddate:
+            self.__text = ""
+            self.__statArbHelper.update()
+            self.__spread.appendWithDateTime(bars.getDateTime(), self.__statArbHelper.getSpread())
+            self.__hedgeRatio.appendWithDateTime(bars.getDateTime(), self.__statArbHelper.getHedgeRatio())
+            if bars.getBar(self.__i1) and bars.getBar(self.__i2):
+                hedgeRatio = self.__statArbHelper.getHedgeRatio()
+                zScore = self.__statArbHelper.getZScore()
+                threshold = self.__statArbHelper.getThreshold()
+                if threshold is not None and zScore is not None:
+                    currentPos = abs(self.getBroker().getShares(self.__i1)) + abs(
+                        self.getBroker().getShares(self.__i2))
+                    if abs(zScore) <= 1 and currentPos != 0:
+                        self.reducePosition(self.__i1)
+                        self.reducePosition(self.__i2)
+                    elif zScore <= -2 and currentPos == 0:
+                        self.buySpread(bars, hedgeRatio)
+                    elif zScore >= 2 and currentPos == 0:
+                        self.sellSpread(bars, hedgeRatio)
+            if self.__text != "":
+                self.__textlist.setdefault(bars.getDateTime().date(), self.__text)
+        else:
+            pass
 
 
 # 配对策略-fzj
+class DataCalculator_For_Pair_Strategy_Based_Bank():
+    def __init__(self, ds1, ds2, interval):
+        # We're going to use datetime aligned versions of the dataseries.
+        self.__ds1, self.__ds2 = aligned.datetime_aligned(ds1, ds2)  # 对齐时间轴
+        self.__interval = interval
+        self.__a = None
+        self.__b = None
+        self.__c = None
+        self.__d = None
+        self.__threshold = None
+        self.__params_1 = None
+        self.__params_2 = None
+
+    def getThreshold(self):
+        return self.__threshold
+
+    def update(self):
+        if len(self.__ds1) >= self.__interval:
+            values1 = np.asarray(self.__ds1[-1 * self.__interval:])
+            values2 = np.asarray(self.__ds2[-1 * self.__interval:])
+            self.__params_1 = regression(values2, values1)
+            self.__params_2 = regression(values1, values2)
+            error_1 = self.__ds1[-1] - (self.__params_2[1] * self.__ds2[-1] + self.__params_2[0])
+            error_2 = self.__ds2[-1] - (self.__params_1[1] * self.__ds1[-1] + self.__params_1[0])
+            self.__threshold = error_1 - error_2
+
+
 class Pair_Strategy_Based_Bank(strategy.BacktestingStrategy):
     def __init__(self, feed, brk, instrument1, instrument2, startdate, interval):
         super(Pair_Strategy_Based_Bank, self).__init__(feed, brk)
@@ -880,6 +1046,7 @@ class Pair_Strategy_Based_Bank_Live(strategy.BacktestingStrategy):
                 self.__textlist.setdefault(bars.getDateTime().date(), self.__text)
 
 
+# 双均线策略
 class DataCalculator_For_DoubleMA_Strategy():
     def __init__(self, ds, malength_1, malength_2):
         self.__ds = ds

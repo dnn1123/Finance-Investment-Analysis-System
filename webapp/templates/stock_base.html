@@ -2,10 +2,6 @@
 <head>
     <meta charset='utf-8'>
 
-    <meta HTTP-EQUIV="Pragma" CONTENT="no-cache">
-    <meta HTTP-EQUIV="Cache-Control" CONTENT="no-cache">
-    <meta HTTP-EQUIV="Expires" CONTENT="0">
-
     <script type="text/javascript" src="{{ url_for('static',filename='js/jquery-2.0.0.min.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static',filename='js/jquery-ui') }}"></script>
     <script type="text/javascript" src="{{ url_for('static',filename='js/echarts.js') }}"></script>
@@ -221,6 +217,7 @@
                     success: function (data) {
                         var imgsrc = "../static/avatar/" + data.avatar + "?timestamp=" + new Date().getTime();
                         $("#myavatar").attr("src", imgsrc);
+                        console.log(data);
                     }
                 })
             </script>
@@ -342,11 +339,9 @@
                 else {
                     $("#system_message_count").text('暂无未读')
                 }
-
             }
         })
     }
-
 </script>
 {% block JavaScripts %}{% endblock %}
 </html>

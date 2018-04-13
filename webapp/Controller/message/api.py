@@ -100,7 +100,10 @@ def person_box():
     queryavatar = personal.query.filter(personal.username == personid).first()
 
     if queryavatar:
-        myavatar = queryavatar.avatar
+        if queryavatar.avatar is not None:
+            myavatar = queryavatar.avatar
+        else:
+            myavatar = 'user.png'
     else:
         myavatar = 'user.png'
 
@@ -187,7 +190,10 @@ def message_all():
 
     profilephoto = personal.query.filter(personal.username == current_user.username).first()
     if profilephoto:
-        current_avatar = profilephoto.avatar
+        if profilephoto.avatar is not None:
+            current_avatar = profilephoto.avatar
+        else:
+            current_avatar = 'user.png'
     else:
         current_avatar = 'user.png'
 
@@ -208,7 +214,10 @@ def message_all():
         name = result.poster
         myresult = personal.query.filter(personal.username == name).first()
         if myresult:
-            avatar.append(myresult.avatar)
+            if myresult.avatar is not None:
+                avatar.append(myresult.avatar)
+            else:
+                avatar.append('user.png')
         else:
             avatar.append('user.png')
 
@@ -257,7 +266,10 @@ def message_follow():
 
     profilephoto = personal.query.filter(personal.username == current_user.username).first()
     if profilephoto:
-        current_avatar = profilephoto.avatar
+        if profilephoto.avatar is not None:
+            current_avatar = profilephoto.avatar
+        else:
+            current_avatar = 'user.png'
     else:
         current_avatar = 'user.png'
 
@@ -284,7 +296,10 @@ def message_follow():
             name = results[x].poster
             myresult = personal.query.filter(personal.username == name).first()
             if myresult:
-                avatar.append(myresult.avatar)
+                if myresult.avatar is not None:
+                    avatar.append(myresult.avatar)
+                else:
+                    avatar.append('user.png')
             else:
                 avatar.append('user.png')
     else:
@@ -302,7 +317,10 @@ def message_follow():
             name = results[x].poster
             myresult = personal.query.filter(personal.username == name).first()
             if myresult:
-                avatar.append(myresult.avatar)
+                if myresult.avatar is not None:
+                    avatar.append(myresult.avatar)
+                else:
+                    avatar.append('user.png')
             else:
                 avatar.append('user.png')
 
@@ -348,7 +366,10 @@ def message_myown():
 
     profilephoto = personal.query.filter(personal.username == current_user.username).first()
     if profilephoto:
-        current_avatar = profilephoto.avatar
+        if profilephoto.avatar is not None:
+            current_avatar = profilephoto.avatar
+        else:
+            current_avatar = 'user.png'
     else:
         current_avatar = 'user.png'
 
@@ -373,7 +394,10 @@ def message_myown():
             name = results[x].poster
             myresult = personal.query.filter(personal.username == name).first()
             if myresult:
-                avatar.append(myresult.avatar)
+                if myresult.avatar is not None:
+                    avatar.append(myresult.avatar)
+                else:
+                    avatar.append('user.png')
             else:
                 avatar.append('user.png')
 
@@ -392,7 +416,10 @@ def message_myown():
             name = results[x].poster
             myresult = personal.query.filter(personal.username == name).first()
             if myresult:
-                avatar.append(myresult.avatar)
+                if myresult.avatar is not None:
+                    avatar.append(myresult.avatar)
+                else:
+                    avatar.append('user.png')
             else:
                 avatar.append('user.png')
 
@@ -443,7 +470,10 @@ def comment_all():
         name = result.commenter
         profilephoto = personal.query.filter(personal.username == name).first()
         if profilephoto:
-            avatar.append(profilephoto.avatar)
+            if profilephoto.avatar is not None:
+                avatar.append(profilephoto.avatar)
+            else:
+                avatar.append('user.png')
         else:
             avatar.append('user.png')
 
@@ -763,7 +793,10 @@ def query_avatar():
 
     result = personal.query.filter(personal.username == current_user.username).first()
     if result:
-        avatar = result.avatar
+        if result.avatar is not None:
+            avatar = result.avatar
+        else:
+            avatar = 'user.png'
     else:
         avatar = 'user.png'
 
@@ -808,18 +841,26 @@ def query_person():
     result = personal.query.filter(personal.username == current_user.username).first()
 
     if result:
-        username = result.username
-        phone = result.phonenumber
-        mail = result.mail
-        address = result.address
-        introduce = result.introduce
-        avatar = result.avatar
+        if result.avatar is not None:
+            username = result.username
+            phone = result.phonenumber
+            mail = result.mail
+            address = result.address
+            introduce = result.introduce
+            avatar = result.avatar
+        else:
+            username = result.username
+            phone = result.phonenumber
+            mail = result.mail
+            address = result.address
+            introduce = result.introduce
+            avatar = 'user.png'
     else:
         username = current_user.username
-        phone = '暂无个人信息'
-        mail = '暂无个人信息'
-        address = '暂无个人信息'
-        introduce = '暂无个人信息'
+        phone = ''
+        mail = ''
+        address = ''
+        introduce = ''
         avatar = 'user.png'
 
     data['usersname'] = username
