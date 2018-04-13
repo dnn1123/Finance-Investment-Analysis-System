@@ -230,7 +230,7 @@
                                     <div id="datatable_new" class="mytable" style="width: auto;height:70%;"></div>
                                 </div>
                             </div>
-                            <div class="well well-lg" >
+                            <div class="well well-lg">
                                 <div id="toolbox">
                                     <table>
                                         <tr>
@@ -589,7 +589,10 @@
                 }
             },
             tooltip: {
-                trigger: 'item'
+                trigger: 'item',
+                formatter: function (param) {
+                    return param.name + " : " + param.value[2];
+                }
             },
             geo: {
                 map: 'china',
@@ -635,7 +638,6 @@
                     }
                 },
                 {
-                    name: 'Top',
                     type: 'effectScatter',
                     coordinateSystem: 'geo',
                     data: convertData(data),
@@ -899,16 +901,16 @@
         function DisplayROCTable() {
             for (i = (k_data.date.length) - 1; i >= 0; i--) {
                 var rowNode = mytable_roc
-                        .row.add([k_data.date[i], k_data.k_data[i][1], k_data.p_change[i] + "%"])
-                        .draw()
-                        .node();
+                    .row.add([k_data.date[i], k_data.k_data[i][1], k_data.p_change[i] + "%"])
+                    .draw()
+                    .node();
                 if (k_data.p_change[i] < 0) {
                     $(rowNode)
-                            .css('color', 'green')
+                        .css('color', 'green')
                 }
                 else {
                     $(rowNode)
-                            .css('color', 'red')
+                        .css('color', 'red')
                 }
             }
         }
@@ -1074,22 +1076,22 @@
             pickerPosition: 'top-right'
         });
         $('#starttime_picker')
-                .datetimepicker()
-                .on('changeDate', function (ev) {
-                    startime = ev.date.Format("yyyy年Q4")
-                    myChart_option.dataZoom[0].startValue = startime
-                    myChart.setOption(myChart_option)
-                    RequestTable();
-                });
+            .datetimepicker()
+            .on('changeDate', function (ev) {
+                startime = ev.date.Format("yyyy年Q4")
+                myChart_option.dataZoom[0].startValue = startime
+                myChart.setOption(myChart_option)
+                RequestTable();
+            });
         $('#endtime_picker')
-                .datetimepicker()
-                .on('changeDate', function (ev) {
-                    endtime = ev.date.Format("yyyy年Q4")
-                    myChart_option.dataZoom[0].endValue = endtime
-                    myChart.setOption(myChart_option)
-                    RequestTable();
+            .datetimepicker()
+            .on('changeDate', function (ev) {
+                endtime = ev.date.Format("yyyy年Q4")
+                myChart_option.dataZoom[0].endValue = endtime
+                myChart.setOption(myChart_option)
+                RequestTable();
 
-                });
+            });
         Date.prototype.Format = function (fmt) { //author: meizz
             var o = {
                 "M+": this.getMonth() + 1, //月份
@@ -1115,24 +1117,24 @@
             pickerPosition: 'top-right'
         });
         $('#starttime_picker_new')
-                .datetimepicker()
-                .on('changeDate', function (ev) {
-                    date = $("#starttime_picker_new").data("datetimepicker").getDate()
-                    startime = change_time_type(date)
-                    myChart_new_option.dataZoom[0].startValue = startime
-                    myChart_new.setOption(myChart_new_option)
-                    cutarray(data_checked)
-                });
+            .datetimepicker()
+            .on('changeDate', function (ev) {
+                date = $("#starttime_picker_new").data("datetimepicker").getDate()
+                startime = change_time_type(date)
+                myChart_new_option.dataZoom[0].startValue = startime
+                myChart_new.setOption(myChart_new_option)
+                cutarray(data_checked)
+            });
         $('#endtime_picker_new')
-                .datetimepicker()
-                .on('changeDate', function (ev) {
-                    date = $("#endtime_picker_new").data("datetimepicker").getDate()
-                    endtime = change_time_type(date)
-                    myChart_new_option.dataZoom[0].endValue = endtime
-                    myChart_new.setOption(myChart_new_option)
-                    cutarray(data_checked)
+            .datetimepicker()
+            .on('changeDate', function (ev) {
+                date = $("#endtime_picker_new").data("datetimepicker").getDate()
+                endtime = change_time_type(date)
+                myChart_new_option.dataZoom[0].endValue = endtime
+                myChart_new.setOption(myChart_new_option)
+                cutarray(data_checked)
 
-                });
+            });
 
         $(document).ready(function () {
             var index_cn_name_list = []
@@ -1375,7 +1377,7 @@
                 tempdata = []
                 for (i = 0; i < finance_results.the_year.length; i++) {
                     datavalue = finance_results.wgsd_net_inc[i] *
-                            (1 / (Math.pow(1 - finance_results.wgsd_net_inc[i] / finance_results.wgsd_com_eq[i], 5)) / (finance_results.wgsd_net_inc[i] / finance_results.wgsd_com_eq[i]))
+                        (1 / (Math.pow(1 - finance_results.wgsd_net_inc[i] / finance_results.wgsd_com_eq[i], 5)) / (finance_results.wgsd_net_inc[i] / finance_results.wgsd_com_eq[i]))
                     tempdata.push(datavalue)
                 }
                 temp = {
@@ -1393,7 +1395,7 @@
                 tempdata = []
                 for (i = 0; i < finance_results.the_year.length; i++) {
                     datavalue = (finance_results.wgsd_net_inc[i] *
-                            (1 / (Math.pow(1 - finance_results.wgsd_net_inc[i] / finance_results.wgsd_com_eq[i], 5)) / (finance_results.wgsd_net_inc[i] / finance_results.wgsd_com_eq[i]))) / invest_results.total_shares[i]
+                        (1 / (Math.pow(1 - finance_results.wgsd_net_inc[i] / finance_results.wgsd_com_eq[i], 5)) / (finance_results.wgsd_net_inc[i] / finance_results.wgsd_com_eq[i]))) / invest_results.total_shares[i]
                     tempdata.push(datavalue)
                 }
                 temp = {
@@ -1697,22 +1699,22 @@
             for (var i = 0; i < finance_results_t.indexes.length; i++) {
                 if (Chosenindexes.hasOwnProperty(finance_results.indexes[i])) {
                     var rowNode = mydatatb
-                            .row.add([indexdict_finance[finance_results_t.indexes[i]]].concat(numfilter(eval("finance_results_t." + finance_results_t.indexes[i]))))
-                            .draw()
-                            .node();
+                        .row.add([indexdict_finance[finance_results_t.indexes[i]]].concat(numfilter(eval("finance_results_t." + finance_results_t.indexes[i]))))
+                        .draw()
+                        .node();
                     $(rowNode)
-                            .attr('id', finance_results_t.indexes[i]);
+                        .attr('id', finance_results_t.indexes[i]);
 
                 }
             }
             for (var i = 0; i < invest_results_t.indexes.length; i++) {
                 if (Chosenindexes.hasOwnProperty(invest_results_t.indexes[i])) {
                     var rowNode = mydatatb
-                            .row.add([indexdict_invest[invest_results_t.indexes[i]]].concat(numfilter(eval("invest_results_t." + invest_results_t.indexes[i]))))
-                            .draw()
-                            .node();
+                        .row.add([indexdict_invest[invest_results_t.indexes[i]]].concat(numfilter(eval("invest_results_t." + invest_results_t.indexes[i]))))
+                        .draw()
+                        .node();
                     $(rowNode)
-                            .attr('id', invest_results_t.indexes[i]);
+                        .attr('id', invest_results_t.indexes[i]);
                 }
             }
             if (Chosenindexes.hasOwnProperty("net_inc_eq_rate")) {
@@ -1722,11 +1724,11 @@
                     tempdata.push(datavalue)
                 }
                 var rowNode = mydatatb
-                        .row.add([dict["net_inc_eq_rate"]].concat(numfilter(tempdata)))
-                        .draw()
-                        .node();
+                    .row.add([dict["net_inc_eq_rate"]].concat(numfilter(tempdata)))
+                    .draw()
+                    .node();
                 $(rowNode)
-                        .attr('id', "net_inc_eq_rate");
+                    .attr('id', "net_inc_eq_rate");
             }
             if (Chosenindexes.hasOwnProperty("earnings_per_share")) {
                 tempdata = []
@@ -1736,11 +1738,11 @@
                 }
 
                 var rowNode = mydatatb
-                        .row.add([dict["earnings_per_share"]].concat(numfilter(tempdata)))
-                        .draw()
-                        .node();
+                    .row.add([dict["earnings_per_share"]].concat(numfilter(tempdata)))
+                    .draw()
+                    .node();
                 $(rowNode)
-                        .attr('id', "earnings_per_share");
+                    .attr('id', "earnings_per_share");
             }
             if (Chosenindexes.hasOwnProperty("net_assets_per_share")) {
                 tempdata = []
@@ -1750,11 +1752,11 @@
                 }
 
                 var rowNode = mydatatb
-                        .row.add([dict["net_assets_per_share"]].concat(numfilter(tempdata)))
-                        .draw()
-                        .node();
+                    .row.add([dict["net_assets_per_share"]].concat(numfilter(tempdata)))
+                    .draw()
+                    .node();
                 $(rowNode)
-                        .attr('id', "net_assets_per_share");
+                    .attr('id', "net_assets_per_share");
             }
             if (Chosenindexes.hasOwnProperty("cash_per_share")) {
                 tempdata = []
@@ -1764,11 +1766,11 @@
                 }
 
                 var rowNode = mydatatb
-                        .row.add([dict["cash_per_share"]].concat(numfilter(tempdata)))
-                        .draw()
-                        .node();
+                    .row.add([dict["cash_per_share"]].concat(numfilter(tempdata)))
+                    .draw()
+                    .node();
                 $(rowNode)
-                        .attr('id', "cash_per_share");
+                    .attr('id', "cash_per_share");
             }
             if (Chosenindexes.hasOwnProperty("payment_proportion")) {
                 tempdata = []
@@ -1778,11 +1780,11 @@
                 }
 
                 var rowNode = mydatatb
-                        .row.add([dict["payment_proportion"]].concat(numfilter(tempdata)))
-                        .draw()
-                        .node();
+                    .row.add([dict["payment_proportion"]].concat(numfilter(tempdata)))
+                    .draw()
+                    .node();
                 $(rowNode)
-                        .attr('id', "payment_proportion");
+                    .attr('id', "payment_proportion");
             }
             if (Chosenindexes.hasOwnProperty("equal_earning_rate")) {
                 tempdata = []
@@ -1792,11 +1794,11 @@
                 }
 
                 var rowNode = mydatatb
-                        .row.add([dict["equal_earning_rate"]].concat(numfilter(tempdata)))
-                        .draw()
-                        .node();
+                    .row.add([dict["equal_earning_rate"]].concat(numfilter(tempdata)))
+                    .draw()
+                    .node();
                 $(rowNode)
-                        .attr('id', "equal_earning_rate");
+                    .attr('id', "equal_earning_rate");
             }
             if (Chosenindexes.hasOwnProperty("equal_market_rate")) {
                 tempdata = []
@@ -1806,41 +1808,41 @@
                 }
 
                 var rowNode = mydatatb
-                        .row.add([dict["equal_market_rate"]].concat(numfilter(tempdata)))
-                        .draw()
-                        .node();
+                    .row.add([dict["equal_market_rate"]].concat(numfilter(tempdata)))
+                    .draw()
+                    .node();
                 $(rowNode)
-                        .attr('id', "equal_market_rate");
+                    .attr('id', "equal_market_rate");
             }
             if (Chosenindexes.hasOwnProperty("com_value_evaluate")) {
                 tempdata = []
                 for (i = 0; i < finance_results_t.the_year.length; i++) {
                     datavalue = finance_results_t.wgsd_net_inc[i] *
-                            (1 / (Math.pow(1 - finance_results_t.wgsd_net_inc[i] / finance_results_t.wgsd_com_eq[i], 5)) / (finance_results_t.wgsd_net_inc[i] / finance_results_t.wgsd_com_eq[i]))
+                        (1 / (Math.pow(1 - finance_results_t.wgsd_net_inc[i] / finance_results_t.wgsd_com_eq[i], 5)) / (finance_results_t.wgsd_net_inc[i] / finance_results_t.wgsd_com_eq[i]))
                     tempdata.push(datavalue)
                 }
 
                 var rowNode = mydatatb
-                        .row.add([dict["com_value_evaluate"]].concat(numfilter(tempdata)))
-                        .draw()
-                        .node();
+                    .row.add([dict["com_value_evaluate"]].concat(numfilter(tempdata)))
+                    .draw()
+                    .node();
                 $(rowNode)
-                        .attr('id', "com_value_evaluate");
+                    .attr('id', "com_value_evaluate");
             }
             if (Chosenindexes.hasOwnProperty("per_com_value_evaluate")) {
                 tempdata = []
                 for (i = 0; i < finance_results_t.the_year.length; i++) {
                     datavalue = (finance_results_t.wgsd_net_inc[i] *
-                            (1 / (Math.pow(1 - finance_results_t.wgsd_net_inc[i] / finance_results_t.wgsd_com_eq[i], 5)) / (finance_results_t.wgsd_net_inc[i] / finance_results_t.wgsd_com_eq[i]))) / invest_results_t.total_shares[i]
+                        (1 / (Math.pow(1 - finance_results_t.wgsd_net_inc[i] / finance_results_t.wgsd_com_eq[i], 5)) / (finance_results_t.wgsd_net_inc[i] / finance_results_t.wgsd_com_eq[i]))) / invest_results_t.total_shares[i]
                     tempdata.push(datavalue)
                 }
 
                 var rowNode = mydatatb
-                        .row.add([dict["per_com_value_evaluate"]].concat(numfilter(tempdata)))
-                        .draw()
-                        .node();
+                    .row.add([dict["per_com_value_evaluate"]].concat(numfilter(tempdata)))
+                    .draw()
+                    .node();
                 $(rowNode)
-                        .attr('id', "per_com_value_evaluate");
+                    .attr('id', "per_com_value_evaluate");
             }
             if (Chosenindexes.hasOwnProperty("fre_cash_evaluate")) {
                 tempdata = []
@@ -1850,11 +1852,11 @@
                 }
 
                 var rowNode = mydatatb
-                        .row.add([dict["fre_cash_evaluate"]].concat(numfilter(tempdata)))
-                        .draw()
-                        .node();
+                    .row.add([dict["fre_cash_evaluate"]].concat(numfilter(tempdata)))
+                    .draw()
+                    .node();
                 $(rowNode)
-                        .attr('id', "fre_cash_evaluate");
+                    .attr('id', "fre_cash_evaluate");
             }
             if (Chosenindexes.hasOwnProperty("earning_rate")) {
                 tempdata = []
@@ -1864,11 +1866,11 @@
                 }
 
                 var rowNode = mydatatb
-                        .row.add([dict["earning_rate"]].concat(numfilter(tempdata)))
-                        .draw()
-                        .node();
+                    .row.add([dict["earning_rate"]].concat(numfilter(tempdata)))
+                    .draw()
+                    .node();
                 $(rowNode)
-                        .attr('id', "earning_rate");
+                    .attr('id', "earning_rate");
             }
             if (Chosenindexes.hasOwnProperty("net_rate")) {
                 tempdata = []
@@ -1878,11 +1880,11 @@
                 }
 
                 var rowNode = mydatatb
-                        .row.add([dict["net_rate"]].concat(numfilter(tempdata)))
-                        .draw()
-                        .node();
+                    .row.add([dict["net_rate"]].concat(numfilter(tempdata)))
+                    .draw()
+                    .node();
                 $(rowNode)
-                        .attr('id', "net_rate");
+                    .attr('id', "net_rate");
             }
             if (Chosenindexes.hasOwnProperty("sale_rate")) {
                 tempdata = []
@@ -1892,11 +1894,11 @@
                 }
 
                 var rowNode = mydatatb
-                        .row.add([dict["sale_rate"]].concat(numfilter(tempdata)))
-                        .draw()
-                        .node();
+                    .row.add([dict["sale_rate"]].concat(numfilter(tempdata)))
+                    .draw()
+                    .node();
                 $(rowNode)
-                        .attr('id', "sale_rate");
+                    .attr('id', "sale_rate");
             }
             if (Chosenindexes.hasOwnProperty("cash_rate")) {
                 tempdata = []
@@ -1906,11 +1908,11 @@
                 }
 
                 var rowNode = mydatatb
-                        .row.add([dict["cash_rate"]].concat(numfilter(tempdata)))
-                        .draw()
-                        .node();
+                    .row.add([dict["cash_rate"]].concat(numfilter(tempdata)))
+                    .draw()
+                    .node();
                 $(rowNode)
-                        .attr('id', "cash_rate");
+                    .attr('id', "cash_rate");
             }
             if (Chosenindexes.hasOwnProperty("cash_yield_evaluate")) {
                 tempdata = []
@@ -1919,11 +1921,11 @@
                     tempdata.push(datavalue)
                 }
                 var rowNode = mydatatb
-                        .row.add([dict["cash_yield_evaluate"]].concat(numfilter(tempdata)))
-                        .draw()
-                        .node();
+                    .row.add([dict["cash_yield_evaluate"]].concat(numfilter(tempdata)))
+                    .draw()
+                    .node();
                 $(rowNode)
-                        .attr('id', "cash_yield_evaluate");
+                    .attr('id', "cash_yield_evaluate");
             }
             for (var key in Chosenindexes) {
                 $('tr#' + key).css('color', Chosenindexes[key])
@@ -1981,8 +1983,8 @@
             }
 
             $("#list3").append("<div><h4><a class='accordion-toggle' data-toggle='collapse'  href='#balance sheet'>资产负债表</a></h4><div id='balance sheet' class='collapse in'><div id='balance list'></div> </div></div>" +
-                    "<div><h4><a class='accordion-toggle' data-toggle='collapse'  href='#cash-flow statement'>现金流量表</a></h4><div id='cash-flow statement' class='collapse in'><div id='cashflow list'></div> </div></div>" +
-                    "<div><h4><a class='accordion-toggle' data-toggle='collapse'  href='#income statement'>利润表</a></h4><div id='income statement' class='collapse in'><div id='income list'></div> </div></div>")
+                "<div><h4><a class='accordion-toggle' data-toggle='collapse'  href='#cash-flow statement'>现金流量表</a></h4><div id='cash-flow statement' class='collapse in'><div id='cashflow list'></div> </div></div>" +
+                "<div><h4><a class='accordion-toggle' data-toggle='collapse'  href='#income statement'>利润表</a></h4><div id='income statement' class='collapse in'><div id='income list'></div> </div></div>")
 
         }
 
@@ -2072,7 +2074,7 @@
                 async: false,
                 success: function (data) {
                     for (var i = 0; i < data.indexes.length; i++) {
-                        eval(" data."+ data.indexes[i]+"_list.reverse()")
+                        eval(" data." + data.indexes[i] + "_list.reverse()")
                     }
                     data.the_year.reverse();
                     data_checked = data
@@ -2191,44 +2193,44 @@
             return time
         }
 
-{#        根据日期控件截取数组#}
-        function cutarray(data_checked){
-            data=data_checked
+        {#        根据日期控件截取数组#}
+        function cutarray(data_checked) {
+            data = data_checked
             var start = '0'
             var end = data.the_year.length
-            var year_list_cutted=[]
-            var index_list_cutted=[]
+            var year_list_cutted = []
+            var index_list_cutted = []
 
             start_date = $("#starttime_picker_new").data("datetimepicker").getDate()
             startime = change_time_type(start_date)
             end_date = $("#endtime_picker_new").data("datetimepicker").getDate()
             endtime = change_time_type(end_date)
-            for(i=0;i<data.the_year.length;i++){
-                index[i]=data[data.indexes[i]]
-                if(startime==data.the_year[i]){
+            for (i = 0; i < data.the_year.length; i++) {
+                index[i] = data[data.indexes[i]]
+                if (startime == data.the_year[i]) {
                     start = i
                 }
-                if(endtime==data.the_year[i]){
+                if (endtime == data.the_year[i]) {
                     end = i
                 }
             }
-            if(start > end){
+            if (start > end) {
                 var mid = start
                 start = end
                 end = mid
             }
-            year_list_cutted=data.the_year.slice(start,end)
-            for(var i = 0; i < data.indexes.length;i++){
+            year_list_cutted = data.the_year.slice(start, end)
+            for (var i = 0; i < data.indexes.length; i++) {
                 str = "data." + data.indexes[i] + "_list"
-                index_list_cutted[i]=eval(str).slice(start,end)
+                index_list_cutted[i] = eval(str).slice(start, end)
             }
             console.log(data.indexes)
-            CreatTable_new(year_list_cutted,index_list_cutted,start,data_checked)
+            CreatTable_new(year_list_cutted, index_list_cutted, start, data_checked)
         }
 
 
-        function CreatTable_new(year_list_cutted,index_list_cutted,start,data_checked){
-            data=data_checked
+        function CreatTable_new(year_list_cutted, index_list_cutted, start, data_checked) {
+            data = data_checked
             $("#datatable_new").empty();
             var table = $("<table id=\"temptable_new\" class=\"row-border hover order-column\" cellspacing=\"0\" width=\"100%\"  >");
             table.appendTo($("#datatable_new"));
@@ -2244,7 +2246,7 @@
             }
             tb = $("<tbody></tbody>");
             tb.appendTo(table);
-            for(var i = 0; i < data.indexes.length;i++){
+            for (var i = 0; i < data.indexes.length; i++) {
                 var tr_b = $("<tr></tr>");
                 $(tr_b).css('color', Chosenindexes_new[data.id[i]])
                 tr_b.appendTo(tb);
@@ -2270,7 +2272,7 @@
                 "processing": true,
                 "scrollX": true,
                 "searching": true,
-                "lengthMenu":[7],
+                "lengthMenu": [7],
                 "fixedColumns": { //固定列的配置项
                     "leftColumns": 1//固定左边第一列
                 },
