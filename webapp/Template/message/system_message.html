@@ -14,47 +14,55 @@
                 </div>
             </div>
         </div>
-        </div>
+    </div>
 {% endblock %}
 
 {% block JavaScripts %}
     <script>
-    $(document).ready(function () {
-        getdata()
-    })
-    function getdata() {
-        $.ajax({
-            type: 'GET',
-            url: '{{ url_for("message_api.get_system_message") }}',
-            dataType: 'json',
-            success: function (data) {
-                $("#message").empty()
-                for(i=0;i<data.length;i++){
-                    if (data[i].state == 'Y'){
-                        html='<div class="alert alert-block alert-success" id="'+ data[i].id+'"><h5>系统消息&nbsp&nbsp&nbsp&nbsp'+data[i].time+'</h5>'+data[i].message +'</div>'
-                        $("#message").append(html)
+        $(document).ready(function () {
+            getdata()
+        })
+        function getdata() {
+            $.ajax({
+                type: 'GET',
+                url: '{{ url_for("message_api.get_system_message") }}',
+                dataType: 'json',
+                success: function (data) {
+                    console.log(data)
+                    $("#message").empty()
+                    if (data.length) {
+                        for (i = 0; i < data.length; i++) {
+                            console.log(data)
+                            if (data[i].state == 'Y') {
+                                html = '<div class="alert alert-block alert-success" id="' + data[i].id + '"><h5>系统消息&nbsp&nbsp&nbsp&nbsp' + data[i].time + '</h5>' + data[i].message + '</div>'
+                                $("#message").append(html)
+                            }
+                            if (data[i].state == 'N') {
+                                html = '<div class="alert alert-block alert-info unread-message" id="' + data[i].id + '"><h5>系统消息&nbsp&nbsp&nbsp&nbsp' + data[i].time + '</h5>' + data[i].message + '</div>'
+                                $("#message").append(html)
+                            }
+                        }
                     }
-                    if(data[i].state == 'N'){
-                        html='<div class="alert alert-block alert-info unread-message" id="'+ data[i].id+'"><h5>系统消息&nbsp&nbsp&nbsp&nbsp'+data[i].time+'</h5>'+data[i].message +'</div>'
+                    else {
+                        html = '<div class="alert alert-block alert-success">暂无消息</div>'
                         $("#message").append(html)
                     }
                 }
-            }
-        })
-    }
-    $("#message").on('click','.unread-message',function () {
-        var id = $(this).attr('id')
-        var obj = $(this)
-        $.ajax({
-            type: 'GET',
-            url: '{{ url_for("message_api.read_system_message") }}',
-            data: {"id": id},
-            dataType: 'json',
-            success: function (data) {
-                obj.removeClass('unread-message', 'alert-info')
-                obj.addClass('alert-success')
-            }
-        })
+            })
+        }
+        $("#message").on('click', '.unread-message', function () {
+            var id = $(this).attr('id')
+            var obj = $(this)
+            $.ajax({
+                type: 'GET',
+                url: '{{ url_for("message_api.read_system_message") }}',
+                data: {"id": id},
+                dataType: 'json',
+                success: function (data) {
+                    obj.removeClass('unread-message', 'alert-info')
+                    obj.addClass('alert-success')
+                }
+            })
         })
     </script>
 

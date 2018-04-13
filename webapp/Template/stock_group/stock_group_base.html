@@ -6,6 +6,7 @@
 {% block current_user %}
     {{ current_user.username }}
 {% endblock %}
+
 {% block body %}
     <div class="span9">
         {% block tab %}{% endblock %}
@@ -20,13 +21,7 @@
     </div>
 {% endblock %}
 {% block JavaScripts %}
-    <script type="text/javascript">
-        // 等待所有加载
-        $(window).load(function () {
-            $('body').addClass('loaded');
-            $('#loader-wrapper .load_title').remove();
-        });
-    </script>
+
 {% block scripts %}
 {% endblock %}
 {% endblock %}
