@@ -17,7 +17,7 @@ main_view = Blueprint(
 
 @main_view.route('/', methods=['GET', 'POST'])
 def index():
-    return render_template('login.html')
+    return render_template('new_login.html')
 
 
 @main_view.route('register_phone', methods=['GET', 'POST'])
@@ -27,7 +27,7 @@ def register_phone():
 
 @main_view.route('register', methods=['GET', 'POST'])
 def register():
-    return render_template('register.html')
+    return render_template('new_register.html')
 
 
 @main_view.route('logout')

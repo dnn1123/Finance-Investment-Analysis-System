@@ -11,7 +11,6 @@ industry_analysis_view = Blueprint(
 )
 
 @industry_analysis_view.route('/mymark', methods=('GET', 'POST'))
-@login_required
 def mymark():
     return render_template('mymark.html')
 

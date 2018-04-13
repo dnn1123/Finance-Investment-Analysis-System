@@ -22,7 +22,6 @@ stocksolo_blueprint = Blueprint(
 )
 @stocksolo_blueprint.route('/',methods=('GET','POST'))
 @stocksolo_blueprint.route('/<string:data>',methods=('GET','POST'))
-@login_required
 def basic(data=""):
     if data=="":
         if session.has_key('stockcode'):
@@ -42,7 +41,6 @@ def basic(data=""):
 
 @stocksolo_blueprint.route('/finance_data',methods=('GET','POST'))
 @stocksolo_blueprint.route('/finance_data/<string:data>',methods=('GET','POST'))
-@login_required
 def finance_data(data='000895'):
     data=data
     form = CodeForm()

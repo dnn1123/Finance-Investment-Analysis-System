@@ -1,0 +1,339 @@
+﻿<html>
+<head>
+    <meta charset='utf-8'>
+
+    <meta HTTP-EQUIV="Pragma" CONTENT="no-cache">
+    <meta HTTP-EQUIV="Cache-Control" CONTENT="no-cache">
+    <meta HTTP-EQUIV="Expires" CONTENT="0">
+
+    <script type="text/javascript" src="{{ url_for('static',filename='js/jquery-2.0.0.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static',filename='js/jquery-ui') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static',filename='js/echarts.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static',filename='js/china.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static',filename='js/jquery.pagination.js') }}"></script>
+    <script type="text/javascript"
+            src="{{ url_for('static',filename="DataTables-1.10.15/media/js/jquery.dataTables.js") }}"></script>
+    <script type="text/javascript"
+            src="{{ url_for('static',filename='DataTables-1.10.15/fixedcolumns/js/dataTables.fixedColumns.js') }}"></script>
+    {#excel#}
+    {#dataTables.bootstrap.min.js#}
+    <script type="text/javascript"
+            src="{{ url_for('static',filename='DataTables-1.10.15/dataTables.bootstrap.min.js') }}"></script>
+    {#dataTables.responsive.min.js#}
+    <script type="text/javascript"
+            src="{{ url_for('static',filename='DataTables-1.10.15/extensions/Responsive/js/dataTables.responsive.min.js') }}"></script>
+    {#dataTables.buttons.min.js#}
+    <script type="text/javascript"
+            src="{{ url_for('static',filename='DataTables-1.10.15/extensions/Buttons/js/dataTables.buttons.min.js') }}"></script>
+    {#jszip.min.js#}
+    <script type="text/javascript"
+            src="{{ url_for('static',filename='DataTables-1.10.15/JSZip-2.5.0/jszip.min.js') }}"></script>
+    {#buttons.html5.min.js#}
+    <script type="text/javascript"
+            src="{{ url_for('static',filename='DataTables-1.10.15/extensions/Buttons/js/buttons.html5.min.js') }}"></script>
+    {#end excel#}
+    <script type="text/javascript" src="{{ url_for('static',filename='icheck/icheck.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static',filename='js/bootstrap.min.js') }}"></script>
+    <script type="text/javascript"
+            src="{{ url_for('static',filename='bootstrap_datetimepicker/js/bootstrap-datetimepicker.js') }}"></script>
+    <script type="text/javascript"
+            src="{{ url_for('static',filename='bootstrap_select/js/bootstrap-select.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static',filename='js/bootstrap-suggest.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static',filename='js/jquery.cookie.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static',filename='js/nav.js') }}"></script>
+{#    生成树插件#}
+    <script type="text/javascript" src="{{ url_for('static',filename='js/dtree.js') }}"></script>
+
+    <link href="{{ url_for('static',filename='bootstrap_select/css/bootstrap-select.css') }}" rel="stylesheet"
+          type="text/css">
+    <link href="{{ url_for('static',filename='css/pagination.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ url_for('static',filename='bootstrap_datetimepicker/css/bootstrap-datetimepicker.css') }}"
+          rel="stylesheet" type="text/css">
+    <link href="{{ url_for('static',filename='icheck/skins/minimal/blue.css') }}" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" href="http://jqueryui.com/resources/demos/style.css">
+    <link href="{{ url_for('static',filename='DataTables-1.10.15/media/css/jquery.dataTables.css') }}" rel="stylesheet"
+          type="text/css">
+    <link href="{{ url_for('static',filename='DataTables-1.10.15/fixedcolumns/css/fixedColumns.dataTables.css') }}"
+          rel="stylesheet" type="text/css">
+    <!--链接本地文件的写法，css和js的写法不一样 ps:还有一个js文件在上面-->
+    <link href="{{ url_for('static',filename='css/loader.min.css') }}"
+          rel="stylesheet" type="text/css">
+
+    {#    library for new  templates#}
+    <link href="{{ url_for('static',filename='bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" media="screen">
+    {#    <link href="{{ url_for('static',filename='bootstrap/css/bootstrap-responsive.min.css') }}" rel="stylesheet"#}
+    {#          media="screen">#}
+    <link href="{{ url_for('static',filename='css/nav.css') }}" rel="stylesheet" media="screen">
+    <link type="text/css" href="{{ url_for('static',filename='css/theme.css') }}" rel="stylesheet">
+    <link type="text/css" href="{{ url_for('static',filename='images/icons/css/font-awesome.css') }}" rel="stylesheet">
+    <link type="text/css" href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,400,600'
+          rel='stylesheet'>
+    <link type="text/css" href="{{ url_for('static',filename='css/dtree.css') }}" rel="stylesheet">
+    <!--自动补全-->
+
+    <script>
+        $(function () {
+            var availableTags =
+                    [{% for x in list_len %} <!--这里直接写range(list_len)不行，会在返回功能主页时出错"list_len is undefined"-->
+                        {% for i in (0,1) %}
+                            "{{ rs[x][i] }}",
+                        {% endfor %}
+                    {% endfor %}];
+            $("#tags").autocomplete({
+                source: availableTags
+            });
+        });
+    </script>
+    <!--锁定行列的js文件-->
+    <script type="text/javascript" src="{{ url_for('static',filename='js/tableHeadFixer.js') }}"></script>
+    <!--js的分页方法，用于industry_analysis/annual_table.html-->
+    <script type="text/javascript" src="{{ url_for('static',filename='js/jquery.pagination.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static',filename='js/china.js') }}"></script>
+    <style>
+        * {
+            font-family: "Times New Roman";
+            font-size: 12px;
+        }
+
+        .td_num {
+            text-align: right;
+            border-style: none;
+        }
+
+        .td_num_2 {
+            text-align: left;
+            border-style: none;
+        }
+
+        .td_project {
+            text-align: left;
+            border-left-style: none;
+            border-top-style: none;
+            border-bottom-style: none;
+        }
+
+        .td_bottom_line {
+            text-align: right;
+            border-left-style: none;
+            border-top-style: none;
+            border-right-style: none;
+        }
+
+        .td_bottom_line_title {
+            text-align: left;
+            border-left-style: none;
+            border-top-style: none;
+            border-right-style: none;
+        }
+
+        .td_bottom_line_title_2 {
+            text-align: left;
+            border-left-style: none;
+            border-top-style: none;
+        }
+
+        {# 这行有什么用 #}
+        .leftbox {
+            width: 15%;
+            height: 100%;
+            float: left;
+
+        }
+
+        .rightbox {
+            width: 85%;
+            height: 100%;
+            float: left;
+
+        }
+
+        #temptable {
+            table-layout: inherit;
+            width: 100px;
+        }
+
+        #zyqnav ul ul {
+            display: none;
+            position: absolute;
+            left: 100%;
+            top: 0;
+            background-color: white;
+            border: 1px solid lightgrey;
+        }
+
+        #zyqnav ul li:hover > ul { /* > 子菜单选择器 鼠标在li上的时候 改变子ul的display属性*/
+            display: block;
+        }
+
+    </style>
+    {% block styles %}{% endblock %}
+</head>
+<body>
+<div class="navbar navbar-fixed-top" style="position: fixed;top: 0">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".navbar-inverse-collapse">
+                <i class="icon-reorder shaded"></i></a><a class="brand" href="index.html">Merit </a>
+            <div class="nav-collapse collapse navbar-inverse-collapse">
+                <ul class="nav nav-icons">
+                    <li class="active"><a href="#"><i class="icon-envelope"></i></a></li>
+                    <li><a href="#"><i class="icon-eye-open"></i></a></li>
+                    <li><a href="#"><i class="icon-bar-chart"></i></a></li>
+                </ul>
+                {% block searchForm %}{% endblock %}
+                <ul class="nav pull-right" id="onav">
+                    <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">功能导航<b
+                            class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{{ url_for('stock_solo.basic') }}">股票个体分析 </a></li>
+                            <li><a href="{{ url_for('stock_group.navigation') }}">股票总体概览</a></li>
+                            <li><a href="{{ url_for('industry_analysis.mymark') }}">整体行业状况分析</a></li>
+                            <li><a href="{{ url_for('global_industry.basic') }}">投资分类评级</a></li>
+                            <li class="divider"></li>
+                            <li><a href="{{ url_for("quant.models") }}">量化模型 </a></li>
+                            <li><a href="{{ url_for("quant.backtest") }}">历史回测 </a></li>
+                            <li><a href="{{ url_for("quant.realtime_simulation") }}">实时模拟</a></li>
+                            <li class="divider"></li>
+                            <li><a href="#">交易系统</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="{{ url_for('stock.home') }}">返回主页</a></li>
+                    <li class="nav-user dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <img id="myavatar" src="" class="nav-avatar"/>
+                        {% block current_user %}{% endblock %}
+                        <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{{ url_for('stock.home') }}">个人信息</a></li>
+                            <li><a href="{{ url_for('main.profilephoto') }}">编辑资料</a></li>
+                            <li><a href= {{ url_for('main.admin') }}>用户权限管理</a></li>
+                            <li class="divider"></li>
+                            <li><a href={{ url_for('main.logout') }}>退出登录</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <script>
+                $.ajax({
+                    type: 'GET',
+                    url: '{{ url_for("message_api.query_avatar") }}',
+                    dataType: 'json',//希望服务器返回json格式的数据
+                    success: function (data) {
+                        var imgsrc = "../static/avatar/" + data.avatar + "?timestamp=" + new Date().getTime();
+                        $("#myavatar").attr("src", imgsrc);
+                    }
+                })
+            </script>
+            <!-- /.nav-collapse -->
+        </div>
+    </div>
+    <!-- /navbar-inner -->
+</div>
+
+<div class="wrapper" id="container">
+    <div class="container">
+        <div class="row" style="height: auto">
+            <div class="span3" style="height: auto"></div>
+            <div class="span3" style="position: fixed;top: auto">
+
+                <div class="sidebar">
+                    <ul class="widget widget-menu unstyled">
+                        <li class="active"><a href="{{ url_for('main.index') }}"><i
+                                class="menu-icon icon-dashboard"></i>登陆我的账户
+                        </a></li>
+                    </ul>
+                    <!--/.widget-nav-->
+
+
+                    <ul class="widget widget-menu unstyled">
+                        <li><a class="collapsed" data-toggle="collapse" href="#togglePages"><i
+                                class="menu-icon icon-cog">
+                        </i><i class="icon-chevron-down pull-right"></i><i class="icon-chevron-up pull-right">
+                        </i>财务分析 </a>
+                            <ul id="togglePages" class="collapse unstyled">
+                                <li><a href="{{ url_for('visitor.basic') }}"><i class="icon-inbox"></i>股票个体分析 </a>
+                                </li>
+                                <li><a href="{{ url_for('stock_group.navigation') }}"><i class="icon-inbox"></i>股票总体概览
+                                </a></li>
+                                <li><a href="{{ url_for('industry_analysis.mymark') }}"><i class="icon-inbox"></i>整体行业状况分析
+                                </a></li>
+                                <li><a href="{{ url_for('global_industry.basic') }}"><i class="icon-inbox"></i>投资分类评级
+                                </a></li>
+                            </ul>
+                        </li>
+                        <li><a class="collapsed" data-toggle="collapse" href="#togglePages_quant">
+                            <i class="icon-chevron-down pull-right"></i><i class="menu-icon icon-book">
+                        </i>量化模型 </a>
+                            <ul id="togglePages_quant" class="collapse unstyled">
+                                <li><a href="{{ url_for("quant.models") }}"><i class="icon-inbox"></i>量化模型 </a></li>
+                                <li><a href="{{ url_for("quant.backtest") }}"><i class="icon-inbox"></i>历史回测 </a></li>
+                                <li><a href="{{ url_for("quant.realtime_simulation") }}"><i class="icon-inbox"></i>实时模拟
+                                </a></li>
+                            </ul>
+                        </li>
+                        <li><a href="table.html"><i class="menu-icon icon-table"></i>交易模型 </a></li>
+                        <!--<li><a href="charts.html"><i class="menu-icon icon-bar-chart"></i>Charts </a></li>-->
+                    </ul>
+                    <!--/.widget-nav-->
+                    <ul class="widget widget-menu unstyled">
+
+                        <li><a href="{{ url_for('main.logout') }}"><i class="menu-icon icon-signout"></i>退出登录 </a></li>
+                    </ul>
+                </div>
+                <!--/.sidebar-->
+            </div>
+            <!--/.span3-->
+            {% block body %}{% endblock %}
+            <!--/.span9-->
+        </div>
+        {% block bottombody %}{% endblock %}
+    </div>
+    <!--/.container-->
+</div>
+</body>
+<script>
+    $(document).ready(function () {
+        var navheight = $("div.navbar").height();
+        $("#container").css("margin-top", navheight);
+    })
+    setInterval(aa, 300000);
+    setInterval(bb, 300000);
+
+    function aa() {
+        $.ajax({
+            type: 'GET',
+            url: '{{ url_for("message_api.get_message_count") }}',
+            dataType: 'json',
+            success: function (data) {
+                console.log(data);
+                if (data.count > 0) {
+                    $("#personal_message_count").text(data.count)
+                }
+                else {
+                    $("#personal_message_count").text('暂无未读')
+                }
+
+            }
+        })
+    }
+
+    function bb() {
+        $.ajax({
+            type: 'GET',
+            url: '{{ url_for("message_api.get_system_message_count") }}',
+            dataType: 'json',
+            success: function (data) {
+                if (data.count > 0) {
+                    $("#system_message_count").text(data.count)
+                }
+                else {
+                    $("#system_message_count").text('暂无未读')
+                }
+
+            }
+        })
+    }
+
+</script>
+{% block JavaScripts %}{% endblock %}
+</html>
