@@ -63,6 +63,10 @@ $("#div_form").on('click', '.submit', function () {
                 }
             })
         })
+
+$("#model_list").on('click', '.sample', function () {
+        window.location.href="{{ url_for("quant.models_sample") }}"+$(this).attr('id')
+        })
 </script>
 
 {% endblock %}

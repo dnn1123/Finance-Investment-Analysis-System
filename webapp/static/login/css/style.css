@@ -180,6 +180,10 @@ body {
 
 .connect a.facebook { background: url(../img/facebook.png) center center no-repeat; }
 .connect a.twitter { background: url(../img/twitter.png) center center no-repeat; }
+.connect a.QQ { background: url(../img/QQ.png) center center no-repeat; }
+.connect a.weixin { background: url(../img/weixin.png) center center no-repeat; }
+.connect a.sina { background: url(../img/sina.png) center center no-repeat; }
+
 
 .connect a:hover { background-position: center bottom; }
 

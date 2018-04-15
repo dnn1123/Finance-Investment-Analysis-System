@@ -13,6 +13,11 @@ quant_view = Blueprint(
 def models():
     return render_template('models.html')
 
+@quant_view.route('/models_sample/',methods=('GET', 'POST'))
+@quant_view.route('/models_sample/<string:pic>',methods=('GET', 'POST'))
+def models_sample(pic="None"):
+    return render_template('models_sample.html',pic=pic)
+
 @quant_view.route('/backtest', methods=('GET', 'POST'))
 def backtest():
     return render_template('backtest.html')
