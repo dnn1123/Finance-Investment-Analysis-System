@@ -171,41 +171,41 @@
     <div class="navbar-inner">
         <div class="container">
             <a class="btn btn-navbar" data-toggle="collapse" data-target=".navbar-inverse-collapse">
-                <i class="icon-reorder shaded"></i></a><a class="brand" href="index.html">Merit </a>
+                <i class="icon-reorder shaded"></i></a><a class="brand" href="index.html">Fin-magic 魔法金融 </a>
             <div class="nav-collapse collapse navbar-inverse-collapse">
                 <ul class="nav nav-icons">
-                    <li class="active"><a href="#"><i class="icon-envelope"></i></a></li>
-                    <li><a href="#"><i class="icon-eye-open"></i></a></li>
-                    <li><a href="#"><i class="icon-bar-chart"></i></a></li>
+                    <li class="active"><a href="{{ url_for('message.system_message') }}"><i class="icon-envelope"></i></a></li>
+                    <li><a href="{{ url_for('message.my_message') }}"><i class="icon-eye-open"></i></a></li>
+                    <li><a href="{{ url_for('stock_solo.basic') }}"><i class="icon-bar-chart"></i></a></li>
                 </ul>
                 {% block searchForm %}{% endblock %}
                 <ul class="nav pull-right" id="onav">
-                    <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">功能导航<b
+                    <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-th-list"></i>功能导航<b
                             class="caret"></b></a>
                         <ul class="dropdown-menu">
-                            <li><a href="{{ url_for('stock_solo.basic') }}">股票个体分析 </a></li>
-                            <li><a href="{{ url_for('stock_group.navigation') }}">股票总体概览</a></li>
-                            <li><a href="{{ url_for('industry_analysis.mymark') }}">整体行业状况分析</a></li>
-                            <li><a href="{{ url_for('global_industry.basic') }}">投资分类评级</a></li>
+                            <li><a href="{{ url_for('stock_solo.basic') }}"><i class="icon-inbox"></i>股票个体分析 </a></li>
+                            <li><a href="{{ url_for('stock_group.navigation') }}"><i class="icon-inbox"></i>股票总体概览</a></li>
+                            <li><a href="{{ url_for('industry_analysis.mymark') }}"><i class="icon-inbox"></i>整体行业状况分析</a></li>
+                            <li><a href="{{ url_for('global_industry.basic') }}"><i class="icon-inbox"></i>投资分类评级</a></li>
                             <li class="divider"></li>
-                            <li><a href="{{ url_for("quant.models") }}">量化模型 </a></li>
-                            <li><a href="{{ url_for("quant.backtest") }}">历史回测 </a></li>
-                            <li><a href="{{ url_for("quant.realtime_simulation") }}">实时模拟</a></li>
+                            <li><a href="{{ url_for("quant.models") }}"><i class="icon-inbox"></i>量化模型 </a></li>
+                            <li><a href="{{ url_for("quant.backtest") }}"><i class="icon-inbox"></i>历史回测 </a></li>
+                            <li><a href="{{ url_for("quant.realtime_simulation") }}"><i class="icon-inbox"></i>实时模拟</a></li>
                             <li class="divider"></li>
-                            <li><a href="#">交易系统</a></li>
+                            <li><a href="#"><i class="icon-inbox"></i>交易系统</a></li>
                         </ul>
                     </li>
-                    <li><a href="{{ url_for('stock.home') }}">返回主页</a></li>
+                    <li><a href="{{ url_for('stock.home') }}"><i class="icon-home"></i>返回主页</a></li>
                     <li class="nav-user dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <img id="myavatar" src="" class="nav-avatar"/>
                         {% block current_user %}{% endblock %}
                         <b class="caret"></b></a>
-                        <ul class="dropdown-menu" >
-                            <li><a href="{{ url_for('stock.home') }}">个人信息</a></li>
-                            <li><a href="{{ url_for('main.profilephoto') }}">编辑资料</a></li>
-<li id="admin"></li>
+                        <ul class="dropdown-menu">
+                            <li><a href="{{ url_for('stock.home') }}"><i class="icon-user"></i>个人信息</a></li>
+                            <li><a href="{{ url_for('main.profilephoto') }}"><i class="icon-pencil"></i>编辑资料</a></li>
+                            <li id="admin"></li>
                             <li class="divider"></li>
-                            <li><a href={{ url_for('main.logout') }}>退出登录</a></li>
+                            <li><a href={{ url_for('main.logout') }}><i class="icon-off"></i>退出登录</a></li>
                         </ul>
                     </li>
                 </ul>

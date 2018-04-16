@@ -128,7 +128,7 @@
                 </div>
             </div>
 
-            <div class="module">
+            <div class="module" style="display: none;">
                 <div class="module-head">
 
                     <button class="btn btn-primary">指标数据分析</button>
@@ -2112,6 +2112,7 @@
                     index_en_name_list = data['en_name']
                     index_id_list = data['id']
                     index_id_belong_to_list = data['id_belong_to']
+                    console.log(data)
                 }
             })
         }
@@ -2119,8 +2120,13 @@
         function tree() {
             tree = new dTree('tree')
             for (var i = 0; i < index_id_list.length; i++) {
-                tree.add(index_id_list[i], index_id_belong_to_list[i], "<input type='checkbox' name=\"check\" id=\"" + index_id_list[i] + "\" value=\"" + index_id_belong_to_list[i] + "\" class=\"index_checked\" onClick=\"index_check(this.id)\"/> " + " <div id='div_" + index_id_list[i] + "'  style='margin-right:5px;display:inline-block;width: 10px; height:10px;background-color:transparent '></div>" + index_cn_name_list[i])
-            }
+                if(index_id_belong_to_list[i]=="-1"){
+                    tree.add(index_id_list[i], index_id_belong_to_list[i], "<p id=\"" + index_id_list[i] + "\" value=\"" + index_id_belong_to_list[i] + "\" class=\"text-info\" style=\"margin:10px 0 10px 0\"> " + "<strong style=\"color:#3a87ad\">" + index_cn_name_list[i]+"</strong></p>")
+                }
+                else {
+                    tree.add(index_id_list[i], index_id_belong_to_list[i], "<input type='checkbox' name=\"check\" id=\"" + index_id_list[i] + "\" value=\"" + index_id_belong_to_list[i] + "\" class=\"index_checked\" onClick=\"index_check(this.id)\"/> " + " <div id='div_" + index_id_list[i] + "'  style='margin-right:5px;display:inline-block;width: 10px; height:10px;background-color:transparent '></div>" + index_cn_name_list[i])
+                }
+                }
             tree.closeAll()
             document.getElementById("mytree").innerHTML = tree;
             {#                    document.write(tree)#}
