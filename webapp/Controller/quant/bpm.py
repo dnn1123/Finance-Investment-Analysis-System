@@ -84,7 +84,7 @@ def handle_liveform(form):
     if type == "My_Pair_Strategy":
         params = {"commission": float(form.get('commission')), "cash": float(form.get('cash')),
                   "instrument_1": form.get('instrument_1'), "instrument_2": form.get('instrument_2')}
-        data = {"strategy_id": Strategy.Pair_Strategy_Based_Bank.value, "strategy_name": form.get('strategy_name'),
+        data = {"strategy_id": Strategy.My_Pair_Strategy.value, "strategy_name": form.get('strategy_name'),
                 "params": params, "build_date": datetime.datetime.now()}
         return data
     if type == "Buy_Everyday":
@@ -279,7 +279,7 @@ class Strategy_Manager():
         brk = broker.backtesting.Broker(self.__cash, feed, broker_commission)  # 初始化
         brk.setFillStrategy(fill_stra)  # 将成交策略传给brk
         # 4.把策略跑起来
-        self.__strategy_entity = My_Pair_Strategy(feed, brk, self.__i1, self.__i2, self.__startdate, 50)
+        self.__strategy_entity = My_Pair_Strategy_Live(feed, brk, self.__i1, self.__i2, self.__builddate, 50)
         self.__retAnalyzer = returns.Returns()
         self.__strategy_entity.attachAnalyzer(self.__retAnalyzer)
         self.__sharpeRatioAnalyzer = sharpe.SharpeRatio()
@@ -796,7 +796,7 @@ class My_Pair_Strategy(strategy.BacktestingStrategy):
 
 class My_Pair_Strategy_Live(strategy.BacktestingStrategy):
     def __init__(self, feed, brk, instrument1, instrument2, builddate, windowSize):
-        super(My_Pair_Strategy, self).__init__(feed, brk)
+        super(My_Pair_Strategy_Live, self).__init__(feed, brk)
         self.setUseAdjustedValues(True)
         self.__statArbHelper = DataCalculator_For_My_Pair_Strategy(feed[instrument1].getAdjCloseDataSeries(),
                                                                    feed[instrument2].getAdjCloseDataSeries(),

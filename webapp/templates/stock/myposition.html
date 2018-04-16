@@ -1512,7 +1512,10 @@
                     }
                 },
                 tooltip: {
-                    trigger: 'item'
+                    trigger: 'item',
+                    formatter: function (param) {
+                        return param.name + " : " + param.value[2];
+                    }
                 },
                 legend: {
                     orient: 'vertical',
@@ -1567,7 +1570,6 @@
                         }
                     },
                     {
-                        name: 'Top 2',
                         type: 'effectScatter',
                         coordinateSystem: 'geo',
                         data: convertData(valueDist.sort(function (a, b) {

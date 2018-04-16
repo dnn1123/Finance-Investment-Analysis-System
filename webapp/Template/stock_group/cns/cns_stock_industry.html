@@ -39,6 +39,15 @@
     </div>
 {% endblock %}
 {% block industry %}
+    <div class="module">
+                <div class="module-head">
+<button  class="btn btn-primary" data-toggle="button">沪深A股</button>
+                            <div style="float:right;margin-right:0px;text-align: right">
+                                <button class="btn btn-mini btn-danger" id="excel_table">数据下载
+                                </button>
+                            </div>
+    </div>
+        <div class="module-body" style="height:600px">
     <table id="fixTable" class="row-border hover order-column display" cellspacing="0" width="100%"
            style="white-space: nowrap;">
         <thead>
@@ -85,6 +94,8 @@
         <tbody>
         </tbody>
     </table>
+        </div>
+    </div>
 {% endblock %}
 {% block bottombody %}
 
@@ -301,14 +312,64 @@
                     "infoEmpty": "没有数据",
                     "infoFiltered": "(过滤总件数 _MAX_ 条)"
                 },
-                dom: 'Bfrtip',
-                buttons: {
-                    buttons: [
-                        {extend: 'copy', 'text': '复制', 'className': 'btn btn-default btn-xs',},
-                        {extend: 'excel', 'text': '导出Excel', 'className': 'btn btn-default btn-xs',}
-                    ]
-                }
+                dom: 'lfrtip',
+
             })
+              new $.fn.dataTable.Buttons( mytable, {
+            buttons: [
+                {extend: 'excel', 'text': '导出Excel', 'className': 'btn btn-default btn-xs',}
+            ]
+        });
+        $('#excel_table').on('click', function () {
+            if ('{{  current_user.is_authenticated }}' != 'False') {
+                $.ajax({
+                    type: 'GET',
+                    url: '{{ url_for("restfulapi.buy_data") }}',
+                    data: {
+                        'username': "{{ current_user.username }}",
+
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.member == null) {
+                            if (data.user_money >= 1) {
+                                if (confirm('您当前账户余额' + data.user_money + '元，下载该数据需要消费1元，是否需要下载？')) {
+                                     mytable.buttons(0).trigger()
+                                    $.ajax({
+                                        type: 'GET',
+                                        url: '{{ url_for("restfulapi.change_money") }}',
+                                        data: {
+                                            'action': "sub",
+                                            'count': 1,
+                                        },
+                                        dataType: 'json',
+                                        success: function (data) {
+                                            console.log(data)
+                                        }
+                                    })
+                                }
+
+                            }
+                            else {
+                                alert('您当前账户余额' + data.user_money + '元,不足1元，无法下载！')
+                            }
+                        }
+                        else {
+                            alert('您当前享有免费下载数据特权，此次操作不消耗账户余额！')
+                        }
+                    }
+                })
+            }
+            else {
+                var r = confirm("请登录后下载！")
+                if (r == true) {
+                    location.href = '{{ url_for('main.logout') }}';
+                }
+
+            }
+
+
+        })
             area = "%"
             gic1 = "%"
             gic2 = "%"

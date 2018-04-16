@@ -145,3 +145,31 @@ def usa_market(sec_name=None, trade_code=None, query_history=None):
 def cns_market_new():
     return render_template("global_industry/cns_market_new.html")
 
+@globalindustry_blueprint.route('/hks_market', methods=('GET', 'POST'))
+@login_required
+def hks_market():
+    return render_template("global_industry/hks_market.html")
+
+
+
+@globalindustry_blueprint.route('/uks_market', methods=('GET', 'POST'))
+@login_required
+def uks_market():
+    return render_template("global_industry/uks_market.html")
+
+
+@globalindustry_blueprint.route('/eps_market', methods=('GET', 'POST'))
+@login_required
+def eps_market():
+    return render_template("global_industry/eps_market.html")
+
+
+@globalindustry_blueprint.route('/jps_market', methods=('GET', 'POST'))
+@login_required
+def jps_market():
+    return render_template("global_industry/jps_market.html")
+
+@globalindustry_blueprint.route('/usa_market_new', methods=('GET', 'POST'))
+@login_required
+def usa_market_new():
+    return render_template("global_industry/usa_market.html")

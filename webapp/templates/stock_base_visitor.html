@@ -2,10 +2,6 @@
 <head>
     <meta charset='utf-8'>
 
-    <meta HTTP-EQUIV="Pragma" CONTENT="no-cache">
-    <meta HTTP-EQUIV="Cache-Control" CONTENT="no-cache">
-    <meta HTTP-EQUIV="Expires" CONTENT="0">
-
     <script type="text/javascript" src="{{ url_for('static',filename='js/jquery-2.0.0.min.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static',filename='js/jquery-ui') }}"></script>
     <script type="text/javascript" src="{{ url_for('static',filename='js/echarts.js') }}"></script>
@@ -41,7 +37,7 @@
     <script type="text/javascript" src="{{ url_for('static',filename='js/bootstrap-suggest.min.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static',filename='js/jquery.cookie.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static',filename='js/nav.js') }}"></script>
-{#    生成树插件#}
+    {#    生成树插件#}
     <script type="text/javascript" src="{{ url_for('static',filename='js/dtree.js') }}"></script>
 
     <link href="{{ url_for('static',filename='bootstrap_select/css/bootstrap-select.css') }}" rel="stylesheet"
@@ -75,11 +71,11 @@
     <script>
         $(function () {
             var availableTags =
-                    [{% for x in list_len %} <!--这里直接写range(list_len)不行，会在返回功能主页时出错"list_len is undefined"-->
-                        {% for i in (0,1) %}
-                            "{{ rs[x][i] }}",
-                        {% endfor %}
-                    {% endfor %}];
+                [{% for x in list_len %} <!--这里直接写range(list_len)不行，会在返回功能主页时出错"list_len is undefined"-->
+                    {% for i in (0,1) %}
+                        "{{ rs[x][i] }}",
+                    {% endfor %}
+                {% endfor %}];
             $("#tags").autocomplete({
                 source: availableTags
             });
@@ -165,7 +161,6 @@
         #zyqnav ul li:hover > ul { /* > 子菜单选择器 鼠标在li上的时候 改变子ul的display属性*/
             display: block;
         }
-
     </style>
     {% block styles %}{% endblock %}
 </head>
@@ -216,8 +211,6 @@
                         </a></li>
                     </ul>
                     <!--/.widget-nav-->
-
-
                     <ul class="widget widget-menu unstyled">
                         <li><a class="collapsed" data-toggle="collapse" href="#togglePages" aria-expanded="true"><i
                                 class="menu-icon icon-cog">
@@ -234,23 +227,6 @@
                                 </a></li>
                             </ul>
                         </li>
-{#                        <li><a class="collapsed" data-toggle="collapse" href="#togglePages_quant">#}
-{#                            <i class="icon-chevron-down pull-right"></i><i class="menu-icon icon-book">#}
-{#                        </i>量化模型 </a>#}
-{#                            <ul id="togglePages_quant" class="collapse unstyled">#}
-{#                                <li><a href="{{ url_for("quant.models") }}"><i class="icon-inbox"></i>量化模型 </a></li>#}
-{#                                <li><a href="{{ url_for("quant.backtest") }}"><i class="icon-inbox"></i>历史回测 </a></li>#}
-{#                                <li><a href="{{ url_for("quant.realtime_simulation") }}"><i class="icon-inbox"></i>实时模拟#}
-{#                                </a></li>#}
-{#                            </ul>#}
-{#                        </li>#}
-{#                        <li><a href="table.html"><i class="menu-icon icon-table"></i>交易模型 </a></li>#}
-{#                        <!--<li><a href="charts.html"><i class="menu-icon icon-bar-chart"></i>Charts </a></li>-->#}
-{#                    </ul>#}
-                    <!--/.widget-nav-->
-                    <ul class="widget widget-menu unstyled">
-
-                        <li><a href="{{ url_for('main.logout') }}"><i class="menu-icon icon-signout"></i>退出登录 </a></li>
                     </ul>
                 </div>
                 <!--/.sidebar-->

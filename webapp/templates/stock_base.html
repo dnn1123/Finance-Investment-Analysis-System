@@ -203,7 +203,7 @@
                         <ul class="dropdown-menu">
                             <li><a href="{{ url_for('stock.home') }}"><i class="icon-user"></i>个人信息</a></li>
                             <li><a href="{{ url_for('main.profilephoto') }}"><i class="icon-pencil"></i>编辑资料</a></li>
-                            <li><a href= {{ url_for('main.admin') }}><i class="icon-ok-circle"></i>用户权限管理</a></li>
+                            <li id="admin"></li>
                             <li class="divider"></li>
                             <li><a href={{ url_for('main.logout') }}><i class="icon-off"></i>退出登录</a></li>
                         </ul>
@@ -216,7 +216,7 @@
                     url: '{{ url_for("message_api.query_avatar") }}',
                     dataType: 'json',//希望服务器返回json格式的数据
                     success: function (data) {
-                        var imgsrc = "../static/avatar/" + data.avatar + "?timestamp=" + new Date().getTime();
+                        var imgsrc = "/static/avatar/" + data.avatar + "?timestamp=" + new Date().getTime();
                         $("#myavatar").attr("src", imgsrc);
                         console.log(data);
                     }
@@ -303,15 +303,16 @@
 </div>
 </body>
 <script>
+    get_permission()
     $(document).ready(function () {
         var navheight = $("div.navbar").height();
         $("#container").css("margin-top", navheight);
+
     })
-    setInterval(aa, 50000);
-    setInterval(bb, 50000);
+    setInterval(aa,30000);
+    setInterval(bb,30000);
 
     function aa() {
-
         $.ajax({
             type: 'GET',
             url: '{{ url_for("message_api.get_message_count") }}',
@@ -325,7 +326,6 @@
                 else {
                     $("#personal_message_count").text('暂无未读')
                 }
-
             }
         })
     }
@@ -342,6 +342,21 @@
                 else {
                     $("#system_message_count").text('暂无未读')
                 }
+            }
+        })
+    }
+
+    function get_permission(){
+        $.ajax({
+            type: 'GET',
+            url: '{{ url_for("restfulapi.get_permission") }}',
+            dataType: 'json',
+            success: function (data) {
+                console.log(data.permission)
+                if (data.permission == 1) {
+                    $("#admin").append("<li><a href= {{ url_for('main.admin') }}>用户权限管理</a></li>")
+                }
+
             }
         })
     }
