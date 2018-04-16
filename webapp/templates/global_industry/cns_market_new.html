@@ -4,56 +4,69 @@
     <ul class="nav nav-pills">
         <li><a href="{{ url_for('global_industry.basic') }}">RA.投资分类评级</a></li>
         <li class="active"><a>CHS.大陆市场</a></li>
-        <li><a>HKS.香港市场</a></li>
-        <li><a>USA.美国市场</a></li>
-        <li><a>UKS.英国市场</a></li>
-        <li><a>EPS.欧洲市场</a></li>
-        <li><a>JPS.日本市场</a></li>
+        <li><a href="{{ url_for('global_industry.hks_market') }}">HKS.香港市场</a></li>
+        <li><a href="{{ url_for('global_industry.usa_market_new') }}">USA.美国市场</a></li>
+        <li><a href="{{ url_for('global_industry.uks_market') }}">UKS.英国市场</a></li>
+        <li><a href="{{ url_for('global_industry.eps_market') }}">EPS.欧洲市场</a></li>
+        <li><a href="{{ url_for('global_industry.jps_market') }}">JPS.日本市场</a></li>
     </ul>
 {% endblock %}
 
 {% block table %}
 
 
+    <div class="module" style="margin-top:10px;border-radius:5px">
+        <div class="module-head">
+            <button class="btn btn-primary">大陆市场</button>
+            <div style="float:right;margin-right:0px;text-align: right">
+                <button class="btn btn-mini btn-danger" id="excel">下载
+                </button>
+            </div>
+        </div>
+        <div class="module-body" >
+            <div style="white-space:nowrap;overflow-y:auto;">
+                <table id="fixTable" style="border-color:#000;text-align: center;">
+                    <!--border="1"有无会有点区别-->
+                    <thead style="white-space:nowrap;"> <!--问题：table的显示方面有个间距问题-->
+                    <tr bgcolor="#CC0000"><!--表头通过百分比分100%-->
+                        <td style="width:6%;"><font color="white">证券代码</font></td>
+                        <td style="width:6%;"><font color="white">证券名称</font></td>
+                        <td style="width:7%;"><font color="white">上市时间</font></td>
+                        <td style="width:9%;"><font color="white">投资分类评级</font></td>
+                        <td style="width:9%;"><font color="white">评价年度</font></td>
+                        <td style="width:7%;"><font color="white">部门</font>
+                            <button type="button" class="btn btn-primary" data-toggle="modal"
+                                    data-target="#department_industry">
+                                <span class="caret"></span>
+                            </button>
+                        </td>
+                        <td style="width:7%;"><font color="white">行业组</font>
+                            <button type="button" class="btn btn-primary " data-toggle="modal"
+                                    data-target="#group_industry">
+                                <span class="caret"></span>
+                            </button>
+                        </td>
+                        <td style="width:7%;"><font color="white">行业</font>
+                            <button type="button" class="btn btn-primary" data-toggle="modal"
+                                    data-target="#industry_why">
+                                <span class="caret"></span>
+                            </button>
+                        </td>
+                        <td style="width:7%;"><font color="white">子行业</font>
+                            <button type="button" class="btn btn-primary" data-toggle="modal"
+                                    data-target="#sub_industry">
+                                <span class="caret"></span>
+                            </button>
+                        </td>
+                        <td style="width:8%;"><font color="white">历史记录</font></td>
+                    </tr>
+                    </thead>
+                    <tbody id='my_tbody' style="white-space:nowrap;">
 
-    <div style="white-space:nowrap;">
-        <table id="fixTable" style="border-color:#000;text-align: center;">
-            <!--border="1"有无会有点区别-->
-            <thead style="white-space:nowrap;"> <!--问题：table的显示方面有个间距问题-->
-            <tr bgcolor="#CC0000"><!--表头通过百分比分100%-->
-                <td style="width:6%;"><font color="white">证券代码</font></td>
-                <td style="width:6%;"><font color="white">证券名称</font></td>
-                <td style="width:7%;"><font color="white">上市时间</font></td>
-                <td style="width:9%;"><font color="white">投资分类评级</font></td>
-                <td style="width:9%;"><font color="white">评价年度</font></td>
-                <td style="width:7%;"><font color="white">部门</font>
-                    <button type="button" class="btn btn-primary" data-toggle="modal"
-                            data-target="#department_industry">
-                        <span class="caret"></span>
-                    </button>
-                </td>
-                <td style="width:7%;"><font color="white">行业组</font>
-                    <button type="button" class="btn btn-primary " data-toggle="modal" data-target="#group_industry">
-                        <span class="caret"></span>
-                    </button>
-                </td>
-                <td style="width:7%;"><font color="white">行业</font>
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#industry_why">
-                        <span class="caret"></span>
-                    </button>
-                </td>
-                <td style="width:7%;"><font color="white">子行业</font>
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#sub_industry">
-                        <span class="caret"></span>
-                    </button>
-                </td>
-                <td style="width:8%;"><font color="white">历史记录</font></td>
-            </tr>
-            </thead>
-            <tbody id='my_tbody' style="white-space:nowrap;">
-
-            </tbody>
-        </table>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
     <!-- 模态框 组 -->
     <div class="modal hide fade" id="department_industry" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
@@ -76,7 +89,7 @@
                 </div>
                 <div class="modal-footer">
 
-                        <input type="button" class="btn btn-default" value="重置" contenteditable="true" onclick=refresh()>
+                    <input type="button" class="btn btn-default" value="重置" contenteditable="true" onclick=refresh()>
 
                     <input type="submit" id="btn_department_industry" class="btn btn-primary" value="筛选"
                            contenteditable="true">
@@ -323,15 +336,64 @@
                     "infoFiltered": "(过滤总件数 _MAX_ 条)"
                 },
                 "destroy": true,
-                dom: 'Bfrtip',
-                buttons: {
-                    buttons: [
-                        {extend: 'copy', 'text': '复制', 'className': 'btn btn-default btn-xs',},
-                        {extend: 'excel', 'text': '导出Excel', 'className': 'btn btn-default btn-xs',}
-                    ]
-                }
-            })
+                dom: 'lfrtip',
 
+            })
+            new $.fn.dataTable.Buttons(table, {
+                buttons: [
+                    {extend: 'excel', 'text': '导出Excel', 'className': 'btn btn-default btn-xs',}
+                ]
+            });
+            $('#excel').on('click', function () {
+                if ('{{  current_user.is_authenticated }}' != 'False') {
+                    $.ajax({
+                        type: 'GET',
+                        url: '{{ url_for("restfulapi.buy_data") }}',
+                        data: {
+                            'username': "{{ current_user.username }}",
+
+                        },
+                        dataType: 'json',
+                        success: function (data) {
+                            if (data.member == null) {
+                                if (data.user_money >= 1) {
+                                    if (confirm('您当前账户余额' + data.user_money + '元，下载该数据需要消费1元，是否需要下载？')) {
+                                        table.buttons(0).trigger()
+                                        $.ajax({
+                                            type: 'GET',
+                                            url: '{{ url_for("restfulapi.change_money") }}',
+                                            data: {
+                                                'action': "sub",
+                                                'count': 1,
+                                            },
+                                            dataType: 'json',
+                                            success: function (data) {
+                                                console.log(data)
+                                            }
+                                        })
+                                    }
+
+                                }
+                                else {
+                                    alert('您当前账户余额' + data.user_money + '元,不足1元，无法下载！')
+                                }
+                            }
+                            else {
+                                alert('您当前享有免费下载数据特权，此次操作不消耗账户余额！')
+                            }
+                        }
+                    })
+                }
+                else {
+                    var r = confirm("请登录后下载！")
+                    if (r == true) {
+                        location.href = '{{ url_for('main.logout') }}';
+                    }
+
+                }
+
+
+            })
         }
 
 
@@ -589,18 +651,18 @@
                 $("#select_sub_industry").append("<option>" + ddct[key] + "</option>")
             }
             $("#grade").append(
-                    "<select id=\"new_score\">"+
-                                    "<option value=\"1\">A</option>"+
-                                    "<option value=\"4\">B</option>"+
-                                    "<option value=\"7\">C</option>"+
-                                    "<option value=\"10\">D</option>"+
-                                    "<option value=\"11\">E</option>"+
-                                "</select>"
+                    "<select id=\"new_score\">" +
+                    "<option value=\"1\">A</option>" +
+                    "<option value=\"4\">B</option>" +
+                    "<option value=\"7\">C</option>" +
+                    "<option value=\"10\">D</option>" +
+                    "<option value=\"11\">E</option>" +
+                    "</select>"
             )
 
 
         }
-        $("#btn_department_industry").click(function (){
+        $("#btn_department_industry").click(function () {
             creat_table(Data)
             index = $("#select_department_industry").val();
             table.column(5)
@@ -686,17 +748,18 @@
                                 "</tr>"
                         $("#history_tbody").append(str)
                     }
-$("#modal_history_data").modal('show')
+                    $("#modal_history_data").modal('show')
                 }
             })
         }
-        function refresh(){
-             location.reload()
+        function refresh() {
+            location.reload()
         }
         $(document).ready(function () {
             get_data()
             creat_table(Data)
             creat_option()
+
         });
 
 

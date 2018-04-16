@@ -106,7 +106,12 @@
                 <div class="btn-box-row row-fluid">
                     <div class="module span12">
                         <div class="module-head">
-                            <a href="#postable" aria-expanded="false" data-toggle="collapse">市场分析</a>
+
+                            <button class="btn btn-primary">市场分析</button>
+                            <div style="float:right;margin-right:0px;text-align: right">
+                                <button class="btn btn-mini btn-danger" id="excel_mytable">数据下载
+                                </button>
+                            </div>
                         </div>
                         <div class="modal-body">
                             <div id="postable" style="margin: auto;width:95%">
@@ -305,8 +310,12 @@
                 <div class="btn-box-row row-fluid">
                     <div class="module span12">
                         <div class="module-head" style="height:20px;">
-                            <a href="#postgroup1" aria - expanded="false" data - toggle="collapse" style="float:left;">
-                                行业分析 </a>
+
+                             <button style="float:left;" class="btn btn-primary">行业分析</button>
+                            <div style="float:right;margin-right:0px;text-align: right">
+                                <button class="btn btn-mini btn-danger"  onclick=excel_mytable1()>数据下载
+                                </button>
+                            </div>
                             <div id="show" style="float:left;margin-left:10px;">
                             </div>
                         </div>
@@ -524,6 +533,10 @@
                                                     style="margin-top:0;margin-left:10px;width:150px;height: 30px">
                                                 清空比较列表
                                             </button>
+                                            <button id="excel_mytables1" type="submit" class="btn btn-default"
+                                                    style="margin-top:0;margin-left:10px;width:150px;height: 30px">
+                                                下载数据
+                                            </button>
                                         </div>
                                     </div>
                                     <ul id="myTabs1" class="am-nav nav-tabs">
@@ -667,8 +680,6 @@
                                             </select>
                                         </div>
                                     </div>
-
-
                                 </div>
                                 <div id="compare2" class="tab-pane fade" style="margin: auto;width:95%">
                                     <div class="form-search" id="forms2">
@@ -684,6 +695,10 @@
                                             <button id="clear2" type="submit" class="btn btn-default"
                                                     style="margin-top:0;margin-left:10px;width:150px;height: 30px">
                                                 清空比较列表
+                                            </button>
+                                            <button id="excel_mytables2" type="submit" class="btn btn-default"
+                                                    style="margin-top:0;margin-left:10px;width:150px;height: 30px">
+                                                下载数据
                                             </button>
                                         </div>
                                     </div>
@@ -848,6 +863,10 @@
                                                     style="margin-top:0;margin-left:10px;width:150px;height: 30px">
                                                 清空比较列表
                                             </button>
+                                            <button id="excel_mytables3" type="submit" class="btn btn-default"
+                                                    style="margin-top:0;margin-left:10px;width:150px;height: 30px">
+                                                下载数据
+                                            </button>
                                         </div>
                                     </div>
                                     <ul id="myTabs3" class="am-nav nav-tabs">
@@ -1010,6 +1029,10 @@
                                             <button id="clear4" type="submit" class="btn btn-default"
                                                     style="margin-top:0;margin-left:10px;width:150px;height: 30px">
                                                 清空比较列表
+                                            </button>
+                                            <button id="excel_mytables4" type="submit" class="btn btn-default"
+                                                    style="margin-top:0;margin-left:10px;width:150px;height: 30px">
+                                                下载数据
                                             </button>
                                         </div>
                                     </div>
@@ -1341,6 +1364,7 @@
         var market_results_t;
         var invest_results_t;
         var market_results;
+
         var dict = {
             'tot_oper_rev': '总营业收入',
             'net_profit_is': '净利润总和',
@@ -1366,6 +1390,7 @@
                     indexes: ['tot_oper_rev', 'net_profit_is', 'wgsd_net_inc', 'tot_assets', 'tot_liab', 'net_assets', 'wgsd_com_eq', 'operatecashflow_ttm2', 'investcashflow_ttm2', 'financecashflow_ttm2', 'cashflow_ttm2', 'free_cash_flow']
                 },
                 dataType: 'json',
+                async: false,
                 success: function (data) {
                     market_results = data;
                     mydataSeries = [];
@@ -1454,6 +1479,7 @@
                     });
                 }
             });
+            RequestTable()
         }//建图
         function RequestTable() {
             var opt = myChart.getOption();
@@ -1518,23 +1544,64 @@
                     "infoEmpty": "没有数据",
                     "infoFiltered": "(过滤总件数 _MAX_ 条)"
                 },
-                dom: 'Bfrtip',
-                buttons: {
-                    buttons: [
-                        {extend: 'copy', 'text': '复制', 'className': 'btn btn-default btn-xs',},
-                        {extend: 'excel', 'text': '导出Excel', 'className': 'btn btn-default btn-xs',}
-                    ]
-                }
+                dom: 'lfrtip',
+
             });
+
+            new $.fn.dataTable.Buttons(mydatatb, {
+                buttons: [{
+                    extend: 'excel',
+                    'text': '导出Excel',
+                    'className': 'btn btn-default btn-xs',
+                }]
+            });
+            $('#excel_mytable').on('click', function () {
+
+                if ('{{ current_user.is_authenticated }}' != 'False') {
+                    $.ajax({
+                        type: 'GET',
+                        url: '{{ url_for("restfulapi.buy_data") }}',
+                        data: {'username': "{{ current_user.username }}",},
+                        dataType: 'json',
+                        success: function (data) {
+                            if (data.member == null) {
+                                if (data.user_money >= 1) {
+                                    if (confirm('您当前账户余额' + data.user_money + '元，下载该数据需要消费1元，是否需要下载？')) {
+                                        mydatatb.buttons(0).trigger()
+                                        $.ajax({
+                                            type: 'GET',
+                                            url: '{{ url_for("restfulapi.change_money") }}',
+                                            data: {'action': "sub", 'count': 1,},
+                                            dataType: 'json',
+                                            success: function (data) {
+                                                console.log(data)
+                                            }
+                                        })
+                                    }
+                                } else {
+                                    alert('您当前账户余额' + data.user_money + '元,不足1元，无法下载！')
+                                }
+                            } else {
+                                alert('您当前享有免费下载数据特权，此次操作不消耗账户余额！')
+                            }
+                        }
+                    })
+                } else {
+                    var r = confirm("请登录后下载！")
+                    if (r == true) {
+                        location.href = '{{ url_for('main.logout') }}';
+                    }
+                }
+            })
             setTimeout("$(\"#subject\").trigger(\"click\")", 100);
             for (var i = 0; i < market_results_t.indexes.length; i++) {
                 if (Chosenindexes.hasOwnProperty(market_results_t.indexes[i])) {
                     var rowNode = mydatatb
-                        .row.add([dict[market_results_t.indexes[i]]].concat(numfilter(eval("market_results_t." + market_results_t.indexes[i]), denominator)))
-                        .draw()
-                        .node();
+                            .row.add([dict[market_results_t.indexes[i]]].concat(numfilter(eval("market_results_t." + market_results_t.indexes[i]), denominator)))
+                            .draw()
+                            .node();
                     $(rowNode)
-                        .attr('id', market_results_t.indexes[i]);
+                            .attr('id', market_results_t.indexes[i]);
                 }
             }
             for (var key in Chosenindexes) {
@@ -1591,21 +1658,21 @@
         $('#endtime').datetimepicker('setStartDate', '1991-12-31');
         $('#endtime').datetimepicker('setEndDate', '2016-12-31');
         $('#starttime')
-            .datetimepicker()
-            .on('changeDate', function (ev) {
-                starts = ev.date.Format("yyyy年Q4");
-                myoption.dataZoom[0].startValue = starts;
-                myChart.setOption(myoption);
-                RequestTable();
-            });
+                .datetimepicker()
+                .on('changeDate', function (ev) {
+                    starts = ev.date.Format("yyyy年Q4");
+                    myoption.dataZoom[0].startValue = starts;
+                    myChart.setOption(myoption);
+                    RequestTable();
+                });
         $('#endtime')
-            .datetimepicker()
-            .on('changeDate', function (ev) {
-                ends = ev.date.Format("yyyy年Q4");
-                myoption.dataZoom[0].endValue = ends;
-                myChart.setOption(myoption);
-                RequestTable();
-            });
+                .datetimepicker()
+                .on('changeDate', function (ev) {
+                    ends = ev.date.Format("yyyy年Q4");
+                    myoption.dataZoom[0].endValue = ends;
+                    myChart.setOption(myoption);
+                    RequestTable();
+                });
 
         <!--单位转换#unit-->
         var denominator = 1;
@@ -2243,6 +2310,7 @@
         var param = 1;
         var starttime1 = "19911231";
         var endtime1 = "20161231";
+        var hangyefenxi_table//用于记录当前datatable实例
         function creat_echart_industry_analysis(province) {
             $('#show').empty();//条件显示div
             $('#stockcode1').empty();//部门选择框
@@ -2270,6 +2338,7 @@
                     indexes: ['tot_oper_rev'],
                     province: province
                 },
+                async: false,
                 dataType: 'json',
                 success: function (data) {
                     console.log(data);
@@ -2357,8 +2426,48 @@
                     createTable();
                 }
             });//firstvist建图建表
-        }//firstvisit
 
+        }//firstvisit
+        function excel_mytable1(){
+
+
+                if ('{{ current_user.is_authenticated }}' != 'False') {
+                    $.ajax({
+                        type: 'GET',
+                        url: '{{ url_for("restfulapi.buy_data") }}',
+                        data: {'username': "{{ current_user.username }}",},
+                        dataType: 'json',
+                        success: function (data) {
+                            if (data.member == null) {
+                                if (data.user_money >= 1) {
+                                    if (confirm('您当前账户余额' + data.user_money + '元，下载该数据需要消费1元，是否需要下载？')) {
+                                        hangyefenxi_table.buttons(0).trigger()
+                                        $.ajax({
+                                            type: 'GET',
+                                            url: '{{ url_for("restfulapi.change_money") }}',
+                                            data: {'action': "sub", 'count': 1,},
+                                            dataType: 'json',
+                                            success: function (data) {
+                                                console.log(data)
+                                            }
+                                        })
+                                    }
+                                } else {
+                                    alert('您当前账户余额' + data.user_money + '元,不足1元，无法下载！')
+                                }
+                            } else {
+                                alert('您当前享有免费下载数据特权，此次操作不消耗账户余额！')
+                            }
+                        }
+                    })
+                } else {
+                    var r = confirm("请登录后下载！")
+                    if (r == true) {
+                        location.href = '{{ url_for('main.logout') }}';
+                    }
+                }
+
+        }
         <!--图表操作for级联搜索&&单位转换-->
         function requestChart1() {
             $.ajax({
@@ -2576,22 +2685,24 @@
                     "infoEmpty": "没有数据",
                     "infoFiltered": "(过滤总件数 _MAX_ 条)"
                 },
-                dom: 'Bfrtip',
-                buttons: {
-                    buttons: [
-                        {extend: 'copy', 'text': '复制', 'className': 'btn btn-default btn-xs',},
-                        {extend: 'excel', 'text': '导出Excel', 'className': 'btn btn-default btn-xs',}
-                    ]
-                }
+                dom: 'lfrtip',
+            });
+            hangyefenxi_table =  mydatatb
+             new $.fn.dataTable.Buttons(hangyefenxi_table, {
+                buttons: [{
+                    extend: 'excel',
+                    'text': '导出Excel',
+                    'className': 'btn btn-default btn-xs',
+                }]
             });
             setTimeout("$(\"#subject\").trigger(\"click\")", 100);
             for (var i = 0; i < market_results_t1.indexes.length; i++) {
                 var rowNode = mydatatb
-                    .row.add([dict[market_results_t1.indexes[i]]].concat(numfilter(eval("market_results_t1." + market_results_t1.indexes[i]), denominator1)))
-                    .draw()
-                    .node();
+                        .row.add([dict[market_results_t1.indexes[i]]].concat(numfilter(eval("market_results_t1." + market_results_t1.indexes[i]), denominator1)))
+                        .draw()
+                        .node();
                 $(rowNode)
-                    .attr('id', market_results_t1.indexes[i]);
+                        .attr('id', market_results_t1.indexes[i]);
             }
             for (var key in Chosenindexes1) {
                 $('tr#' + key).css('color', Chosenindexes1[key])
@@ -2853,43 +2964,43 @@
         $('#endtime1').datetimepicker('setStartDate', '1991-12-31');
         $('#endtime1').datetimepicker('setEndDate', '2016-12-31');
         $('#starttime1')
-            .datetimepicker()
-            .on('changeDate', function (ev) {
-                starts = ev.date.Format("yyyy年Q4");
-                options.dataZoom[0].startValue = starts;
-                myChart1.setOption(options);
-                if (param == 1) {
-                    RequestTable1();
-                }
-                else if (param == 2) {
-                    RequestTable2();
-                }
-                else if (param == 3) {
-                    RequestTable3();
-                }
-                else if (param == 4) {
-                    RequestTable4();
-                }
-            });
+                .datetimepicker()
+                .on('changeDate', function (ev) {
+                    starts = ev.date.Format("yyyy年Q4");
+                    options.dataZoom[0].startValue = starts;
+                    myChart1.setOption(options);
+                    if (param == 1) {
+                        RequestTable1();
+                    }
+                    else if (param == 2) {
+                        RequestTable2();
+                    }
+                    else if (param == 3) {
+                        RequestTable3();
+                    }
+                    else if (param == 4) {
+                        RequestTable4();
+                    }
+                });
         $('#endtime1')
-            .datetimepicker()
-            .on('changeDate', function (ev) {
-                ends = ev.date.Format("yyyy年Q4");
-                options.dataZoom[0].endValue = ends;
-                myChart1.setOption(options);
-                if (param == 1) {
-                    RequestTable1();
-                }
-                else if (param == 2) {
-                    RequestTable2();
-                }
-                else if (param == 3) {
-                    RequestTable3();
-                }
-                else if (param == 4) {
-                    RequestTable4();
-                }
-            });
+                .datetimepicker()
+                .on('changeDate', function (ev) {
+                    ends = ev.date.Format("yyyy年Q4");
+                    options.dataZoom[0].endValue = ends;
+                    myChart1.setOption(options);
+                    if (param == 1) {
+                        RequestTable1();
+                    }
+                    else if (param == 2) {
+                        RequestTable2();
+                    }
+                    else if (param == 3) {
+                        RequestTable3();
+                    }
+                    else if (param == 4) {
+                        RequestTable4();
+                    }
+                });
 
         <!--单位转换#unit1-->
         denominator1 = 1
@@ -2999,7 +3110,7 @@
                 success: function (data) {
                     $('#div_compare1').empty();
                     $('#div_compare1').append("<div style='width:45%;height:20px;float:left;margin-top:5px;margin-left:2%'><div id='div_" + data.the_code + "' style='height: 10px;width: 10px;float:right;margin-right:5px;margin-top:5px;background-color:" + colorlists1[data.the_code] + "'></div><div class='thedivs' style='width:42px;float:left;overflow:hidden'><span class='options' id='" + data.the_code + "'>"
-                        + dact[data.the_code] + "</span></div></div>")
+                            + dact[data.the_code] + "</span></div></div>")
                     for (var i = 0; i < data.indexes.length; i++) {
                         temp = {
                             name: data.the_code,
@@ -3024,7 +3135,7 @@
                         dataType: 'json',
                         success: function (data) {
                             $('#div_compare1').append("<div style='width:45%;height:20px;float:left;margin-top:5px;margin-left:2%'><div  id='div_" + data.the_code + "' style='height: 10px;width: 10px;float:right;margin-right:5px;margin-top:5px;background-color:" + colorlists1[data.the_code] + "'></div><div class='thedivs' style='width:42px;float:left;overflow:hidden'><span class='options' id='" + data.the_code + "'>"
-                                + dact[data.the_code] + "</span></div></div>")
+                                    + dact[data.the_code] + "</span></div></div>")
                             for (var i = 0; i < data.indexes.length; i++) {
                                 temp = {
                                     name: data.the_code,
@@ -3298,13 +3409,13 @@
                                 invest_results_ts1 = data;
                                 for (var i = 0; i < invest_results_ts1.indexes.length; i++) {
                                     var rowNode = mydatatb
-                                        .row.add([dact[invest_results_ts1.the_code]].concat(numfilter(eval("invest_results_ts1." + invest_results_ts1.indexes[i]), denominators1)))
-                                        .draw()
-                                        .node();
+                                            .row.add([dact[invest_results_ts1.the_code]].concat(numfilter(eval("invest_results_ts1." + invest_results_ts1.indexes[i]), denominators1)))
+                                            .draw()
+                                            .node();
                                     $(rowNode)
-                                        .attr('id', invest_results_ts1.the_code);
+                                            .attr('id', invest_results_ts1.the_code);
                                     $(rowNode)
-                                        .css('color', colorlists1[invest_results_ts1.the_code]);
+                                            .css('color', colorlists1[invest_results_ts1.the_code]);
                                 }
                             }
                         });
@@ -3369,14 +3480,64 @@
                             "infoEmpty": "没有数据",
                             "infoFiltered": "(过滤总件数 _MAX_ 条)"
                         },
-                        dom: 'Bfrtip',
-                        buttons: {
-                            buttons: [
-                                {extend: 'copy', 'text': '复制', 'className': 'btn btn-default btn-xs',},
-                                {extend: 'excel', 'text': '导出Excel', 'className': 'btn btn-default btn-xs',}
-                            ]
-                        }
+                        dom: 'lfrtip',
+
                     });
+                    new $.fn.dataTable.Buttons(mydatatb, {
+            buttons: [
+                {extend: 'excel', 'text': '导出Excel', 'className': 'btn btn-default btn-xs',}
+            ]
+        });
+        $('#excel_mytables1').on('click', function () {
+            if ('{{  current_user.is_authenticated }}' != 'False') {
+                $.ajax({
+                    type: 'GET',
+                    url: '{{ url_for("restfulapi.buy_data") }}',
+                    data: {
+                        'username': "{{ current_user.username }}",
+
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.member == null) {
+                            if (data.user_money >= 1) {
+                                if (confirm('您当前账户余额' + data.user_money + '元，下载该数据需要消费1元，是否需要下载？')) {
+                                    mydatatb.buttons(0).trigger()
+                                    $.ajax({
+                                        type: 'GET',
+                                        url: '{{ url_for("restfulapi.change_money") }}',
+                                        data: {
+                                            'action': "sub",
+                                            'count': 1,
+                                        },
+                                        dataType: 'json',
+                                        success: function (data) {
+                                            console.log(data)
+                                        }
+                                    })
+                                }
+
+                            }
+                            else {
+                                alert('您当前账户余额' + data.user_money + '元,不足1元，无法下载！')
+                            }
+                        }
+                        else {
+                            alert('您当前享有免费下载数据特权，此次操作不消耗账户余额！')
+                        }
+                    }
+                })
+            }
+            else {
+                var r = confirm("请登录后下载！")
+                if (r == true) {
+                    location.href = '{{ url_for('main.logout') }}';
+                }
+
+            }
+
+
+        })
                     setTimeout("$(\"#subject\").trigger(\"click\")", 100);
                     for (var k = 0; k < codelists1.length; k++) {
                         $.ajax({
@@ -3395,13 +3556,13 @@
                                 invest_results_ts1 = data;
                                 for (var i = 0; i < invest_results_ts1.indexes.length; i++) {
                                     var rowNode = mydatatb
-                                        .row.add([dact[invest_results_ts1.the_code]].concat(numfilter(eval("invest_results_ts1." + invest_results_ts1.indexes[i]), denominators1)))
-                                        .draw()
-                                        .node();
+                                            .row.add([dact[invest_results_ts1.the_code]].concat(numfilter(eval("invest_results_ts1." + invest_results_ts1.indexes[i]), denominators1)))
+                                            .draw()
+                                            .node();
                                     $(rowNode)
-                                        .attr('id', invest_results_ts1.the_code);
+                                            .attr('id', invest_results_ts1.the_code);
                                     $(rowNode)
-                                        .css('color', colorlists1[invest_results_ts1.the_code]);
+                                            .css('color', colorlists1[invest_results_ts1.the_code]);
                                 }
                             }
                         });
@@ -3424,7 +3585,7 @@
                 dataType: 'json',
                 success: function (data) {
                     $('#div_compare1').append("<div style='width:45%;height:20px;float:left;margin-top:5px;margin-left:2%'><div id='div_" + data.the_code + "' style='height: 10px;width: 10px;float:right;margin-right:5px;margin-top:5px;background-color:" + colorlists1[data.the_code] + "'></div><div class='thedivs' style='width:42px;float:left;overflow:hidden'><span class='options' id='" + data.the_code + "'>"
-                        + dact[data.the_code] + "</span></div>")
+                            + dact[data.the_code] + "</span></div>")
                 }
             });
         }//生成对比标签
@@ -3463,21 +3624,21 @@
         $('#endtimes1').datetimepicker('setStartDate', '1991-12-31');
         $('#endtimes1').datetimepicker('setEndDate', '2016-12-31');
         $('#starttimes1')
-            .datetimepicker()
-            .on('changeDate', function (ev) {
-                starts = ev.date.Format("yyyy年Q4");
-                option.dataZoom[0].startValue = starts;
-                myCharts1.setOption(option);
-                RequestTables1(codelists1);
-            });
+                .datetimepicker()
+                .on('changeDate', function (ev) {
+                    starts = ev.date.Format("yyyy年Q4");
+                    option.dataZoom[0].startValue = starts;
+                    myCharts1.setOption(option);
+                    RequestTables1(codelists1);
+                });
         $('#endtimes1')
-            .datetimepicker()
-            .on('changeDate', function (ev) {
-                ends = ev.date.Format("yyyy年Q4");
-                option.dataZoom[0].endValue = ends;
-                myCharts1.setOption(option);
-                RequestTables1(codelists1);
-            });
+                .datetimepicker()
+                .on('changeDate', function (ev) {
+                    ends = ev.date.Format("yyyy年Q4");
+                    option.dataZoom[0].endValue = ends;
+                    myCharts1.setOption(option);
+                    RequestTables1(codelists1);
+                });
 
         <!--单位转换-->
         denominators1 = 1
@@ -3563,7 +3724,7 @@
                 success: function (data) {
                     $('#div_compare2').empty();
                     $('#div_compare2').append("<div style='width:45%;height:20px;float:left;margin-top:5px;margin-left:2%'><div  id='div_" + data.the_code + "' style='height: 10px;width: 10px;float:right;margin-right:5px;margin-top:5px;background-color:" + colorlists2[data.the_code] + "'></div><div class='thedivs' style='width:42px;float:left;overflow:hidden'><span class='options' id='" + data.the_code + "'>"
-                        + dbct[data.the_code] + "</span></div></div>")
+                            + dbct[data.the_code] + "</span></div></div>")
                     for (var i = 0; i < data.indexes.length; i++) {
                         temp = {
                             name: data.the_code,
@@ -3588,7 +3749,7 @@
                         dataType: 'json',
                         success: function (data) {
                             $('#div_compare2').append("<div style='width:45%;height:20px;float:left;margin-top:5px;margin-left:2%'><div  id='div_" + data.the_code + "' style='height: 10px;width: 10px;float:right;margin-right:5px;margin-top:5px;background-color:" + colorlists2[data.the_code] + "'></div><div class='thedivs' style='width:42px;float:left;overflow:hidden'><span class='options' id='" + data.the_code + "'>"
-                                + dbct[data.the_code] + "</span></div></div>")
+                                    + dbct[data.the_code] + "</span></div></div>")
                             for (var i = 0; i < data.indexes.length; i++) {
                                 temp = {
                                     name: data.the_code,
@@ -3861,13 +4022,13 @@
                                 invest_results_ts2 = data;
                                 for (var i = 0; i < invest_results_ts2.indexes.length; i++) {
                                     var rowNode = mydatatb
-                                        .row.add([dbct[invest_results_ts2.the_code]].concat(numfilter(eval("invest_results_ts2." + invest_results_ts2.indexes[i]), denominators2)))
-                                        .draw()
-                                        .node();
+                                            .row.add([dbct[invest_results_ts2.the_code]].concat(numfilter(eval("invest_results_ts2." + invest_results_ts2.indexes[i]), denominators2)))
+                                            .draw()
+                                            .node();
                                     $(rowNode)
-                                        .attr('id', invest_results_ts2.the_code);
+                                            .attr('id', invest_results_ts2.the_code);
                                     $(rowNode)
-                                        .css('color', colorlists2[invest_results_ts2.the_code]);
+                                            .css('color', colorlists2[invest_results_ts2.the_code]);
                                 }
                             }
                         });
@@ -3932,14 +4093,64 @@
                             "infoEmpty": "没有数据",
                             "infoFiltered": "(过滤总件数 _MAX_ 条)"
                         },
-                        dom: 'Bfrtip',
-                        buttons: {
-                            buttons: [
-                                {extend: 'copy', 'text': '复制', 'className': 'btn btn-default btn-xs',},
-                                {extend: 'excel', 'text': '导出Excel', 'className': 'btn btn-default btn-xs',}
-                            ]
-                        }
+                         dom: 'lfrtip',
+
                     });
+                    new $.fn.dataTable.Buttons(mydatatb, {
+            buttons: [
+                {extend: 'excel', 'text': '导出Excel', 'className': 'btn btn-default btn-xs',}
+            ]
+        });
+        $('#excel_mytables2').on('click', function () {
+            if ('{{  current_user.is_authenticated }}' != 'False') {
+                $.ajax({
+                    type: 'GET',
+                    url: '{{ url_for("restfulapi.buy_data") }}',
+                    data: {
+                        'username': "{{ current_user.username }}",
+
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.member == null) {
+                            if (data.user_money >= 1) {
+                                if (confirm('您当前账户余额' + data.user_money + '元，下载该数据需要消费1元，是否需要下载？')) {
+                                    mydatatb.buttons(0).trigger()
+                                    $.ajax({
+                                        type: 'GET',
+                                        url: '{{ url_for("restfulapi.change_money") }}',
+                                        data: {
+                                            'action': "sub",
+                                            'count': 1,
+                                        },
+                                        dataType: 'json',
+                                        success: function (data) {
+                                            console.log(data)
+                                        }
+                                    })
+                                }
+
+                            }
+                            else {
+                                alert('您当前账户余额' + data.user_money + '元,不足1元，无法下载！')
+                            }
+                        }
+                        else {
+                            alert('您当前享有免费下载数据特权，此次操作不消耗账户余额！')
+                        }
+                    }
+                })
+            }
+            else {
+                var r = confirm("请登录后下载！")
+                if (r == true) {
+                    location.href = '{{ url_for('main.logout') }}';
+                }
+
+            }
+
+
+        })
                     setTimeout("$(\"#subject\").trigger(\"click\")", 100);
                     for (var k = 0; k < codelists2.length; k++) {
                         $.ajax({
@@ -3958,13 +4169,13 @@
                                 invest_results_ts2 = data;
                                 for (var i = 0; i < invest_results_ts2.indexes.length; i++) {
                                     var rowNode = mydatatb
-                                        .row.add([dbct[invest_results_ts2.the_code]].concat(numfilter(eval("invest_results_ts2." + invest_results_ts2.indexes[i]), denominators2)))
-                                        .draw()
-                                        .node();
+                                            .row.add([dbct[invest_results_ts2.the_code]].concat(numfilter(eval("invest_results_ts2." + invest_results_ts2.indexes[i]), denominators2)))
+                                            .draw()
+                                            .node();
                                     $(rowNode)
-                                        .attr('id', invest_results_ts2.the_code);
+                                            .attr('id', invest_results_ts2.the_code);
                                     $(rowNode)
-                                        .css('color', colorlists2[invest_results_ts2.the_code]);
+                                            .css('color', colorlists2[invest_results_ts2.the_code]);
                                 }
                             }
                         });
@@ -3987,7 +4198,7 @@
                 dataType: 'json',
                 success: function (data) {
                     $('#div_compare2').append("<div style='width:45%;height:20px;float:left;margin-top:5px;margin-left:2%'><div  id='div_" + data.the_code + "' style='height: 10px;width: 10px;float:right;margin-right:5px;margin-top:5px;background-color:" + colorlists2[data.the_code] + "'></div><div class='thedivs' style='width:42px;float:left;overflow:hidden'><span class='options' id='" + data.the_code + "'>"
-                        + dbct[data.the_code] + "</span></div></div>")
+                            + dbct[data.the_code] + "</span></div></div>")
                 }
             });
         }//生成比较标签
@@ -4026,21 +4237,21 @@
         $('#endtimes2').datetimepicker('setStartDate', '1991-12-31');
         $('#endtimes2').datetimepicker('setEndDate', '2016-12-31');
         $('#starttimes2')
-            .datetimepicker()
-            .on('changeDate', function (ev) {
-                starts = ev.date.Format("yyyy年Q4");
-                option.dataZoom[0].startValue = starts;
-                myCharts2.setOption(option);
-                RequestTables2(codelists2);
-            });
+                .datetimepicker()
+                .on('changeDate', function (ev) {
+                    starts = ev.date.Format("yyyy年Q4");
+                    option.dataZoom[0].startValue = starts;
+                    myCharts2.setOption(option);
+                    RequestTables2(codelists2);
+                });
         $('#endtimes2')
-            .datetimepicker()
-            .on('changeDate', function (ev) {
-                ends = ev.date.Format("yyyy年Q4");
-                option.dataZoom[0].endValue = ends;
-                myCharts2.setOption(option);
-                RequestTables2(codelists2);
-            });
+                .datetimepicker()
+                .on('changeDate', function (ev) {
+                    ends = ev.date.Format("yyyy年Q4");
+                    option.dataZoom[0].endValue = ends;
+                    myCharts2.setOption(option);
+                    RequestTables2(codelists2);
+                });
 
         <!--单位转换-->
         denominators2 = 1
@@ -4125,7 +4336,7 @@
                 success: function (data) {
                     $('#div_compare3').empty();
                     $('#div_compare3').append("<div style='width:100%;height:20px;margin-top:5px'><div  id='div_" + data.the_code + "' style='height: 10px;width: 10px;float:right;margin-right:5px;margin-top:5px;background-color:" + colorlists3[data.the_code] + "'></div><div class='thedivs' style='width:110px;float:left;overflow:hidden'><span class='options' id='" + data.the_code + "'>"
-                        + dcct[data.the_code] + "</span></div></div>")
+                            + dcct[data.the_code] + "</span></div></div>")
                     for (var i = 0; i < data.indexes.length; i++) {
                         temp = {
                             name: data.the_code,
@@ -4150,7 +4361,7 @@
                         dataType: 'json',
                         success: function (data) {
                             $('#div_compare3').append("<div style='width:100%;height:20px;margin-top:5px'><div  id='div_" + data.the_code + "' style='height: 10px;width: 10px;float:right;margin-right:5px;margin-top:5px;background-color:" + colorlists3[data.the_code] + "'></div><div class='thedivs' style='width:110px;float:left;overflow:hidden'><span class='options' id='" + data.the_code + "'>"
-                                + dcct[data.the_code] + "</span></div></div>")
+                                    + dcct[data.the_code] + "</span></div></div>")
                             for (var i = 0; i < data.indexes.length; i++) {
                                 temp = {
                                     name: data.the_code,
@@ -4423,13 +4634,13 @@
                                 invest_results_ts3 = data;
                                 for (var i = 0; i < invest_results_ts3.indexes.length; i++) {
                                     var rowNode = mydatatb
-                                        .row.add([dcct[invest_results_ts3.the_code]].concat(numfilter(eval("invest_results_ts3." + invest_results_ts3.indexes[i]), denominators3)))
-                                        .draw()
-                                        .node();
+                                            .row.add([dcct[invest_results_ts3.the_code]].concat(numfilter(eval("invest_results_ts3." + invest_results_ts3.indexes[i]), denominators3)))
+                                            .draw()
+                                            .node();
                                     $(rowNode)
-                                        .attr('id', invest_results_ts3.the_code);
+                                            .attr('id', invest_results_ts3.the_code);
                                     $(rowNode)
-                                        .css('color', colorlists3[invest_results_ts3.the_code]);
+                                            .css('color', colorlists3[invest_results_ts3.the_code]);
                                 }
                             }
                         });
@@ -4494,14 +4705,64 @@
                             "infoEmpty": "没有数据",
                             "infoFiltered": "(过滤总件数 _MAX_ 条)"
                         },
-                        dom: 'Bfrtip',
-                        buttons: {
-                            buttons: [
-                                {extend: 'copy', 'text': '复制', 'className': 'btn btn-default btn-xs',},
-                                {extend: 'excel', 'text': '导出Excel', 'className': 'btn btn-default btn-xs',}
-                            ]
-                        }
+                        dom: 'lfrtip',
+
                     });
+                    new $.fn.dataTable.Buttons(mydatatb, {
+            buttons: [
+                {extend: 'excel', 'text': '导出Excel', 'className': 'btn btn-default btn-xs',}
+            ]
+        });
+        $('#excel_mytables3').on('click', function () {
+            if ('{{  current_user.is_authenticated }}' != 'False') {
+                $.ajax({
+                    type: 'GET',
+                    url: '{{ url_for("restfulapi.buy_data") }}',
+                    data: {
+                        'username': "{{ current_user.username }}",
+
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.member == null) {
+                            if (data.user_money >= 1) {
+                                if (confirm('您当前账户余额' + data.user_money + '元，下载该数据需要消费1元，是否需要下载？')) {
+                                    mydatatb.buttons(0).trigger()
+                                    $.ajax({
+                                        type: 'GET',
+                                        url: '{{ url_for("restfulapi.change_money") }}',
+                                        data: {
+                                            'action': "sub",
+                                            'count': 1,
+                                        },
+                                        dataType: 'json',
+                                        success: function (data) {
+                                            console.log(data)
+                                        }
+                                    })
+                                }
+
+                            }
+                            else {
+                                alert('您当前账户余额' + data.user_money + '元,不足1元，无法下载！')
+                            }
+                        }
+                        else {
+                            alert('您当前享有免费下载数据特权，此次操作不消耗账户余额！')
+                        }
+                    }
+                })
+            }
+            else {
+                var r = confirm("请登录后下载！")
+                if (r == true) {
+                    location.href = '{{ url_for('main.logout') }}';
+                }
+
+            }
+
+
+        })
                     setTimeout("$(\"#subject\").trigger(\"click\")", 100);
                     for (var k = 0; k < codelists3.length; k++) {
                         $.ajax({
@@ -4520,13 +4781,13 @@
                                 invest_results_ts3 = data;
                                 for (var i = 0; i < invest_results_ts3.indexes.length; i++) {
                                     var rowNode = mydatatb
-                                        .row.add([dcct[invest_results_ts3.the_code]].concat(numfilter(eval("invest_results_ts3." + invest_results_ts3.indexes[i]), denominators3)))
-                                        .draw()
-                                        .node();
+                                            .row.add([dcct[invest_results_ts3.the_code]].concat(numfilter(eval("invest_results_ts3." + invest_results_ts3.indexes[i]), denominators3)))
+                                            .draw()
+                                            .node();
                                     $(rowNode)
-                                        .attr('id', invest_results_ts3.the_code);
+                                            .attr('id', invest_results_ts3.the_code);
                                     $(rowNode)
-                                        .css('color', colorlists3[invest_results_ts3.the_code]);
+                                            .css('color', colorlists3[invest_results_ts3.the_code]);
                                 }
                             }
                         });
@@ -4549,7 +4810,7 @@
                 dataType: 'json',
                 success: function (data) {
                     $('#div_compare3').append("<div style='width:100%;height:20px;margin-top:5px'><div  id='div_" + data.the_code + "' style='height: 10px;width: 10px;float:right;margin-right:5px;margin-top:5px;background-color:" + colorlists3[data.the_code] + "'></div><div class='thedivs' style='width:110px;float:left;overflow:hidden'><span class='options' id='" + data.the_code + "'>"
-                        + dcct[data.the_code] + "</span></div></div>")
+                            + dcct[data.the_code] + "</span></div></div>")
                 }
             });
         }//生成比较标签
@@ -4588,21 +4849,21 @@
         $('#endtimes3').datetimepicker('setStartDate', '1991-12-31');
         $('#endtimes3').datetimepicker('setEndDate', '2016-12-31');
         $('#starttimes3')
-            .datetimepicker()
-            .on('changeDate', function (ev) {
-                starts = ev.date.Format("yyyy年Q4");
-                option.dataZoom[0].startValue = starts;
-                myCharts3.setOption(option);
-                RequestTables3(codelists3);
-            });
+                .datetimepicker()
+                .on('changeDate', function (ev) {
+                    starts = ev.date.Format("yyyy年Q4");
+                    option.dataZoom[0].startValue = starts;
+                    myCharts3.setOption(option);
+                    RequestTables3(codelists3);
+                });
         $('#endtimes3')
-            .datetimepicker()
-            .on('changeDate', function (ev) {
-                ends = ev.date.Format("yyyy年Q4");
-                option.dataZoom[0].endValue = ends;
-                myCharts3.setOption(option);
-                RequestTables3(codelists3);
-            });
+                .datetimepicker()
+                .on('changeDate', function (ev) {
+                    ends = ev.date.Format("yyyy年Q4");
+                    option.dataZoom[0].endValue = ends;
+                    myCharts3.setOption(option);
+                    RequestTables3(codelists3);
+                });
 
         <!--单位转换-->
         denominators3 = 1
@@ -4688,7 +4949,7 @@
                 success: function (data) {
                     $('#div_compare4').empty();
                     $('#div_compare4').append("<div style='width:100%;height:20px;margin-top:5px'><div  id='div_" + data.the_code + "' style='height: 10px;width: 10px;float:right;margin-right:5px;margin-top:5px;background-color:" + colorlists4[data.the_code] + "'></div><div class='thedivs' style='width:110px;float:left; text-overflow: ellipsis;'><span class='options' id='" + data.the_code + "'>"
-                        + ddct[data.the_code] + "</span></div></div>")
+                            + ddct[data.the_code] + "</span></div></div>")
                     for (var i = 0; i < data.indexes.length; i++) {
                         temp = {
                             name: data.the_code,
@@ -4713,7 +4974,7 @@
                         dataType: 'json',
                         success: function (data) {
                             $('#div_compare4').append("<div style='width:100%;height:20px;margin-top:5px'><div  id='div_" + data.the_code + "' style='height: 10px;width: 10px;float:right;margin-right:5px;margin-top:5px;background-color:" + colorlists4[data.the_code] + "'></div><div class='thedivs' style='width:110px;float:left; text-overflow: ellipsis;'><span class='options' id='" + data.the_code + "'>"
-                                + ddct[data.the_code] + "</span></div></div>")
+                                    + ddct[data.the_code] + "</span></div></div>")
                             for (var i = 0; i < data.indexes.length; i++) {
                                 temp = {
                                     name: data.the_code,
@@ -4986,13 +5247,13 @@
                                 invest_results_ts4 = data;
                                 for (var i = 0; i < invest_results_ts4.indexes.length; i++) {
                                     var rowNode = mydatatb
-                                        .row.add([ddct[invest_results_ts4.the_code]].concat(numfilter(eval("invest_results_ts4." + invest_results_ts4.indexes[i]), denominators4)))
-                                        .draw()
-                                        .node();
+                                            .row.add([ddct[invest_results_ts4.the_code]].concat(numfilter(eval("invest_results_ts4." + invest_results_ts4.indexes[i]), denominators4)))
+                                            .draw()
+                                            .node();
                                     $(rowNode)
-                                        .attr('id', invest_results_ts4.the_code);
+                                            .attr('id', invest_results_ts4.the_code);
                                     $(rowNode)
-                                        .css('color', colorlists4[invest_results_ts4.the_code]);
+                                            .css('color', colorlists4[invest_results_ts4.the_code]);
                                 }
                             }
                         });
@@ -5057,14 +5318,64 @@
                             "infoEmpty": "没有数据",
                             "infoFiltered": "(过滤总件数 _MAX_ 条)"
                         },
-                        dom: 'Bfrtip',
-                        buttons: {
-                            buttons: [
-                                {extend: 'copy', 'text': '复制', 'className': 'btn btn-default btn-xs',},
-                                {extend: 'excel', 'text': '导出Excel', 'className': 'btn btn-default btn-xs',}
-                            ]
-                        }
+                         dom: 'lfrtip',
+
                     });
+                    new $.fn.dataTable.Buttons(mydatatb, {
+            buttons: [
+                {extend: 'excel', 'text': '导出Excel', 'className': 'btn btn-default btn-xs',}
+            ]
+        });
+        $('#excel_mytables4').on('click', function () {
+            if ('{{  current_user.is_authenticated }}' != 'False') {
+                $.ajax({
+                    type: 'GET',
+                    url: '{{ url_for("restfulapi.buy_data") }}',
+                    data: {
+                        'username': "{{ current_user.username }}",
+
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.member == null) {
+                            if (data.user_money >= 1) {
+                                if (confirm('您当前账户余额' + data.user_money + '元，下载该数据需要消费1元，是否需要下载？')) {
+                                    mydatatb.buttons(0).trigger()
+                                    $.ajax({
+                                        type: 'GET',
+                                        url: '{{ url_for("restfulapi.change_money") }}',
+                                        data: {
+                                            'action': "sub",
+                                            'count': 1,
+                                        },
+                                        dataType: 'json',
+                                        success: function (data) {
+                                            console.log(data)
+                                        }
+                                    })
+                                }
+
+                            }
+                            else {
+                                alert('您当前账户余额' + data.user_money + '元,不足1元，无法下载！')
+                            }
+                        }
+                        else {
+                            alert('您当前享有免费下载数据特权，此次操作不消耗账户余额！')
+                        }
+                    }
+                })
+            }
+            else {
+                var r = confirm("请登录后下载！")
+                if (r == true) {
+                    location.href = '{{ url_for('main.logout') }}';
+                }
+
+            }
+
+
+        })
                     setTimeout("$(\"#subject\").trigger(\"click\")", 100);
                     for (var k = 0; k < codelists4.length; k++) {
                         $.ajax({
@@ -5083,13 +5394,13 @@
                                 invest_results_ts4 = data;
                                 for (var i = 0; i < invest_results_ts4.indexes.length; i++) {
                                     var rowNode = mydatatb
-                                        .row.add([ddct[invest_results_ts4.the_code]].concat(numfilter(eval("invest_results_ts4." + invest_results_ts4.indexes[i]), denominators4)))
-                                        .draw()
-                                        .node();
+                                            .row.add([ddct[invest_results_ts4.the_code]].concat(numfilter(eval("invest_results_ts4." + invest_results_ts4.indexes[i]), denominators4)))
+                                            .draw()
+                                            .node();
                                     $(rowNode)
-                                        .attr('id', invest_results_ts4.the_code);
+                                            .attr('id', invest_results_ts4.the_code);
                                     $(rowNode)
-                                        .css('color', colorlists4[invest_results_ts4.the_code]);
+                                            .css('color', colorlists4[invest_results_ts4.the_code]);
                                 }
                             }
                         });
@@ -5112,7 +5423,7 @@
                 dataType: 'json',
                 success: function (data) {
                     $('#div_compare4').append("<div style='width:100%;height:20px;margin-top:5px'><div  id='div_" + data.the_code + "' style='height: 10px;width: 10px;float:right;margin-right:5px;margin-top:5px;background-color:" + colorlists4[data.the_code] + "'></div><div class='thedivs' style='width:110px;float:left; text-overflow: ellipsis;'><span class='options' id='" + data.the_code + "'>"
-                        + ddct[data.the_code] + "</span></div></div>")
+                            + ddct[data.the_code] + "</span></div></div>")
                 }
             });
         }//生成比较标签
@@ -5151,21 +5462,21 @@
         $('#endtimes4').datetimepicker('setStartDate', '1991-12-31');
         $('#endtimes4').datetimepicker('setEndDate', '2016-12-31');
         $('#starttimes4')
-            .datetimepicker()
-            .on('changeDate', function (ev) {
-                starts = ev.date.Format("yyyy年Q4");
-                option.dataZoom[0].startValue = starts;
-                myCharts4.setOption(option);
-                RequestTables4(codelists4);
-            });
+                .datetimepicker()
+                .on('changeDate', function (ev) {
+                    starts = ev.date.Format("yyyy年Q4");
+                    option.dataZoom[0].startValue = starts;
+                    myCharts4.setOption(option);
+                    RequestTables4(codelists4);
+                });
         $('#endtimes4')
-            .datetimepicker()
-            .on('changeDate', function (ev) {
-                ends = ev.date.Format("yyyy年Q4");
-                option.dataZoom[0].endValue = ends;
-                myCharts4.setOption(option);
-                RequestTables4(codelists4);
-            });
+                .datetimepicker()
+                .on('changeDate', function (ev) {
+                    ends = ev.date.Format("yyyy年Q4");
+                    option.dataZoom[0].endValue = ends;
+                    myCharts4.setOption(option);
+                    RequestTables4(codelists4);
+                });
 
         <!--单位转换-->
         denominators4 = 1
@@ -5190,8 +5501,10 @@
         function firstvisit() {
             creatmap()
             CreateChart(province)
+
             creat_industry_pie()
             creat_echart_industry_analysis(province)
+
             creat_echart_compare_1()
             creat_echart_compare_2()
             creat_echart_compare_3()

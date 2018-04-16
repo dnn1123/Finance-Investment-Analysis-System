@@ -817,6 +817,16 @@ def home():
     return jsonify(results)
 
 
+@api_blueprint.route('/get_permission', methods=['GET', 'POST'])
+def get_permission():
+
+    permission_id = users_roles.query.filter_by(user_name=current_user.username).first().permissions
+
+    results = {
+        'permission':permission_id
+    }
+    return jsonify(results)
+
 @api_blueprint.route('/myposition', methods=['GET', 'POST'])
 def myposition():
     username = request.args.get('username')
