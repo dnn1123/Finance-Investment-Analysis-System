@@ -1250,8 +1250,8 @@
                         ]
                     });
                     $('#excel').on('click', function () {
-
-                        $.ajax({
+                        if('{{  current_user.is_authenticated }}'!='False'){
+                             $.ajax({
                             type: 'GET',
                             url: '{{ url_for("restfulapi.buy_data") }}',
                             data: {
@@ -1288,6 +1288,11 @@
                                 }
                             }
                         })
+                        }
+                        else{
+                            alert('请登陆！')
+                        }
+
 
                     })
 

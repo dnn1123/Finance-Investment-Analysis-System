@@ -200,10 +200,10 @@
                         <img id="myavatar" src="" class="nav-avatar"/>
                         {% block current_user %}{% endblock %}
                         <b class="caret"></b></a>
-                        <ul class="dropdown-menu">
+                        <ul class="dropdown-menu" >
                             <li><a href="{{ url_for('stock.home') }}">个人信息</a></li>
                             <li><a href="{{ url_for('main.profilephoto') }}">编辑资料</a></li>
-                            <li><a href= {{ url_for('main.admin') }}>用户权限管理</a></li>
+<li id="admin"></li>
                             <li class="divider"></li>
                             <li><a href={{ url_for('main.logout') }}>退出登录</a></li>
                         </ul>
@@ -303,15 +303,16 @@
 </div>
 </body>
 <script>
+    get_permission()
     $(document).ready(function () {
         var navheight = $("div.navbar").height();
         $("#container").css("margin-top", navheight);
+
     })
-    setInterval(aa, 50000);
-    setInterval(bb, 50000);
+    setInterval(aa,30000);
+    setInterval(bb,30000);
 
     function aa() {
-
         $.ajax({
             type: 'GET',
             url: '{{ url_for("message_api.get_message_count") }}',
@@ -342,6 +343,21 @@
                 else {
                     $("#system_message_count").text('暂无未读')
                 }
+            }
+        })
+    }
+
+    function get_permission(){
+        $.ajax({
+            type: 'GET',
+            url: '{{ url_for("restfulapi.get_permission") }}',
+            dataType: 'json',
+            success: function (data) {
+                console.log(data.permission)
+                if (data.permission == 1) {
+                    $("#admin").append("<li><a href= {{ url_for('main.admin') }}>用户权限管理</a></li>")
+                }
+
             }
         })
     }
