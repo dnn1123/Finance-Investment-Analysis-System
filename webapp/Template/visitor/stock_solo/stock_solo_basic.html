@@ -96,6 +96,9 @@
                     <div class="module">
                         <div class="module-head">
                             <h3>股票历史价格趋势</h3>
+                            <button class="btn btn-mini btn-danger" type="button" onclick="download()"
+                                    >下载
+                                    </button>
                         </div>
                         <div class="module-body">
                             <div id="history_k" style="height:240px"></div>
@@ -106,6 +109,7 @@
                     <div class="module">
                         <div class="module-head">
                             <h3>股票历史涨跌幅</h3>
+
                         </div>
                         <div class="module-body">
                             <table id="history_roc" class="row-border hover order-column" style="text-align: center;">
@@ -362,14 +366,10 @@
                 "infoEmpty": "没有数据",
                 "infoFiltered": "(过滤总件数 _MAX_ 条)"
             },
-            dom: 'Bfrtip',
-            buttons: {
-                buttons: [
-                    {extend: 'copy', 'text': '复制', 'className': 'btn btn-default btn-xs',},
-                    {extend: 'excel', 'text': '导出Excel', 'className': 'btn btn-default btn-xs',}
-                ]
-            }
+            dom: 'lfrtip',
+
         });
+
         var data = [
             {name: '{{ stock.city }}', value: 100}
         ];

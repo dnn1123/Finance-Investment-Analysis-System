@@ -105,7 +105,12 @@
                 <div class="span4">
                     <div class="module">
                         <div class="module-head">
-                            <h3>股票历史涨跌幅</h3>
+
+                            <button class="btn btn-primary">股票历史涨跌幅</button>
+                            <div style="float:right;margin-right:0px;text-align: right">
+                                <button class="btn btn-mini btn-danger" id="excel_roc">下载
+                                </button>
+                            </div>
                         </div>
                         <div class="module-body">
                             <table id="history_roc" class="row-border hover order-column" style="text-align: center;">
@@ -125,7 +130,12 @@
 
             <div class="module">
                 <div class="module-head">
-                    <h3>指标数据分析</h3>
+
+                    <button class="btn btn-primary">指标数据分析</button>
+                            <div style="float:right;margin-right:0px;text-align: right">
+                                <button class="btn btn-mini btn-danger" id="excel_table">数据下载
+                                </button>
+                            </div>
                 </div>
                 <div class="module-body" style="height:600px">
                     <div class="row">
@@ -204,6 +214,7 @@
             <div class="module">
                 <div class="module-head">
                     <h3>指标数据分析</h3>
+
                 </div>
                 <div class="module-body" style="height:600px">
                     <div class="row">
@@ -230,7 +241,7 @@
                                     <div id="datatable_new" class="mytable" style="width: auto;height:70%;"></div>
                                 </div>
                             </div>
-                            <div class="well well-lg" >
+                            <div class="well well-lg">
                                 <div id="toolbox">
                                     <table>
                                         <tr>
@@ -362,14 +373,65 @@
                 "infoEmpty": "没有数据",
                 "infoFiltered": "(过滤总件数 _MAX_ 条)"
             },
-            dom: 'Bfrtip',
-            buttons: {
-                buttons: [
-                    {extend: 'copy', 'text': '复制', 'className': 'btn btn-default btn-xs',},
-                    {extend: 'excel', 'text': '导出Excel', 'className': 'btn btn-default btn-xs',}
-                ]
-            }
+            dom: 'lfrtip',
+
         });
+        new $.fn.dataTable.Buttons(mytable_roc, {
+            buttons: [
+                {extend: 'excel', 'text': '导出Excel', 'className': 'btn btn-default btn-xs',}
+            ]
+        });
+        $('#excel_roc').on('click', function () {
+            if ('{{  current_user.is_authenticated }}' != 'False') {
+                $.ajax({
+                    type: 'GET',
+                    url: '{{ url_for("restfulapi.buy_data") }}',
+                    data: {
+                        'username': "{{ current_user.username }}",
+
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.member == null) {
+                            if (data.user_money >= 1) {
+                                if (confirm('您当前账户余额' + data.user_money + '元，下载该数据需要消费1元，是否需要下载？')) {
+                                    mytable_roc.buttons(0).trigger()
+                                    $.ajax({
+                                        type: 'GET',
+                                        url: '{{ url_for("restfulapi.change_money") }}',
+                                        data: {
+                                            'action': "sub",
+                                            'count': 1,
+                                        },
+                                        dataType: 'json',
+                                        success: function (data) {
+                                            console.log(data)
+                                        }
+                                    })
+                                }
+
+                            }
+                            else {
+                                alert('您当前账户余额' + data.user_money + '元,不足1元，无法下载！')
+                            }
+                        }
+                        else {
+                            alert('您当前享有免费下载数据特权，此次操作不消耗账户余额！')
+                        }
+                    }
+                })
+            }
+            else {
+                var r = confirm("请登录后下载！")
+                if (r == true) {
+                    location.href = '{{ url_for('main.logout') }}';
+                }
+
+            }
+
+
+        })
+
         var data = [
             {name: '{{ stock.city }}', value: 100}
         ];
@@ -1685,14 +1747,63 @@
                     "infoEmpty": "没有数据",
                     "infoFiltered": "(过滤总件数 _MAX_ 条)"
                 },
-                dom: 'Bfrtip',
-                buttons: {
-                    buttons: [
-                        {extend: 'copy', 'text': '复制', 'className': 'btn btn-default btn-xs',},
-                        {extend: 'excel', 'text': '导出Excel', 'className': 'btn btn-default btn-xs',}
-                    ]
-                }
+                dom: 'lfrtip',
             });
+            new $.fn.dataTable.Buttons(mydatatb, {
+            buttons: [
+                {extend: 'excel', 'text': '导出Excel', 'className': 'btn btn-default btn-xs',}
+            ]
+        });
+        $('#excel_table').on('click', function () {
+            if ('{{  current_user.is_authenticated }}' != 'False') {
+                $.ajax({
+                    type: 'GET',
+                    url: '{{ url_for("restfulapi.buy_data") }}',
+                    data: {
+                        'username': "{{ current_user.username }}",
+
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.member == null) {
+                            if (data.user_money >= 1) {
+                                if (confirm('您当前账户余额' + data.user_money + '元，下载该数据需要消费1元，是否需要下载？')) {
+                                    mydatatb.buttons(0).trigger()
+                                    $.ajax({
+                                        type: 'GET',
+                                        url: '{{ url_for("restfulapi.change_money") }}',
+                                        data: {
+                                            'action': "sub",
+                                            'count': 1,
+                                        },
+                                        dataType: 'json',
+                                        success: function (data) {
+                                            console.log(data)
+                                        }
+                                    })
+                                }
+
+                            }
+                            else {
+                                alert('您当前账户余额' + data.user_money + '元,不足1元，无法下载！')
+                            }
+                        }
+                        else {
+                            alert('您当前享有免费下载数据特权，此次操作不消耗账户余额！')
+                        }
+                    }
+                })
+            }
+            else {
+                var r = confirm("请登录后下载！")
+                if (r == true) {
+                    location.href = '{{ url_for('main.logout') }}';
+                }
+
+            }
+
+
+        })
             setTimeout("$(\"#subject\").trigger(\"click\")", 100);
             for (var i = 0; i < finance_results_t.indexes.length; i++) {
                 if (Chosenindexes.hasOwnProperty(finance_results.indexes[i])) {
@@ -2072,7 +2183,7 @@
                 async: false,
                 success: function (data) {
                     for (var i = 0; i < data.indexes.length; i++) {
-                        eval(" data."+ data.indexes[i]+"_list.reverse()")
+                        eval(" data." + data.indexes[i] + "_list.reverse()")
                     }
                     data.the_year.reverse();
                     data_checked = data
@@ -2191,44 +2302,44 @@
             return time
         }
 
-{#        根据日期控件截取数组#}
-        function cutarray(data_checked){
-            data=data_checked
+        {#        根据日期控件截取数组#}
+        function cutarray(data_checked) {
+            data = data_checked
             var start = '0'
             var end = data.the_year.length
-            var year_list_cutted=[]
-            var index_list_cutted=[]
+            var year_list_cutted = []
+            var index_list_cutted = []
 
             start_date = $("#starttime_picker_new").data("datetimepicker").getDate()
             startime = change_time_type(start_date)
             end_date = $("#endtime_picker_new").data("datetimepicker").getDate()
             endtime = change_time_type(end_date)
-            for(i=0;i<data.the_year.length;i++){
-                index[i]=data[data.indexes[i]]
-                if(startime==data.the_year[i]){
+            for (i = 0; i < data.the_year.length; i++) {
+                index[i] = data[data.indexes[i]]
+                if (startime == data.the_year[i]) {
                     start = i
                 }
-                if(endtime==data.the_year[i]){
+                if (endtime == data.the_year[i]) {
                     end = i
                 }
             }
-            if(start > end){
+            if (start > end) {
                 var mid = start
                 start = end
                 end = mid
             }
-            year_list_cutted=data.the_year.slice(start,end)
-            for(var i = 0; i < data.indexes.length;i++){
+            year_list_cutted = data.the_year.slice(start, end)
+            for (var i = 0; i < data.indexes.length; i++) {
                 str = "data." + data.indexes[i] + "_list"
-                index_list_cutted[i]=eval(str).slice(start,end)
+                index_list_cutted[i] = eval(str).slice(start, end)
             }
             console.log(data.indexes)
-            CreatTable_new(year_list_cutted,index_list_cutted,start,data_checked)
+            CreatTable_new(year_list_cutted, index_list_cutted, start, data_checked)
         }
 
 
-        function CreatTable_new(year_list_cutted,index_list_cutted,start,data_checked){
-            data=data_checked
+        function CreatTable_new(year_list_cutted, index_list_cutted, start, data_checked) {
+            data = data_checked
             $("#datatable_new").empty();
             var table = $("<table id=\"temptable_new\" class=\"row-border hover order-column\" cellspacing=\"0\" width=\"100%\"  >");
             table.appendTo($("#datatable_new"));
@@ -2244,7 +2355,7 @@
             }
             tb = $("<tbody></tbody>");
             tb.appendTo(table);
-            for(var i = 0; i < data.indexes.length;i++){
+            for (var i = 0; i < data.indexes.length; i++) {
                 var tr_b = $("<tr></tr>");
                 $(tr_b).css('color', Chosenindexes_new[data.id[i]])
                 tr_b.appendTo(tb);
@@ -2270,7 +2381,7 @@
                 "processing": true,
                 "scrollX": true,
                 "searching": true,
-                "lengthMenu":[7],
+                "lengthMenu": [7],
                 "fixedColumns": { //固定列的配置项
                     "leftColumns": 1//固定左边第一列
                 },

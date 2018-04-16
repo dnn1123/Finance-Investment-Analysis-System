@@ -106,7 +106,9 @@
                 <div class="btn-box-row row-fluid">
                     <div class="module span12">
                         <div class="module-head">
-                            <a href="#postable" aria-expanded="false" data-toggle="collapse">市场分析</a>
+
+                            <button  class="btn btn-primary" data-toggle="button">市场分析</button>
+
                         </div>
                         <div class="modal-body">
                             <div id="postable" style="margin: auto;width:95%">
@@ -1518,13 +1520,14 @@
                     "infoFiltered": "(过滤总件数 _MAX_ 条)"
                 },
                 dom: 'Bfrtip',
-                buttons: {
+                 buttons: {
                     buttons: [
                         {extend: 'copy', 'text': '复制', 'className': 'btn btn-default btn-xs',},
                         {extend: 'excel', 'text': '导出Excel', 'className': 'btn btn-default btn-xs',}
                     ]
                 }
             });
+
             setTimeout("$(\"#subject\").trigger(\"click\")", 100);
             for (var i = 0; i < market_results_t.indexes.length; i++) {
                 if (Chosenindexes.hasOwnProperty(market_results_t.indexes[i])) {
