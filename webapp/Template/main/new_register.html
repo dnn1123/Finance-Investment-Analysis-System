@@ -49,7 +49,7 @@
                         <p>Fin-magic</p>
                     </h1>
                     <div class="styled-input">
-                        <input type="text" class="styled-input__input" name="user" autocomplete="off">
+                        <input type="text" id="user" class="styled-input__input" name="user" autocomplete="off">
                         <div class="styled-input__placeholder">
                             <span class="styled-input__placeholder-text">
                                 用户名
@@ -57,9 +57,21 @@
                         </div>
                         <div class="styled-input__circle">
                         </div>
+                        <div id="user_msg"></div>
                     </div>
                     <div class="styled-input">
-                        <input type="password" class="styled-input__input" name="pwd">
+                        <input type="email" id="email" class="styled-input__input" name="email" autocomplete="off">
+                        <div class="styled-input__placeholder">
+                            <span class="styled-input__placeholder-text">
+                                邮箱
+                            </span>
+                        </div>
+                        <div class="styled-input__circle">
+                        </div>
+                         <div id="email_msg"></div>
+                    </div>
+                    <div class="styled-input">
+                        <input type="password" id="pwd" class="styled-input__input" name="pwd">
                         <div class="styled-input__placeholder">
                             <span class="styled-input__placeholder-text">
                                 密码
@@ -67,9 +79,10 @@
                         </div>
                         <div class="styled-input__circle">
                         </div>
+                        <div id="pwd_msg"></div>
                     </div>
                                         <div class="styled-input">
-                        <input type="password" class="styled-input__input" name="cpwd">
+                        <input type="password" id="cpwd" class="styled-input__input" name="cpwd">
                         <div class="styled-input__placeholder">
                             <span class="styled-input__placeholder-text">
                                 确认密码
@@ -77,8 +90,10 @@
                         </div>
                         <div class="styled-input__circle">
                         </div>
+                                            <div id="cpwd_msg"></div>
                     </div>
-                    <button class="styled-button" type="submit">
+                    <div style="color: red;margin-bottom: 5px">{{ error }}</div>
+                    <button id="register_btn" class="styled-button" type="submit">
                         <span class="styled-button__real-text-holder">
                             <span class="styled-button__real-text">
                                 注册
@@ -200,6 +215,92 @@ setTimeout(function () {
     document.body.classList.add('document-loaded');
 }, 1800);
 
+</script>
+<script>
+    function checkName(name) {
+        $.ajax({
+            url:"{{ url_for("main_api.checkName") }}",
+            type:"post",
+            dataType:"Json",
+            data:{"name":name},
+            success:function (data) {
+                console.log(data)
+                if (data.result== true){
+                                        $("#user_msg").html("用户名已存在")
+                    $("#register_btn").attr("disabled",true)
+
+                }else {
+
+                                        $("#user_msg").html("用户名可用")
+                    $("#register_btn").attr("disabled",false)
+                }
+            }
+        })
+    }
+        function checkEmail(mail) {
+        $.ajax({
+            url:"{{ url_for("main_api.checkEmail") }}",
+            type:"post",
+            dataType:"Json",
+            data:{"email":mail},
+            success:function (data) {
+                if (data.result==true){
+                                        $("#email_msg").html("邮箱已被使用")
+                    $("#register_btn").attr("disabled",true)
+
+                }else {
+                    $("#email_msg").html("邮箱可用")
+                    $("#register_btn").attr("disabled",false)
+                }
+            }
+        })
+    }
+    function checkPwd(data) {
+        var reg=/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8,16}$/
+        if(reg.test(data)){
+            $("#register_btn").attr("disabled",false)
+            $("#pwd_msg").html("")
+        }else {
+            $("#pwd_msg").html("请使用8-16位数字字母混合密码")
+            $("#register_btn").attr("disabled",true)
+        }
+    }
+    $("#user").focusout(function () {
+        var name=$("#user").val()
+        if (name != null && name!= ''){
+            checkName(name)
+        }else {
+            $("#user_msg").html("")
+        }
+    })
+        $("#email").focusout(function () {
+        var data=$("#email").val()
+        if (data != null && data!= ''){
+            checkEmail(data)
+        }else {
+            $("#email_msg").html("")
+        }
+    })
+    $("#pwd").focusout(function () {
+        var pwd=$("#pwd").val()
+        if (pwd!=null && pwd!=''){
+            checkPwd(pwd)
+        }
+        else {
+            $("#pwd_msg").html("")
+        }
+    })
+        $("#cpwd").focusout(function () {
+        var pwd=$("#pwd").val()
+        var cpwd=$("#cpwd").val()
+        if (cpwd !="" && cpwd != pwd){
+            $("#cpwd_msg").html("密码不一致")
+            $("#register_btn").attr("disabled",true)
+        }else {
+            $("#cpwd_msg").html("")
+            $("#register_btn").attr("disabled",false)
+        }
+    })
 </script>
 </html>
 

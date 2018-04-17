@@ -33,9 +33,9 @@ def login():
         remember = True
     user = users.query.filter_by(username=username).first()
     if not user:
-        return render_template('login.html', error=u"用户不存在")
+        return render_template('new_login.html', error=u"用户不存在")
     if not user.check_password(password):
-        return render_template('login.html', error=u"密码不匹配")
+        return render_template('new_login.html', error=u"密码不匹配")
     login_user(user, remember=remember)
     identity_changed.send(
         current_app._get_current_object(),
@@ -47,13 +47,14 @@ def login():
 @main_api.route('/register_info', methods=['GET', 'POST'])
 def register():
     username = request.form.get('user')
+    email=request.form.get('email')
     password = request.form.get('pwd')
     cpassword = request.form.get('cpwd')
     user = users.query.filter_by(username=username).first()
     if user:
-        return render_template('register.html', error=u'用户名已存在')
+        return render_template('new_register.html', error=u'用户名已存在')
     if password != cpassword:
-        return render_template('register.html', error=u'密码不一致')
+        return render_template('new_register.html', error=u'密码不一致')
     new_user = users()
     new_user.username = username
     new_user.set_password(password)
@@ -63,6 +64,11 @@ def register():
     new_user_role.user_name = username
     new_user_role.permissions = 3
     db.session.add(new_user_role)
+    db.session.commit()
+    new_person=personal()
+    new_person.username=username
+    new_person.mail=email
+    db.session.add(new_person)
     db.session.commit()
     return redirect(url_for('main.index'))
 
@@ -162,3 +168,25 @@ def send_Verification_code():
         data['Verification_code'] = Verification_code
 
         return jsonify(data)
+
+@main_api.route('/checkName', methods=['GET', 'POST'])
+def checkName():
+    result=None
+    username=request.values.get('name')
+    user = users.query.filter_by(username=username).first()
+    if user:
+        result=True
+    else:
+        result=False
+    return jsonify({"result":result})
+
+@main_api.route('/checkEmail', methods=['GET', 'POST'])
+def checkEmail():
+    result=None
+    email=request.values.get('email')
+    user = personal.query.filter_by(mail=email).first()
+    if user:
+        result=True
+    else:
+        result=False
+    return jsonify({"result":result})
