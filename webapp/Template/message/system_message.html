@@ -4,6 +4,25 @@
 {% endblock %}
 
 {% block body %}
+    {#    更多消息模态框#}
+    <div class="modal hide fade" id="more_info_modal" tabindex="-1" role="dialog"
+         aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title" id="myModalLabel">消息</h4>
+                </div>
+                <div class="modal-body" id='div_more_message'>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div>
     <div class="span9" style="height: auto;min-height: 100%">
         <div class="content">
             <div class="module">
@@ -22,6 +41,7 @@
         $(document).ready(function () {
             getdata()
         })
+        var Data
         function getdata() {
             $.ajax({
                 type: 'GET',
@@ -29,16 +49,17 @@
                 dataType: 'json',
                 success: function (data) {
                     console.log(data)
+                    Data = data
                     $("#message").empty()
                     if (data.length) {
                         for (i = 0; i < data.length; i++) {
                             console.log(data)
                             if (data[i].state == 'Y') {
-                                html = '<div class="alert alert-block alert-success" id="' + data[i].id + '"><h5>系统消息&nbsp&nbsp&nbsp&nbsp' + data[i].time + '</h5>' + data[i].message + '</div>'
+                                html = '<div class="alert alert-block alert-success" id="' + data[i].id + '"><h5>系统消息&nbsp&nbsp&nbsp&nbsp' + data[i].time + '</h5>' + data[i].message.substr(0, 10) + "<a id="+ i+" onclick = more_info(this.id)>..</a></div>"
                                 $("#message").append(html)
                             }
                             if (data[i].state == 'N') {
-                                html = '<div class="alert alert-block alert-info unread-message" id="' + data[i].id + '"><h5>系统消息&nbsp&nbsp&nbsp&nbsp' + data[i].time + '</h5>' + data[i].message + '</div>'
+                                html = '<div class="alert alert-block alert-info unread-message" id="' + data[i].id + '"><h5>系统消息&nbsp&nbsp&nbsp&nbsp' + data[i].time + '</h5>' + data[i].message.substr(0, 10) +"<a id="+ i+" onclick = more_info(this.id)>..</a></div>"
                                 $("#message").append(html)
                             }
                         }
@@ -49,6 +70,14 @@
                     }
                 }
             })
+        }
+        //消息过长显示模态框
+        function more_info(position) {
+            $("#div_more_message").empty()
+            html = '<div class="alert alert-block alert-success" ><h5>系统'   + '&nbsp&nbsp&nbsp&nbsp时间：' + Data[position].time + '</h5>' + Data[position].message + '</div>'
+            $("#div_more_message").append(html)
+
+            $('#more_info_modal').modal('show')
         }
         $("#message").on('click', '.unread-message', function () {
             var id = $(this).attr('id')
