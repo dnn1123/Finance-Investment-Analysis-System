@@ -36,12 +36,13 @@ def request_page():
     username = current_user.username
     results = personal_information.query.filter_by(receiver=username).all()
     for result in results:
-        sender_list.append(result.sender)
-        info_list.append(result.message_content)
-        text_list.append(result.message_text)
-        id_list.append(result.id)
-        time_list.append(result.time)
-        state_list.append(result.state)
+        if result.sender !='system':
+            sender_list.append(result.sender)
+            info_list.append(result.message_content)
+            text_list.append(result.message_text)
+            id_list.append(result.id)
+            time_list.append(result.time)
+            state_list.append(result.state)
     data['sender_list'] = sender_list
     data['info_list'] = info_list
     data['text_list'] = text_list
@@ -1029,7 +1030,7 @@ def get_system_message():
     if data == {}:
         return jsonify(result)
     for each in data:
-        result.append({"id": each.id, "message": each.message_content, "time": each.time.strftime("%Y-%m-%d %H:%M:%S"),
+        result.append({"id": each.id, "message": each.message_text, "time": each.time.strftime("%Y-%m-%d %H:%M:%S"),
                        "state": each.state})
     return jsonify(result)
 

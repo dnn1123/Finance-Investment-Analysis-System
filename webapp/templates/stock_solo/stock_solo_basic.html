@@ -105,7 +105,12 @@
                 <div class="span4">
                     <div class="module">
                         <div class="module-head">
-                            <h3>股票历史涨跌幅</h3>
+
+                            <button class="btn btn-primary">股票历史涨跌幅</button>
+                            <div style="float:right;margin-right:0px;text-align: right">
+                                <button class="btn btn-mini btn-danger" id="excel_roc">下载
+                                </button>
+                            </div>
                         </div>
                         <div class="module-body">
                             <table id="history_roc" class="row-border hover order-column" style="text-align: center;">
@@ -123,9 +128,14 @@
                 </div>
             </div>
 
-            <div class="module">
+            <div class="module" style="display: none;">
                 <div class="module-head">
-                    <h3>指标数据分析</h3>
+
+                    <button class="btn btn-primary">指标数据分析</button>
+                            <div style="float:right;margin-right:0px;text-align: right">
+                                <button class="btn btn-mini btn-danger" id="excel_table">数据下载
+                                </button>
+                            </div>
                 </div>
                 <div class="module-body" style="height:600px">
                     <div class="row">
@@ -204,6 +214,7 @@
             <div class="module">
                 <div class="module-head">
                     <h3>指标数据分析</h3>
+
                 </div>
                 <div class="module-body" style="height:600px">
                     <div class="row">
@@ -362,14 +373,65 @@
                 "infoEmpty": "没有数据",
                 "infoFiltered": "(过滤总件数 _MAX_ 条)"
             },
-            dom: 'Bfrtip',
-            buttons: {
-                buttons: [
-                    {extend: 'copy', 'text': '复制', 'className': 'btn btn-default btn-xs',},
-                    {extend: 'excel', 'text': '导出Excel', 'className': 'btn btn-default btn-xs',}
-                ]
-            }
+            dom: 'lfrtip',
+
         });
+        new $.fn.dataTable.Buttons(mytable_roc, {
+            buttons: [
+                {extend: 'excel', 'text': '导出Excel', 'className': 'btn btn-default btn-xs',}
+            ]
+        });
+        $('#excel_roc').on('click', function () {
+            if ('{{  current_user.is_authenticated }}' != 'False') {
+                $.ajax({
+                    type: 'GET',
+                    url: '{{ url_for("restfulapi.buy_data") }}',
+                    data: {
+                        'username': "{{ current_user.username }}",
+
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.member == null) {
+                            if (data.user_money >= 1) {
+                                if (confirm('您当前账户余额' + data.user_money + '元，下载该数据需要消费1元，是否需要下载？')) {
+                                    mytable_roc.buttons(0).trigger()
+                                    $.ajax({
+                                        type: 'GET',
+                                        url: '{{ url_for("restfulapi.change_money") }}',
+                                        data: {
+                                            'action': "sub",
+                                            'count': 1,
+                                        },
+                                        dataType: 'json',
+                                        success: function (data) {
+                                            console.log(data)
+                                        }
+                                    })
+                                }
+
+                            }
+                            else {
+                                alert('您当前账户余额' + data.user_money + '元,不足1元，无法下载！')
+                            }
+                        }
+                        else {
+                            alert('您当前享有免费下载数据特权，此次操作不消耗账户余额！')
+                        }
+                    }
+                })
+            }
+            else {
+                var r = confirm("请登录后下载！")
+                if (r == true) {
+                    location.href = '{{ url_for('main.logout') }}';
+                }
+
+            }
+
+
+        })
+
         var data = [
             {name: '{{ stock.city }}', value: 100}
         ];
@@ -1687,14 +1749,63 @@
                     "infoEmpty": "没有数据",
                     "infoFiltered": "(过滤总件数 _MAX_ 条)"
                 },
-                dom: 'Bfrtip',
-                buttons: {
-                    buttons: [
-                        {extend: 'copy', 'text': '复制', 'className': 'btn btn-default btn-xs',},
-                        {extend: 'excel', 'text': '导出Excel', 'className': 'btn btn-default btn-xs',}
-                    ]
-                }
+                dom: 'lfrtip',
             });
+            new $.fn.dataTable.Buttons(mydatatb, {
+            buttons: [
+                {extend: 'excel', 'text': '导出Excel', 'className': 'btn btn-default btn-xs',}
+            ]
+        });
+        $('#excel_table').on('click', function () {
+            if ('{{  current_user.is_authenticated }}' != 'False') {
+                $.ajax({
+                    type: 'GET',
+                    url: '{{ url_for("restfulapi.buy_data") }}',
+                    data: {
+                        'username': "{{ current_user.username }}",
+
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.member == null) {
+                            if (data.user_money >= 1) {
+                                if (confirm('您当前账户余额' + data.user_money + '元，下载该数据需要消费1元，是否需要下载？')) {
+                                    mydatatb.buttons(0).trigger()
+                                    $.ajax({
+                                        type: 'GET',
+                                        url: '{{ url_for("restfulapi.change_money") }}',
+                                        data: {
+                                            'action': "sub",
+                                            'count': 1,
+                                        },
+                                        dataType: 'json',
+                                        success: function (data) {
+                                            console.log(data)
+                                        }
+                                    })
+                                }
+
+                            }
+                            else {
+                                alert('您当前账户余额' + data.user_money + '元,不足1元，无法下载！')
+                            }
+                        }
+                        else {
+                            alert('您当前享有免费下载数据特权，此次操作不消耗账户余额！')
+                        }
+                    }
+                })
+            }
+            else {
+                var r = confirm("请登录后下载！")
+                if (r == true) {
+                    location.href = '{{ url_for('main.logout') }}';
+                }
+
+            }
+
+
+        })
             setTimeout("$(\"#subject\").trigger(\"click\")", 100);
             for (var i = 0; i < finance_results_t.indexes.length; i++) {
                 if (Chosenindexes.hasOwnProperty(finance_results.indexes[i])) {
@@ -2001,6 +2112,7 @@
                     index_en_name_list = data['en_name']
                     index_id_list = data['id']
                     index_id_belong_to_list = data['id_belong_to']
+                    console.log(data)
                 }
             })
         }
@@ -2008,8 +2120,13 @@
         function tree() {
             tree = new dTree('tree')
             for (var i = 0; i < index_id_list.length; i++) {
-                tree.add(index_id_list[i], index_id_belong_to_list[i], "<input type='checkbox' name=\"check\" id=\"" + index_id_list[i] + "\" value=\"" + index_id_belong_to_list[i] + "\" class=\"index_checked\" onClick=\"index_check(this.id)\"/> " + " <div id='div_" + index_id_list[i] + "'  style='margin-right:5px;display:inline-block;width: 10px; height:10px;background-color:transparent '></div>" + index_cn_name_list[i])
-            }
+                if(index_id_belong_to_list[i]=="-1"){
+                    tree.add(index_id_list[i], index_id_belong_to_list[i], "<p id=\"" + index_id_list[i] + "\" value=\"" + index_id_belong_to_list[i] + "\" class=\"text-info\" style=\"margin:10px 0 10px 0\"> " + "<strong style=\"color:#3a87ad\">" + index_cn_name_list[i]+"</strong></p>")
+                }
+                else {
+                    tree.add(index_id_list[i], index_id_belong_to_list[i], "<input type='checkbox' name=\"check\" id=\"" + index_id_list[i] + "\" value=\"" + index_id_belong_to_list[i] + "\" class=\"index_checked\" onClick=\"index_check(this.id)\"/> " + " <div id='div_" + index_id_list[i] + "'  style='margin-right:5px;display:inline-block;width: 10px; height:10px;background-color:transparent '></div>" + index_cn_name_list[i])
+                }
+                }
             tree.closeAll()
             document.getElementById("mytree").innerHTML = tree;
             {#                    document.write(tree)#}
