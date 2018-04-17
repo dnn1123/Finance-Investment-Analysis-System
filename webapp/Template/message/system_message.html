@@ -4,65 +4,226 @@
 {% endblock %}
 
 {% block body %}
+
+    {#    更多消息模态框#}
+    <div class="modal hide fade" id="more_info_modal" tabindex="-1" role="dialog"
+         aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title" id="myModalLabel">消息</h4>
+                </div>
+                <div class="modal-body" id='div_more_message'>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div>
+
     <div class="span9" style="height: auto;min-height: 100%">
         <div class="content">
-            <div class="module">
-                <div class="module-head">
-                    系统消息
-                </div>
-                <div class="module-body" id="message">
+            <div class="btn-box-row row-fluid">
+                <div class="module span12" style="background-color: rgba(0,0,0,0);border: 0">
+                    <div class="module span12" style="background-color: rgba(0,0,0,0);border: 0">
+                        <div class="tab-content" style="margin-left:0 ;width:100%;height:auto;">
+                            <div id="accept_message" class="tab-pane fade in active"
+                                 style="float:left;margin-left:0;width:100%;height:auto;">
+                                <div class="span12">
+                                    <div class="content">
+                                        <div class="module message">
+
+                                            <table class="table table-message"
+                                                   id="table_message"
+                                            >
+                                                <thead>
+                                                <tr class="heading">
+                                                    <td class="cell-icon"></td>
+                                                    <td class="cell-title">消息</td>
+                                                    <td class="cell-status hidden-phone hidden-tablet"
+                                                        style="text-align: center">状态
+                                                    </td>
+                                                    <td class="cell-text align-right">时间</td>
+                                                </tr>
+                                                </thead>
+                                                <tbody id="table_message_tbody">
+
+                                                </tbody>
+                                            </table>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
+    </div>
     </div>
 {% endblock %}
 
 {% block JavaScripts %}
     <script>
-        $(document).ready(function () {
-            getdata()
-        })
+
+        var Data
         function getdata() {
             $.ajax({
                 type: 'GET',
                 url: '{{ url_for("message_api.get_system_message") }}',
                 dataType: 'json',
+                async: false,
                 success: function (data) {
-                    console.log(data)
-                    $("#message").empty()
-                    if (data.length) {
-                        for (i = 0; i < data.length; i++) {
-                            console.log(data)
-                            if (data[i].state == 'Y') {
-                                html = '<div class="alert alert-block alert-success" id="' + data[i].id + '"><h5>系统消息&nbsp&nbsp&nbsp&nbsp' + data[i].time + '</h5>' + data[i].message + '</div>'
-                                $("#message").append(html)
-                            }
-                            if (data[i].state == 'N') {
-                                html = '<div class="alert alert-block alert-info unread-message" id="' + data[i].id + '"><h5>系统消息&nbsp&nbsp&nbsp&nbsp' + data[i].time + '</h5>' + data[i].message + '</div>'
-                                $("#message").append(html)
-                            }
-                        }
-                    }
-                    else {
-                        html = '<div class="alert alert-block alert-success">暂无消息</div>'
-                        $("#message").append(html)
-                    }
+
+                    Data = data
                 }
             })
         }
-        $("#message").on('click', '.unread-message', function () {
-            var id = $(this).attr('id')
-            var obj = $(this)
-            $.ajax({
-                type: 'GET',
-                url: '{{ url_for("message_api.read_system_message") }}',
-                data: {"id": id},
-                dataType: 'json',
-                success: function (data) {
-                    obj.removeClass('unread-message', 'alert-info')
-                    obj.addClass('alert-success')
+        function creat_table(data) {
+
+            if ($('#table_message').hasClass('dataTable')) {
+                dttable = $('#table_message').dataTable();
+                dttable.fnClearTable(); //清空一下table
+                dttable.fnDestroy(); //还原初始化了的datatable
+                $('#table_message_tbody').empty();
+                for (i = 0; i < data.length; i++) {
+                    if (data[i].state == 'Y') {
+                        console.log(data[i])
+                        $('#table_message_tbody').append(
+                                "<tr class=\"task resolved\" id=\"" + i + "\"  onclick=tr_click(this.id)>" +
+                                "<td class=\"cell-icon\"><i class=\"icon-checker high\"></td>" +
+                                "<td class=\"cell-title\">系统发送<br/>" + data[i].message.substr(0, 10) + "</td>" +
+                                "<td class=\"cell-status hidden-phone hidden-tablet\">已读</td>" +
+                                "<td class=\"cell-text align-right\">" + data[i].time + "</td>" +
+                                "</tr>")
+                    }
+                    if (data[i].state == 'N') {
+                        console.log(data[i])
+                        $('#table_message_tbody').append(
+                                "<tr class=\"task \" id=\"" + i + "\" onclick=tr_click(this.id)>" +
+                                "<td class=\"cell-icon\"><i class=\"icon-checker high\"></td>" +
+                                "<td class=\"cell-title\">系统发送<br/>" + data[i].message.substr(0, 10) + "</td>" +
+                                "<td class=\"cell-status hidden-phone hidden-tablet\">未读</td>" +
+                                "<td class=\"cell-text align-right\">" + data[i].time + "</td>" +
+                                "</tr>"
+                        )
+                    }
                 }
-            })
+                var table = $('#table_message').DataTable({
+                    "lengthChange": false,
+                    "pageLength": 5,
+                    "searching": false,
+                    "language": {
+                        "emptyTable": "没有数据",
+                        "loadingRecords": "加载中…",
+                        "processing": "查询中…",
+                        "search": "检索:",
+                        "lengthMenu": "每页 _MENU_ 条",
+                        "zeroRecords": "没有数据",
+                        "paginate": {
+                            "first": "第一页",
+                            "last": "最后一页",
+                            "next": "",
+                            "previous": ""
+                        },
+                        "info": "第 _PAGE_ 页 / 总 _PAGES_ 页",
+                        "infoEmpty": "没有数据",
+                        "infoFiltered": "(过滤总件数 _MAX_ 条)",
+                        destroy: true
+                    },
+                });
+            }
+            else {
+                $('#table_message_tbody').empty();
+                for (i = 0; i < data.length; i++) {
+                    if (data[i].state == 'Y') {
+                        console.log(data[i])
+                        $('#table_message_tbody').append(
+                                "<tr class=\"task resolved\" id=\"" + i + "\"  onclick=tr_click(this.id)>" +
+                                "<td class=\"cell-icon\"><i class=\"icon-checker high\"></td>" +
+                                "<td class=\"cell-title\">系统发送<br/>" + data[i].message.substr(0, 10) + "</td>" +
+                                "<td class=\"cell-status hidden-phone hidden-tablet\">已读</td>" +
+                                "<td class=\"cell-text align-right\">" + data[i].time + "</td>" +
+                                "</tr>")
+                    }
+                    if (data[i].state == 'N') {
+                        console.log(data[i])
+                        $('#table_message_tbody').append(
+                                "<tr class=\"task \" id=\"" + i + "\" onclick=tr_click(this.id)>" +
+                                "<td class=\"cell-icon\"><i class=\"icon-checker high\"></td>" +
+                                "<td class=\"cell-title\">系统发送<br/>" + data[i].message.substr(0, 10) + "</td>" +
+                                "<td class=\"cell-status hidden-phone hidden-tablet\">未读</td>" +
+                                "<td class=\"cell-text align-right\">" + data[i].time + "</td>" +
+                                "</tr>"
+                        )
+                    }
+                }
+                var table = $('#table_message').DataTable({
+                    "lengthChange": false,
+                    "pageLength": 5,
+                    "searching": false,
+                    "language": {
+                        "emptyTable": "没有数据",
+                        "loadingRecords": "加载中…",
+                        "processing": "查询中…",
+                        "search": "检索:",
+                        "lengthMenu": "每页 _MENU_ 条",
+                        "zeroRecords": "没有数据",
+                        "paginate": {
+                            "first": "第一页",
+                            "last": "最后一页",
+                            "next": "",
+                            "previous": ""
+                        },
+                        "info": "第 _PAGE_ 页 / 总 _PAGES_ 页",
+                        "infoEmpty": "没有数据",
+                        "infoFiltered": "(过滤总件数 _MAX_ 条)",
+                        destroy: true
+                    },
+                });
+            }
+
+
+        }
+
+        <!-- 阅读消息 -->
+
+        function tr_click(position) {
+
+            if (Data[position].state == "N") {
+                var id = Data[position].id
+                $.ajax({
+                    type: 'GET',
+                    url: '{{ url_for("message_api.read_system_message") }}',
+                    data: {"id": id},
+                    dataType: 'json',
+                    success: function (data) {
+                        get_system_message_count()
+                        getdata()
+                        creat_table(Data)
+                    }
+                })
+            }
+            more_info(position)
+        }
+
+        //消息过长显示模态框
+        function more_info(position) {
+            $("#div_more_message").empty()
+            html = '<div class="alert alert-block alert-success" ><h5>系统' + '&nbsp&nbsp&nbsp&nbsp时间：' + Data[position].time + '</h5>' + Data[position].message + '</div>'
+            $("#div_more_message").append(html)
+
+            $('#more_info_modal').modal('show')
+        }
+        $(document).ready(function () {
+            getdata()
+            creat_table(Data)
+            $.fn.dataTable.ext.errMode = 'none'; //不显示任何错误信息
         })
     </script>
 

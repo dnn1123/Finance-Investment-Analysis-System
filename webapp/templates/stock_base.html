@@ -174,8 +174,8 @@
                 <i class="icon-reorder shaded"></i></a><a class="brand" href="index.html">Fin-magic 魔法金融 </a>
             <div class="nav-collapse collapse navbar-inverse-collapse">
                 <ul class="nav nav-icons">
-                    <li class="active"><a href="{{ url_for('message.system_message') }}"><i class="icon-envelope"></i></a></li>
-                    <li><a href="{{ url_for('message.my_message') }}"><i class="icon-eye-open"></i></a></li>
+                    <li class="active"><a href="{{ url_for('message.system_message') }}" ><i class="icon-envelope"></i><b id="b_for_system_message" style="color: #ef4300"> </b></a></li>
+                    <li><a href="{{ url_for('message.my_message') }}" id="a_my_message"><i class="icon-eye-open"></i><b id="b_for_my_message" style="color:#00c800"> </b></a></li>
                     <li><a href="{{ url_for('stock_solo.basic') }}"><i class="icon-bar-chart"></i></a></li>
                 </ul>
                 {% block searchForm %}{% endblock %}
@@ -307,12 +307,13 @@
     $(document).ready(function () {
         var navheight = $("div.navbar").height();
         $("#container").css("margin-top", navheight);
-
+        get_my_message_count()
+        get_system_message_count()
     })
-    setInterval(aa,30000);
-    setInterval(bb,30000);
+    setInterval(get_my_message_count,30000);
+    setInterval(get_system_message_count,30000);
 
-    function aa() {
+    function get_my_message_count() {
         $.ajax({
             type: 'GET',
             url: '{{ url_for("message_api.get_message_count") }}',
@@ -321,16 +322,18 @@
                 console.log(data);
                 if (data.count > 0) {
                     $("#personal_message_count").text(data.count)
+                    $("#b_for_my_message").text(data.count)
                     console.log(data.count)
                 }
                 else {
-                    $("#personal_message_count").text('暂无未读')
+                    $("#personal_message_count").text(0)
+                    $("#b_for_my_message").text(' 0')
                 }
             }
         })
     }
 
-    function bb() {
+    function get_system_message_count() {
         $.ajax({
             type: 'GET',
             url: '{{ url_for("message_api.get_system_message_count") }}',
@@ -338,9 +341,11 @@
             success: function (data) {
                 if (data.count > 0) {
                     $("#system_message_count").text(data.count)
+                    $("#b_for_system_message").text(' '+data.count)
                 }
                 else {
-                    $("#system_message_count").text('暂无未读')
+                    $("#system_message_count").text(0)
+                    $("#b_for_system_message").text(' 0')
                 }
             }
         })
