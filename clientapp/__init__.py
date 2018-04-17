@@ -55,7 +55,7 @@ def letter_send(receiver,text):
     # 使用cursor()方法获取操作游标
     cursor = db.cursor()
     # SQL 插入语句
-    sql = "Insert into personal_information(receiver,sender, message_content, time, state) VALUES ('%s', '%s', '%s', now(), '%s' )" % (receiver, 'system', text, 'N', )
+    sql = "Insert into personal_information(receiver,sender, message_text, time, state) VALUES ('%s', '%s', '%s', now(), '%s' )" % (receiver, 'system', text, 'N', )
     try:
         # 执行sql语句
         cursor.execute(sql)
