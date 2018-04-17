@@ -1030,7 +1030,7 @@ def get_system_message():
     if data == {}:
         return jsonify(result)
     for each in data:
-        result.append({"id": each.id, "message": each.message_text, "time": each.time.strftime("%Y-%m-%d %H:%M:%S"),
+        result.append({"id": each.id, "message": each.message_text, "time": each.time,
                        "state": each.state})
     return jsonify(result)
 
