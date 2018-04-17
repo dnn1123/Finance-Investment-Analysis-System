@@ -143,17 +143,17 @@
                     $("#myprofits").text(data.position_profit.toFixed(2));
                     $("#mytraderec").text(data.trade_rec_count);
                     if (data.member_type == null) {
-                        var userimgsrc = "../static/personal_img/user.jpg";
+                        var userimgsrc = "/static/personal_img/user.jpg";
                         $("#personal_img").attr("src", userimgsrc);
                         $("#user_info").text('您的账户尚未开通会员服务，');
                     }
                     else if (data.member_type == 'month') {
-                        var vipimgsrc = "../static/personal_img/vip.png";
+                        var vipimgsrc = "/static/personal_img/vip.png";
                         $("#personal_img").attr("src", vipimgsrc);
                         $("#user_info").text('您的账户目前是包月会员，可免费下载数据，当前账户余额：' + data.user_money + '元，');
                     }
                     else if (data.member_type == 'year') {
-                        var vipimgsrc = "../static/personal_img/vip.png";
+                        var vipimgsrc = "/static/personal_img/vip.png";
                         $("#personal_img").attr("src", vipimgsrc);
                         $("#user_info").text('您的账户目前是年费会员，可免费下载数据，当前账户余额：' + data.user_money + '元，');
                     }
@@ -168,7 +168,7 @@
                 type: 'GET',
                 url: '{{ url_for("restfulapi.positionhistory") }}',
                 data: {
-                    'username': "{{ current_user.username }}",
+                    'username': "{{ current_user.username }}"
                 },
                 dataType: 'json',
                 success: function (data) {
@@ -176,13 +176,10 @@
                     profittrend(data);
                 }
             })
-
         });
 
 
-        {#        充值#}
         $("#recharge").click(function () {
-
             $.ajax({
                 type: 'GET',
                 url: '{{ url_for("restfulapi.change_money") }}',
@@ -312,7 +309,6 @@
             myChart.setOption(option);
         };
         function profittrend(data) {
-
             var myChart = echarts.init(document.getElementById('profittrend'));
             var option = {
 
