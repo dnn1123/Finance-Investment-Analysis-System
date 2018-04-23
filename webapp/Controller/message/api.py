@@ -1013,7 +1013,7 @@ def get_message_count():
     data['count'] = results
     return jsonify(data)
 
-# bug
+
 @message_api.route('/get_system_message_count', methods=['GET', 'POST'])
 def get_system_message_count():
     data = {}
