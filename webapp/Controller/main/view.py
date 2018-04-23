@@ -22,7 +22,7 @@ def index():
 
 @main_view.route('register_phone', methods=['GET', 'POST'])
 def register_phone():
-    return render_template('register_phone.html')
+    return render_template('new_register_phone.html')
 
 
 @main_view.route('register', methods=['GET', 'POST'])

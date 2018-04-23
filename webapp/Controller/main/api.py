@@ -50,6 +50,12 @@ def register():
     email=request.form.get('email')
     password = request.form.get('pwd')
     cpassword = request.form.get('cpwd')
+    if username==u"":
+        return render_template('new_register.html', error=u'用户名不能为空')
+    if email==u"":
+        return render_template('new_register.html', error=u'邮箱不能为空')
+    if password==u"":
+        return render_template('new_register.html', error=u'密码不符合规则')
     user = users.query.filter_by(username=username).first()
     if user:
         return render_template('new_register.html', error=u'用户名已存在')
@@ -163,7 +169,8 @@ def send_Verification_code():
         Verification_code = str(random.randint(100000, 999999))
         Verification_code_list[phone_number] = Verification_code
         text = '【魔法金融】您的验证码是' + Verification_code
-        send_sms(text, phone_number)
+        status=send_sms(text, phone_number)
+        print status
         data['phone_number'] = phone_number
         data['Verification_code'] = Verification_code
 
