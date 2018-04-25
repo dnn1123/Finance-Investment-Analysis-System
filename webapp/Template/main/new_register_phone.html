@@ -23,13 +23,15 @@
         <script type="text/javascript" src="{{ url_for('static',filename='login/js/supersized-init.js') }}"></script>
         <!-- Javascript -->
     </head>
-
+<style>
+    .btn_zhuce{ width:270px; height:33px; background:#37b5f9; font-size:14px; line-height:33px; text-align:center; border:0px; color:#fff; border-radius:3px; cursor:pointer;}
+</style>
     <body>
 
         <div class="page-container">
 {#            <h1>Metric</h1>#}
                     <main>
-            <form class="form" action="{{ url_for("main_api.register") }}" method="post">
+                        <div class="form">
                 <div class="form__cover">
                 </div>
                 <div class="form__loader">
@@ -47,10 +49,10 @@
                         <p>Fin-magic</p>
                     </h1>
                     <div class="styled-input">
-                        <input type="text" id="user" class="styled-input__input" name="user" autocomplete="off">
+                        <input type="text" id="phone_number" class="styled-input__input" name="phone_number" autocomplete="off">
                         <div class="styled-input__placeholder">
                             <span class="styled-input__placeholder-text">
-                                用户名
+                                手机号
                             </span>
                         </div>
                         <div class="styled-input__circle">
@@ -58,18 +60,22 @@
                         <div id="user_msg"></div>
                     </div>
                     <div class="styled-input">
-                        <input type="email" id="email" class="styled-input__input" name="email" autocomplete="off">
+                        <input type="email" id="Verification_code" class="styled-input__input" name="Verification_code" autocomplete="off">
                         <div class="styled-input__placeholder">
                             <span class="styled-input__placeholder-text">
-                                邮箱
+                                验证码
                             </span>
                         </div>
                         <div class="styled-input__circle">
                         </div>
-                         <div id="email_msg"></div>
                     </div>
+
+                                    <div style="margin-bottom: 25px">
+                    <input name="验证码" id="get_Verification_code" type="button" class="btn_zhuce" value="获取验证码">
+                </div>
+
                     <div class="styled-input">
-                        <input type="password" id="pwd" class="styled-input__input" name="pwd">
+                        <input type="password" id="pwd" class="styled-input__input" name="password">
                         <div class="styled-input__placeholder">
                             <span class="styled-input__placeholder-text">
                                 密码
@@ -80,7 +86,7 @@
                         <div id="pwd_msg"></div>
                     </div>
                                         <div class="styled-input">
-                        <input type="password" id="cpwd" class="styled-input__input" name="cpwd">
+                        <input type="password" id="cpwd" class="styled-input__input" name="confirm_password">
                         <div class="styled-input__placeholder">
                             <span class="styled-input__placeholder-text">
                                 确认密码
@@ -91,7 +97,7 @@
                                             <div id="cpwd_msg"></div>
                     </div>
                     <div style="color: red;margin-bottom: 5px">{{ error }}</div>
-                    <button id="register_btn" class="styled-button" type="submit" disabled="true">
+                    <button id="register_btn" class="styled-button"  disabled="true">
                         <span class="styled-button__real-text-holder">
                             <span class="styled-button__real-text">
                                 注册
@@ -127,8 +133,7 @@
         </div>
 
 
-
-            </form>
+</div>
         </main>
 {#            <form action="" method="post">#}
 {#                <input type="text" name="username" class="username" placeholder="Username">#}
@@ -241,24 +246,6 @@ setTimeout(function () {
             }
         })
     }
-        function checkEmail(mail) {
-        $.ajax({
-            url:"{{ url_for("main_api.checkEmail") }}",
-            type:"post",
-            dataType:"Json",
-            data:{"email":mail},
-            success:function (data) {
-                if (data.result==true){
-                                        $("#email_msg").html("邮箱已被使用")
-                    $("#register_btn").attr("disabled",true)
-
-                }else {
-                    $("#email_msg").html("邮箱可用")
-                    $("#register_btn").attr("disabled",false)
-                }
-            }
-        })
-    }
     function checkPwd(data) {
         var reg=/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8,16}$/
         if(reg.test(data)){
@@ -275,14 +262,6 @@ setTimeout(function () {
             checkName(name)
         }else {
             $("#user_msg").html("")
-        }
-    })
-        $("#email").focusout(function () {
-        var data=$("#email").val()
-        if (data != null && data!= ''){
-            checkEmail(data)
-        }else {
-            $("#email_msg").html("")
         }
     })
     $("#pwd").focusout(function () {
@@ -306,5 +285,75 @@ setTimeout(function () {
         }
     })
 </script>
+    <script>
+        {#    发送验证码#}
+        $("#get_Verification_code").click(function () {
+            phone_number = document.getElementById("phone_number").value
+            if (phone_number === "") {
+                alert('手机号码不能为空')
+            }
+            else {
+                this.disabled = 'disabled';
+                setTimeout(function () {
+                    $("#get_Verification_code").disabled = false;
+                }, 60000);//1秒后才能点击
+                $.ajax({
+                    type: 'GET',
+                    url: '{{url_for("main_api.send_Verification_code")}}',
+                    data: {
+                        'phone_number': phone_number,
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        console.log(data)
+                        if (data.exit == 'flase') {
+                            alert('短信已发送')
+                        }
+                        else {
+                            alert('该号码已经注册！')
+                        }
+                    }
+                })
+            }
+        })
+        {# 注册 #}
+        $("#register_btn").click(function () {
+
+            phone_number = document.getElementsByName("phone_number").value
+            password = document.getElementsByName("password").value
+            confirm_password = document.getElementsByName("confirm_password").value
+            Verification_code = document.getElementsByName("Verification_code").value
+            if (phone_number === "") {
+                alert('手机号码不能为空')
+            }
+            else {
+                if (password == confirm_password) {
+                    $.ajax({
+                        type: 'GET',
+                        url: '{{url_for("main_api.register_phone")}}',
+                        data: {
+                            'phone_number': phone_number,
+                            'password': password,
+                            'confirm_password': confirm_password,
+                            'Verification_code': Verification_code,
+                        },
+                        dataType: 'json',
+                        success: function (data) {
+                            if (data.msg == 'success') {
+                                alert('注册成功！')
+                            }
+                            else {
+                                alert('注册失败！')
+                            }
+
+                        }
+                    })
+                }
+                else {
+                    alert('两次密码不一致！')
+                }
+            }
+        })
+    </script>
 </html>
 
