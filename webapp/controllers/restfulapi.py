@@ -687,6 +687,7 @@ def cns_market_new_ajax():
         data['sec_name'].append(pagination[i][0].sec_name)
         data['ipo_date'].append(pagination[i][0].ipo_date)
         data['hushen_300'].append(pagination[i][0].hushen_300)
+
     return jsonify(data)
 
 
