@@ -87,3 +87,7 @@ def admin():
     role = Role.query.filter_by(id=user.permissions).first()
     rolename = role.description
     return render_template('admin/admin_permission.html', user=user, rolename=rolename)
+
+@main_view.route('my_test', methods=['GET', 'POST'])
+def test():
+    return render_template("my_test.html")
