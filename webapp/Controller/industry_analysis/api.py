@@ -188,11 +188,13 @@ def market_status1():
                        func.sum(finance_basics_add.wgsd_net_inc).label("wgsd_net_inc"),
                        func.sum(finance_basics_add.tot_assets).label("tot_assets"),
                        func.sum(finance_basics_add.tot_liab).label("tot_liab"),
+                       func.sum(finance_basics_add.net_assets).label("net_assets"),
                        func.sum(finance_basics_add.wgsd_com_eq).label("wgsd_com_eq"),
                        func.sum(finance_basics_add.operatecashflow_ttm2).label("operatecashflow_ttm2"),
                        func.sum(finance_basics_add.investcashflow_ttm2).label("investcashflow_ttm2"),
                        func.sum(finance_basics_add.financecashflow_ttm2).label("financecashflow_ttm2"),
                        func.sum(finance_basics_add.cashflow_ttm2).label("cashflow_ttm2"),
+                       func.sum(finance_basics_add.free_cash_flow).label("free_cash_flow"),
                        cns_department_industry.industry_gics_1.label("industry_gics_1")).filter(
         finance_basics_add.trade_code.in_(code_list)).filter(
         finance_basics_add.trade_code == cns_stock_industry.trade_code).filter(
@@ -269,11 +271,13 @@ def market_status2():
                        func.sum(finance_basics_add.wgsd_net_inc).label("wgsd_net_inc"),
                        func.sum(finance_basics_add.tot_assets).label("tot_assets"),
                        func.sum(finance_basics_add.tot_liab).label("tot_liab"),
+                       func.sum(finance_basics_add.net_assets).label("net_assets"),
                        func.sum(finance_basics_add.wgsd_com_eq).label("wgsd_com_eq"),
                        func.sum(finance_basics_add.operatecashflow_ttm2).label("operatecashflow_ttm2"),
                        func.sum(finance_basics_add.investcashflow_ttm2).label("investcashflow_ttm2"),
                        func.sum(finance_basics_add.financecashflow_ttm2).label("financecashflow_ttm2"),
                        func.sum(finance_basics_add.cashflow_ttm2).label("cashflow_ttm2"),
+                       func.sum(finance_basics_add.free_cash_flow).label("free_cash_flow"),
                        cns_group_industry.industry_gics_2.label("industry_gics_2")).filter(
         finance_basics_add.trade_code.in_(code_list)).filter(
         finance_basics_add.trade_code == cns_stock_industry.trade_code).filter(
@@ -344,11 +348,13 @@ def market_status3():
                        func.sum(finance_basics_add.wgsd_net_inc).label("wgsd_net_inc"),
                        func.sum(finance_basics_add.tot_assets).label("tot_assets"),
                        func.sum(finance_basics_add.tot_liab).label("tot_liab"),
+                       func.sum(finance_basics_add.net_assets).label("net_assets"),
                        func.sum(finance_basics_add.wgsd_com_eq).label("wgsd_com_eq"),
                        func.sum(finance_basics_add.operatecashflow_ttm2).label("operatecashflow_ttm2"),
                        func.sum(finance_basics_add.investcashflow_ttm2).label("investcashflow_ttm2"),
                        func.sum(finance_basics_add.financecashflow_ttm2).label("financecashflow_ttm2"),
                        func.sum(finance_basics_add.cashflow_ttm2).label("cashflow_ttm2"),
+                       func.sum(finance_basics_add.free_cash_flow).label("free_cash_flow"),
                        cns_industry.industry_gics_3.label("industry_gics_3")).filter(
         finance_basics_add.trade_code.in_(code_list)).filter(
         finance_basics_add.trade_code == cns_stock_industry.trade_code).filter(
@@ -418,11 +424,13 @@ def market_status4():
                        func.sum(finance_basics_add.wgsd_net_inc).label("wgsd_net_inc"),
                        func.sum(finance_basics_add.tot_assets).label("tot_assets"),
                        func.sum(finance_basics_add.tot_liab).label("tot_liab"),
+                       func.sum(finance_basics_add.net_assets).label("net_assets"),
                        func.sum(finance_basics_add.wgsd_com_eq).label("wgsd_com_eq"),
                        func.sum(finance_basics_add.operatecashflow_ttm2).label("operatecashflow_ttm2"),
                        func.sum(finance_basics_add.investcashflow_ttm2).label("investcashflow_ttm2"),
                        func.sum(finance_basics_add.financecashflow_ttm2).label("financecashflow_ttm2"),
                        func.sum(finance_basics_add.cashflow_ttm2).label("cashflow_ttm2"),
+                       func.sum(finance_basics_add.free_cash_flow).label("free_cash_flow"),
                        cns_sub_industry.industry_gicscode_4,
                        cns_sub_industry.industry_gics_4.label("industry_gics_4")).filter(
         finance_basics_add.trade_code.in_(code_list)).filter(
@@ -552,9 +560,9 @@ def market_form2():
     code = request.args.get('code')
 
     Filters = {
-        cnsb_industry.belong == code,
+        cns_industry.belong == code,
     }
-    results = cnsb_industry.query.filter(*Filters).all()
+    results = cns_industry.query.filter(*Filters).all()
 
     for result in results:
         value.append(result.industry_gicscode_3)
@@ -575,9 +583,9 @@ def market_form3():
     code = request.args.get('code')
 
     Filters = {
-        hks_sub_industry.belong == code,
+        cns_sub_industry.belong == code,
     }
-    results = hks_sub_industry.query.filter(*Filters).all()
+    results = cns_sub_industry.query.filter(*Filters).all()
 
     for result in results:
         value.append(result.industry_gicscode_4)
