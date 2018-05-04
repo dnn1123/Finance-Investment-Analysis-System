@@ -1013,7 +1013,7 @@ def get_message_count():
     data['count'] = results
     return jsonify(data)
 
-# bug
+
 @message_api.route('/get_system_message_count', methods=['GET', 'POST'])
 def get_system_message_count():
     data = {}
@@ -1030,7 +1030,7 @@ def get_system_message():
     if data == {}:
         return jsonify(result)
     for each in data:
-        result.append({"id": each.id, "message": each.message_text, "time": each.time.strftime("%Y-%m-%d %H:%M:%S"),
+        result.append({"id": each.id, "message": each.message_text, "time": each.time,
                        "state": each.state})
     return jsonify(result)
 

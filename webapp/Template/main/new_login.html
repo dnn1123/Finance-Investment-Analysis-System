@@ -21,8 +21,6 @@
         <script type="text/javascript" src="{{ url_for('static',filename='login/js/jquery-1.8.2.min.js') }}"></script>
         <script type="text/javascript" src="{{ url_for('static',filename='login/js/supersized.3.2.7.min.js') }}"></script>
         <script type="text/javascript" src="{{ url_for('static',filename='login/js/supersized-init.js') }}"></script>
-        <script type="text/javascript" src="{{ url_for('static',filename='login/js/scripts.js') }}"></script>
-        <script type="text/javascript" src="{{ url_for('static',filename='login/js/index.js') }}"></script>
         <!-- Javascript -->
     </head>
 
@@ -68,6 +66,7 @@
                         <div class="styled-input__circle">
                         </div>
                     </div>
+                    <div style="color: red;margin-bottom: 5px">{{ error }}</div>
                     <button class="styled-button" type="submit">
                         <span class="styled-button__real-text-holder">
                             <span class="styled-button__real-text">
@@ -101,7 +100,7 @@
 
             </div>
                     <div > <p><a href="{{ url_for("stock_solo.basic") }}">访客登陆</a></p></div>
-                    <div > <p>还没有账号？<a href="{{ url_for("main.register") }}">立即注册</a></p></div>
+                    <div > <p>还没有账号？<a href="{{ url_for("main.register") }}">用户名注册</a>&nbsp&nbsp<a href="{{ url_for("main.register_phone") }}">手机注册</a></p></div>
 
         </div>
 
@@ -130,15 +129,22 @@
         </div>
     </body>
 <script>
-    'use strict';
-
-var placeholders = document.querySelectorAll('.styled-input__placeholder-text'),
-    inputs = document.querySelectorAll('.styled-input__input');
-
+var placeholder = document.querySelectorAll('.styled-input__placeholder-text')
+var input = document.querySelectorAll('.styled-input__input');
+var placeholders = new Array()
+var inputs=new Array()
+for (var i = 0; i < placeholder.length; i++) {
+    var ele = placeholder[i]
+    placeholders.push(ele)
+}
+for (var i = 0; i < input.length; i++) {
+    var ele = input[i]
+    inputs.push(ele)
+}
 placeholders.forEach(function (el, i) {
-    var value = el.innerText,
-        html = '';
-    for (var _iterator = value, _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator]();;) {
+    var text = el.innerText, html = '';
+    value = text.split('')
+    for (var _iterator = value, _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator;;) {
         var _ref;
 
         if (_isArray) {
@@ -170,7 +176,6 @@ inputs.forEach(function (el) {
         placeholderAnimationIn(parent, false);
     }, false);
 });
-
 function placeholderAnimationIn(parent, action) {
     var act = action ? 'add' : 'remove';
     var letters = parent.querySelectorAll('.letter');
@@ -191,7 +196,7 @@ setTimeout(function () {
 
 setTimeout(function () {
     document.body.classList.add('document-loaded');
-}, 1800);
+}, 500);
 
 </script>
 </html>

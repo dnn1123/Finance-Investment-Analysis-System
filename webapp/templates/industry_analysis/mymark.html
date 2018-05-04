@@ -115,7 +115,7 @@
                         </div>
                         <div class="modal-body">
                             <div id="postable" style="margin: auto;width:95%">
-                                <ul id="myTab" class="am-nav nav-tabs">
+                                <ul id="myTab" class="nav nav-tabs">
                                     <li class="disabled">
                                         <a href="javascript:return false;" data-toggle="tab" disabled='true'>视图：</a>
                                     </li>
@@ -346,7 +346,7 @@
 
                                     </div>
                                 </div>
-                                <ul id="myTab1" class="am-nav nav-tabs">
+                                <ul id="myTab1" class="nav nav-tabs">
                                     <li class="disabled">
                                         <a href="javascript:return false;" data-toggle="tab" disabled='true'>视图：</a>
                                     </li>
@@ -539,7 +539,7 @@
                                             </button>
                                         </div>
                                     </div>
-                                    <ul id="myTabs1" class="am-nav nav-tabs">
+                                    <ul id="myTabs1" class="nav nav-tabs">
                                         <li class="disabled">
                                             <a href="javascript:return false;" data-toggle="tab" disabled='true'>视图：</a>
                                         </li>
@@ -702,7 +702,7 @@
                                             </button>
                                         </div>
                                     </div>
-                                    <ul id="myTabs2" class="am-nav nav-tabs">
+                                    <ul id="myTabs2" class="nav nav-tabs">
                                         <li class="disabled">
                                             <a href="javascript:return false;" data-toggle="tab" disabled='true'>视图：</a>
                                         </li>
@@ -869,7 +869,7 @@
                                             </button>
                                         </div>
                                     </div>
-                                    <ul id="myTabs3" class="am-nav nav-tabs">
+                                    <ul id="myTabs3" class="nav nav-tabs">
                                         <li class="disabled">
                                             <a href="javascript:return false;" data-toggle="tab" disabled='true'>视图：</a>
                                         </li>
@@ -1036,7 +1036,7 @@
                                             </button>
                                         </div>
                                     </div>
-                                    <ul id="myTabs4" class="am-nav nav-tabs">
+                                    <ul id="myTabs4" class="nav nav-tabs">
                                         <li class="disabled">
                                             <a href="javascript:return false;" data-toggle="tab" disabled='true'>视图：</a>
                                         </li>
@@ -1198,98 +1198,6 @@
         $("#province_selected").text('当前选中:' + province);
         function creatmap() {
             var myChart = echarts.init(document.getElementById('map'));
-            var option1 = {
-                title: {
-                    text: '',
-                    subtext: '',
-                    x: 'center'
-                },
-                tooltip: {//提示框组件。
-                    trigger: 'item'//数据项图形触发，主要在散点图，饼图等无类目轴的图表中使用。
-                },
-                legend: {
-                    orient: 'horizontal',//图例的排列方向
-                    x: 'left',//图例的位置
-                    {#            data:['订单量']#}
-                },
-                toolbox: {//工具栏
-                    show: true,
-                    orient: 'vertical',//工具栏 icon 的布局朝向
-                    x: 'right',
-                    y: 'center',
-                    feature: {//各工具配置项。
-                        mark: {show: true},
-                        dataView: {show: true, readOnly: false},//数据视图工具，可以展现当前图表所用的数据，编辑后可以动态更新。
-                        restore: {show: true},//配置项还原。
-                        saveAsImage: {show: true}//保存为图片。
-                    }
-                },
-                roamController: {//控制地图的上下左右放大缩小 图上没有显示
-                    show: true,
-                    x: 'right',
-                    mapTypeControl: {
-                        'china': true
-                    }
-                },
-                series: [
-                    {
-                        {#                name: '订单量',#}
-                        type: 'map',
-                        mapType: 'china',
-                        roam: false,//是否开启鼠标缩放和平移漫游
-                        itemStyle: {//地图区域的多边形 图形样式
-                            normal: {//是图形在默认状态下的样式
-                                label: {
-                                    show: true,//是否显示标签
-                                    textStyle: {
-                                        color: "rgb(249, 249, 249)"
-                                    }
-                                }
-                            },
-                            emphasis: {//是图形在高亮状态下的样式,比如在鼠标悬浮或者图例联动高亮时
-                                label: {show: true}
-                            }
-                        },
-                        top: "3%",//组件距离容器的距离
-                        data: [
-                            {name: '北京'},
-                            {name: '天津'},
-                            {name: '上海'},
-                            {name: '重庆'},
-                            {name: '河北'},
-                            {name: '河南'},
-                            {name: '云南'},
-                            {name: '辽宁'},
-                            {name: '黑龙江'},
-                            {name: '湖南'},
-                            {name: '安徽'},
-                            {name: '山东'},
-                            {name: '新疆'},
-                            {name: '江苏'},
-                            {name: '浙江'},
-                            {name: '江西'},
-                            {name: '湖北'},
-                            {name: '广西'},
-                            {name: '甘肃'},
-                            {name: '山西'},
-                            {name: '内蒙古'},
-                            {name: '陕西'},
-                            {name: '吉林'},
-                            {name: '福建'},
-                            {name: '贵州'},
-                            {name: '广东'},
-                            {name: '青海'},
-                            {name: '西藏'},
-                            {name: '四川'},
-                            {name: '宁夏'},
-                            {name: '海南'},
-                            {name: '台湾'},
-                            {name: '香港'},
-                            {name: '澳门'}
-                        ]
-                    }
-                ]
-            };
             var option = {
                 tooltip: {
 //                    show: false //不显示提示标签
@@ -1329,12 +1237,9 @@
                 }],
             };
             myChart.setOption(option);
-            myChart.on('mouseover', function (params) {
-
-            });
             myChart.on('click', function (params) {//点击事件
                 var dataIndex = params.dataIndex;
-                console.log(params.name);
+                {#console.log(params);#}
                 province = params.name
                 $("#province_selected").text('当前选中:' + province)
                 CreateChart(province)

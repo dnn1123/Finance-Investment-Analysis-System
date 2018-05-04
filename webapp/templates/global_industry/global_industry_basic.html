@@ -1,5 +1,7 @@
 {% extends "global_industry/global_industry_base.html" %}
-
+{% block styles %}
+    <script type="text/javascript" src="{{ url_for('static',filename='js/echarts_sunburst.js') }}"></script>
+{% endblock %}
 {% block tab %}
     <ul class="nav nav-pills" xmlns="http://www.w3.org/1999/html">
         <li class="active"><a>RA.投资分类评级</a></li>

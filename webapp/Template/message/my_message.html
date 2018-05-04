@@ -388,7 +388,7 @@
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                     <h4 class="modal-title" id="myModalLabel">消息</h4>
                 </div>
-                <div class="modal-body" id = 'div_more_message'>
+                <div class="modal-body" id='div_more_message'>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
@@ -406,9 +406,9 @@
                     <div class="module span12">
                         <div class="module-body">
                             <div style="margin: auto;width:95%;height:230px;">
-                                <div class="mytitle"><h4 style="font-size:18px;color:gray">有疑问？快来看看大家都是怎么想的吧！</h4></div>
+                                <div class="mytitle"><h4 style="font-size:18px;">讨论区</h4></div>
                                 <textarea id="inputtext" class="mytext" placeholder=""></textarea>
-                                <button type="submit" id="fbbutton" class="fbbutton">点击发布</button>
+                                <button type="submit" id="fbbutton" class="btn btn-primary" style="float: right">点击发布</button>
                             </div>
                         </div>
                     </div>
@@ -548,7 +548,7 @@
                                                 <div class="module-option clearfix" id="send_message_div">
                                                     <h3 style="float:left">消息列表</h3>
                                                     <div class="pull-right" style="margin-left: 5px">
-                                                        <a  onclick="refresh()"
+                                                        <a onclick="refresh()"
                                                            class="btn btn-primary">刷新列表</a>
                                                     </div>
                                                     <div class="pull-right" style="margin-left: 5px">
@@ -1639,22 +1639,7 @@
                                 console.log(data)
                                 alert('发送成功！')
                                 $("#send_personal_message_modal").modal('hide')
-                                $.ajax({
-                                    type: 'GET',
-                                    url: '{{ url_for("message_api.get_message_count") }}',
-                                    dataType: 'json',
-                                    success: function (data) {
-                                        console.log(data);
-                                        if (data.count > 0) {
-                                            $("#personal_message_count").text(data.count)
-                                            console.log(data.count)
-                                        }
-                                        else {
-                                            $("#personal_message_count").text('暂无未读')
-                                        }
-
-                                    }
-                                })
+                                get_my_message_count()
                                 refresh()
                             }
                         })
@@ -1772,7 +1757,7 @@
                 });
             }
         }
-{#        全局变量用于存储当前用户所有消息#}
+        {#        全局变量用于存储当前用户所有消息#}
         data_message = {}
         //消息私信面板切换
         function accept_message_show() {
@@ -1782,6 +1767,7 @@
                 dataType: 'json',
                 success: function (data) {
                     data_message = data
+                    console.log(data_message)
                     creat_table_for_accept_message(data);
                 }
             });
@@ -1789,15 +1775,17 @@
 
         //消息私信呈现
         function creat_table_for_accept_message(data) {
-            $('#table_message_tbody').empty();
-            for (i = data.info_list.length-1; i >= 0; i--) {
-
-
+            if ($('#table_message').hasClass('dataTable')) {
+                dttable = $('#table_message').dataTable();
+                dttable.fnClearTable(); //清空一下table
+                dttable.fnDestroy(); //还原初始化了的datatable
+                $('#table_message_tbody').empty();
+                for (i = data.info_list.length - 1; i >= 0; i--) {
                     if (data.state_list[i] == 'N') {
                         $('#table_message_tbody').append(
-                                "<tr class=\"task\" id=\"info_" + data.id_list[i] + "\">" +
+                                "<tr class=\"task\"  id=\"" + i + "\" onclick=tr_click(this.id)>" +
                                 "<td class=\"cell-icon\"><i class=\"icon-checker high\"></td>" +
-                                "<td class=\"cell-title\">" + data.sender_list[i] + data.info_list[i] + "<br/>" + data.text_list[i].substr(0,10) + "<a id="+ i+" onclick = more_info(this.id)>..</a></td>" +
+                                "<td class=\"cell-title\">" + data.sender_list[i] + data.info_list[i] + "<br/>" + data.text_list[i].substr(0, 10) + "</td>" +
                                 "<td class=\"cell-status hidden-phone hidden-tablet\">未读</td>" +
                                 "<td class=\"cell-text align-right\">" + data.time_list[i] + "</td>" +
                                 "</tr>"
@@ -1805,52 +1793,96 @@
                     }
                     else if (data.state_list[i] == 'Y') {
                         $('#table_message_tbody').append(
-                                "<tr class=\"task resolved\" id=\"" + data.id_list[i] + "\">" +
+                                "<tr class=\"task resolved\" id=\"" + i + "\" onclick=tr_click(this.id)>" +
                                 "<td class=\"cell-icon\"><i class=\"icon-checker high\"></td>" +
-                                "<td class=\"cell-title\">" + data.sender_list[i] + data.info_list[i] + "<br/>" + data.text_list[i].substr(0,10) + "<a id="+ i+" onclick = more_info(this.id)>..</a></td>" +
+                                "<td class=\"cell-title\">" + data.sender_list[i] + data.info_list[i] + "<br/>" + data.text_list[i].substr(0, 10) + "</td>" +
                                 "<td class=\"cell-status hidden-phone hidden-tablet\">已读</td>" +
                                 "<td class=\"cell-text align-right\">" + data.time_list[i] + "</td>" +
                                 "</tr>"
                         )
                     }
+                }
 
+                var table = $('#table_message').DataTable({
+                    "lengthChange": false,
+                    "pageLength": 5,
+                    "searching": false,
+                    "language": {
+                        "emptyTable": "没有数据",
+                        "loadingRecords": "加载中…",
+                        "processing": "查询中…",
+                        "search": "检索:",
+                        "lengthMenu": "每页 _MENU_ 条",
+                        "zeroRecords": "没有数据",
+                        "paginate": {
+                            "first": "第一页",
+                            "last": "最后一页",
+                            "next": "",
+                            "previous": ""
+                        },
+                        "info": "第 _PAGE_ 页 / 总 _PAGES_ 页",
+                        "infoEmpty": "没有数据",
+                        "infoFiltered": "(过滤总件数 _MAX_ 条)",
 
+                    },
+                });
+            }
+            else {
+                $('#table_message_tbody').empty();
+                for (i = data.info_list.length - 1; i >= 0; i--) {
+                    if (data.state_list[i] == 'N') {
+                        $('#table_message_tbody').append(
+                                "<tr class=\"task\"  id=\"" + i + "\" onclick=tr_click(this.id)>" +
+                                "<td class=\"cell-icon\"><i class=\"icon-checker high\"></td>" +
+                                "<td class=\"cell-title\">" + data.sender_list[i] + data.info_list[i] + "<br/>" + data.text_list[i].substr(0, 10) + "</td>" +
+                                "<td class=\"cell-status hidden-phone hidden-tablet\">未读</td>" +
+                                "<td class=\"cell-text align-right\">" + data.time_list[i] + "</td>" +
+                                "</tr>"
+                        )
+                    }
+                    else if (data.state_list[i] == 'Y') {
+                        $('#table_message_tbody').append(
+                                "<tr class=\"task resolved\" id=\"" + i + "\" onclick=tr_click(this.id)>" +
+                                "<td class=\"cell-icon\"><i class=\"icon-checker high\"></td>" +
+                                "<td class=\"cell-title\">" + data.sender_list[i] + data.info_list[i] + "<br/>" + data.text_list[i].substr(0, 10) + "</td>" +
+                                "<td class=\"cell-status hidden-phone hidden-tablet\">已读</td>" +
+                                "<td class=\"cell-text align-right\">" + data.time_list[i] + "</td>" +
+                                "</tr>"
+                        )
+                    }
+                }
+                var table = $('#table_message').DataTable({
+                    "lengthChange": false,
+                    "pageLength": 5,
+                    "searching": false,
+                    "language": {
+                        "emptyTable": "没有数据",
+                        "loadingRecords": "加载中…",
+                        "processing": "查询中…",
+                        "search": "检索:",
+                        "lengthMenu": "每页 _MENU_ 条",
+                        "zeroRecords": "没有数据",
+                        "paginate": {
+                            "first": "第一页",
+                            "last": "最后一页",
+                            "next": "",
+                            "previous": ""
+                        },
+                        "info": "第 _PAGE_ 页 / 总 _PAGES_ 页",
+                        "infoEmpty": "没有数据",
+                        "infoFiltered": "(过滤总件数 _MAX_ 条)",
+
+                    },
+                });
             }
 
-            var table = $('#table_message').DataTable({
-                "lengthChange": false,
-                "pageLength": 5,
-                "searching": false,
-                "language": {
-                    "emptyTable": "没有数据",
-                    "loadingRecords": "加载中…",
-                    "processing": "查询中…",
-                    "search": "检索:",
-                    "lengthMenu": "每页 _MENU_ 条",
-                    "zeroRecords": "没有数据",
-                    "paginate": {
-                        "first": "第一页",
-                        "last": "最后一页",
-                        "next": "",
-                        "previous": ""
-                    },
-                    "info": "第 _PAGE_ 页 / 总 _PAGES_ 页",
-                    "infoEmpty": "没有数据",
-                    "infoFiltered": "(过滤总件数 _MAX_ 条)",
 
-                },
-            });
-            <!-- 阅读消息 -->
-            $('#table_message_tbody tr').click(
-                    function () {
-                        var content = jQuery(this).children("td:eq(2)").text();
-                        if (content == "未读") {
-                            $(this).children("td:eq(2)").text('已读');
-                            $(this).toggleClass('resolved');
-                            str = $(this).attr('id');
-                            var pos = str.indexOf('_');
-                            var info_id = str.substring(pos + 1, str.length);
-                            $.ajax({
+        }
+{#        阅读消息#}
+         function tr_click(position) {
+            if (data_message.state_list[position] == "N") {
+                var info_id = data_message.id_list[position]
+                $.ajax({
                                 type: 'GET',
                                 url: '{{ url_for("message_api.read_message") }}',
                                 data: {
@@ -1858,55 +1890,24 @@
                                 },
                                 dataType: 'json',
                                 success: function (data) {
-                                    console.log(data);
-                                    $.ajax({
-                                    type: 'GET',
-                                    url: '{{ url_for("message_api.get_message_count") }}',
-                                    dataType: 'json',
-                                    success: function (data) {
-                                        console.log(data);
-                                        if (data.count > 0) {
-                                            $("#personal_message_count").text(data.count)
-                                            console.log(data.count)
-                                        }
-                                        else {
-                                            $("#personal_message_count").text('暂无未读')
-                                        }
-
-                                    }
-                                })
+                                    accept_message_show()
+                                    get_my_message_count()
                                 }
                             });
-                        }
-                    }
-            )
+            }
+            more_info(position)
         }
         //消息过长显示模态框
-    function  more_info(position){
-        $("#div_more_message").empty()
-        html = '<div class="alert alert-block alert-success" ><h5>'+data_message.sender_list[position]+data_message.info_list[position]+'&nbsp&nbsp&nbsp&nbsp时间：' +data_message.time_list[position] + '</h5>' + data_message.text_list[position] + '</div>'
-        $("#div_more_message").append(html)
+        function more_info(position) {
+            $("#div_more_message").empty()
+            html = '<div class="alert alert-block alert-success" ><h5>' + data_message.sender_list[position] + data_message.info_list[position] + '&nbsp&nbsp&nbsp&nbsp时间：' + data_message.time_list[position] + '</h5>' + data_message.text_list[position] + '</div>'
+            $("#div_more_message").append(html)
 
-        $('#more_info_modal').modal('show')
-    }
-    //刷新消息列表
-    function refresh(){
-        $.ajax({
-                                    type: 'GET',
-                                    url: '{{ url_for("message_api.get_message_count") }}',
-                                    dataType: 'json',
-                                    success: function (data) {
-                                        console.log(data);
-                                        if (data.count > 0) {
-                                            $("#personal_message_count").text(data.count)
-                                            console.log(data.count)
-                                        }
-                                        else {
-                                            $("#personal_message_count").text('暂无未读')
-                                        }
-
-                                    }
-                                })
+            $('#more_info_modal').modal('show')
+        }
+        //刷新消息列表
+        function refresh() {
+            get_my_message_count()
             accept_message_show()
         }
     </script>
@@ -1974,22 +1975,7 @@
                     success: function (data) {
                         alert('发送成功！')
                         $("#send_admin_message_modal").modal('hide')
-                        $.ajax({
-                            type: 'GET',
-                            url: '{{ url_for("message_api.get_message_count") }}',
-                            dataType: 'json',
-                            success: function (data) {
-                                console.log(data);
-                                if (data.count > 0) {
-                                    $("#personal_message_count").text(data.count)
-                                    console.log(data.count)
-                                }
-                                else {
-                                    $("#personal_message_count").text('暂无未读')
-                                }
-
-                            }
-                        })
+                        get_my_message_count()
                         refresh()
                     }
                 })

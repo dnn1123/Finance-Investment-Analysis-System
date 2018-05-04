@@ -22,7 +22,7 @@ def index():
 
 @main_view.route('register_phone', methods=['GET', 'POST'])
 def register_phone():
-    return render_template('register_phone.html')
+    return render_template('new_register_phone.html')
 
 
 @main_view.route('register', methods=['GET', 'POST'])
@@ -87,3 +87,7 @@ def admin():
     role = Role.query.filter_by(id=user.permissions).first()
     rolename = role.description
     return render_template('admin/admin_permission.html', user=user, rolename=rolename)
+
+@main_view.route('my_test', methods=['GET', 'POST'])
+def test():
+    return render_template("my_test.html")
