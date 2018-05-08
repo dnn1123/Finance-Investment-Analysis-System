@@ -71,6 +71,9 @@
                                     </tr>
                                 </table>
                             </div>
+                            <button type="button" id="moreinfo_closebtn" class="btn btn-default btn-block"
+                                    style="display:none; height: 20px;padding: 0px" data-toggle="button">收起
+                            </button>
                         </div>
                     </section>
                 </div>
@@ -214,13 +217,25 @@
             <div class="module">
                 <div class="module-head">
                     <h3>指标数据分析</h3>
-
                 </div>
                 <div class="module-body" style="height:600px">
                     <div class="row">
                         <div class="span2">
-                            <div id="mytree" class="dtree "
-                                 style="height:90%;overflow-y :scroll;overflow-x:scroll;margin-top:5%;position:relative">
+                            <div style="height:95%; overflow-y: scroll;position:relative">
+                                <button id="dtree_head1" class="btn btn-primary" data-toggle="button">资产负债表</button>
+                                <div style="height:5px"></div>
+                                <div id="mytree_1" class="dtree "
+                                 style="height:auto;overflow-x:scroll;position:relative">
+                            </div>
+                                <button id="dtree_head2" class="btn btn-primary" data-toggle="button">利润表</button>
+                                <div style="height:5px"></div>
+                                <div id="mytree_2" class="dtree "
+                                 style="height:auto;position:relative">
+                            </div>
+                                <button id="dtree_head3" class="btn btn-primary" data-toggle="button">现金流量表</button>
+                                <div id="mytree_3" class="dtree "
+                                 style="height:auto;overflow-x:scroll;position:relative">
+                            </div>
                             </div>
                         </div>
                         <div class="span6">
@@ -237,8 +252,8 @@
 
                                     </div>
                                 </div>
-                                <div class="tab-pane fade" id="tables_new">
-                                    <div id="datatable_new" class="mytable" style="width: auto;height:70%;"></div>
+                                <div class="tab-pane fade" id="tables_new" style="text-align: center">
+                                    <div id="datatable_new" class="mytable" style="width: auto;height:70%;text-align:center"></div>
                                 </div>
                             </div>
                             <div class="well well-lg">
@@ -282,7 +297,6 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -1203,6 +1217,8 @@
             var index_en_name_list = []
             var index_id_list = []
             var index_id_belong_to_list = []
+            var mytree_div3=document.getElementById("mytree_3");
+            mytree_div3.style.display="none";
             creatindex()
             $('input').iCheck({
                 checkboxClass: 'icheckbox_minimal-blue',
@@ -1227,6 +1243,9 @@
             getindex()
             getdata()
             tree()
+
+
+
             {#            绘制初始指标图#}
             var check = document.getElementById("01010101")
             check.checked = true
@@ -1235,6 +1254,52 @@
             CreateChart_new(data_checked)
             cutarray(data_checked)
         });
+        function tree() {
+            tree = new dTree('tree')
+            for (var i = 0; i < index_id_list.length; i++) {
+                if (index_id_list[i].substring(0,2) == "01") {
+                    if (index_id_belong_to_list[i] == "-1") {
+                        tree.add(index_id_list[i], index_id_belong_to_list[i], "<p id=\"" + index_id_list[i] + "\" value=\"" + index_id_belong_to_list[i] + "\" class=\"text-info\" style=\"margin:10px 0 10px 0\"> " + "<strong style=\"color:#3a87ad\"></strong></p>")
+                    }
+                    else {
+                        tree.add(index_id_list[i], index_id_belong_to_list[i], "<input type='checkbox' name=\"check\" id=\"" + index_id_list[i] + "\" value=\"" + index_id_belong_to_list[i] + "\" class=\"index_checked\" onClick=\"index_check(this.id)\"/> " + " <div id='div_" + index_id_list[i] + "'  style='margin-right:5px;display:inline-block;width: 10px; height:10px;background-color:transparent '></div>" + index_cn_name_list[i])
+                    }
+                }
+            }
+            tree.closeAll()
+            document.getElementById("mytree_1").innerHTML = tree;
+
+            tree1 = new dTree('tree1')
+            for (var i = 0; i < index_id_list.length; i++) {
+                if (index_id_list[i].substring(0, 2) == "02") {
+                    if (index_id_belong_to_list[i] == "-1") {
+                        tree1.add(index_id_list[i], index_id_belong_to_list[i], "<p id=\"" + index_id_list[i] + "\" value=\"" + index_id_belong_to_list[i] + "\" class=\"text-info\" style=\"margin:10px 0 10px 0\"> " + "<strong style=\"color:#3a87ad\"></strong></p>")
+                    }
+                    else {
+                        tree1.add(index_id_list[i], index_id_belong_to_list[i], "<input type='checkbox' name=\"check\" id=\"" + index_id_list[i] + "\" value=\"" + index_id_belong_to_list[i] + "\" class=\"index_checked\" onClick=\"index_check(this.id)\"/> " + " <div id='div_" + index_id_list[i] + "'  style='margin-right:5px;display:inline-block;width: 10px; height:10px;background-color:transparent '></div>" + index_cn_name_list[i])
+                    }
+                }
+            }
+            tree1.closeAll()
+            document.getElementById("mytree_2").innerHTML = tree1;
+
+            tree2 = new dTree('tree2')
+            for (var i = 0; i < index_id_list.length; i++) {
+                if (index_id_list[i].substring(0, 2) == '03') {
+
+                    if (index_id_belong_to_list[i] == "-1") {
+                        tree2.add(index_id_list[i], index_id_belong_to_list[i], "<p id=\"" + index_id_list[i] + "\" value=\"" + index_id_belong_to_list[i] + "\" class=\"text-info\" style=\"margin:10px 0 10px 0\"> " + "<strong style=\"color:#3a87ad\"></strong></p>")
+                    }
+                    else {
+                        tree2.add(index_id_list[i], index_id_belong_to_list[i], "<input type='checkbox' name=\"check\" id=\"" + index_id_list[i] + "\" value=\"" + index_id_belong_to_list[i] + "\" class=\"index_checked\" onClick=\"index_check(this.id)\"/> " + " <div id='div_" + index_id_list[i] + "'  style='margin-right:5px;display:inline-block;width: 10px; height:10px;background-color:transparent '></div>" + index_cn_name_list[i])
+                    }
+                }
+            }
+            tree2.closeAll()
+            document.getElementById("mytree_3").innerHTML = tree2;
+
+                                {#document.write(tree)#}
+        }
 
         function getdata() {
             $.ajax({
@@ -1780,7 +1845,7 @@
                                         },
                                         dataType: 'json',
                                         success: function (data) {
-                                            console.log(data)
+                                            {#console.log(data)#}
                                         }
                                     })
                                 }
@@ -2077,9 +2142,51 @@
         $("#head1").click(function () {
             $("#body1").toggle()
         })
+        $("#dtree_head1").click(function () {
+            $("#mytree_1").toggle()
+            var mytree_div1=document.getElementById("mytree_1");
+            var mytree_div2=document.getElementById("mytree_2");
+            var mytree_div3=document.getElementById("mytree_3");
+            if(mytree_div1.style.display=="block"){
+                mytree_div2.style.display="none";
+                mytree_div3.style.display="none";
+            }
+        })
+        $("#dtree_head2").click(function () {
+            $("#mytree_2").toggle()
+            var mytree_div1=document.getElementById("mytree_1");
+            var mytree_div2=document.getElementById("mytree_2");
+            var mytree_div3=document.getElementById("mytree_3");
+            if(mytree_div2.style.display=="block"){
+                mytree_div1.style.display="none";
+                mytree_div3.style.display="none";
+            }
+        })
+        $("#dtree_head3").click(function () {
+            $("#mytree_3").toggle()
+            var mytree_div1=document.getElementById("mytree_1");
+            var mytree_div2=document.getElementById("mytree_2");
+            var mytree_div3=document.getElementById("mytree_3");
+            if(mytree_div3.style.display=="block"){
+                mytree_div2.style.display="none";
+                mytree_div1.style.display="none";
+            }
+        })
         $("#moreinfobtn").click(function () {
             $("#moreinfo").fadeToggle()
+            var moreinfo_btn=document.getElementById("moreinfobtn");
+            var moreinfo_close_btn=document.getElementById("moreinfo_closebtn");
+            moreinfo_close_btn.style.display="block"
+            moreinfo_btn.style.display="none"
         })
+        $("#moreinfo_closebtn").click(function () {
+            $("#moreinfo").fadeToggle()
+            var moreinfo_btn=document.getElementById("moreinfobtn");
+            var moreinfo_close_btn=document.getElementById("moreinfo_closebtn");
+            moreinfo_close_btn.style.display="none"
+            moreinfo_btn.style.display="block"
+        })
+
         function creatindex() {
             thtml = '<div class="panel panel-default"><div class="panel-heading"><h4 class="panel-title"><a class="accordion-toggle" data-toggle="collapse"  href="#collapseOne">财务指标</a></h4><div id="collapseOne" class="collapse in"><div class="panel-body" id="list1"></div> </div></div></div>';
             thtml += '<div class="panel panel-default"><div class="panel-heading"><h4 class="panel-title"><a class="accordion-toggle" data-toggle="collapse"  href="#collapseTwo">投资指标</a></h4><div id="collapseTwo" class="collapse in"><div class="panel-body" id="list2"></div> </div></div></div>';
@@ -2101,6 +2208,7 @@
 
         //更新数据库 获取全部财务指标
         function getindex() {
+            var a = 0
             $.ajax({
                 type: 'GET',
                 async: false,
@@ -2112,25 +2220,21 @@
                     index_en_name_list = data['en_name']
                     index_id_list = data['id']
                     index_id_belong_to_list = data['id_belong_to']
+                    for (var i = 0; i < index_id_list.length; i++) {
+                        if(index_id_list[i]=="010103"){
+                            a = i
+                        }
+                    }
+                    index_cn_name_list.splice(a,1)
+                    index_en_name_list.splice(a,1)
+                    index_id_list.splice(a,1)
+                    index_id_belong_to_list.splice(a,1)
                     console.log(data)
                 }
             })
         }
 
-        function tree() {
-            tree = new dTree('tree')
-            for (var i = 0; i < index_id_list.length; i++) {
-                if(index_id_belong_to_list[i]=="-1"){
-                    tree.add(index_id_list[i], index_id_belong_to_list[i], "<p id=\"" + index_id_list[i] + "\" value=\"" + index_id_belong_to_list[i] + "\" class=\"text-info\" style=\"margin:10px 0 10px 0\"> " + "<strong style=\"color:#3a87ad\">" + index_cn_name_list[i]+"</strong></p>")
-                }
-                else {
-                    tree.add(index_id_list[i], index_id_belong_to_list[i], "<input type='checkbox' name=\"check\" id=\"" + index_id_list[i] + "\" value=\"" + index_id_belong_to_list[i] + "\" class=\"index_checked\" onClick=\"index_check(this.id)\"/> " + " <div id='div_" + index_id_list[i] + "'  style='margin-right:5px;display:inline-block;width: 10px; height:10px;background-color:transparent '></div>" + index_cn_name_list[i])
-                }
-                }
-            tree.closeAll()
-            document.getElementById("mytree").innerHTML = tree;
-            {#                    document.write(tree)#}
-        }
+
         {#        指标点击事件 所有子节点被选中#}
         function index_check(id) {
             var a = id.length
@@ -2165,7 +2269,7 @@
                     en_name_list.push(index_en_name_list[i])
                     cn_name_list.push(index_cn_name_list[i])
                     $("#div_" + index_id_list[i]).css("background-color", Chosenindexes_new[index_id_list[i]])
-                    console.log(Chosenindexes_new[index_id_list[i]])
+                    {#console.log(Chosenindexes_new[index_id_list[i]])#}
                 }
                 else {
                     $("#div_" + index_id_list[i]).css("background-color", 'transparent')
@@ -2173,6 +2277,7 @@
             }
 
             getindex_data(allchecked_list, en_name_list, cn_name_list)
+
         }
         {#         获取选中指标数据#}
         function getindex_data(allchecked_list, en_name_list, cn_name_list) {
@@ -2194,8 +2299,10 @@
                         eval(" data." + data.indexes[i] + "_list.reverse()")
                     }
                     data.the_year.reverse();
+
                     data_checked = data
-                    console.log(data_checked)
+
+                    {#console.log(data_checked)#}
                 }
             })
 
@@ -2227,7 +2334,7 @@
                     smooth: true,
                     data: value2
                 }
-                console.log(temp)
+                {#console.log(temp)#}
                 dataSeries.push(temp);
             }
             myChart_new_option = {
@@ -2299,7 +2406,35 @@
                 series: dataSeries
             };
             myChart_new.setOption(myChart_new_option, true);
+            myChart_new.on('dataZoom', function (params) {
+                var opt = myChart_new.getOption();
+                var dz = opt.dataZoom[0];
+                var tleft = opt.xAxis[0].data[dz.startValue];
+                var tright = opt.xAxis[0].data[dz.endValue];
+                var tleft_y = tleft.substring(0,4)
+                var tleft_m = tleft.substring(6,7)*3
+                var tleft_d=31
+                if(tleft_m == 6 || tleft_m == 9){
+                    tleft_d=30
+                }
+                var tright_y = tright.substring(0,4)
+                var tright_m = tright.substring(6,7)*3
+                var tright_d=31
+                if(tright_m == 6 || tright_m == 9){
+                    tright_d=30
+                }
+                var flag = document.getElementById("yearorder_new");
+                var flag_value = flag.value;
+                if(flag_value == "desc"){
+                    $("#starttime_picker_new").attr('value',tright_y+'-'+tright_m+'-'+tright_d)
+                    $("#endtime_picker_new").attr('value',tleft_y+'-'+tleft_m+'-'+tleft_d)
+                }
+                else{
+                    $("#endtime_picker_new").attr('value',tright_y+'-'+tright_m+'-'+tright_d)
+                    $("#starttime_picker_new").attr('value',tleft_y+'-'+tleft_m+'-'+tleft_d)
+                }
 
+            });
         }
 
         function change_time_type(date) {
@@ -2317,7 +2452,6 @@
             var end = data.the_year.length
             var year_list_cutted = []
             var index_list_cutted = []
-
             start_date = $("#starttime_picker_new").data("datetimepicker").getDate()
             startime = change_time_type(start_date)
             end_date = $("#endtime_picker_new").data("datetimepicker").getDate()
@@ -2341,7 +2475,7 @@
                 str = "data." + data.indexes[i] + "_list"
                 index_list_cutted[i] = eval(str).slice(start, end)
             }
-            console.log(data.indexes)
+            {#console.log(data.indexes)#}
             CreatTable_new(year_list_cutted, index_list_cutted, start, data_checked)
         }
 
@@ -2371,6 +2505,7 @@
                 td_b.appendTo(tr_b);
                 unit_flag = parseInt($("select#unit_new").val());
                 value = index_list_cutted[i];
+                console.log(value)
                 var value2 = [];
                 for (var j = 0; j < value.length; j++) {
                     if (value[j] == null) {
@@ -2378,7 +2513,7 @@
                         td_b.appendTo(tr_b);
                     }
                     else {
-                        var td_b = $("<td>" + value[j] / unit_flag.toFixed(2) + "</td>");
+                        var td_b = $("<td>" + (value[j] / unit_flag).toFixed(2) + "</td>");
                         td_b.appendTo(tr_b);
                     }
                 }

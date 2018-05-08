@@ -642,7 +642,6 @@
             'ev2',
             'employee']
         var dict1 = {
-
             'tot_oper_rev': '总营业收入',
             'tot_oper_cost': '总营业成本',
             'wgsd_net_inc': '净利润（股东）',
@@ -673,8 +672,6 @@
         };
 
         function getdata(codelist, year) {
-
-
             $.ajax({
                 type: 'GET',
                 url: '{{url_for("restfulapi.finance_data_new")}}',
@@ -688,8 +685,6 @@
                 async: false,
                 success: function (data) {
                     finance_results = data;
-
-
                     {#                                                console.log(finance_results)#}
                     {#                                                finance_results_t = data;#}
                     $.ajax({
