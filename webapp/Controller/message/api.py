@@ -36,7 +36,7 @@ def request_page():
     username = current_user.username
     results = personal_information.query.filter_by(receiver=username).all()
     for result in results:
-        if result.sender !='system':
+        if result.sender != 'system':
             sender_list.append(result.sender)
             info_list.append(result.message_content)
             text_list.append(result.message_text)
@@ -135,18 +135,34 @@ def to_input_text():
     session = Session()
 
     inputtext = request.form.get('input_text')
+    number = int(request.form.get('photo_num'))
+    name = request.form.get('name')
 
     result = session.query(func.count(input_message.post_id).label("post_id")).first()
 
-    my_input = input_message()
-    my_input.post_id = result.post_id
-    my_input.poster = current_user.username
-    my_input.post_text = inputtext
-    my_input.comment_num = 0
-    my_input.retrant_num = 0
-    my_input.upvote_num = 0
-    my_input.if_retrant = 0
-    my_input.post_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    if number == 0:
+        my_input = input_message()
+        my_input.post_id = result.post_id
+        my_input.poster = current_user.username
+        my_input.post_text = inputtext
+        my_input.comment_num = 0
+        my_input.retrant_num = 0
+        my_input.upvote_num = 0
+        my_input.if_retrant = 0
+        my_input.post_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    else:
+        my_input = input_message()
+        my_input.post_id = result.post_id
+        my_input.poster = current_user.username
+        my_input.post_text = inputtext
+        my_input.comment_num = 0
+        my_input.retrant_num = 0
+        my_input.upvote_num = 0
+        my_input.if_retrant = 0
+        my_input.post_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        for i in range(1, number + 1, 1):
+            exec ("my_input.photo" + str(i) + "='" + name + str(i) + ".jpg'")
+        my_input.if_photo = number
 
     db.session.add(my_input)
     db.session.commit()
@@ -171,6 +187,11 @@ def message_all():
     retrantposter = []
     retranttext = []
     avatar = []
+    ifphoto = []
+    photo1 = []
+    photo2 = []
+    photo3 = []
+    photo4 = []
 
     page = int(request.args.get('page_num'))
     minpage = 5 * page
@@ -207,6 +228,12 @@ def message_all():
         ifretrant.append(result.if_retrant)
         retrantposter.append(result.retrant_poster)
         retranttext.append(result.retrant_text)
+        photo1.append(result.photo1)
+        photo2.append(result.photo2)
+        photo3.append(result.photo3)
+        photo4.append(result.photo4)
+        ifphoto.append(result.if_photo)
+
 
         name = result.poster
         myresult = personal.query.filter(personal.username == name).first()
@@ -230,6 +257,11 @@ def message_all():
     data['po_retrant_text'] = retranttext
     data['avatar'] = avatar
     data['current_user'] = current_avatar
+    data['photo1'] = photo1
+    data['photo2'] = photo2
+    data['photo3'] = photo3
+    data['photo4'] = photo4
+    data['po_ifphoto'] = ifphoto
 
     return jsonify(data)
 
