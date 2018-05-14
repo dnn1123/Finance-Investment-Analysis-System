@@ -417,13 +417,17 @@
                             <div style="margin: auto;width:95%;height:230px;">
                                 <div class="mytitle"><h4 style="font-size:18px;font-family: 'Adobe 黑体 Std R'">
                                     有疑问？大家一起来讨论吧!</h4></div>
-                                <textarea id="inputtext" class="mytext" placeholder=""></textarea>
+                                <textarea type="text" id="inputtext" form="photo_form" name="textarea"
+                                          class="mytext">{{ text }}</textarea>
                                 <button type="submit" id="fbbutton" class="btn btn-primary"
                                         style="float: right;margin-right: 15px;">点击发布
                                 </button>
                                 <button class="btn btn-primary" style="float: right;margin-right: 15px;"
                                         id="photo_upload_area">添加图片
                                 </button>
+                                <form action="{{ url_for("message.my_message") }}" enctype='multipart/form-data'
+                                      method='GET' id="reload_form" display="none">
+                                </form>
                             </div>
                             <div id="photo_area" style="margin: auto;width:95%;height:200px;display: none;">
                                 <button id="photo_collect" class="btn btn-primary"
@@ -750,7 +754,7 @@
                     dataType: 'json',
                     success: function (data) {
                         alert("发送成功");
-                        location.reload();
+                        $("#reload_form").submit();
                     }
                 })
             });

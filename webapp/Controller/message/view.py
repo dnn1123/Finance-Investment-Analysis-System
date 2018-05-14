@@ -19,16 +19,19 @@ def my_message():
     a = Time.strftime('%Y%m%d%H%M%S', Time.localtime(Time.time()))
     b = current_user.username
     name = bytes(b) + bytes(a)
+    text = ""
     if request.method == 'POST':
         myfile = request.files.getlist('file')
+        text = request.form.get('textarea')
         for f in myfile:
             number = number + 1
             newname = name + bytes(number) + '.jpg'
             upload_path = os.path.abspath(os.path.join(paths.project_path, 'static', 'a_photo', newname))
             f.save(upload_path)
-        return render_template('my_message.html', current_user=current_user, name=name, number=number)
+        return render_template('my_message.html', current_user=current_user, name=name, number=number, text=text)
     else:
-        return render_template('my_message.html', current_user=current_user, name=name, number=number)
+        text="";
+        return render_template('my_message.html', current_user=current_user, name=name, number=number, text=text)
 
 
 @message_view.route('/system_message', methods=('GET', 'POST'))
