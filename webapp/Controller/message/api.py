@@ -5,6 +5,7 @@ from sqlalchemy import create_engine, or_, func, desc, distinct  # me func用于
 from sqlalchemy.orm import sessionmaker
 from flask_login import current_user
 import math
+from webapp.config import paths
 import string
 import os
 import time as Time
@@ -171,6 +172,33 @@ def to_input_text():
     return jsonify(data)
 
 
+# 用于上传图片
+@message_api.route('/upload_photo', methods=['GET', 'POST'])
+def upload_photo():
+    data = {}
+
+    db_engine = create_engine('mysql://root:0000@localhost/my_message?charset=utf8')
+    Session = sessionmaker(bind=db_engine)
+    session = Session()
+
+    number = 0
+    a = Time.strftime('%Y%m%d%H%M%S', Time.localtime(Time.time()))
+    b = bytes(current_user.username)
+    name = b + bytes(a)
+
+    myfile = request.files
+
+    for f in myfile:
+        number = number + 1
+        newname = name + bytes(number) + '.jpg'
+        upload_path = os.path.abspath(os.path.join(paths.project_path, 'static', 'a_photo', newname))
+        f.save(upload_path)
+
+    data['value'] = 'success'
+
+    return jsonify(data)
+
+
 # 用于展示用户动态
 @message_api.route('/message_all', methods=['GET', 'POST'])
 def message_all():
@@ -234,7 +262,6 @@ def message_all():
         photo4.append(result.photo4)
         ifphoto.append(result.if_photo)
 
-
         name = result.poster
         myresult = personal.query.filter(personal.username == name).first()
         if myresult:
@@ -281,6 +308,11 @@ def message_follow():
     retrantposter = []
     retranttext = []
     avatar = []
+    ifphoto = []
+    photo1 = []
+    photo2 = []
+    photo3 = []
+    photo4 = []
 
     page = int(request.args.get('page_num'))
     minpage = 5 * page
@@ -322,6 +354,11 @@ def message_follow():
             ifretrant.append(results[x].if_retrant)
             retrantposter.append(results[x].retrant_poster)
             retranttext.append(results[x].retrant_text)
+            photo1.append(results[x].photo1)
+            photo2.append(results[x].photo2)
+            photo3.append(results[x].photo3)
+            photo4.append(results[x].photo4)
+            ifphoto.append(results[x].if_photo)
             name = results[x].poster
             myresult = personal.query.filter(personal.username == name).first()
             if myresult:
@@ -343,6 +380,11 @@ def message_follow():
             ifretrant.append(results[x].if_retrant)
             retrantposter.append(results[x].retrant_poster)
             retranttext.append(results[x].retrant_text)
+            photo1.append(results[x].photo1)
+            photo2.append(results[x].photo2)
+            photo3.append(results[x].photo3)
+            photo4.append(results[x].photo4)
+            ifphoto.append(results[x].if_photo)
             name = results[x].poster
             myresult = personal.query.filter(personal.username == name).first()
             if myresult:
@@ -365,6 +407,11 @@ def message_follow():
     data['po_retrant_text'] = retranttext
     data['avatar'] = avatar
     data['current_user'] = current_avatar
+    data['photo1'] = photo1
+    data['photo2'] = photo2
+    data['photo3'] = photo3
+    data['photo4'] = photo4
+    data['po_ifphoto'] = ifphoto
 
     return jsonify(data)
 
@@ -384,6 +431,11 @@ def message_myown():
     retrantposter = []
     retranttext = []
     avatar = []
+    ifphoto = []
+    photo1 = []
+    photo2 = []
+    photo3 = []
+    photo4 = []
 
     page = int(request.args.get('page_num'))
     minpage = 5 * page
@@ -420,6 +472,11 @@ def message_myown():
             ifretrant.append(results[x].if_retrant)
             retrantposter.append(results[x].retrant_poster)
             retranttext.append(results[x].retrant_text)
+            photo1.append(results[x].photo1)
+            photo2.append(results[x].photo2)
+            photo3.append(results[x].photo3)
+            photo4.append(results[x].photo4)
+            ifphoto.append(results[x].if_photo)
             name = results[x].poster
             myresult = personal.query.filter(personal.username == name).first()
             if myresult:
@@ -442,6 +499,11 @@ def message_myown():
             ifretrant.append(results[x].if_retrant)
             retrantposter.append(results[x].retrant_poster)
             retranttext.append(results[x].retrant_text)
+            photo1.append(results[x].photo1)
+            photo2.append(results[x].photo2)
+            photo3.append(results[x].photo3)
+            photo4.append(results[x].photo4)
+            ifphoto.append(results[x].if_photo)
             name = results[x].poster
             myresult = personal.query.filter(personal.username == name).first()
             if myresult:
@@ -464,6 +526,11 @@ def message_myown():
     data['po_retrant_text'] = retranttext
     data['avatar'] = avatar
     data['current_user'] = current_avatar
+    data['photo1'] = photo1
+    data['photo2'] = photo2
+    data['photo3'] = photo3
+    data['photo4'] = photo4
+    data['po_ifphoto'] = ifphoto
 
     return jsonify(data)
 

@@ -15,20 +15,20 @@ message_view = Blueprint(
 @message_view.route('/my_message', methods=('GET', 'POST'))
 @login_required
 def my_message():
-    i = 0
+    number = 0
     a = Time.strftime('%Y%m%d%H%M%S', Time.localtime(Time.time()))
-    b = bytes(current_user.username)
-    x = b + bytes(a)
+    b = current_user.username
+    name = bytes(b) + bytes(a)
     if request.method == 'POST':
         myfile = request.files.getlist('file')
         for f in myfile:
-            i = i + 1
-            newname = x + bytes(i) + '.jpg'
+            number = number + 1
+            newname = name + bytes(number) + '.jpg'
             upload_path = os.path.abspath(os.path.join(paths.project_path, 'static', 'a_photo', newname))
             f.save(upload_path)
-        return render_template('my_message.html', current_user=current_user, name=x, number=i)
+        return render_template('my_message.html', current_user=current_user, name=name, number=number)
     else:
-        return render_template('my_message.html', current_user=current_user, name=x, number=i)
+        return render_template('my_message.html', current_user=current_user, name=name, number=number)
 
 
 @message_view.route('/system_message', methods=('GET', 'POST'))
