@@ -172,33 +172,6 @@ def to_input_text():
     return jsonify(data)
 
 
-# 用于上传图片
-@message_api.route('/upload_photo', methods=['GET', 'POST'])
-def upload_photo():
-    data = {}
-
-    db_engine = create_engine('mysql://root:0000@localhost/my_message?charset=utf8')
-    Session = sessionmaker(bind=db_engine)
-    session = Session()
-
-    number = 0
-    a = Time.strftime('%Y%m%d%H%M%S', Time.localtime(Time.time()))
-    b = bytes(current_user.username)
-    name = b + bytes(a)
-
-    myfile = request.files
-
-    for f in myfile:
-        number = number + 1
-        newname = name + bytes(number) + '.jpg'
-        upload_path = os.path.abspath(os.path.join(paths.project_path, 'static', 'a_photo', newname))
-        f.save(upload_path)
-
-    data['value'] = 'success'
-
-    return jsonify(data)
-
-
 # 用于展示用户动态
 @message_api.route('/message_all', methods=['GET', 'POST'])
 def message_all():
@@ -220,6 +193,11 @@ def message_all():
     photo2 = []
     photo3 = []
     photo4 = []
+    photo5 = []
+    photo6 = []
+    photo7 = []
+    photo8 = []
+    photo9 = []
 
     page = int(request.args.get('page_num'))
     minpage = 5 * page
@@ -260,6 +238,11 @@ def message_all():
         photo2.append(result.photo2)
         photo3.append(result.photo3)
         photo4.append(result.photo4)
+        photo5.append(result.photo5)
+        photo6.append(result.photo6)
+        photo7.append(result.photo7)
+        photo8.append(result.photo8)
+        photo9.append(result.photo9)
         ifphoto.append(result.if_photo)
 
         name = result.poster
@@ -288,6 +271,11 @@ def message_all():
     data['photo2'] = photo2
     data['photo3'] = photo3
     data['photo4'] = photo4
+    data['photo5'] = photo5
+    data['photo6'] = photo6
+    data['photo7'] = photo7
+    data['photo8'] = photo8
+    data['photo9'] = photo9
     data['po_ifphoto'] = ifphoto
 
     return jsonify(data)
@@ -313,6 +301,11 @@ def message_follow():
     photo2 = []
     photo3 = []
     photo4 = []
+    photo5 = []
+    photo6 = []
+    photo7 = []
+    photo8 = []
+    photo9 = []
 
     page = int(request.args.get('page_num'))
     minpage = 5 * page
@@ -358,6 +351,11 @@ def message_follow():
             photo2.append(results[x].photo2)
             photo3.append(results[x].photo3)
             photo4.append(results[x].photo4)
+            photo5.append(results[x].photo5)
+            photo6.append(results[x].photo6)
+            photo7.append(results[x].photo7)
+            photo8.append(results[x].photo8)
+            photo9.append(results[x].photo9)
             ifphoto.append(results[x].if_photo)
             name = results[x].poster
             myresult = personal.query.filter(personal.username == name).first()
@@ -384,6 +382,11 @@ def message_follow():
             photo2.append(results[x].photo2)
             photo3.append(results[x].photo3)
             photo4.append(results[x].photo4)
+            photo5.append(results[x].photo5)
+            photo6.append(results[x].photo6)
+            photo7.append(results[x].photo7)
+            photo8.append(results[x].photo8)
+            photo9.append(results[x].photo9)
             ifphoto.append(results[x].if_photo)
             name = results[x].poster
             myresult = personal.query.filter(personal.username == name).first()
@@ -411,6 +414,11 @@ def message_follow():
     data['photo2'] = photo2
     data['photo3'] = photo3
     data['photo4'] = photo4
+    data['photo5'] = photo5
+    data['photo6'] = photo6
+    data['photo7'] = photo7
+    data['photo8'] = photo8
+    data['photo9'] = photo9
     data['po_ifphoto'] = ifphoto
 
     return jsonify(data)
@@ -436,6 +444,11 @@ def message_myown():
     photo2 = []
     photo3 = []
     photo4 = []
+    photo5 = []
+    photo6 = []
+    photo7 = []
+    photo8 = []
+    photo9 = []
 
     page = int(request.args.get('page_num'))
     minpage = 5 * page
@@ -476,6 +489,11 @@ def message_myown():
             photo2.append(results[x].photo2)
             photo3.append(results[x].photo3)
             photo4.append(results[x].photo4)
+            photo5.append(results[x].photo5)
+            photo6.append(results[x].photo6)
+            photo7.append(results[x].photo7)
+            photo8.append(results[x].photo8)
+            photo9.append(results[x].photo9)
             ifphoto.append(results[x].if_photo)
             name = results[x].poster
             myresult = personal.query.filter(personal.username == name).first()
@@ -503,6 +521,11 @@ def message_myown():
             photo2.append(results[x].photo2)
             photo3.append(results[x].photo3)
             photo4.append(results[x].photo4)
+            photo5.append(results[x].photo5)
+            photo6.append(results[x].photo6)
+            photo7.append(results[x].photo7)
+            photo8.append(results[x].photo8)
+            photo9.append(results[x].photo9)
             ifphoto.append(results[x].if_photo)
             name = results[x].poster
             myresult = personal.query.filter(personal.username == name).first()
@@ -530,6 +553,11 @@ def message_myown():
     data['photo2'] = photo2
     data['photo3'] = photo3
     data['photo4'] = photo4
+    data['photo5'] = photo5
+    data['photo6'] = photo6
+    data['photo7'] = photo7
+    data['photo8'] = photo8
+    data['photo9'] = photo9
     data['po_ifphoto'] = ifphoto
 
     return jsonify(data)

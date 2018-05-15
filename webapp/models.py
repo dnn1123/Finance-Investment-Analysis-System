@@ -73,6 +73,11 @@ class input_message(db.Model):
     photo2 = db.Column(db.String(45))
     photo3 = db.Column(db.String(45))
     photo4 = db.Column(db.String(45))
+    photo5 = db.Column(db.String(45))
+    photo6 = db.Column(db.String(45))
+    photo7 = db.Column(db.String(45))
+    photo8 = db.Column(db.String(45))
+    photo9 = db.Column(db.String(45))
     if_photo = db.Column(db.Integer)
 
 
