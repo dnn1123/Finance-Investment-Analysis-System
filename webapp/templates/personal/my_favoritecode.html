@@ -669,6 +669,7 @@
             'ev1': '整体价值估计（含货币）',
             'ev2': '整体价值估计（不含货币）',
             'employee': '雇员数量'
+
         };
 
         function getdata(codelist, year) {
@@ -684,8 +685,7 @@
                 dataType: 'json',//希望服务器返回json格式的数据
                 async: false,
                 success: function (data) {
-                    finance_results = data;
-                    {#                                                console.log(finance_results)#}
+                    finance_results = data;                  {#                                                console.log(finance_results)#}
                     {#                                                finance_results_t = data;#}
                     $.ajax({
                         type: 'GET',
@@ -700,8 +700,8 @@
                         dataType: 'json',//希望服务器返回json格式的数据
                         success: function (data) {
                             {#                                console.log(data)#}
-
                             invest_results = data;
+                            console.log(invest_results)
                             var index = new Array
                             for (var i = 0; i < finance_results.indexes.length; i++) {
                                 if (Chosenindexes.indexOf(finance_results.indexes[i])) {
@@ -860,6 +860,7 @@
 
 
         }
+
         {#投资指标饼状图#}
         function CreateChart(index, unit) {
             console.log(finance_results)
@@ -964,16 +965,12 @@
         });
         {#yc#}
         var code_list = new Array();
-
         var name_list = new Array();
-
         var color = new Array();
-
         var order = ''
         var myChart1 = echarts.init(document.getElementById('echart1'));
         var selectedindex = new Array()
         var Uint = 1
-
         var indexdictionary = {
             '营业总收入': 'tot_oper_rev',
             '营业总成本': 'tot_oper_cost',
@@ -2183,11 +2180,8 @@
                 index = []
                 var year_pie = $('#year_pie').val().substring(0, 4)
                 var index_pie = document.getElementById("index_select_pie_2").value
-
                 getdata(code_list, year_pie)
-
                 CreateChart(index_pie, 1)
-
             })
             $("select#unit").change(function () {
                 var unit = document.getElementById("unit").value;
