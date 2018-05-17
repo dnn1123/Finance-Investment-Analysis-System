@@ -330,6 +330,86 @@ def invest_data_new():
         exec ("data['" + index + "']=" + index + "_list")
     return jsonify(data)
 
+@api_blueprint.route("/finance_data_stocksolo/", methods=('GET', 'POST'))
+def finance_data_stocksolo():
+    stockcode = request.args.get('stockcode')
+    starttime = request.args.get('starttime')
+    endtime = request.args.get('endtime')
+    indexes = request.args.getlist('indexes[]')
+    data = {}
+    year_list = []
+    the_year_start = int(starttime[0:4])
+    the_year_end = int(endtime[0:4])
+    the_year = the_year_end
+    while the_year >= the_year_start:
+        year_list.append(the_year)
+        # year_list1.append(the_year / 10000)
+        the_year = the_year - 1
+    for index in indexes:
+        exec (index + "_list=[]")
+    data['the_name'] = []
+    filters = {
+            finance_basics.trade_code == stockcode,
+            finance_basics.the_year >= starttime,
+            finance_basics.the_year <= endtime,
+        }
+    results = finance_basics.query.filter(*filters).all()
+    result1 = finance_basics.query.filter_by(trade_code=stockcode).first_or_404()
+    data['the_name'].append(result1.sec_name)
+    for result in results:
+            # year_list.append(result.the_year)
+            for index in indexes:
+                if eval("result." + index) is None:
+                    exec (index + "_list.append(result." + index + ")")
+                else:
+                    exec (index + "_list.append(float(result." + index + "))")
+
+    data['stock_code'] = stockcode
+    data['the_year'] = year_list
+    data['indexes'] = indexes
+    for index in indexes:
+        exec ("data['" + index + "']=" + index + "_list")
+    return jsonify(data)
+
+
+@api_blueprint.route("/invest_data_stocksolo/", methods=('GET', 'POST'))
+def invest_data_stocksolo():
+    stockcode = request.args.get('stockcode')
+    starttime = request.args.get('starttime')
+    endtime = request.args.get('endtime')
+    indexes = request.args.getlist('indexes[]')
+    data = {}
+    year_list = []
+    the_year_start = int(starttime[0:4])
+    the_year_end = int(endtime[0:4])
+    the_year = the_year_end
+    while the_year >= the_year_start:
+        year_list.append(the_year)
+        # year_list1.append(the_year / 10000)
+        the_year = the_year - 1
+    for index in indexes:
+        exec (index + "_list=[]")
+    filters = {
+            invest_values.trade_code == stockcode,
+            invest_values.the_year >= starttime,
+            invest_values.the_year <= endtime,
+        }
+    results = invest_values.query.filter(*filters).all()
+    for result in results:
+            # year_list.append(result.the_year)
+            for index in indexes:
+                if eval("result." + index) is None:
+                    exec (index + "_list.append(result." + index + ")")
+                else:
+                    exec (index + "_list.append(float(result." + index + "))")
+    data['stock_code'] = stockcode
+    data['the_year'] = year_list
+    data['the_year'] = year_list
+    data['indexes'] = indexes
+    for index in indexes:
+        exec ("data['" + index + "']=" + index + "_list")
+    return jsonify(data)
+
 
 @api_blueprint.route("/invest_data/", methods=('GET', 'POST'))
 def invest_data():
@@ -1165,4 +1245,5 @@ def finance_index_data():
     data['the_year'] = year_list
     data['indexes'] = indexes
     data['id'] = id
+    print id
     return jsonify(data)

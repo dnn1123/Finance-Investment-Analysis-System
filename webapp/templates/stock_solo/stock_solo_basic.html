@@ -135,10 +135,10 @@
                 <div class="module-head">
 
                     <button class="btn btn-primary">指标数据分析</button>
-                            <div style="float:right;margin-right:0px;text-align: right">
-                                <button class="btn btn-mini btn-danger" id="excel_table">数据下载
-                                </button>
-                            </div>
+                    <div style="float:right;margin-right:0px;text-align: right">
+                        <button class="btn btn-mini btn-danger" id="excel_table">数据下载
+                        </button>
+                    </div>
                 </div>
                 <div class="module-body" style="height:600px">
                     <div class="row">
@@ -225,17 +225,24 @@
                                 <button id="dtree_head1" class="btn btn-primary" data-toggle="button">资产负债表</button>
                                 <div style="height:5px"></div>
                                 <div id="mytree_1" class="dtree "
-                                 style="height:auto;overflow-x:scroll;position:relative">
-                            </div>
+                                     style="height:auto;overflow-x:scroll;position:relative;display:none">
+                                </div>
                                 <button id="dtree_head2" class="btn btn-primary" data-toggle="button">利润表</button>
                                 <div style="height:5px"></div>
                                 <div id="mytree_2" class="dtree "
-                                 style="height:auto;position:relative">
-                            </div>
+                                     style="height:auto;position:relative;display:none">
+                                </div>
                                 <button id="dtree_head3" class="btn btn-primary" data-toggle="button">现金流量表</button>
+                                <div style="height:5px"></div>
                                 <div id="mytree_3" class="dtree "
-                                 style="height:auto;overflow-x:scroll;position:relative">
-                            </div>
+                                     style="height:auto;overflow-x:scroll;position:relative;display:none">
+                                </div>
+                                <button id="dtree_head4" class="btn btn-primary" data-toggle="button">投资指标表</button>
+                                <div style="height:5px"></div>
+                                <div id="mytree_4" class="dtree "
+                                     style="height:auto;overflow-x:scroll;position:relative">
+                                </div>
+
                             </div>
                         </div>
                         <div class="span6">
@@ -244,7 +251,7 @@
                                     <a href="javascript:return false;" data-toggle="tab" disabled='true'>视图：</a>
                                 </li>
                                 <li class="active"><a href="#chart_new" data-toggle="tab">图表</a></li>
-                                <li><a href="#tables_new" data-toggle="tab" onclick="cutarray(data_checked)">数据</a></li>
+                                <li><a href="#tables_new" data-toggle="tab" onclick="cutarray(data_for_echart)">数据</a></li>
                             </ul>
                             <div id="myTabContent" class="tab-content">
                                 <div class="tab-pane fade in active" id="chart_new">
@@ -253,7 +260,8 @@
                                     </div>
                                 </div>
                                 <div class="tab-pane fade" id="tables_new" style="text-align: center">
-                                    <div id="datatable_new" class="mytable" style="width: auto;height:70%;text-align:center"></div>
+                                    <div id="datatable_new" class="mytable"
+                                         style="width: auto;height:70%;text-align:center"></div>
                                 </div>
                             </div>
                             <div class="well well-lg">
@@ -419,7 +427,7 @@
                                         },
                                         dataType: 'json',
                                         success: function (data) {
-                                            console.log(data)
+                                            {#console.log(data)#}
                                         }
                                     })
                                 }
@@ -747,6 +755,7 @@
         $(function () {
             $("[data-toggle='tooltip']").tooltip();
         });
+
         <!--用于实现“右侧提示框”-->
         function DisplayKChart() {
             var option = {
@@ -839,6 +848,7 @@
             myChart_k.setOption(option)
 
         }
+
         $("#history_k").on('click', function () {
             $('#k_data_big').fadeToggle()
             $.ajax({
@@ -857,6 +867,7 @@
             })
 
         });
+
         function DisplayKChart_big() {
             var option = {
                 backgroundColor: '#21202D',
@@ -1110,6 +1121,8 @@
         var myChart_new = echarts.init(document.getElementById('echart_new'));
         var data_checked = '';   //传给echarts_new的指标数据
         var orderflag_new = 'desc'
+        var invest_data=''
+        var data_for_echart = ''
 
         $("input#checkall").click(function () {
             $("input[type=checkbox]").each(function () {
@@ -1217,8 +1230,8 @@
             var index_en_name_list = []
             var index_id_list = []
             var index_id_belong_to_list = []
-            var mytree_div3=document.getElementById("mytree_3");
-            mytree_div3.style.display="none";
+            var mytree_div3 = document.getElementById("mytree_3");
+            mytree_div3.style.display = "none";
             creatindex()
             $('input').iCheck({
                 checkboxClass: 'icheckbox_minimal-blue',
@@ -1243,21 +1256,47 @@
             getindex()
             getdata()
             tree()
-
-
-
             {#            绘制初始指标图#}
-            var check = document.getElementById("01010101")
+            var check = document.getElementById("new_tot_oper_rev")
             check.checked = true
-            Chosenindexes_new['01010101'] = NewColor();
+            Chosenindexes_new['tot_oper_rev'] = NewColor();
+            $("#new_div_tot_oper_rev").css("background-color", Chosenindexes_new['tot_oper_rev'])
             getchecked_list()
-            CreateChart_new(data_checked)
-            cutarray(data_checked)
         });
+        var dict1 = {
+            'tot_oper_rev': '总营业收入',
+            'tot_oper_cost': '总营业成本',
+            'wgsd_net_inc': '净利润（股东）',
+            'tot_assets': '资产总计',
+            'wgsd_com_eq': '归属股东权益',
+            'net_inc_eq_rate': '净资产收益率（股东）',
+            'total_shares': '股本',
+            'earnings_per_share': '每股收益',
+            'net_assets_per_share': '每股净资产',
+            'cash_per_share': '每股账面现金',
+            'div_cashandstock': '每股现金股息',
+            'payment_proportion': '支付比例',
+            'equal_earning_rate': '均衡市盈率',
+            'equal_market_rate': '均衡市净率',
+            'com_value_evaluate': '公司价值估计',
+            'per_com_value_evaluate': '每股价值估计',
+            'fre_cash_evaluate': '自由现金流估计',
+            'ev': '市值',
+            'earning_rate': '市盈率',
+            'net_rate': '市净率',
+            'sale_rate': '市销率',
+            'cash_rate': '市现率',
+            'dividendyield2': '股息收益率',
+            'cash_yield_evaluate': '现金收益率估计',
+            'ev1': '整体价值估计（含货币）',
+            'ev2': '整体价值估计（不含货币）',
+            'employee': '雇员数量'
+        };
+
         function tree() {
             tree = new dTree('tree')
             for (var i = 0; i < index_id_list.length; i++) {
-                if (index_id_list[i].substring(0,2) == "01") {
+                if (index_id_list[i].substring(0, 2) == "01") {
                     if (index_id_belong_to_list[i] == "-1") {
                         tree.add(index_id_list[i], index_id_belong_to_list[i], "<p id=\"" + index_id_list[i] + "\" value=\"" + index_id_belong_to_list[i] + "\" class=\"text-info\" style=\"margin:10px 0 10px 0\"> " + "<strong style=\"color:#3a87ad\"></strong></p>")
                     }
@@ -1298,7 +1337,15 @@
             tree2.closeAll()
             document.getElementById("mytree_3").innerHTML = tree2;
 
-                                {#document.write(tree)#}
+            tree4 = new dTree('tree4')
+            tree4.add(0, -1, '');
+            for (var key in dict1) {
+                tree4.add(key, 0, "<input type='checkbox' name=\"check\" id=\"new_" + key + "\" value=\"0\"  onClick=\"invest_index_checked(this.id)\"/> " + " <div id='new_div_" + key + "'  style='margin-right:5px;display:inline-block;width: 10px; height:10px;background-color:transparent '></div>" + dict1[key]);
+            }
+            tree4.closeAll()
+            document.getElementById("mytree_4").innerHTML = tree4;
+
+
         }
 
         function getdata() {
@@ -1486,7 +1533,7 @@
             if (Chosenindexes.hasOwnProperty("equal_market_rate")) {
                 tempdata = []
                 for (i = 0; i < finance_results.the_year.length; i++) {
-                    datavalue = 1 / ( Math.pow(1 - finance_results.wgsd_net_inc[i] / finance_results.wgsd_com_eq[i], 5))
+                    datavalue = 1 / (Math.pow(1 - finance_results.wgsd_net_inc[i] / finance_results.wgsd_com_eq[i], 5))
                     tempdata.push(datavalue)
                 }
                 temp = {
@@ -1817,60 +1864,60 @@
                 dom: 'lfrtip',
             });
             new $.fn.dataTable.Buttons(mydatatb, {
-            buttons: [
-                {extend: 'excel', 'text': '导出Excel', 'className': 'btn btn-default btn-xs',}
-            ]
-        });
-        $('#excel_table').on('click', function () {
-            if ('{{  current_user.is_authenticated }}' != 'False') {
-                $.ajax({
-                    type: 'GET',
-                    url: '{{ url_for("restfulapi.buy_data") }}',
-                    data: {
-                        'username': "{{ current_user.username }}",
+                buttons: [
+                    {extend: 'excel', 'text': '导出Excel', 'className': 'btn btn-default btn-xs',}
+                ]
+            });
+            $('#excel_table').on('click', function () {
+                if ('{{  current_user.is_authenticated }}' != 'False') {
+                    $.ajax({
+                        type: 'GET',
+                        url: '{{ url_for("restfulapi.buy_data") }}',
+                        data: {
+                            'username': "{{ current_user.username }}",
 
-                    },
-                    dataType: 'json',
-                    success: function (data) {
-                        if (data.member == null) {
-                            if (data.user_money >= 1) {
-                                if (confirm('您当前账户余额' + data.user_money + '元，下载该数据需要消费1元，是否需要下载？')) {
-                                    mydatatb.buttons(0).trigger()
-                                    $.ajax({
-                                        type: 'GET',
-                                        url: '{{ url_for("restfulapi.change_money") }}',
-                                        data: {
-                                            'action': "sub",
-                                            'count': 1,
-                                        },
-                                        dataType: 'json',
-                                        success: function (data) {
-                                            {#console.log(data)#}
-                                        }
-                                    })
+                        },
+                        dataType: 'json',
+                        success: function (data) {
+                            if (data.member == null) {
+                                if (data.user_money >= 1) {
+                                    if (confirm('您当前账户余额' + data.user_money + '元，下载该数据需要消费1元，是否需要下载？')) {
+                                        mydatatb.buttons(0).trigger()
+                                        $.ajax({
+                                            type: 'GET',
+                                            url: '{{ url_for("restfulapi.change_money") }}',
+                                            data: {
+                                                'action': "sub",
+                                                'count': 1,
+                                            },
+                                            dataType: 'json',
+                                            success: function (data) {
+                                                {#console.log(data)#}
+                                            }
+                                        })
+                                    }
+
                                 }
-
+                                else {
+                                    alert('您当前账户余额' + data.user_money + '元,不足1元，无法下载！')
+                                }
                             }
                             else {
-                                alert('您当前账户余额' + data.user_money + '元,不足1元，无法下载！')
+                                alert('您当前享有免费下载数据特权，此次操作不消耗账户余额！')
                             }
                         }
-                        else {
-                            alert('您当前享有免费下载数据特权，此次操作不消耗账户余额！')
-                        }
+                    })
+                }
+                else {
+                    var r = confirm("请登录后下载！")
+                    if (r == true) {
+                        location.href = '{{ url_for('main.logout') }}';
                     }
-                })
-            }
-            else {
-                var r = confirm("请登录后下载！")
-                if (r == true) {
-                    location.href = '{{ url_for('main.logout') }}';
+
                 }
 
-            }
 
-
-        })
+            })
             setTimeout("$(\"#subject\").trigger(\"click\")", 100);
             for (var i = 0; i < finance_results_t.indexes.length; i++) {
                 if (Chosenindexes.hasOwnProperty(finance_results.indexes[i])) {
@@ -1979,7 +2026,7 @@
             if (Chosenindexes.hasOwnProperty("equal_market_rate")) {
                 tempdata = []
                 for (i = 0; i < finance_results_t.the_year.length; i++) {
-                    datavalue = 1 / ( Math.pow(1 - finance_results_t.wgsd_net_inc[i] / finance_results_t.wgsd_com_eq[i], 5))
+                    datavalue = 1 / (Math.pow(1 - finance_results_t.wgsd_net_inc[i] / finance_results_t.wgsd_com_eq[i], 5))
                     tempdata.push(datavalue)
                 }
 
@@ -2143,48 +2190,66 @@
             $("#body1").toggle()
         })
         $("#dtree_head1").click(function () {
-            $("#mytree_1").toggle()
-            var mytree_div1=document.getElementById("mytree_1");
-            var mytree_div2=document.getElementById("mytree_2");
-            var mytree_div3=document.getElementById("mytree_3");
-            if(mytree_div1.style.display=="block"){
-                mytree_div2.style.display="none";
-                mytree_div3.style.display="none";
+            var mytree_div1 = document.getElementById("mytree_1");
+            var mytree_div2 = document.getElementById("mytree_2");
+            var mytree_div3 = document.getElementById("mytree_3");
+            var mytree_div4 = document.getElementById("mytree_4");
+            if (mytree_div1.style.display == "none") {
+                mytree_div2.style.display = "none";
+                mytree_div3.style.display = "none";
+                mytree_div4.style.display = "none";
             }
+            $("#mytree_1").toggle()
         })
         $("#dtree_head2").click(function () {
-            $("#mytree_2").toggle()
-            var mytree_div1=document.getElementById("mytree_1");
-            var mytree_div2=document.getElementById("mytree_2");
-            var mytree_div3=document.getElementById("mytree_3");
-            if(mytree_div2.style.display=="block"){
-                mytree_div1.style.display="none";
-                mytree_div3.style.display="none";
+            var mytree_div1 = document.getElementById("mytree_1");
+            var mytree_div2 = document.getElementById("mytree_2");
+            var mytree_div3 = document.getElementById("mytree_3");
+            var mytree_div4 = document.getElementById("mytree_4");
+            if (mytree_div2.style.display == "none") {
+                mytree_div1.style.display = "none";
+                mytree_div3.style.display = "none";
+                mytree_div4.style.display = "none";
             }
+            $("#mytree_2").toggle()
         })
         $("#dtree_head3").click(function () {
-            $("#mytree_3").toggle()
-            var mytree_div1=document.getElementById("mytree_1");
-            var mytree_div2=document.getElementById("mytree_2");
-            var mytree_div3=document.getElementById("mytree_3");
-            if(mytree_div3.style.display=="block"){
-                mytree_div2.style.display="none";
-                mytree_div1.style.display="none";
+            var mytree_div1 = document.getElementById("mytree_1");
+            var mytree_div2 = document.getElementById("mytree_2");
+            var mytree_div3 = document.getElementById("mytree_3");
+            var mytree_div4 = document.getElementById("mytree_4");
+            if (mytree_div3.style.display == "none") {
+                mytree_div2.style.display = "none";
+                mytree_div1.style.display = "none";
+                mytree_div4.style.display = "none";
             }
+            $("#mytree_3").toggle()
+        })
+        $("#dtree_head4").click(function () {
+            var mytree_div1 = document.getElementById("mytree_1");
+            var mytree_div2 = document.getElementById("mytree_2");
+            var mytree_div3 = document.getElementById("mytree_3");
+            var mytree_div4 = document.getElementById("mytree_4");
+            if (mytree_div4.style.display == "none") {
+                mytree_div2.style.display = "none";
+                mytree_div1.style.display = "none";
+                mytree_div3.style.display = "none";
+            }
+            $("#mytree_4").toggle()
         })
         $("#moreinfobtn").click(function () {
             $("#moreinfo").fadeToggle()
-            var moreinfo_btn=document.getElementById("moreinfobtn");
-            var moreinfo_close_btn=document.getElementById("moreinfo_closebtn");
-            moreinfo_close_btn.style.display="block"
-            moreinfo_btn.style.display="none"
+            var moreinfo_btn = document.getElementById("moreinfobtn");
+            var moreinfo_close_btn = document.getElementById("moreinfo_closebtn");
+            moreinfo_close_btn.style.display = "block"
+            moreinfo_btn.style.display = "none"
         })
         $("#moreinfo_closebtn").click(function () {
             $("#moreinfo").fadeToggle()
-            var moreinfo_btn=document.getElementById("moreinfobtn");
-            var moreinfo_close_btn=document.getElementById("moreinfo_closebtn");
-            moreinfo_close_btn.style.display="none"
-            moreinfo_btn.style.display="block"
+            var moreinfo_btn = document.getElementById("moreinfobtn");
+            var moreinfo_close_btn = document.getElementById("moreinfo_closebtn");
+            moreinfo_close_btn.style.display = "none"
+            moreinfo_btn.style.display = "block"
         })
 
         function creatindex() {
@@ -2221,21 +2286,22 @@
                     index_id_list = data['id']
                     index_id_belong_to_list = data['id_belong_to']
                     for (var i = 0; i < index_id_list.length; i++) {
-                        if(index_id_list[i]=="010103"){
+                        if (index_id_list[i] == "010103") {
                             a = i
                         }
                     }
-                    index_cn_name_list.splice(a,1)
-                    index_en_name_list.splice(a,1)
-                    index_id_list.splice(a,1)
-                    index_id_belong_to_list.splice(a,1)
-                    console.log(data)
+                    index_cn_name_list.splice(a, 1)
+                    index_en_name_list.splice(a, 1)
+                    index_id_list.splice(a, 1)
+                    index_id_belong_to_list.splice(a, 1)
+                    {#console.log(data)#}
                 }
             })
         }
 
 
         {#        指标点击事件 所有子节点被选中#}
+
         function index_check(id) {
             var a = id.length
             var check = document.getElementById(id).checked
@@ -2253,11 +2319,12 @@
                 }
             }
             getchecked_list()
-            CreateChart_new(data_checked)
-            cutarray(data_checked)
+            {#cutarray(data_for_echart)#}
+            {#CreateChart_new(data_for_echart)#}
         }
 
         {# 获取当前所有被选中的指标 并赋色#}
+
         function getchecked_list() {
             var allchecked_list = []
             var en_name_list = []
@@ -2269,16 +2336,15 @@
                     en_name_list.push(index_en_name_list[i])
                     cn_name_list.push(index_cn_name_list[i])
                     $("#div_" + index_id_list[i]).css("background-color", Chosenindexes_new[index_id_list[i]])
-                    {#console.log(Chosenindexes_new[index_id_list[i]])#}
                 }
                 else {
                     $("#div_" + index_id_list[i]).css("background-color", 'transparent')
                 }
             }
-
             getindex_data(allchecked_list, en_name_list, cn_name_list)
 
         }
+
         {#         获取选中指标数据#}
         function getindex_data(allchecked_list, en_name_list, cn_name_list) {
             $.ajax({
@@ -2299,17 +2365,17 @@
                         eval(" data." + data.indexes[i] + "_list.reverse()")
                     }
                     data.the_year.reverse();
-
                     data_checked = data
-
-                    {#console.log(data_checked)#}
                 }
             })
+           get_invest_index_data()
 
         }
 
         function CreateChart_new(data_checked) {
             data = data_checked
+            console.log(111)
+            console.log(data)
             dataSeries = [];
             unit_flag = parseInt($("select#unit_new").val())
             for (var i = 0; i < data.indexes.length; i++) {
@@ -2411,30 +2477,31 @@
                 var dz = opt.dataZoom[0];
                 var tleft = opt.xAxis[0].data[dz.startValue];
                 var tright = opt.xAxis[0].data[dz.endValue];
-                var tleft_y = tleft.substring(0,4)
-                var tleft_m = tleft.substring(6,7)*3
-                var tleft_d=31
-                if(tleft_m == 6 || tleft_m == 9){
-                    tleft_d=30
+                var tleft_y = tleft.substring(0, 4)
+                var tleft_m = tleft.substring(6, 7) * 3
+                var tleft_d = 31
+                if (tleft_m == 6 || tleft_m == 9) {
+                    tleft_d = 30
                 }
-                var tright_y = tright.substring(0,4)
-                var tright_m = tright.substring(6,7)*3
-                var tright_d=31
-                if(tright_m == 6 || tright_m == 9){
-                    tright_d=30
+                var tright_y = tright.substring(0, 4)
+                var tright_m = tright.substring(6, 7) * 3
+                var tright_d = 31
+                if (tright_m == 6 || tright_m == 9) {
+                    tright_d = 30
                 }
                 var flag = document.getElementById("yearorder_new");
                 var flag_value = flag.value;
-                if(flag_value == "desc"){
-                    $("#starttime_picker_new").attr('value',tright_y+'-'+tright_m+'-'+tright_d)
-                    $("#endtime_picker_new").attr('value',tleft_y+'-'+tleft_m+'-'+tleft_d)
+                if (flag_value == "desc") {
+                    $("#starttime_picker_new").attr('value', tright_y + '-' + tright_m + '-' + tright_d)
+                    $("#endtime_picker_new").attr('value', tleft_y + '-' + tleft_m + '-' + tleft_d)
                 }
-                else{
-                    $("#endtime_picker_new").attr('value',tright_y+'-'+tright_m+'-'+tright_d)
-                    $("#starttime_picker_new").attr('value',tleft_y+'-'+tleft_m+'-'+tleft_d)
+                else {
+                    $("#endtime_picker_new").attr('value', tright_y + '-' + tright_m + '-' + tright_d)
+                    $("#starttime_picker_new").attr('value', tleft_y + '-' + tleft_m + '-' + tleft_d)
                 }
 
             });
+
         }
 
         function change_time_type(date) {
@@ -2446,6 +2513,7 @@
         }
 
         {#        根据日期控件截取数组#}
+
         function cutarray(data_checked) {
             data = data_checked
             var start = '0'
@@ -2475,13 +2543,15 @@
                 str = "data." + data.indexes[i] + "_list"
                 index_list_cutted[i] = eval(str).slice(start, end)
             }
-            {#console.log(data.indexes)#}
-            CreatTable_new(year_list_cutted, index_list_cutted, start, data_checked)
+            console.log(data)
+            CreatTable_new(year_list_cutted, index_list_cutted, start, data)
+
         }
 
 
-        function CreatTable_new(year_list_cutted, index_list_cutted, start, data_checked) {
-            data = data_checked
+        function CreatTable_new(year_list_cutted, index_list_cutted, start, data1) {
+            data = data1
+            console.log(data.indexes)
             $("#datatable_new").empty();
             var table = $("<table id=\"temptable_new\" class=\"row-border hover order-column\" cellspacing=\"0\" width=\"100%\"  >");
             table.appendTo($("#datatable_new"));
@@ -2505,7 +2575,7 @@
                 td_b.appendTo(tr_b);
                 unit_flag = parseInt($("select#unit_new").val());
                 value = index_list_cutted[i];
-                console.log(value)
+                {#console.log(value)#}
                 var value2 = [];
                 for (var j = 0; j < value.length; j++) {
                     if (value[j] == null) {
@@ -2548,29 +2618,394 @@
                 dom: 'Bfrtip',
                 buttons: {
                     buttons: [
-                        {extend: 'copy', 'text': '复制', 'className': 'btn btn-default btn-xs',},
-                        {extend: 'excel', 'text': '导出Excel', 'className': 'btn btn-default btn-xs',}
+                        {#{extend: 'copy', 'text': '复制', 'className': 'btn btn-default btn-xs',},#}
+                        {#{extend: 'excel', 'text': '导出Excel', 'className': 'btn btn-default btn-xs',}#}
                     ]
                 }
             });
             setTimeout("$(\"#subject\").trigger(\"click\")", 100);
         }
+
         $("select#unit_new").change(function () {
-            CreateChart_new(data_checked);
-            cutarray(data_checked)
+            {#CreateChart_new(data_checked);#}
+            cutarray(data_for_echart)
+            CreateChart_new(data_for_echart)
         });
         $("select#yearorder_new").change(function () {
             var flag = $("select#yearorder_new").val()
             getchecked_list()
             if (flag == "asc") {
-                data = data_checked
+                data = data_for_echart
                 for (var i = 0; i < data.indexes.length; i++)
                     eval("data." + data.indexes[i] + '_list').reverse();
                 data.the_year.reverse();
             }
-            CreateChart_new(data_checked)
-            cutarray(data_checked)
+            CreateChart_new(data_for_echart)
+            cutarray(data_for_echart)
         });
+
+        {#投资指标点击事件 赋色#}
+        function invest_index_checked(div_id) {
+            var check = document.getElementById(div_id).checked
+            id = div_id.substr(4)
+            if (check) {
+                Chosenindexes_new[id] = NewColor();
+                $("#new_div_" + id).css("background-color", Chosenindexes_new[id])
+            }
+            else {
+                $("#new_div_" + id).css("background-color", 'transparent')
+            }
+            get_invest_index_data()
+        }
+
+        {#投资指标获取数据#}
+        function get_invest_index_data() {
+            var invest_checkedlist = []
+            invest_dataSeries = {
+                'id':[],
+                'indexes':[]
+            }
+
+
+            for (var key in dict1) {
+                var check1 = document.getElementById("new_" + key).checked
+                if (check1) {
+                    invest_checkedlist.push(key)
+                }
+            }
+            console.log(invest_checkedlist)
+            $.ajax({
+                type: 'GET',
+                url: '{{url_for("restfulapi.finance_data_stocksolo")}}',
+                data: {
+                    stockcode: currentcode,
+                    starttime: 19911231,
+                    endtime: 20161231,
+                    indexes: ['tot_oper_cost', 'tot_oper_rev', 'wgsd_net_inc', 'tot_assets', 'wgsd_com_eq', 'monetary_cap', 'operatecashflow_ttm2', 'investcashflow_ttm2']
+                },
+                dataType: 'json',//希望服务器返回json格式的数据
+                async: false,
+                success: function (data) {
+                    finance_results = data;
+                    $.ajax({
+                        type: 'GET',
+                        url: '{{url_for("restfulapi.invest_data_stocksolo")}}',
+                        data: {
+                            stockcode: currentcode,
+                            starttime: 19911231,
+                            endtime: 20161231,
+                            indexes: ['total_shares', 'div_cashandstock', 'ev', 'employee', 'dividendyield2', 'ev1', 'ev2']
+                        },
+                        async: false,
+                        dataType: 'json',//希望服务器返回json格式的数据
+                        success: function (data) {
+                            invest_results = data;
+                            var index = new Array
+                            for (var a = 0; a < invest_checkedlist.length; a++) {
+                                if (invest_checkedlist[a] == "tot_oper_cost") {
+                                    tempdata = []
+                                    for (i = 0; i < finance_results.the_year.length; i++) {
+                                        datavalue = finance_results.tot_oper_cost[i]
+                                        tempdata.push(datavalue)
+                                    }
+                                    invest_dataSeries["invest_tot_oper_cost"] = tempdata
+                                    index.push("tot_oper_cost")
+                                }
+                                if (invest_checkedlist[a] == "tot_oper_rev") {
+                                    tempdata = []
+                                    for (i = 0; i < finance_results.the_year.length; i++) {
+                                        datavalue = finance_results.tot_oper_rev[i]
+                                        tempdata.push(datavalue)
+                                    }
+                                    invest_dataSeries["invest_tot_oper_rev"] = tempdata
+                                    index.push("tot_oper_rev")
+                                }
+                                if (invest_checkedlist[a] == "wgsd_net_inc") {
+                                    tempdata = []
+                                    for (i = 0; i < finance_results.the_year.length; i++) {
+                                        datavalue = finance_results.wgsd_net_inc[i]
+                                        tempdata.push(datavalue)
+                                    }
+                                    invest_dataSeries["invest_wgsd_net_inc"] = tempdata
+                                    index.push("wgsd_net_inc")
+                                }
+                                if (invest_checkedlist[a] == "tot_assets") {
+                                    tempdata = []
+                                    for (i = 0; i < finance_results.the_year.length; i++) {
+                                        datavalue = finance_results.tot_assets[i]
+                                        tempdata.push(datavalue)
+                                    }
+                                    invest_dataSeries["invest_tot_assets"] = tempdata
+                                    index.push("tot_assets")
+                                }
+                                if (invest_checkedlist[a] == "wgsd_com_eq") {
+                                    tempdata = []
+                                    for (i = 0; i < finance_results.the_year.length; i++) {
+                                        datavalue = finance_results.wgsd_com_eq[i]
+                                        tempdata.push(datavalue)
+                                    }
+                                    invest_dataSeries["invest_wgsd_com_eq"] = tempdata
+                                    index.push("wgsd_com_eq")
+                                }
+                                if (invest_checkedlist[a] == "net_inc_eq_rate") {
+                                    tempdata = []
+                                    for (i = 0; i < finance_results.the_year.length; i++) {
+                                        datavalue = finance_results.wgsd_net_inc[i] / finance_results.wgsd_com_eq[i]
+                                        tempdata.push(datavalue)
+                                    }
+                                    invest_dataSeries["invest_net_inc_eq_rate"] = tempdata
+                                    index.push("net_inc_eq_rate")
+                                }
+                                if (invest_checkedlist[a] == "total_shares") {
+                                    tempdata = []
+                                    for (i = 0; i < invest_results.the_year.length; i++) {
+                                        datavalue = invest_results.total_shares[i]
+                                        tempdata.push(datavalue)
+                                    }
+                                    invest_dataSeries["invest_total_shares"] = tempdata
+                                    index.push("total_shares")
+                                }
+                                if (invest_checkedlist[a] == "earnings_per_share") {
+
+                                    tempdata = []
+                                    for (i = 0; i < finance_results.the_name.length; i++) {
+                                        datavalue = finance_results.wgsd_net_inc[i] / invest_results.total_shares[i]
+                                        tempdata.push(datavalue)
+                                    }
+                                    invest_dataSeries["invest_earnings_per_share"] = tempdata
+                                    index.push("earnings_per_share")
+                                }
+                                if (invest_checkedlist[a] == "net_assets_per_share") {
+                                    tempdata = []
+                                    for (i = 0; i < finance_results.the_name.length; i++) {
+                                        datavalue = finance_results.wgsd_com_eq[i] / invest_results.total_shares[i]
+                                        tempdata.push(datavalue)
+                                    }
+                                    invest_dataSeries["invest_net_assets_per_share"] = tempdata
+                                    index.push("net_assets_per_share")
+                                }
+                                if (invest_checkedlist[a] == "cash_per_share") {
+                                    tempdata = []
+                                    for (i = 0; i < finance_results.the_name.length; i++) {
+                                        datavalue = finance_results.monetary_cap[i] / invest_results.total_shares[i]
+                                        tempdata.push(datavalue)
+                                    }
+                                    invest_dataSeries["invest_cash_per_share"] = tempdata
+                                    index.push("cash_per_share")
+                                }
+                                if (invest_checkedlist[a] == "div_cashandstock") {
+                                    tempdata = []
+                                    for (i = 0; i < invest_results.the_year.length; i++) {
+                                        datavalue = invest_results.div_cashandstock[i]
+                                        tempdata.push(datavalue)
+                                    }
+                                    invest_dataSeries["invest_div_cashandstock"] = tempdata
+                                    index.push("div_cashandstock")
+                                }
+                                if (invest_checkedlist[a] == "payment_proportion") {
+                                    tempdata = []
+                                    for (i = 0; i < finance_results.the_name.length; i++) {
+                                        datavalue = (invest_results.total_shares[i] * invest_results.div_cashandstock[i]) / finance_results.wgsd_net_inc[i]
+                                        tempdata.push(datavalue)
+                                    }
+                                    invest_dataSeries["invest_payment_proportion"] = tempdata
+                                    index.push("payment_proportion")
+                                }
+                                if (invest_checkedlist[a] == "equal_earning_rate") {
+                                    tempdata = []
+                                    for (i = 0; i < finance_results.the_name.length; i++) {
+                                        datavalue = 1 / (Math.pow(1 - finance_results.wgsd_net_inc[i] / finance_results.wgsd_com_eq[i], 5)) / (finance_results.wgsd_net_inc[i] / finance_results.wgsd_com_eq[i])
+                                        tempdata.push(datavalue)
+                                    }
+                                    invest_dataSeries["invest_equal_earning_rate"] = tempdata
+                                    index.push("equal_earning_rate")
+                                }
+                                if (invest_checkedlist[a] == "equal_market_rate") {
+                                    tempdata = []
+                                    for (i = 0; i < finance_results.the_name.length; i++) {
+                                        datavalue = 1 / (Math.pow(1 - finance_results.wgsd_net_inc[i] / finance_results.wgsd_com_eq[i], 5))
+                                        tempdata.push(datavalue)
+                                    }
+                                    invest_dataSeries["invest_equal_market_rate"] = tempdata
+                                    index.push("equal_market_rate")
+                                }
+                                if (invest_checkedlist[a] == "com_value_evaluate") {
+                                    tempdata = []
+                                    for (i = 0; i < finance_results.the_name.length; i++) {
+                                        datavalue = finance_results.wgsd_net_inc[i] *
+                                            (1 / (Math.pow(1 - finance_results.wgsd_net_inc[i] / finance_results.wgsd_com_eq[i], 5)) / (finance_results.wgsd_net_inc[i] / finance_results.wgsd_com_eq[i]))
+                                        tempdata.push(datavalue)
+                                    }
+                                    invest_dataSeries["invest_com_value_evaluate"] = tempdata
+                                    index.push("com_value_evaluate")
+                                }
+                                if (invest_checkedlist[a] == "per_com_value_evaluate") {
+                                    tempdata = []
+                                    for (i = 0; i < finance_results.the_name.length; i++) {
+                                        datavalue = (finance_results.wgsd_net_inc[i] *
+                                            (1 / (Math.pow(1 - finance_results.wgsd_net_inc[i] / finance_results.wgsd_com_eq[i], 5)) / (finance_results.wgsd_net_inc[i] / finance_results.wgsd_com_eq[i]))) / invest_results.total_shares[i]
+                                        tempdata.push(datavalue)
+                                    }
+                                    invest_dataSeries["invest_per_com_value_evaluate"] = tempdata
+                                    index.push("per_com_value_evaluate")
+                                }
+                                if (invest_checkedlist[a] == "fre_cash_evaluate") {
+                                    tempdata = []
+                                    for (i = 0; i < finance_results.the_name.length; i++) {
+                                        datavalue = finance_results.operatecashflow_ttm2[i] + finance_results.investcashflow_ttm2[i]
+                                        tempdata.push(datavalue)
+                                    }
+                                    invest_dataSeries["invest_fre_cash_evaluate"] = tempdata
+                                    index.push("fre_cash_evaluate")
+                                }
+                                if (invest_checkedlist[a] == "ev") {
+                                    tempdata = []
+                                    for (i = 0; i < invest_results.the_year.length; i++) {
+                                        datavalue = invest_results.ev[i]
+                                        tempdata.push(datavalue)
+                                    }
+                                    invest_dataSeries["invest_ev"] = tempdata
+                                    index.push("ev")
+                                }
+                                if (invest_checkedlist[a] == "earning_rate") {
+                                    tempdata = []
+                                    for (i = 0; i < finance_results.the_name.length; i++) {
+                                        datavalue = invest_results.ev[i] / finance_results.wgsd_net_inc[i]
+                                        tempdata.push(datavalue)
+                                    }
+                                    invest_dataSeries["invest_earning_rate"] = tempdata
+                                    index.push("earning_rate")
+                                }
+                                if (invest_checkedlist[a] == "net_rate") {
+                                    tempdata = []
+                                    for (i = 0; i < finance_results.the_name.length; i++) {
+                                        datavalue = invest_results.ev[i] / finance_results.wgsd_com_eq[i]
+                                        tempdata.push(datavalue)
+                                    }
+                                    invest_dataSeries["invest_net_rate"] == tempdata
+                                    index.push("net_rate")
+                                }
+                                if (invest_checkedlist[a] == "sale_rate") {
+                                    tempdata = []
+                                    for (i = 0; i < finance_results.the_name.length; i++) {
+                                        datavalue = invest_results.ev[i] / finance_results.tot_oper_rev[i]
+                                        tempdata.push(datavalue)
+                                    }
+                                    invest_dataSeries["invest_sale_rate"] = tempdata
+                                    index.push("sale_rate")
+                                }
+                                if (invest_checkedlist[a] == "cash_rate") {
+                                    tempdata = []
+                                    for (i = 0; i < finance_results.the_name.length; i++) {
+                                        datavalue = invest_results.ev[i] / finance_results.operatecashflow_ttm2[i]
+                                        tempdata.push(datavalue)
+                                    }
+                                    invest_dataSeries["invest_cash_rate"] = tempdata
+                                    index.push("cash_rate")
+                                }
+                                if (invest_checkedlist[a] == "dividendyield2") {
+                                    tempdata = []
+                                    for (i = 0; i < invest_results.the_year.length; i++) {
+                                        datavalue = invest_results.dividendyield2[i]
+                                        tempdata.push(datavalue)
+                                    }
+                                    invest_dataSeries["invest_dividendyield2"] = tempdata
+                                    index.push("dividendyield2")
+                                }
+                                if (invest_checkedlist[a] == "cash_yield_evaluate") {
+                                    tempdata = []
+                                    for (i = 0; i < finance_results.the_name.length; i++) {
+                                        datavalue = (finance_results.operatecashflow_ttm2[i] + finance_results.investcashflow_ttm2[i]) / invest_results.ev[i]
+                                        tempdata.push(datavalue)
+                                    }
+                                    invest_dataSeries["invest_cash_yield_evaluate"] = tempdata
+                                    index.push("cash_yield_evaluate")
+                                }
+                                if (invest_checkedlist[a] == "ev1") {
+                                    tempdata = []
+                                    for (i = 0; i < invest_results.the_year.length; i++) {
+                                        datavalue = invest_results.ev1[i]
+                                        tempdata.push(datavalue)
+                                    }
+                                    invest_dataSeries["invest_ev1"] = tempdata
+                                    index.push("ev1")
+                                }
+                                if (invest_checkedlist[a] == "ev2") {
+                                    tempdata = []
+                                    for (i = 0; i < invest_results.the_year.length; i++) {
+                                        datavalue = invest_results.ev2[i]
+                                        tempdata.push(datavalue)
+                                    }
+                                    invest_dataSeries["invest_ev2"] = tempdata
+                                    index.push("ev2")
+                                }
+                                if (invest_checkedlist[a] == "employee") {
+                                    tempdata = []
+                                    for (i = 0; i < invest_results.the_year.length; i++) {
+                                        datavalue = invest_results.employee[i]
+                                        tempdata.push(datavalue)
+                                    }
+                                    invest_dataSeries["invest_employee"] = tempdata
+                                    index.push("employee")
+                                }
+                                invest_dataSeries['indexes'] = index
+                            }
+                        }
+                    })
+                }
+            })
+            set_invest_index_data(invest_dataSeries)
+            console.log(invest_dataSeries)
+        }
+
+        {#补全投资指标数据 #}
+        function set_invest_index_data(invest_dataSeries_in) {
+
+            invest_dataSeries = invest_dataSeries_in
+            invest_dataSeries['id'] = invest_dataSeries['indexes']
+            for (i = 0; i < invest_dataSeries['indexes'].length; i++) {
+                eval("invest_dataSeries['f_" + invest_dataSeries['indexes'][i] + "']= new Array")
+            }
+            for (i = 0; i < invest_dataSeries['indexes'].length; i++) {
+                for (j = 0; j < invest_dataSeries["invest_" + invest_dataSeries['indexes'][i]].length - 1; j++) {
+                    eval("invest_dataSeries['f_" + invest_dataSeries['indexes'][i] + "'].push(" + invest_dataSeries["invest_" + invest_dataSeries['indexes'][i]][j] + ")")
+                    eval("invest_dataSeries['f_" + invest_dataSeries['indexes'][i] + "'].push(0)")
+                    eval("invest_dataSeries['f_" + invest_dataSeries['indexes'][i] + "'].push(0)")
+                    eval("invest_dataSeries['f_" + invest_dataSeries['indexes'][i] + "'].push(0)")
+                }
+                eval("invest_dataSeries['f_" + invest_dataSeries['indexes'][i] + "'].push(" + invest_dataSeries["invest_" + invest_dataSeries['indexes'][i]][invest_dataSeries["invest_" + invest_dataSeries['indexes'][i]].length-1] + ")")
+
+            }
+            invest_data = invest_dataSeries
+            creat_data_for_echart()
+
+        }
+
+        {#拼接表后画图#}
+        function creat_data_for_echart() {
+            data_for_echart =[].concat(invest_data)
+            data_for_echart['stockcode'] = currentcode
+            data_for_echart['the_name'] = data_checked['the_name']
+            data_for_echart['the_year'] = data_checked['the_year']
+            data_for_echart['id'] = [].concat(invest_data['id'])
+
+            data_for_echart['indexes'] = [].concat(invest_data['indexes'])
+            for (i = 0; i < invest_data['indexes'].length; i++) {
+                eval("data_for_echart['" + invest_data['indexes'][i] + "']=new Array")
+                eval("data_for_echart['" + invest_data['indexes'][i] + "_list']=new Array")
+                eval("data_for_echart['" + invest_data['indexes'][i] + "']=dict1['" + invest_data['indexes'][i] + "']")
+                eval("data_for_echart['" + invest_data['indexes'][i] + "_list']=invest_data['f_" + invest_data['indexes'][i] + "']")
+            }
+
+            for (i = 0; i < data_checked['id'].length; i++) {
+                data_for_echart['id'].push(data_checked['id'][i])
+                data_for_echart['indexes'].push(data_checked['indexes'][i])
+                data_for_echart[data_checked['indexes'][i] + "_list"] = data_checked[data_checked['indexes'][i] + "_list"]
+                data_for_echart[data_checked['indexes'][i]]=data_checked[data_checked['indexes'][i]]
+            }
+            CreateChart_new(data_for_echart)
+            cutarray(data_for_echart)
+        }
 
     </script>
 {% endblock %}
