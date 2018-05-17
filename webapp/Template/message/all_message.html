@@ -471,19 +471,19 @@
                             <div id="myshow" class="module span12" style="background-color: rgba(0,0,0,0);border: 0">
                                 <div class="nav" style="float:left;margin:auto;width:100%;background-color:white">
                                     <ul id="mynav" class="nav nav-tabs nav-justified">
-                                        <li><a href="#all_message" data-toggle="tab"
-                                               onclick="all_message_show()">全部动态</a></li>
+                                        <li class="active"><a href="#all_message" data-toggle="tab"
+                                                              onclick="all_message_show()">全部动态</a></li>
                                         <li><a href="#follow_message" data-toggle="tab"
                                                onclick="follow_message_show()">我的关注</a></li>
                                         <li><a href="#my_message" data-toggle="tab"
                                                onclick="myown_message_show()">我的动态</a>
                                         </li>
-                                        <li class="active"><a href="#accept_message" data-toggle="tab"
-                                                              onclick="accept_message_show()">消息私信</a></li>
+                                        <li><a href="#accept_message" data-toggle="tab"
+                                               onclick="accept_message_show()">消息私信</a></li>
                                     </ul>
                                 </div>
                                 <div id="mytext" class="tab-content" style="margin-left:0 ;width:100%;height:auto;">
-                                    <div id="all_message" class="tab-pane fade"
+                                    <div id="all_message" class="tab-pane fade in active"
                                          style="float:left;margin-left:0;width:100%;height:auto;">
                                         <div id="all_post" class="module span12"
                                              style="background-color: rgba(0,0,0,0);border:0;float:left;margin-left:0;width:100%;height:auto;"></div>
@@ -594,7 +594,7 @@
                                             </div><!-- /.modal-dialog -->
                                         </div>
                                     </div>
-                                    <div id="accept_message" class="tab-pane fade in active"
+                                    <div id="accept_message" class="tab-pane fade"
                                          style="float:left;margin-left:0;width:100%;height:auto;">
                                         <div class="span12">
                                             <div class="content">
@@ -983,6 +983,7 @@
                 document.getElementById("box").style.display = "block";
                 $("#box").css("left", p + 20);
                 $("#box").css("top", q + 20);
+
             });
 
             //收起个人信息
@@ -2081,6 +2082,7 @@
                     }
                 });
             }
+
             //消息私信呈现
             function creat_table_for_accept_message(data) {
                 if ($('#table_message').hasClass('dataTable')) {
@@ -2186,7 +2188,7 @@
 
 
             }
-            //阅读消息
+            {#        阅读消息#}
             function tr_click(position) {
                 if (data_message.state_list[position] == "N") {
                     var info_id = data_message.id_list[position]
@@ -2215,7 +2217,7 @@
             }
             //刷新消息列表
             function refresh() {
-                get_my_message_count();
+                get_my_message_count()
                 accept_message_show()
             }
         </script>
@@ -2225,7 +2227,7 @@
 
             //首次访问
             $(function () {
-                accept_message_show();
+                all_message_show();
                 //判断是否是管理员,群发消息权限,填充user_list
                 $.ajax({
                     type: 'GET',

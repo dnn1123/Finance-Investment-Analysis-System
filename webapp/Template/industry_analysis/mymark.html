@@ -106,9 +106,7 @@
                 <div class="btn-box-row row-fluid">
                     <div class="module span12">
                         <div class="module-head">
-
                             <button  class="btn btn-primary" data-toggle="button">市场分析</button>
-
                         </div>
                         <div class="modal-body">
                             <div id="postable" style="margin: auto;width:95%">
@@ -1325,10 +1323,10 @@
             })
         }
         $("#all_province").click(function () {
-            province = 'all'
-            $("#province_selected").text('当前选中:全国')
-            CreateChart(province)
-            creat_industry_pie()
+            province = 'all';
+            $("#province_selected").text('当前选中:全国');
+            CreateChart(province);
+            creat_industry_pie();
             $('#show').empty();
         });
 
@@ -1839,7 +1837,7 @@
         {#行业分析！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！#}
 
         <!--级联菜单-->
-        var mytest = '能源'
+        var mytest = '能源';
         var mynum = '10';//用于建图时标题显示
         var dact = {
             '10': '能源',
@@ -1852,7 +1850,7 @@
             '45': '信息技术',
             '50': '电信服务',
             '55': '公共事业',
-            '60': '房地产',
+            '60': '房地产'
         };
         var dbct = {
             '1010': '能源Ⅱ',
@@ -1943,7 +1941,7 @@
             '551030': '复合型公用事业Ⅲ ',
             '551040': '水务Ⅲ',
             '551050': '独立电力生产商与能源贸易商Ⅲ',
-            '601020': '房地产管理和开发',
+            '601020': '房地产管理和开发'
         };
         var ddct = {
             '10101010': '石油天然气钻井',
@@ -2101,12 +2099,13 @@
                 },
                 dataType: 'json',
                 success: function (data) {
+                    console.log(data);
                     for (var i = 0; i < data.my_value.length; i++) {
                         $('#stockcode2').append("<option value='" + data.my_value[i] + "'>" + data.my_index[i] + "</option>")
                     }
-                    $('#stockcode2').append("<option selected = 'selected'> -行业组- </option>")
-                    $('#stockcode3').append("<option selected = 'selected'> -行业- </option>")
-                    $('#stockcode4').append("<option selected = 'selected'> -子行业- </option>")
+                    $('#stockcode2').append("<option selected = 'selected'> -行业组- </option>");
+                    $('#stockcode3').append("<option selected = 'selected'> -行业- </option>");
+                    $('#stockcode4').append("<option selected = 'selected'> -子行业- </option>");
                     requestChart1();
                     set_time(hangyefenxi_startid, hangyefenxi_endid);
                     $("div#mychoice1 :checkbox").each(function () {//each()方法遍历所有的复选框
@@ -2144,11 +2143,12 @@
                 },
                 dataType: 'json',
                 success: function (data) {
+                    console.log(data);
                     for (var i = 0; i < data.my_value.length; i++) {
                         $('#stockcode3').append("<option value='" + data.my_value[i] + "'>" + data.my_index[i] + "</option>")
                     }
-                    $('#stockcode3').append("<option selected = 'selected'> -行业- </option>")
-                    $('#stockcode4').append("<option selected = 'selected'> -子行业- </option>")
+                    $('#stockcode3').append("<option selected = 'selected'> -行业- </option>");
+                    $('#stockcode4').append("<option selected = 'selected'> -子行业- </option>");
                     requestChart2();
                     set_time(hangyefenxi_startid, hangyefenxi_endid);
                     $("div#mychoice1 :checkbox").each(function () {//each()方法遍历所有的复选框
@@ -2188,7 +2188,7 @@
                     for (var i = 0; i < data.my_value.length; i++) {
                         $('#stockcode4').append("<option value='" + data.my_value[i] + "'>" + data.my_index[i] + "</option>")
                     }
-                    $('#stockcode4').append("<option selected = 'selected'> -子行业- </option>")
+                    $('#stockcode4').append("<option selected = 'selected'> -子行业- </option>");
                     requestChart3();
                     set_time(hangyefenxi_startid, hangyefenxi_endid);
                     $("div#mychoice1 :checkbox").each(function () {//each()方法遍历所有的复选框
@@ -2376,7 +2376,6 @@
                 },
                 dataType: 'json',
                 success: function (data) {
-                    console.log(data);
                     market_results_t1 = data;
                     invest_results_t1 = data;
                     market_results1 = data;
@@ -2398,7 +2397,6 @@
                 },
                 dataType: 'json',
                 success: function (data) {
-                    console.log(data);
                     market_results_t1 = data;
                     invest_results_t1 = data;
                     market_results1 = data;
@@ -2420,7 +2418,6 @@
                 },
                 dataType: 'json',
                 success: function (data) {
-                    console.log(data);
                     market_results_t1 = data;
                     invest_results_t1 = data;
                     market_results1 = data;
@@ -2443,7 +2440,6 @@
                 },
                 dataType: 'json',
                 success: function (data) {
-                    console.log(data);
                     market_results_t1 = data;
                     invest_results_t1 = data;
                     market_results1 = data;

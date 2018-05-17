@@ -69,6 +69,16 @@ class input_message(db.Model):
     if_retrant = db.Column(db.Integer)
     retrant_poster = db.Column(db.String(20))
     retrant_text = db.Column(db.Text)
+    photo1 = db.Column(db.String(45))
+    photo2 = db.Column(db.String(45))
+    photo3 = db.Column(db.String(45))
+    photo4 = db.Column(db.String(45))
+    photo5 = db.Column(db.String(45))
+    photo6 = db.Column(db.String(45))
+    photo7 = db.Column(db.String(45))
+    photo8 = db.Column(db.String(45))
+    photo9 = db.Column(db.String(45))
+    if_photo = db.Column(db.Integer)
 
 
 # 评论
@@ -302,7 +312,6 @@ class finance_basics(db.Model):
     apturndays = db.Column(db.Numeric(20, 4))
 
 
-
 class finance_basics_add(db.Model):
     __tablename__ = 'finance_basics_add'
     trade_code = db.Column(db.String(10), db.ForeignKey('cns_stock_industry.trade_code'), primary_key=True)
@@ -413,7 +422,6 @@ class stock_grade_l(db.Model):
     sec_name = db.Column(db.String(40))
     grade_time = db.Column(db.DateTime(6))
     grade_id = db.Column(db.String(40), db.ForeignKey('invest_grade.grade_id'))
-
 
 
 class stock_grade_h(db.Model):
@@ -732,6 +740,7 @@ class cns_balance_sheet(db.Model):
     surplus_rsrv = db.Column(db.Numeric(20, 3))
     undistributed_profit = db.Column(db.Numeric(20, 3))
 
+
 class cns_income_statement(db.Model):
     __bind_key__ = 'cns_stock'
     __tablename__ = 'cns_income_statement'
@@ -749,12 +758,13 @@ class cns_income_statement(db.Model):
     net_invest_inc = db.Column(db.Numeric(20, 3))
     opprofit = db.Column(db.Numeric(20, 3))
     non_oper_rev = db.Column(db.Numeric(20, 3))
-    non_oper_exp= db.Column(db.Numeric(20, 3))
+    non_oper_exp = db.Column(db.Numeric(20, 3))
     tax = db.Column(db.Numeric(20, 3))
     tot_profit = db.Column(db.Numeric(20, 3))
     net_profit_is = db.Column(db.Numeric(20, 3))
-    eps_basic_is= db.Column(db.Numeric(20, 3))
-    eps_diluted_is=db.Column(db.Numeric(20, 3))
+    eps_basic_is = db.Column(db.Numeric(20, 3))
+    eps_diluted_is = db.Column(db.Numeric(20, 3))
+
 
 class cns_statement_of_cash_flows(db.Model):
     __bind_key__ = 'cns_stock'
@@ -773,52 +783,53 @@ class cns_statement_of_cash_flows(db.Model):
     stot_cash_outflows_oper_act = db.Column(db.Numeric(20, 3))
     net_cash_flows_oper_act = db.Column(db.Numeric(20, 3))
     cash_recp_disp_withdrwl_invest = db.Column(db.Numeric(20, 3))
-    cash_recp_return_invest= db.Column(db.Numeric(20, 3))
+    cash_recp_return_invest = db.Column(db.Numeric(20, 3))
     net_cash_recp_disp_fiolta = db.Column(db.Numeric(20, 3))
     other_cash_recp_ral_inv_act = db.Column(db.Numeric(20, 3))
     stot_cash_inflows_inv_act = db.Column(db.Numeric(20, 3))
     cash_pay_acq_const_fiolta = db.Column(db.Numeric(20, 3))
     cash_paid_invest = db.Column(db.Numeric(20, 3))
-    other_cash_pay_ral_inv_act= db.Column(db.Numeric(20, 3))
-    stot_cash_outflows_inv_act= db.Column(db.Numeric(20, 3))
+    other_cash_pay_ral_inv_act = db.Column(db.Numeric(20, 3))
+    stot_cash_outflows_inv_act = db.Column(db.Numeric(20, 3))
     net_cash_flows_inv_act = db.Column(db.Numeric(20, 3))
     cash_recp_cap_contrib = db.Column(db.Numeric(20, 3))
-    cash_recp_borrow= db.Column(db.Numeric(20, 3))
-    other_cash_recp_ral_fnc_act= db.Column(db.Numeric(20, 3))
+    cash_recp_borrow = db.Column(db.Numeric(20, 3))
+    other_cash_recp_ral_fnc_act = db.Column(db.Numeric(20, 3))
     stot_cash_inflows_fnc_act = db.Column(db.Numeric(20, 3))
     cash_prepay_amt_borr = db.Column(db.Numeric(20, 3))
     cash_pay_dist_dpcp_int_exp = db.Column(db.Numeric(20, 3))
     other_cash_pay_ral_fnc_act = db.Column(db.Numeric(20, 3))
-    stot_cash_outflows_fnc_act= db.Column(db.Numeric(20, 3))
-    net_cash_flows_fnc_act= db.Column(db.Numeric(20, 3))
+    stot_cash_outflows_fnc_act = db.Column(db.Numeric(20, 3))
+    net_cash_flows_fnc_act = db.Column(db.Numeric(20, 3))
     eff_fx_flu_cash = db.Column(db.Numeric(20, 3))
     net_incr_cash_cash_equ_dm = db.Column(db.Numeric(20, 3))
-    cash_cash_equ_beg_period= db.Column(db.Numeric(20, 3))
-    cash_cash_equ_end_period= db.Column(db.Numeric(20, 3))
+    cash_cash_equ_beg_period = db.Column(db.Numeric(20, 3))
+    cash_cash_equ_end_period = db.Column(db.Numeric(20, 3))
     net_profit_cs = db.Column(db.Numeric(20, 3))
     prov_depr_assets = db.Column(db.Numeric(20, 3))
-    depr_fa_coga_dpba= db.Column(db.Numeric(20, 3))
-    amort_intang_assets= db.Column(db.Numeric(20, 3))
+    depr_fa_coga_dpba = db.Column(db.Numeric(20, 3))
+    amort_intang_assets = db.Column(db.Numeric(20, 3))
     amort_lt_deferred_exp = db.Column(db.Numeric(20, 3))
     loss_disp_fiolta = db.Column(db.Numeric(20, 3))
     loss_scr_fa = db.Column(db.Numeric(20, 3))
-    loss_fv_chg= db.Column(db.Numeric(20, 3))
-    fin_exp_cs= db.Column(db.Numeric(20, 3))
+    loss_fv_chg = db.Column(db.Numeric(20, 3))
+    fin_exp_cs = db.Column(db.Numeric(20, 3))
     invest_loss = db.Column(db.Numeric(20, 3))
     decr_deferred_inc_tax_assets = db.Column(db.Numeric(20, 3))
-    incr_deferred_inc_tax_liab= db.Column(db.Numeric(20, 3))
-    decr_inventories= db.Column(db.Numeric(20, 3))
+    incr_deferred_inc_tax_liab = db.Column(db.Numeric(20, 3))
+    decr_inventories = db.Column(db.Numeric(20, 3))
     decr_oper_payable = db.Column(db.Numeric(20, 3))
     incr_oper_payable = db.Column(db.Numeric(20, 3))
-    others= db.Column(db.Numeric(20, 3))
-    im_net_cash_flows_oper_act= db.Column(db.Numeric(20, 3))
+    others = db.Column(db.Numeric(20, 3))
+    im_net_cash_flows_oper_act = db.Column(db.Numeric(20, 3))
     conv_corp_bonds_due_within_1y = db.Column(db.Numeric(20, 3))
     fa_fnc_leases = db.Column(db.Numeric(20, 3))
-    end_bal_cash= db.Column(db.Numeric(20, 3))
-    beg_bal_cash= db.Column(db.Numeric(20, 3))
+    end_bal_cash = db.Column(db.Numeric(20, 3))
+    beg_bal_cash = db.Column(db.Numeric(20, 3))
     end_bal_cash_equ = db.Column(db.Numeric(20, 3))
     beg_bal_cash_equ = db.Column(db.Numeric(20, 3))
-    net_incr_cash_cash_equ_im= db.Column(db.Numeric(20, 3))
+    net_incr_cash_cash_equ_im = db.Column(db.Numeric(20, 3))
+
 
 class cns_financial_target_1(db.Model):
     __bind_key__ = 'cns_stock'
@@ -827,13 +838,15 @@ class cns_financial_target_1(db.Model):
     cn_name_1 = db.Column(db.String(40))
     en_name_1 = db.Column(db.String(40))
 
+
 class cns_financial_target_2(db.Model):
     __bind_key__ = 'cns_stock'
     __tablename__ = 'cns_financial_target_2'
     id_2 = db.Column(db.String(10), primary_key=True)
     cn_name_2 = db.Column(db.String(40))
     en_name_2 = db.Column(db.String(40))
-    id_belong_to_1=db.Column(db.String(10), db.ForeignKey('cns_financial_target_1.id_1'))
+    id_belong_to_1 = db.Column(db.String(10), db.ForeignKey('cns_financial_target_1.id_1'))
+
 
 class cns_financial_target_3(db.Model):
     __bind_key__ = 'cns_stock'
@@ -841,7 +854,8 @@ class cns_financial_target_3(db.Model):
     id_3 = db.Column(db.String(10), primary_key=True)
     cn_name_3 = db.Column(db.String(40))
     en_name_3 = db.Column(db.String(40))
-    id_belong_to_2=db.Column(db.String(10), db.ForeignKey('cns_financial_target_2.id_2'))
+    id_belong_to_2 = db.Column(db.String(10), db.ForeignKey('cns_financial_target_2.id_2'))
+
 
 class cns_financial_target_4(db.Model):
     __bind_key__ = 'cns_stock'
@@ -849,4 +863,4 @@ class cns_financial_target_4(db.Model):
     id_4 = db.Column(db.String(10), primary_key=True)
     cn_name_4 = db.Column(db.String(40))
     en_name_4 = db.Column(db.String(40))
-    id_belong_to_3=db.Column(db.String(10), db.ForeignKey('cns_financial_target_3.id_3'))
+    id_belong_to_3 = db.Column(db.String(10), db.ForeignKey('cns_financial_target_3.id_3'))
