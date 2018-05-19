@@ -685,7 +685,8 @@
                 dataType: 'json',//希望服务器返回json格式的数据
                 async: false,
                 success: function (data) {
-                    finance_results = data;                  {#                                                console.log(finance_results)#}
+                    finance_results = data;
+                    {#                                                console.log(finance_results)#}
                     {#                                                finance_results_t = data;#}
                     $.ajax({
                         type: 'GET',
@@ -782,7 +783,7 @@
                                 tempdata = []
                                 for (i = 0; i < finance_results.the_name.length; i++) {
                                     datavalue = finance_results.wgsd_net_inc[i] *
-                                        (1 / (Math.pow(1 - finance_results.wgsd_net_inc[i] / finance_results.wgsd_com_eq[i], 5)) / (finance_results.wgsd_net_inc[i] / finance_results.wgsd_com_eq[i]))
+                                            (1 / (Math.pow(1 - finance_results.wgsd_net_inc[i] / finance_results.wgsd_com_eq[i], 5)) / (finance_results.wgsd_net_inc[i] / finance_results.wgsd_com_eq[i]))
                                     tempdata.push(datavalue)
                                 }
                                 dataSeries["com_value_evaluate"] = tempdata
@@ -792,7 +793,7 @@
                                 tempdata = []
                                 for (i = 0; i < finance_results.the_name.length; i++) {
                                     datavalue = (finance_results.wgsd_net_inc[i] *
-                                        (1 / (Math.pow(1 - finance_results.wgsd_net_inc[i] / finance_results.wgsd_com_eq[i], 5)) / (finance_results.wgsd_net_inc[i] / finance_results.wgsd_com_eq[i]))) / invest_results.total_shares[i]
+                                            (1 / (Math.pow(1 - finance_results.wgsd_net_inc[i] / finance_results.wgsd_com_eq[i], 5)) / (finance_results.wgsd_net_inc[i] / finance_results.wgsd_com_eq[i]))) / invest_results.total_shares[i]
                                     tempdata.push(datavalue)
                                 }
                                 dataSeries["per_com_value_evaluate"] = tempdata
@@ -861,86 +862,7 @@
 
         }
 
-        {#投资指标饼状图#}
-        function CreateChart(index, unit) {
-            console.log(finance_results)
-            {#                console.log(dataSeries)#}
-            var myChart3 = echarts.init(document.getElementById('index_chart_by_year_2'))
-            var legenddata1 = [];
-            var seriesdata1 = [];
-            var option
 
-            for (i = 0; i < finance_results.the_name.length; i++) {
-                legenddata1.push(finance_results.the_name[i])
-            }
-            for (i = 0; i < finance_results.the_name.length; i++) {
-
-                str = "dataSeries." + index
-                value = eval(str)
-
-                value2 = (value[i] / unit).toFixed(2)
-                result = {value: value2, name: finance_results.the_name[i]}
-
-                {#                    }#}
-                seriesdata1.push(result)
-                {#                    }#}
-            }
-
-            option = {
-                title: {
-                    text: '投资指标',
-                    x: 'center',
-                    y: 'bottom',
-                    textStyle: {//主标题文本样式{"fontSize": 18,"fontWeight": "bolder","color": "#333"}
-
-                        fontSize: 10,
-                        fontWeight: 'bolder',
-                    },
-                },
-                tooltip: {
-                    trigger: 'item',
-                    formatter: "{a} <br/>{b}: {c} ({d}%)"
-                },
-                legend: {
-                    orient: 'vertical',
-                    x: 'left',
-                    data: legenddata1,
-                    fontSize: 10,
-                    type: 'scroll',
-                    width: 220,
-                    bottom: 0,
-                },
-                series: [
-                    {
-                        name: dict1[index],
-                        type: 'pie',
-                        radius: ['50%', '70%'],
-                        center: ['50%', '50%'],
-                        avoidLabelOverlap: false,
-                        label: {
-                            normal: {
-                                show: false,
-                                position: 'center'
-                            },
-                            emphasis: {
-                                show: true,
-                                textStyle: {
-                                    fontSize: '10',
-                                    fontWeight: 'bold'
-                                }
-                            }
-                        },
-                        labelLine: {
-                            normal: {
-                                show: false
-                            }
-                        },
-                        data: seriesdata1
-                    }
-                ]
-            }
-            myChart3.setOption(option, true);
-        }
         {#            股票补全#}
         var stocksuggest = $("input[name='stockcode']").bsSuggest({
             indexKey: 1,
@@ -1189,15 +1111,15 @@
                     for (i = 0; i < data.code_list.length; i++) {
                         color[data.code_list[i]] = color_list[i % 15]
                         str = "<tr style='width:100%'><td><input type='checkbox' class='code_table' value='" + data.name_list[i] + "' id='" + data.code_list[i] + "' ></td><td>" + data.code_list[i] + "</td>" +
-                            "<td>" + data.name_list[i] + "</td>" +
-                            "<td>暂无</td>" +
-                            "<td >暂无 </td>" +
-                            "<td>" + data.count_list[i] + " </td></tr>"
+                                "<td>" + data.name_list[i] + "</td>" +
+                                "<td>暂无</td>" +
+                                "<td >暂无 </td>" +
+                                "<td>" + data.count_list[i] + " </td></tr>"
                         $("#tbody").append(str)
                         $("#div_compare").append("<div style='width:100%;height:30px;margin-top:10px;' class='divcheckbox'>" +
-                            "<div style='width:100%;height:20px;float:left;'>" +
-                            "<input type='checkbox' class='checkbox' value='" + data.name_list[i] + "' id='" + data.code_list[i] + "' style='margin:5px'>" + data.name_list[i] +
-                            " <div id='div_" + data.code_list[i] + "' style='height: 10px;width: 10px;float: right;margin: 8px'></div> </div></div>")
+                                "<div style='width:100%;height:20px;float:left;'>" +
+                                "<input type='checkbox' class='checkbox' value='" + data.name_list[i] + "' id='" + data.code_list[i] + "' style='margin:5px'>" + data.name_list[i] +
+                                " <div id='div_" + data.code_list[i] + "' style='height: 10px;width: 10px;float: right;margin: 8px'></div> </div></div>")
                     }
 
                     set_checked_code_color(code_list, color)
@@ -1244,46 +1166,46 @@
                         ]
                     });
                     $('#excel').on('click', function () {
-                        if('{{  current_user.is_authenticated }}'!='False'){
-                             $.ajax({
-                            type: 'GET',
-                            url: '{{ url_for("restfulapi.buy_data") }}',
-                            data: {
-                                'username': "{{ current_user.username }}",
+                        if ('{{  current_user.is_authenticated }}' != 'False') {
+                            $.ajax({
+                                type: 'GET',
+                                url: '{{ url_for("restfulapi.buy_data") }}',
+                                data: {
+                                    'username': "{{ current_user.username }}",
 
-                            },
-                            dataType: 'json',
-                            success: function (data) {
-                                if (data.member == null) {
-                                    if (data.user_money >= 1) {
-                                        if (confirm('您当前账户余额' + data.user_money + '元，下载该数据需要消费1元，是否需要下载？')) {
-                                            table.buttons(0).trigger()
-                                            $.ajax({
-                                                type: 'GET',
-                                                url: '{{ url_for("restfulapi.change_money") }}',
-                                                data: {
-                                                    'action': "sub",
-                                                    'count': 1,
-                                                },
-                                                dataType: 'json',
-                                                success: function (data) {
-                                                    console.log(data)
-                                                }
-                                            })
+                                },
+                                dataType: 'json',
+                                success: function (data) {
+                                    if (data.member == null) {
+                                        if (data.user_money >= 1) {
+                                            if (confirm('您当前账户余额' + data.user_money + '元，下载该数据需要消费1元，是否需要下载？')) {
+                                                table.buttons(0).trigger()
+                                                $.ajax({
+                                                    type: 'GET',
+                                                    url: '{{ url_for("restfulapi.change_money") }}',
+                                                    data: {
+                                                        'action': "sub",
+                                                        'count': 1,
+                                                    },
+                                                    dataType: 'json',
+                                                    success: function (data) {
+                                                        console.log(data)
+                                                    }
+                                                })
+                                            }
+
                                         }
-
+                                        else {
+                                            alert('您当前账户余额' + data.user_money + '元,不足1元，无法下载！')
+                                        }
                                     }
                                     else {
-                                        alert('您当前账户余额' + data.user_money + '元,不足1元，无法下载！')
+                                        alert('您当前享有免费下载数据特权，此次操作不消耗账户余额！')
                                     }
                                 }
-                                else {
-                                    alert('您当前享有免费下载数据特权，此次操作不消耗账户余额！')
-                                }
-                            }
-                        })
+                            })
                         }
-                        else{
+                        else {
                             alert('请登陆！')
                         }
 
@@ -2021,6 +1943,87 @@
 
             }
 
+            {#投资指标饼状图#}
+            function CreateChart(index, unit) {
+                console.log(finance_results)
+                {#                console.log(dataSeries)#}
+                var myChart3 = echarts.init(document.getElementById('index_chart_by_year_2'))
+                var legenddata1 = [];
+                var seriesdata1 = [];
+                var option
+
+                for (i = 0; i < finance_results.the_name.length; i++) {
+                    legenddata1.push(finance_results.the_name[i])
+                }
+                for (i = 0; i < finance_results.the_name.length; i++) {
+
+                    str = "dataSeries." + index
+                    value = eval(str)
+
+                    value2 = (value[i] / unit).toFixed(2)
+                    result = {value: value2, name: finance_results.the_name[i]}
+
+                    {#                    }#}
+                    seriesdata1.push(result)
+                    {#                    }#}
+                }
+
+                option = {
+                    title: {
+                        text: '投资指标',
+                        x: 'center',
+                        y: 'bottom',
+                        textStyle: {//主标题文本样式{"fontSize": 18,"fontWeight": "bolder","color": "#333"}
+
+                            fontSize: 10,
+                            fontWeight: 'bolder',
+                        },
+                    },
+                    tooltip: {
+                        trigger: 'item',
+                        formatter: "{a} <br/>{b}: {c} ({d}%)"
+                    },
+                    legend: {
+                        orient: 'vertical',
+                        x: 'left',
+                        data: legenddata1,
+                        fontSize: 10,
+                        type: 'scroll',
+                        width: 220,
+                        bottom: 0,
+                    },
+                    series: [
+                        {
+                            name: dict1[index],
+                            type: 'pie',
+                            radius: ['50%', '70%'],
+                            center: ['50%', '50%'],
+                            avoidLabelOverlap: false,
+                            label: {
+                                normal: {
+                                    show: false,
+                                    position: 'center'
+                                },
+                                emphasis: {
+                                    show: true,
+                                    textStyle: {
+                                        fontSize: '10',
+                                        fontWeight: 'bold'
+                                    }
+                                }
+                            },
+                            labelLine: {
+                                normal: {
+                                    show: false
+                                }
+                            },
+                            data: seriesdata1
+                        }
+                    ]
+                }
+                myChart3.setOption(option, true);
+            }
+
             function creat_code_wind(codelist) {
                 {#                    console.log(codelist)#}
                 $.ajax({
@@ -2058,11 +2061,11 @@
 
                 {#财务指标饼图#}
                 if (code_list.length > 0) {
-                    index_chart_by_year(code_list, selectedindex, '2015', 1)
+                    index_chart_by_year(code_list, selectedindex, '2015',Uint)
                 }
                 {#投资指标饼图#}
                 getdata(code_list, '2015')
-                CreateChart(selectedindex, 1)
+                CreateChart(selectedindex,Uint)
                 {# 绘制对比图#}
                 createchart(code_list, Uint, '2010', '2015')
                 {#                    绘制行业分布#}
@@ -2157,10 +2160,7 @@
                     console.log(code_list, index_pie, year_pie)
                     {#                    index_chart_by_year(code_list, selectedindex, '2016', 1)#}
                     index_chart_by_year(code_list, index, year_pie, 1)
-
-
                     getdata(code_list, year_pie)
-
                     CreateChart(index_pie_2, 1)
                 }
             });
@@ -2190,6 +2190,17 @@
                 Uint = unit
                 createchart(code_list, Uint, dzstartyear, dzendyear)
                 creattable(code_list, Uint, dzstartyear, dzendyear)
+
+{#                改变饼状图单位#}
+                 index = []
+
+                 var index_pie = document.getElementById("index_select_pie").value
+                    var index_pie_2 = document.getElementById("index_select_pie_2").value
+                 var year_pie = $('#year_pie').val().substring(0, 4)
+                index.push(index_pie)
+                index_chart_by_year(code_list, index, year_pie, Uint)
+                    getdata(code_list, year_pie)
+                    CreateChart(index_pie_2, Uint)
             });
             $("select#yearorder").change(function () {
                 var unit = document.getElementById("unit").value;
