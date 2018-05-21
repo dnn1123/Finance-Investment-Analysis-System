@@ -420,10 +420,6 @@
                 <div class="modal-body" id='dd'>
                 </div>
                 <div class="modal-footer">
-                    <button id="photo_choose" class="btn btn-primary"
-                            style="float:right;margin-right: 15px;margin-top:10px;">
-                        从本地选择
-                    </button>
                     <form action="{{ url_for("message.my_message") }}" enctype='multipart/form-data'
                           method='POST' id="photo_form"
                           style="float: right;margin-right:15px;margin-top:10px;">
@@ -456,7 +452,7 @@
                                         style="float: right;margin-right: 15px;">点击发布
                                 </button>
                                 <button class="btn btn-primary" style="float: right;margin-right: 15px;"
-                                        id="photo_upload_area" data-toggle="modal" data-target="#photo_upload_modal">
+                                        id="photo_upload_area">
                                     添加图片
                                 </button>
                                 <form action="{{ url_for("message.my_message") }}" enctype='multipart/form-data'
@@ -695,6 +691,7 @@
             var formData, mytext;
             //选择图片预览
             function setImagePreviews() {
+                $("#photo_upload_modal").modal('show');
                 var docObj = document.getElementById("doc");
                 var dd = document.getElementById("dd");
                 dd.innerHTML = "";
@@ -740,7 +737,7 @@
                 return true;
             }
             //打开上传图像模态框
-            $("#photo_choose").click(function () {
+            $("#photo_upload_area").click(function () {
                 $("#doc").click();
             });
             //发表文章并更新界面

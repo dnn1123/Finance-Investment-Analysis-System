@@ -420,10 +420,6 @@
                 <div class="modal-body" id='dd'>
                 </div>
                 <div class="modal-footer">
-                    <button id="photo_choose" class="btn btn-primary"
-                            style="float:right;margin-right: 15px;margin-top:10px;">
-                        从本地选择
-                    </button>
                     <form action="{{ url_for("message.my_message") }}" enctype='multipart/form-data'
                           method='POST' id="photo_form"
                           style="float: right;margin-right:15px;margin-top:10px;">
@@ -456,7 +452,7 @@
                                         style="float: right;margin-right: 15px;">点击发布
                                 </button>
                                 <button class="btn btn-primary" style="float: right;margin-right: 15px;"
-                                        id="photo_upload_area" data-toggle="modal" data-target="#photo_upload_modal">
+                                        id="photo_upload_area">
                                     添加图片
                                 </button>
                                 <form action="{{ url_for("message.my_message") }}" enctype='multipart/form-data'
@@ -695,6 +691,7 @@
             var formData, mytext;
             //选择图片预览
             function setImagePreviews() {
+                $("#photo_upload_modal").modal('show');
                 var docObj = document.getElementById("doc");
                 var dd = document.getElementById("dd");
                 dd.innerHTML = "";
@@ -740,7 +737,7 @@
                 return true;
             }
             //打开上传图像模态框
-            $("#photo_choose").click(function () {
+            $("#photo_upload_area").click(function () {
                 $("#doc").click();
             });
             //发表文章并更新界面
@@ -1274,7 +1271,7 @@
                                     "<div style='width:8%;float:left;margin-top:10;'><img class='my_photo' src='/static/avatar/" + mydata.avatar[i] + "?timestamp=" + new Date().getTime() + "'></div>" +
                                     "<div style='width:92%;float:right;margin-top:10;'><button class='no_follow'><b>取消关注</b></button><span class='person' id='poster_" + mydata.po_id[i] + "'>" + mydata.po_user[i] + "</span><h10 style='font-size:10px;color:gray;float:left;width:90%'>" + mydata.po_time[i] + "</h10>" +
                                     "<h5><strong style='font-size:12px;float:left;width:100%;margin-top:5px'>" + mydata.po_text[i] + "</strong></h5></div>" +
-                                    "<div style='float:left;margin-left:0;margin-top:70px;' id='img" + mydata.po_id[i] + "'></div></div>" +
+                                    "<div style='float:left;margin-left:70px;margin-top:0;' id='img" + mydata.po_id[i] + "'></div></div>" +
 
                                     "<div class='post_function'><button class='to_retrant' data-toggle='modal' data-target='#all_message_modal' id='retrant_" + mydata.po_id[i] + "'><b>转发" + mydata.po_retrant[i] + "</b></button><div class='line'></div><button class='to_comment' class='to_comment' id='comment_" + mydata.po_id[i] + "'><b>评论" + mydata.po_comment[i] + "</b></button><div class='line'></div><button class='to_upvote' id='upvote_" + mydata.po_id[i] + "'><b>点赞" + mydata.po_upvote[i] + "</b></button></div>" +
 
@@ -2082,7 +2079,6 @@
                     }
                 });
             }
-
             //消息私信呈现
             function creat_table_for_accept_message(data) {
                 if ($('#table_message').hasClass('dataTable')) {
@@ -2188,7 +2184,7 @@
 
 
             }
-            {#        阅读消息#}
+            //阅读消息
             function tr_click(position) {
                 if (data_message.state_list[position] == "N") {
                     var info_id = data_message.id_list[position]
@@ -2217,7 +2213,7 @@
             }
             //刷新消息列表
             function refresh() {
-                get_my_message_count()
+                get_my_message_count();
                 accept_message_show()
             }
         </script>
