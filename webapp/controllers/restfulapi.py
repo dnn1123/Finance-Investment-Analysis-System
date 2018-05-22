@@ -741,8 +741,9 @@ def cns_market_new_ajax():
     pagination = cns_stock_industry.query.join(cns_sub_industry).add_columns(cns_sub_industry.industry_gics_4).join(
         cns_industry).add_columns(cns_industry.industry_gics_3).join(cns_group_industry).add_columns(
         cns_group_industry.industry_gics_2).join(cns_department_industry).add_columns(
-        cns_department_industry.industry_gics_1).join(stock_grade_l).add_columns(stock_grade_l.grade_time).join(
-        invest_grade).add_columns(invest_grade.grade_name).order_by(cns_stock_industry.trade_code).all()
+        cns_department_industry.industry_gics_1).join(stock_grade_l).add_columns(stock_grade_l.grade_id).order_by(cns_stock_industry.trade_code).all()
+    # .join(
+    #     invest_grade).add_columns(invest_grade.grade_name)
     data['industry_gics_4'] = []
     data['industry_gics_3'] = []
     data['industry_gics_2'] = []
@@ -750,6 +751,7 @@ def cns_market_new_ajax():
     data['grade_time'] = []
     data['grade_name'] = []
     data['trade_code'] = []
+    data['grade_id'] = []
     data['sec_name'] = []
     data['ipo_date'] = []
     data['hushen_300'] = []
@@ -762,7 +764,7 @@ def cns_market_new_ajax():
         data['industry_gics_2'].append(pagination[i][3])
         data['industry_gics_1'].append(pagination[i][4])
         data['grade_time'].append(time_tep+" 00:00:00")
-        data['grade_name'].append(pagination[i][6])
+        data['grade_id'].append(pagination[i][5])
         data['trade_code'].append(pagination[i][0].trade_code)
         data['sec_name'].append(pagination[i][0].sec_name)
         data['ipo_date'].append(pagination[i][0].ipo_date.strftime('%Y-%m-%d'))
@@ -778,6 +780,15 @@ def cns_market_change_score():
     score = request.args.get('score')
     result = stock_grade_l.query.filter_by(trade_code=trade_code).first_or_404()
     result.grade_id = score
+    time_tep = Time.strftime('%Y-%m-%d %H:%M:%S',Time.localtime(Time.time()))
+    history = stock_grade_h()
+    print time_tep
+    history.trade_code = trade_code
+    history.sec_name = result.sec_name
+    history.grade_time = time_tep
+    history.grade_id = score
+    db.session.add(history)
+    print history
     db.session.commit()
     return jsonify(data)
 
@@ -787,12 +798,12 @@ def cns_market_view_history():
     data = {}
     trade_code = request.args.get('trade_code')
     history_data = stock_grade_h.query.filter_by(trade_code=trade_code).order_by(
-            stock_grade_h.grade_time.desc()).join(invest_grade).add_columns(invest_grade.grade_name).all()
+            stock_grade_h.grade_time.desc()).all()
     data['time'] = []
     data['grade'] = []
     for i in range(0,len(history_data)):
-        data['time'].append(history_data[i][0].grade_time)
-        data['grade'].append(history_data[i][1])
+        data['time'].append(history_data[i].grade_time)
+        data['grade'].append(history_data[i].grade_id)
     db.session.commit()
     return jsonify(data)
 
@@ -1246,4 +1257,36 @@ def finance_index_data():
     data['indexes'] = indexes
     data['id'] = id
     print id
+    return jsonify(data)
+
+# 获取用户签到日期列表
+@api_blueprint.route("/get_signin_date_list/", methods=('GET', 'POST'))
+def get_signin_date_list():
+    username = request.args.get('username')
+    results = user_signin.query.filter_by(user_name=username).all()
+    date_list = []
+    for result in results:
+        print result.signin_date
+        date_list.append(result.signin_date)
+    data = {
+        'date_list':date_list
+    }
+    print data
+    return jsonify(data)
+
+# 用户签到记录写入
+@api_blueprint.route("/signin/", methods=('GET', 'POST'))
+def signin():
+    username = request.args.get('username')
+    date = request.args.get('date')
+    sign = user_signin()
+    sign.user_name = username
+    sign.signin_date = date
+    db.session.add(sign)
+    result = user_money.query.filter_by(user_name=username).first_or_404()
+    result.user_money = result.user_money + int(1)
+    db.session.commit()
+    data = {
+        'msg':'success'
+    }
     return jsonify(data)
