@@ -13,7 +13,7 @@ import pandas as pd
 from datetime import datetime
 from datetime import timedelta
 from  webapp.stratlib import *
-from webapp.Library.wind_mysql.get_company_list import *
+# from webapp.Library.wind_mysql.get_company_list import *
 import time as Time
 api_blueprint = Blueprint(
     'restfulapi',
