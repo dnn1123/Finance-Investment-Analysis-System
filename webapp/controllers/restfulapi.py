@@ -1247,3 +1247,43 @@ def finance_index_data():
     data['id'] = id
     print id
     return jsonify(data)
+
+@api_blueprint.route("/get_yearlist/", methods=('GET', 'POST'))
+def get_yearlist():
+    starttime = request.args.get('starttime')
+    endtime = request.args.get('endtime')
+    data = {}
+    year_list = []
+    start_year = eval(starttime[0:4])
+    start_M = starttime[5:7]
+    end_year = eval(endtime[0:4])
+    end_M = endtime[5:7]
+
+    if start_M < '04':
+        start_Q = 1
+    elif start_M < '07':
+        start_Q = 2
+    elif start_M < '10':
+        start_Q = 3
+    elif start_M < '13':
+        start_Q = 4
+
+    if end_M < '04':
+        end_Q = 1
+    elif end_M < '07':
+        end_Q = 2
+    elif end_M < '10':
+        end_Q = 3
+    elif end_M < '13':
+        end_Q = 4
+
+    for i in range(start_Q, 5):
+        year_list.append(str(start_year) + "年Q" + str(i))
+    if (end_year - start_year) > 1:
+        for i in range(start_year + 1, end_year):
+            for j in range(1, 5):
+                year_list.append(str(i) + "年Q" + str(j))
+    for i in range(1, end_Q + 1):
+        year_list.append(str(end_year) + "年Q" + str(i))
+    data['the_year'] = year_list
+    return jsonify(data)
