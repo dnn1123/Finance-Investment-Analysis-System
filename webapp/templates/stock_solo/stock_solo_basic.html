@@ -256,11 +256,9 @@
                             </ul>
                             <div id="myTabContent" class="tab-content">
                                 <div class="tab-pane fade in active" id="chart_new">
-                                    <div id="echart_new" style="width: auto;height:35%;">
-
+                                    <div id="echart_new" style="width: auto;height:35%">
                                     </div>
                                     <div id="echart_for_invest" style="width: auto;height:35%;">
-
                                     </div>
                                 </div>
                                 <div class="tab-pane fade" id="tables_new" style="text-align: center">
@@ -336,6 +334,7 @@
 {% block scripts %}
     <script>
         var currentcode = "{{ stock.trade_code }}"
+        var currentcode_secname = "{{ stock.sec_name }}"
         var k_data;
         var k_data_forbig;
         $(document).ready(function () {
@@ -1119,7 +1118,7 @@
         }
         //用于新数据库
         var myChart_new_option
-        var   myChart_for_invest_option
+        var  myChart_for_invest_option
         var finance_index_results;
         var finance_index_results_t;
         var Chosenindexes_new = new Array();
@@ -1129,6 +1128,7 @@
         var orderflag_new = 'desc'
         var invest_data = ''//传给投资指标中指标折线图的数据
         var data_merge = ''//合并后的数据，留用
+        var year_list = ''
 
         $("input#checkall").click(function () {
             $("input[type=checkbox]").each(function () {
@@ -2213,6 +2213,22 @@
 
         }
 
+        function get_yearlist(){
+            $.ajax({
+                type: 'GET',
+                url: '{{url_for("restfulapi.get_yearlist")}}',
+                data: {
+                    starttime: '1991-12-31',
+                    endtime: '2016-12-31',
+                },
+                dataType: 'json',//希望服务器返回json格式的数据
+                async: false,
+                success: function (data) {
+                    year_list = data['the_year']
+                }
+            })
+        }
+
         //更新数据库 获取全部财务指标
         function getindex() {
             var a = 0
@@ -2240,7 +2256,6 @@
                 }
             })
         }
-
 
         {#        指标点击事件 所有子节点被选中#}
 
@@ -2311,7 +2326,7 @@
                 }
             })
             get_invest_index_data()
-
+            console.log(data_checked)
         }
 
         function CreateChart_new(data_checked) {
@@ -2609,7 +2624,7 @@
                 str = "data." + data.indexes[i] + "_list"
                 index_list_cutted[i] = eval(str).slice(start, end)
             }
-            console.log(data)
+            {#console.log(data)#}
             CreatTable_new(year_list_cutted, index_list_cutted, start, data)
 
         }
@@ -2617,7 +2632,7 @@
 
         function CreatTable_new(year_list_cutted, index_list_cutted, start, data1) {
             data = data1
-            console.log(data.indexes)
+            {#console.log(data.indexes)#}
             $("#datatable_new").empty();
             var table = $("<table id=\"temptable_new\" class=\"row-border hover order-column\" cellspacing=\"0\" width=\"100%\"  >");
             table.appendTo($("#datatable_new"));
@@ -2787,7 +2802,7 @@
                     invest_checkedlist.push(key)
                 }
             }
-            console.log(invest_checkedlist)
+            {#console.log(invest_checkedlist)#}
             $.ajax({
                 type: 'GET',
                 url: '{{url_for("restfulapi.finance_data_stocksolo")}}',
@@ -3069,7 +3084,7 @@
                 }
             })
             set_invest_index_data(invest_dataSeries)
-            console.log(invest_dataSeries)
+            {#console.log(invest_dataSeries)#}
         }
 
         {#补全投资指标数据 #}
@@ -3098,10 +3113,11 @@
         {#拼接财务报表和投资指标数据&&规范化财务指标数据invest_data#}
         function creat_data_for_echart() {
             {#            合并数据合并后数据data_merge#}
+            console.log(data_checked)
             data_merge = [].concat(invest_data)
             data_merge['stockcode'] = currentcode
-            data_merge['the_name'] = data_checked['the_name']
-            data_merge['the_year'] = data_checked['the_year']
+            data_merge['the_name'] = currentcode_secname
+            data_merge['the_year'] = year_list
             data_merge['id'] = [].concat(invest_data['id'])
             data_merge['indexes'] = [].concat(invest_data['indexes'])
             for (i = 0; i < invest_data['indexes'].length; i++) {
@@ -3110,23 +3126,32 @@
                 eval("data_merge['" + invest_data['indexes'][i] + "']=dict1['" + invest_data['indexes'][i] + "']")
                 eval("data_merge['" + invest_data['indexes'][i] + "_list']=invest_data['f_" + invest_data['indexes'][i] + "']")
             }
-            for (i = 0; i < data_checked['id'].length; i++) {
-                data_merge['id'].push(data_checked['id'][i])
-                data_merge['indexes'].push(data_checked['indexes'][i])
-                data_merge[data_checked['indexes'][i] + "_list"] = data_checked[data_checked['indexes'][i] + "_list"]
-                data_merge[data_checked['indexes'][i]] = data_checked[data_checked['indexes'][i]]
+            if(data_checked){
+                for (i = 0; i < data_checked['id'].length; i++) {
+                    data_merge['id'].push(data_checked['id'][i])
+                    data_merge['indexes'].push(data_checked['indexes'][i])
+                    data_merge[data_checked['indexes'][i] + "_list"] = data_checked[data_checked['indexes'][i] + "_list"]
+                    data_merge[data_checked['indexes'][i]] = data_checked[data_checked['indexes'][i]]
+                }
+                {#绘制财务报表指标折线图#}
+                CreateChart_new(data_checked)
             }
-            {#绘制财务报表指标折线图#}
-            CreateChart_new(data_checked)
+            else{
+                var  echart_new=document.getElementById("echart_new")
+                var  echart_for_invest=document.getElementById("echart_for_invest")
+                echart_new.style.display="none"
+                echart_for_invest.style.height= "70%"
+            }
+
             {#            规范invest_data&&绘制投资指标折线图#}
             invest_data['stockcode'] = currentcode
-            invest_data['the_name'] = data_checked['the_name']
+            invest_data['the_name'] = currentcode_secname
             invest_data['the_year'] = new Array
             for (i = 2016; i >=1991; i--) {
                 invest_data['the_year'].push(i + "年Q4")
             }
-            console.log(invest_data)
-            console.log(data_checked)
+            {#console.log(invest_data)#}
+            {#console.log(data_checked)#}
             for (i = 0; i < invest_data['indexes'].length; i++) {
                 eval("invest_data['" + invest_data['indexes'][i] + "']=new Array")
                 eval("invest_data['" + invest_data['indexes'][i] + "_list']=new Array")
@@ -3167,6 +3192,7 @@
             getindex()
             getdata()
             tree()
+            get_yearlist()
             {#            绘制初始指标图#}
             var check = document.getElementById("new_tot_oper_rev")
             check.checked = true
@@ -3177,8 +3203,8 @@
             $("#new_div_tot_oper_rev").css("background-color", Chosenindexes_new['tot_oper_rev'])
             $("#01010101").css("background-color", Chosenindexes_new['01010101'])
             getchecked_list()
-            CreateChart_new(data_checked)
-            cutarray(data_checked)
+            {#CreateChart_new(data_checked)#}
+            {#cutarray(data_checked)#}
         });
     </script>
 {% endblock %}
