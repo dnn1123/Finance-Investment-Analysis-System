@@ -54,6 +54,13 @@ class users_roles(db.Model):
     permissions = db.Column(db.Integer)
     # permissions_name = db.Column(db.Integer)
 
+class user_signin(db.Model):
+    __bind_key__ = 'users_info'
+    __tablename__ = 'user_signin'
+    id = db.Column(db.Integer, primary_key=True)
+    user_name = db.Column(db.String(80))
+    signin_date = db.Column(db.String(80))
+
 
 # 动态
 class input_message(db.Model):
@@ -429,7 +436,7 @@ class stock_grade_h(db.Model):
     trade_code = db.Column(db.String(40))
     sec_name = db.Column(db.String(40))
     grade_time = db.Column(db.String(40), primary_key=True)
-    grade_id = db.Column(db.String(40), db.ForeignKey('invest_grade.grade_id'))
+    grade_id = db.Column(db.String(40))
 
 
 class invest_grade(db.Model):
@@ -555,7 +562,7 @@ class usa_stock_grade_l(db.Model):
     trade_code = db.Column(db.String(40), db.ForeignKey('usa_stock_industry.trade_code'), primary_key=True)
     sec_name = db.Column(db.String(40))
     grade_time = db.Column(db.DateTime(6))
-    grade_id = db.Column(db.String(40), db.ForeignKey('invest_grade.grade_id'))
+    grade_id = db.Column(db.String(40))
 
 
 # class usa_stock_grade_h(db.Model):
