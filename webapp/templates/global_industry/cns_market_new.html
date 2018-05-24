@@ -19,11 +19,16 @@
             <div class="module-head">
                 <button class="btn btn-primary">评级结果行业状况</button>
                 <select id="level" style="margin-left:10px;width:60px">
-                    <option value="A">A级</option>
-                    <option value="B">B级</option>
-                    <option value="C">C级</option>
-                    <option value="D">D级</option>
-                    <option value="E">E级</option>
+                    <option value="aaa">aaa级</option>
+                    <option value="aa">aa级</option>
+                    <option value="a">a级</option>
+                    <option value="bbb">bbb级</option>
+                    <option value="bb">bb级</option>
+                    <option value="b">b级</option>
+                    <option value="ccc">ccc级</option>
+                    <option value="cc">cc级</option>
+                    <option value="c">c级</option>
+
                     <option value="All">全部评级</option>
                 </select>
             </div>
@@ -289,11 +294,15 @@
     <script>
         var table
         var Data
-        var Data_by_level_A = {}
-        var Data_by_level_B = {}
-        var Data_by_level_C = {}
-        var Data_by_level_D = {}
-        var Data_by_level_E = {}
+        var Data_by_level_aaa = {}
+        var Data_by_level_aa = {}
+        var Data_by_level_a = {}
+        var Data_by_level_bbb = {}
+        var Data_by_level_bb = {}
+        var Data_by_level_b = {}
+        var Data_by_level_ccc = {}
+        var Data_by_level_cc = {}
+        var Data_by_level_c = {}
         var Data_by_level_All = {}
         var dact = {
             '10': '能源',
@@ -554,35 +563,50 @@
         }
 
         for (var key in dact) {
-            Data_by_level_A[dact[key]] = 0
-            Data_by_level_B[dact[key]] = 0
-            Data_by_level_C[dact[key]] = 0
-            Data_by_level_D[dact[key]] = 0
-            Data_by_level_E[dact[key]] = 0
+            Data_by_level_aaa[dact[key]] = 0
+            Data_by_level_aa[dact[key]] = 0
+            Data_by_level_a[dact[key]] = 0
+            Data_by_level_bbb[dact[key]] = 0
+            Data_by_level_bb[dact[key]] = 0
+            Data_by_level_b[dact[key]] = 0
+            Data_by_level_ccc[dact[key]] = 0
+            Data_by_level_cc[dact[key]] = 0
+            Data_by_level_c[dact[key]] = 0
             Data_by_level_All[dact[key]] = 0
         }
         for (var key in dbct) {
-            Data_by_level_A[dbct[key]] = 0
-            Data_by_level_B[dbct[key]] = 0
-            Data_by_level_C[dbct[key]] = 0
-            Data_by_level_D[dbct[key]] = 0
-            Data_by_level_E[dbct[key]] = 0
+            Data_by_level_aaa[dbct[key]] = 0
+            Data_by_level_aa[dbct[key]] = 0
+            Data_by_level_a[dbct[key]] = 0
+            Data_by_level_bbb[dbct[key]] = 0
+            Data_by_level_bb[dbct[key]] = 0
+            Data_by_level_b[dbct[key]] = 0
+            Data_by_level_ccc[dbct[key]] = 0
+            Data_by_level_cc[dbct[key]] = 0
+            Data_by_level_c[dbct[key]] = 0
             Data_by_level_All[dbct[key]] = 0
         }
         for (var key in dcct) {
-            Data_by_level_A[dcct[key]] = 0
-            Data_by_level_B[dcct[key]] = 0
-            Data_by_level_C[dcct[key]] = 0
-            Data_by_level_D[dcct[key]] = 0
-            Data_by_level_E[dcct[key]] = 0
+            Data_by_level_aaa[dcct[key]] = 0
+            Data_by_level_aa[dcct[key]] = 0
+            Data_by_level_a[dcct[key]] = 0
+            Data_by_level_bbb[dcct[key]] = 0
+            Data_by_level_bb[dcct[key]] = 0
+            Data_by_level_b[dcct[key]] = 0
+            Data_by_level_ccc[dcct[key]] = 0
+            Data_by_level_cc[dcct[key]] = 0
+            Data_by_level_c[dcct[key]] = 0
             Data_by_level_All[dcct[key]] = 0
         }
         for (var key in ddct) {
-            Data_by_level_A[ddct[key]] = 0
-            Data_by_level_B[ddct[key]] = 0
-            Data_by_level_C[ddct[key]] = 0
-            Data_by_level_D[ddct[key]] = 0
-            Data_by_level_E[ddct[key]] = 0
+            Data_by_level_aaa[ddct[key]] = 0
+            Data_by_level_aa[ddct[key]] = 0
+            Data_by_level_a[ddct[key]] = 0
+            Data_by_level_bb[ddct[key]] = 0
+            Data_by_level_b[ddct[key]] = 0
+            Data_by_level_ccc[ddct[key]] = 0
+            Data_by_level_cc[ddct[key]] = 0
+            Data_by_level_c[ddct[key]] = 0
             Data_by_level_All[ddct[key]] = 0
         }
 
@@ -590,6 +614,7 @@
         var windpie_2 = echarts.init(document.getElementById('windpie_2'));
         var windpie_3 = echarts.init(document.getElementById('windpie_3'));
         var windpie_4 = echarts.init(document.getElementById('windpie_4'));
+
         function get_data() {
             $.ajax({
                 type: 'GET',
@@ -605,80 +630,128 @@
                 for (var key in dact) {
                     if (Data.industry_gics_1[i] == dact[key]) {
                         Data_by_level_All[dact[key]] += 1
-                        if (Data.grade_name[i] == 'A') {
-                            Data_by_level_A[dact[key]] += 1
+                        if (Data.grade_id[i] == 'aaa') {
+                            Data_by_level_aaa[dact[key]] += 1
                         }
-                        else if (Data.grade_name[i] == 'B') {
-                            Data_by_level_B[dact[key]] += 1
+                        else if (Data.grade_id[i] == 'aa') {
+                            Data_by_level_aa[dact[key]] += 1
                         }
-                        else if (Data.grade_name[i] == 'C') {
-                            Data_by_level_C[dact[key]] += 1
+                        else if (Data.grade_id[i] == 'a') {
+                            Data_by_level_a[dact[key]] += 1
                         }
-                        else if (Data.grade_name[i] == 'D') {
-                            Data_by_level_D[dact[key]] += 1
+                        else if (Data.grade_id[i] == 'bbb') {
+                            Data_by_level_bbb[dact[key]] += 1
                         }
-                        else if (Data.grade_name[i] == 'E') {
-                            Data_by_level_E[dact[key]] += 1
+                        else if (Data.grade_id[i] == 'bb') {
+                            Data_by_level_bb[dact[key]] += 1
+                        }
+                        else if (Data.grade_id[i] == 'b') {
+                            Data_by_level_b[dact[key]] += 1
+                        }
+                        else if (Data.grade_id[i] == 'ccc') {
+                            Data_by_level_ccc[dact[key]] += 1
+                        }
+                        else if (Data.grade_id[i] == 'cc') {
+                            Data_by_level_cc[dact[key]] += 1
+                        }
+                        else if (Data.grade_id[i] == 'c') {
+                            Data_by_level_c[dact[key]] += 1
                         }
                     }
                 }
                 for (var key in dbct) {
                     if (Data.industry_gics_2[i] == dbct[key]) {
                         Data_by_level_All[dbct[key]] += 1
-                        if (Data.grade_name[i] == 'A') {
-                            Data_by_level_A[dbct[key]] += 1
+                        if (Data.grade_id[i] == 'aaa') {
+                            Data_by_level_aaa[dbct[key]] += 1
                         }
-                        else if (Data.grade_name[i] == 'B') {
-                            Data_by_level_B[dbct[key]] += 1
+                        else if (Data.grade_id[i] == 'aa') {
+                            Data_by_level_aa[dbct[key]] += 1
                         }
-                        else if (Data.grade_name[i] == 'C') {
-                            Data_by_level_C[dbct[key]] += 1
+                        else if (Data.grade_id[i] == 'a') {
+                            Data_by_level_a[dbct[key]] += 1
                         }
-                        else if (Data.grade_name[i] == 'D') {
-                            Data_by_level_D[dbct[key]] += 1
+                        else if (Data.grade_id[i] == 'bbb') {
+                            Data_by_level_bbb[dbct[key]] += 1
                         }
-                        else if (Data.grade_name[i] == 'E') {
-                            Data_by_level_E[dbct[key]] += 1
+                        else if (Data.grade_id[i] == 'bb') {
+                            Data_by_level_bb[dbct[key]] += 1
+                        }
+                        else if (Data.grade_id[i] == 'b') {
+                            Data_by_level_b[dbct[key]] += 1
+                        }
+                        else if (Data.grade_id[i] == 'ccc') {
+                            Data_by_level_ccc[dbct[key]] += 1
+                        }
+                        else if (Data.grade_id[i] == 'cc') {
+                            Data_by_level_cc[dbct[key]] += 1
+                        }
+                        else if (Data.grade_id[i] == 'c') {
+                            Data_by_level_c[dbct[key]] += 1
                         }
                     }
                 }
                 for (var key in dcct) {
                     if (Data.industry_gics_3[i] == dcct[key]) {
                         Data_by_level_All[dcct[key]] += 1
-                        if (Data.grade_name[i] == 'A') {
-                            Data_by_level_A[dcct[key]] += 1
+                        if (Data.grade_id[i] == 'aaa') {
+                            Data_by_level_aaa[dcct[key]] += 1
                         }
-                        else if (Data.grade_name[i] == 'B') {
-                            Data_by_level_B[dcct[key]] += 1
+                        else if (Data.grade_id[i] == 'aa') {
+                            Data_by_level_aa[dcct[key]] += 1
                         }
-                        else if (Data.grade_name[i] == 'C') {
-                            Data_by_level_C[dcct[key]] += 1
+                        else if (Data.grade_id[i] == 'a') {
+                            Data_by_level_a[dcct[key]] += 1
                         }
-                        else if (Data.grade_name[i] == 'D') {
-                            Data_by_level_D[dcct[key]] += 1
+                        else if (Data.grade_id[i] == 'bbb') {
+                            Data_by_level_bbb[dcct[key]] += 1
                         }
-                        else if (Data.grade_name[i] == 'E') {
-                            Data_by_level_E[dcct[key]] += 1
+                        else if (Data.grade_id[i] == 'bb') {
+                            Data_by_level_bb[dcct[key]] += 1
+                        }
+                        else if (Data.grade_id[i] == 'b') {
+                            Data_by_level_b[dcct[key]] += 1
+                        }
+                        else if (Data.grade_id[i] == 'ccc') {
+                            Data_by_level_ccc[dcct[key]] += 1
+                        }
+                        else if (Data.grade_id[i] == 'cc') {
+                            Data_by_level_cc[dcct[key]] += 1
+                        }
+                        else if (Data.grade_id[i] == 'c') {
+                            Data_by_level_c[dcct[key]] += 1
                         }
                     }
                 }
                 for (var key in ddct) {
                     if (Data.industry_gics_4[i] == ddct[key]) {
                         Data_by_level_All[ddct[key]] += 1
-                        if (Data.grade_name[i] == 'A') {
-                            Data_by_level_A[ddct[key]] += 1
+                        if (Data.grade_id[i] == 'aaa') {
+                            Data_by_level_aaa[ddct[key]] += 1
                         }
-                        else if (Data.grade_name[i] == 'B') {
-                            Data_by_level_B[ddct[key]] += 1
+                        else if (Data.grade_id[i] == 'aa') {
+                            Data_by_level_aa[ddct[key]] += 1
                         }
-                        else if (Data.grade_name[i] == 'C') {
-                            Data_by_level_C[ddct[key]] += 1
+                        else if (Data.grade_id[i] == 'a') {
+                            Data_by_level_a[ddct[key]] += 1
                         }
-                        else if (Data.grade_name[i] == 'D') {
-                            Data_by_level_D[ddct[key]] += 1
+                        else if (Data.grade_id[i] == 'bbb') {
+                            Data_by_level_bbb[ddct[key]] += 1
                         }
-                        else if (Data.grade_name[i] == 'E') {
-                            Data_by_level_E[ddct[key]] += 1
+                        else if (Data.grade_id[i] == 'bb') {
+                            Data_by_level_bb[ddct[key]] += 1
+                        }
+                        else if (Data.grade_id[i] == 'b') {
+                            Data_by_level_b[ddct[key]] += 1
+                        }
+                        else if (Data.grade_id[i] == 'ccc') {
+                            Data_by_level_ccc[ddct[key]] += 1
+                        }
+                        else if (Data.grade_id[i] == 'cc') {
+                            Data_by_level_cc[ddct[key]] += 1
+                        }
+                        else if (Data.grade_id[i] == 'c') {
+                            Data_by_level_c[ddct[key]] += 1
                         }
                     }
                 }
@@ -686,41 +759,85 @@
             console.log(Data_by_level_All)
         }
         function creat_table(data) {
-
-
+{#            $("#my_tbody").empty()#}
+if ($('#fixTable').hasClass('dataTable')) {
+                    dttable = $('#fixTable').dataTable();
+                    dttable.fnClearTable(); //清空一下table
+                    dttable.fnDestroy(); //还原初始化了的datatable
+                }
+            grade = document.getElementById("level").value;
             if (data.permissions == 1) {
                 for (i = 0; i < data.trade_code.length; i++) {
-
-                    str = "<tr>" +
-                            "<td style=\"border: none;\">" + data.trade_code[i] + "</td>" +
-                            "<td style=\"border: none;\">" + data.sec_name[i] + "</td>" +
-                            "<td style=\"border: none;\">" + data.ipo_date[i] + "</td>" +
-                            "<td style=\"border: none;\">" + data.grade_name[i] + "<a name = \"" + data.trade_code[i] + "\"class=\"change_score\" onclick=change_score(this.name)>修改</a></td>" +
-                            "<td style=\"border: none;\">" + data.grade_time[i] + "</td>" +
-                            "<td style=\"border: none;\">" + data.industry_gics_1[i] + "</td>" +
-                            "<td style=\"border: none;\">" + data.industry_gics_2[i] + "</td>" +
-                            "<td style=\"border: none;\">" + data.industry_gics_3[i] + "</td>" +
-                            "<td style=\"border: none;\">" + data.industry_gics_4[i] + "</td>" +
-                            "<td style=\"border: none; text-align: center;\"><a name = \"" + data.trade_code[i] + "\"onclick=view_history(this.name)>查看历史记录</a></td>" +
-                            "</tr>"
-                    $("#my_tbody").append(str)
+                    if (grade != 'All') {
+                        if (data.grade_id[i] == grade) {
+                            console.log(data.grade_id[i])
+                            str = "<tr>" +
+                                    "<td style=\"border: none;\">" + data.trade_code[i] + "</td>" +
+                                    "<td style=\"border: none;\">" + data.sec_name[i] + "</td>" +
+                                    "<td style=\"border: none;\">" + data.ipo_date[i] + "</td>" +
+                                    "<td style=\"border: none;\">" + data.grade_id[i] + "<a name = \"" + data.trade_code[i] + "\"class=\"change_score\" onclick=change_score(this.name)>修改</a></td>" +
+                                    "<td style=\"border: none;\">" + data.grade_time[i] + "</td>" +
+                                    "<td style=\"border: none;\">" + data.industry_gics_1[i] + "</td>" +
+                                    "<td style=\"border: none;\">" + data.industry_gics_2[i] + "</td>" +
+                                    "<td style=\"border: none;\">" + data.industry_gics_3[i] + "</td>" +
+                                    "<td style=\"border: none;\">" + data.industry_gics_4[i] + "</td>" +
+                                    "<td style=\"border: none; text-align: center;\"><a name = \"" + data.trade_code[i] + "\"onclick=view_history(this.name)>查看历史记录</a></td>" +
+                                    "</tr>"
+                            $("#my_tbody").append(str)
+                        }
+                    }
+                    else {
+                        str = "<tr>" +
+                                "<td style=\"border: none;\">" + data.trade_code[i] + "</td>" +
+                                "<td style=\"border: none;\">" + data.sec_name[i] + "</td>" +
+                                "<td style=\"border: none;\">" + data.ipo_date[i] + "</td>" +
+                                "<td style=\"border: none;\">" + data.grade_id[i] + "<a name = \"" + data.trade_code[i] + "\"class=\"change_score\" onclick=change_score(this.name)>修改</a></td>" +
+                                "<td style=\"border: none;\">" + data.grade_time[i] + "</td>" +
+                                "<td style=\"border: none;\">" + data.industry_gics_1[i] + "</td>" +
+                                "<td style=\"border: none;\">" + data.industry_gics_2[i] + "</td>" +
+                                "<td style=\"border: none;\">" + data.industry_gics_3[i] + "</td>" +
+                                "<td style=\"border: none;\">" + data.industry_gics_4[i] + "</td>" +
+                                "<td style=\"border: none; text-align: center;\"><a name = \"" + data.trade_code[i] + "\"onclick=view_history(this.name)>查看历史记录</a></td>" +
+                                "</tr>"
+                        $("#my_tbody").append(str)
+                    }
                 }
             }
             else {
                 for (i = 0; i < data.trade_code.length; i++) {
-                    str = "<tr>" +
-                            "<td style=\"border: none;\">" + data.trade_code[i] + "</td>" +
-                            "<td style=\"border: none;\">" + data.sec_name[i] + "</td>" +
-                            "<td style=\"border: none;\">" + data.ipo_date[i] + "</td>" +
-                            "<td style=\"border: none;\">" + data.grade_name[i] + "</td>" +
-                            "<td style=\"border: none;\">" + data.grade_time[i] + "</td>" +
-                            "<td style=\"border: none;\">" + data.industry_gics_1[i] + "</td>" +
-                            "<td style=\"border: none;\">" + data.industry_gics_2[i] + "</td>" +
-                            "<td style=\"border: none;\">" + data.industry_gics_3[i] + "</td>" +
-                            "<td style=\"border: none;\">" + data.industry_gics_4[i] + "</td>" +
-                            "<td style=\"border: none; text-align: center;\"><a name = \"" + data.trade_code[i] + "\"  onclick=view_history(this.name)>查看历史记录</a></td>" +
-                            "</tr>"
-                    $("#my_tbody").append(str)
+                    if (grade != 'All') {
+                        if (data.grade_id[i] == grade) {
+                            str = "<tr>" +
+                                    "<td style=\"border: none;\">" + data.trade_code[i] + "</td>" +
+                                    "<td style=\"border: none;\">" + data.sec_name[i] + "</td>" +
+                                    "<td style=\"border: none;\">" + data.ipo_date[i] + "</td>" +
+                                    "<td style=\"border: none;\">" + data.grade_id[i] + "</td>" +
+                                    "<td style=\"border: none;\">" + data.grade_time[i] + "</td>" +
+                                    "<td style=\"border: none;\">" + data.industry_gics_1[i] + "</td>" +
+                                    "<td style=\"border: none;\">" + data.industry_gics_2[i] + "</td>" +
+                                    "<td style=\"border: none;\">" + data.industry_gics_3[i] + "</td>" +
+                                    "<td style=\"border: none;\">" + data.industry_gics_4[i] + "</td>" +
+                                    "<td style=\"border: none; text-align: center;\"><a name = \"" + data.trade_code[i] + "\"  onclick=view_history(this.name)>查看历史记录</a></td>" +
+                                    "</tr>"
+                            $("#my_tbody").append(str)
+                        }
+                    }
+                    else {
+                        str = "<tr>" +
+                                "<td style=\"border: none;\">" + data.trade_code[i] + "</td>" +
+                                "<td style=\"border: none;\">" + data.sec_name[i] + "</td>" +
+                                "<td style=\"border: none;\">" + data.ipo_date[i] + "</td>" +
+                                "<td style=\"border: none;\">" + data.grade_id[i] + "</td>" +
+                                "<td style=\"border: none;\">" + data.grade_time[i] + "</td>" +
+                                "<td style=\"border: none;\">" + data.industry_gics_1[i] + "</td>" +
+                                "<td style=\"border: none;\">" + data.industry_gics_2[i] + "</td>" +
+                                "<td style=\"border: none;\">" + data.industry_gics_3[i] + "</td>" +
+                                "<td style=\"border: none;\">" + data.industry_gics_4[i] + "</td>" +
+                                "<td style=\"border: none; text-align: center;\"><a name = \"" + data.trade_code[i] + "\"  onclick=view_history(this.name)>查看历史记录</a></td>" +
+                                "</tr>"
+                        $("#my_tbody").append(str)
+                    }
+
                 }
             }
             table = $('#fixTable').DataTable({
@@ -751,7 +868,7 @@
                     "infoEmpty": "没有数据",
                     "infoFiltered": "(过滤总件数 _MAX_ 条)"
                 },
-                "destroy": true,
+{#                "destroy": true,#}
                 dom: 'lfrtip',
 
             })
@@ -826,16 +943,21 @@
             }
             $("#grade").append(
                     "<select id=\"new_score\">" +
-                    "<option value=\"1\">A</option>" +
-                    "<option value=\"4\">B</option>" +
-                    "<option value=\"7\">C</option>" +
-                    "<option value=\"10\">D</option>" +
-                    "<option value=\"11\">E</option>" +
+                    '<option value="aaa">aaa级</option>' +
+                    '<option value="aa">aa级</option>' +
+                    '<option value="a">a级</option>' +
+                    '<option value="bbb">bbb级</option>' +
+                    '<option value="bb">bb级</option>' +
+                    '<option value="b">b级</option>' +
+                    '<option value="ccc">ccc级</option>' +
+                    '<option value="cc">cc级</option>' +
+                    '<option value="c">c级</option>' +
                     "</select>"
             )
 
 
         }
+        {#        绘制饼状图&&筛选表格#}
         function creat_pie() {
             level = document.getElementById("level").value;
             data_tmp = eval('Data_by_level_' + level)
@@ -860,33 +982,33 @@
             for (i = 0; i < sub_industry.length; i++) {
                 data_for_series4.push({value: data_tmp[sub_industry[i]], name: sub_industry[i]})
             }
-            if(department_industry.length==1){
-                text1 = '部门：'+department_industry[0]
+            if (department_industry.length == 1) {
+                text1 = '部门：' + department_industry[0]
             }
-            else{
+            else {
                 text1 = '部门'
             }
-            if(group_industry.length==1){
-                text2 = '行业组：'+group_industry[0]
+            if (group_industry.length == 1) {
+                text2 = '行业组：' + group_industry[0]
             }
-            else{
+            else {
                 text2 = '行业组'
             }
-            if(industry_why.length==1){
-                text3 = '行业分类：'+industry_why[0]
+            if (industry_why.length == 1) {
+                text3 = '行业分类：' + industry_why[0]
             }
-            else{
+            else {
                 text3 = '行业分类'
             }
-            if(sub_industry.length==1){
-                text4 = '子行业分类：'+sub_industry[0]
+            if (sub_industry.length == 1) {
+                text4 = '子行业分类：' + sub_industry[0]
             }
-            else{
+            else {
                 text4 = '子行业分类'
             }
             option1 = {
                 title: {
-                    text:text1,
+                    text: text1,
                     x: 'center',
                     y: 'bottom',
                     textStyle: {//主标题文本样式{"fontSize": 18,"fontWeight": "bolder","color": "#333"}
@@ -1018,7 +1140,7 @@
             windpie_3.setOption(option3, true)
             option4 = {
                 title: {
-                    text:text4,
+                    text: text4,
                     x: 'center',
                     y: 'bottom',
                     textStyle: {//主标题文本样式{"fontSize": 18,"fontWeight": "bolder","color": "#333"}
@@ -1062,11 +1184,12 @@
             windpie_4.setOption(option4, true)
             creat_table(Data)
             {#            筛选评级#}
-            if (level != 'All') {
-                table.column(3)
-                        .search(level)
-                        .draw();
-            }
+            {#            console.log(level)#}
+            {#            if (level != 'All') {#}
+            {#                table.column(3)#}
+            {#                        .search(level)#}
+            {#                        .draw();#}
+            {#            }#}
             {#            筛选行业#}
             column = 0
             condition = ''
@@ -1336,9 +1459,7 @@
         })
         $(document).ready(function () {
             get_data()
-
             creat_option()
-
             creat_pie()
         });
 

@@ -1,9 +1,38 @@
 {% extends "stock_base.html" %}
+{% block styles %}
+    <style>
+
+
+        .customers {
+            font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .customers td, .customers th {
+            font-size: 1em;
+            border: 1px solid #8B8986;
+            padding: 3px 7px 2px 7px;
+            text-align: center;
+        }
+
+        .customers th {
+            font-size: 1.1em;
+            text-align: center;
+            padding-top: 5px;
+            padding-bottom: 4px;
+        }
+
+
+    </style>
+{% endblock %}
+
 {% block current_user %}
     {{ current_user.username }}
 {% endblock %}
 
 {% block body %}
+
     {#    充值模态框#}
     <div class="modal fade" id="modal_recharge" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
          aria-hidden="true">
@@ -28,6 +57,41 @@
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div>
+    {#    签到模态框#}
+    <div class="modal hide fade in" id="modal_signin" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title" id="myModalLabel">每日签到送积分</h4>
+                </div>
+                <div class="modal-body">
+                    {#                    签到#}
+                    <div id="page-content">
+                        <div style="text-align: center;background-color: #2FAA00;height: 50px;margin-bottom: 20px;">
+                            <span style="cursor: pointer;font-weight: 600;font-size: 20px;color: #fff;height: 50px;line-height: 50px;">每日签到</span>
+                        </div>
+                        <div class="container-fluid">
+                            <div class="row-fluid" id="calendar">
+
+                            </div>
+                            <div id="btnDiv" style="display: none;">
+                                <div class="row-fluid text-center">
+                                    <span class="btn btn-default">签到</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" id="signin_today" >签到</button>
+                </div>
+
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div>
     {#    this is the body part#}
     <div class="span9">
         <div class="content">
@@ -37,12 +101,17 @@
                     <div class="btn-box big span12" style="text-align:left;">
                         <div style="margin-top:6px;margin-left:20px;font-size:40px;float:left;">
                             {{ current_user.username }}
+
                         </div>
                         <img id='personal_img'
                              style="height:30px;width:30px;margin-top:2px;margin-left:10px;margin-right:10px;float:left;border-radius: 50%;border: none;overflow: hidden;"
                              src="">
+                        <button class="btn btn-primary" style="margin-left: 40px" data-toggle="modal"
+                                data-target="#modal_signin">每日签到
+                        </button>
                         <div id="user_info" style="float:top;margin-top:50px;margin-left: 20px"></div>
                     </div>
+
                 </div>
                 <div class="btn-box-row row-fluid">
                     <a href="{{ url_for('main.my_favoritecode') }}" class="btn-box big span4"><i
@@ -128,56 +197,11 @@
         <!--/.content-->
     </div>
     <script>
-        $(document).ready(function () {
-            $.ajax({
-                type: 'GET',
-                url: '{{ url_for("restfulapi.home") }}',
-                data: {
-                    'username': "{{ current_user.username }}",
-                },
-                dataType: 'json',
-                success: function (data) {
-                    console.log(data);
-                    $("#myfavorites").text(data.favorite_stock_count);
-                    $("#mypositions").text(data.position_stock_count);
-                    $("#myprofits").text(data.position_profit.toFixed(2));
-                    $("#mytraderec").text(data.trade_rec_count);
-                    if (data.member_type == null) {
-                        var userimgsrc = "/static/personal_img/user.jpg";
-                        $("#personal_img").attr("src", userimgsrc);
-                        $("#user_info").text('您的账户尚未开通会员服务，');
-                    }
-                    else if (data.member_type == 'month') {
-                        var vipimgsrc = "/static/personal_img/vip.png";
-                        $("#personal_img").attr("src", vipimgsrc);
-                        $("#user_info").text('您的账户目前是包月会员，可免费下载数据，当前账户余额：' + data.user_money + '元，');
-                    }
-                    else if (data.member_type == 'year') {
-                        var vipimgsrc = "/static/personal_img/vip.png";
-                        $("#personal_img").attr("src", vipimgsrc);
-                        $("#user_info").text('您的账户目前是年费会员，可免费下载数据，当前账户余额：' + data.user_money + '元，');
-                    }
-                    $("#user_info").append('<a data-toggle=\"modal\" data-target=\"#modal_recharge\" style=\'\'>点此充值</button>');
-                    cityDist(data);
-                }
-            });
-
-
-            {#            get profit cost market value trend data#}
-            $.ajax({
-                type: 'GET',
-                url: '{{ url_for("restfulapi.positionhistory") }}',
-                data: {
-                    'username': "{{ current_user.username }}"
-                },
-                dataType: 'json',
-                success: function (data) {
-                    console.log(data);
-                    profittrend(data);
-                }
-            })
-        });
-
+        var signindate_list = []
+        var myDate = new Date;
+        var year = myDate.getFullYear();//获取当前年
+        var month = myDate.getMonth() + 1;//获取当前月
+        var date = myDate.getDate();//获取当前日
 
         $("#recharge").click(function () {
             $.ajax({
@@ -307,7 +331,8 @@
                 ]
             };
             myChart.setOption(option);
-        };
+        }
+        ;
         function profittrend(data) {
             var myChart = echarts.init(document.getElementById('profittrend'));
             var option = {
@@ -332,7 +357,7 @@
                                 var axisData = opt.xAxis[0].data;
                                 var series = opt.series;
                                 var table = '<table id="test" class="table-bordered table-striped" style="width:100%;text-align:center">',
-                                    table = table + '<tbody><tr>' + '<td>时间</td>' + '<td>' + series[0].name + '</td>' + '<td>' + series[1].name + '</td>' + '</tr>';
+                                        table = table + '<tbody><tr>' + '<td>时间</td>' + '<td>' + series[0].name + '</td>' + '<td>' + series[1].name + '</td>' + '</tr>';
                                 for (var i = 0, l = axisData.length; i < l; i++) {
                                     table += '<tr>' + '<td>' + axisData[i] + '</td>' + '<td>' + series[0].data[i] + '</td>' + '<td>' + series[1].data[i] + '</td>' + '</tr>';
                                 }
@@ -645,7 +670,218 @@
             }
             return res;
         };
+        {#        签到功能#}
+        var calUtil = {
 
+            getDaysInmonth: function (iMonth, iYear) {
+                var dPrevDate = new Date(iYear, iMonth, 0);
+                return dPrevDate.getDate();
+            },
+            bulidCal: function (iYear, iMonth) {
+                var aMonth = new Array();
+                aMonth[0] = new Array(7);
+                aMonth[1] = new Array(7);
+                aMonth[2] = new Array(7);
+                aMonth[3] = new Array(7);
+                aMonth[4] = new Array(7);
+                aMonth[5] = new Array(7);
+                aMonth[6] = new Array(7);
+                var dCalDate = new Date(iYear, iMonth - 1, 1);
+                var iDayOfFirst = dCalDate.getDay();
+                var iDaysInMonth = calUtil.getDaysInmonth(iMonth, iYear);
+                var iVarDate = 1;
+                var d, w;
+                aMonth[0][0] = "日";
+                aMonth[0][1] = "一";
+                aMonth[0][2] = "二";
+                aMonth[0][3] = "三";
+                aMonth[0][4] = "四";
+                aMonth[0][5] = "五";
+                aMonth[0][6] = "六";
+                for (d = iDayOfFirst; d < 7; d++) {
+                    aMonth[1][d] = iVarDate;
+                    iVarDate++;
+                }
+                for (w = 2; w < 7; w++) {
+                    for (d = 0; d < 7; d++) {
+                        if (iVarDate <= iDaysInMonth) {
+                            aMonth[w][d] = iVarDate;
+                            iVarDate++;
+                        }
+                    }
+                }
+                if (!aMonth[6][0]) {
+                    delete aMonth[6];
+                }
+                return aMonth;
+            },
+            ifHasSigned: function (signList, day) {
+                var signed = false;
+                for (var key in signList) {
+                    if (signList[key] == day) {
+                        signed = true;
+                    }
+                }
+                {#                $.each(signList, function (index, item) {#}
+                {#                    var date = new Date(item.signDate);#}
+                {#                    if (date.getDate() == day) {#}
+                {#                        signed = true;#}
+                {#                        return false;#}
+                {#                    }#}
+                {#                });#}
+                return signed;
+            },
+            drawCal: function (iYear, iMonth, signList) {
+                var currentYearMonth = iYear + "年" + iMonth + "月";
+                var myMonth = calUtil.bulidCal(iYear, iMonth);
+
+                var htmls = new Array();
+                htmls.push("<div class='sign_main' id='sign_layer'>");
+                htmls.push("<div class='sign_succ_calendar_title'>");
+                {#                htmls.push("<div class='calendar_month_span'>" + currentYearMonth + "</div>");#}
+                htmls.push("</div>");
+                htmls.push("<div class='sign' id='sign_cal' >");
+                htmls.push("<table class='customers' >");
+                htmls.push("<tr><th colspan='7'>" + currentYearMonth + "</th></tr>");
+                htmls.push("<tr>");
+                htmls.push("<th>" + myMonth[0][0] + "</th>");
+                htmls.push("<th>" + myMonth[0][1] + "</th>");
+                htmls.push("<th>" + myMonth[0][2] + "</th>");
+                htmls.push("<th>" + myMonth[0][3] + "</th>");
+                htmls.push("<th>" + myMonth[0][4] + "</th>");
+                htmls.push("<th>" + myMonth[0][5] + "</th>");
+                htmls.push("<th>" + myMonth[0][6] + "</th>");
+                htmls.push("</tr>");
+                var d, w;
+                for (w = 1; w < myMonth.length - 1; w++) {
+                    htmls.push("<tr>");
+                    for (d = 0; d < 7; d++) {
+                        var ifHasSigned = calUtil.ifHasSigned(signList, myMonth[w][d]);
+
+
+                        if (ifHasSigned) {
+                            htmls.push("<td style='background-color:#50e469'>" + (!isNaN(myMonth[w][d]) ? myMonth[w][d] : " ") + "</td>");
+
+                        } else {
+                            htmls.push("<td>" + (!isNaN(myMonth[w][d]) ? myMonth[w][d] : " ") + "</td>");
+                        }
+                    }
+                    htmls.push("</tr>");
+                }
+                htmls.push("</table>");
+                htmls.push("</div>");
+                htmls.push("</div>");
+                return htmls.join('');
+            }
+        };
+        {#        签到按钮#}
+        $("#signin_today").click(function () {
+            $.ajax({
+                type: 'GET',
+                url: '{{ url_for("restfulapi.signin") }}',
+                data: {
+                    'username': "{{ current_user.username }}",
+                    'date':year+"-"+month+"-"+date
+                },
+                async: false,
+                dataType: 'json',
+                success: function (data) {
+                    alert('签到成功，获得一积分')
+                    show_user_info()
+                    creat_calendar()
+                }
+            })
+        })
+        {#            绘制签到日历#}
+        function creat_calendar(){
+            signindate_list=[]
+            var today = false
+            $.ajax({
+                type: 'GET',
+                url: '{{ url_for("restfulapi.get_signin_date_list") }}',
+                data: {
+                    'username': "{{ current_user.username }}"
+                },
+                async: false,
+                dataType: 'json',
+                success: function (data) {
+                    date_list = data.date_list
+
+                    for (i in date_list) {
+                        if (date_list[i].split("-")[0] == year && date_list[i].split("-")[1] == month) {
+                            console.log(date_list[i].split("-")[2])
+                            signindate_list.push(date_list[i].split("-")[2])
+                            if(date_list[i].split("-")[2]==date){
+                                today = true
+                            }
+                        }
+                    }
+                }
+            })
+            console.log(signindate_list)
+            var str = calUtil.drawCal(year, month, signindate_list);
+            $("#calendar").html(str);
+            if(today){
+                 $("#signin_today").html( '已签到');
+                    $("#signin_today").attr("disabled", true);
+            }
+
+        }
+        function show_user_info(){
+            $.ajax({
+                type: 'GET',
+                url: '{{ url_for("restfulapi.home") }}',
+                data: {
+                    'username': "{{ current_user.username }}",
+                },
+                dataType: 'json',
+                success: function (data) {
+                    console.log(data);
+                    $("#myfavorites").text(data.favorite_stock_count);
+                    $("#mypositions").text(data.position_stock_count);
+                    $("#myprofits").text(data.position_profit.toFixed(2));
+                    $("#mytraderec").text(data.trade_rec_count);
+                    if (data.member_type == null) {
+                        var userimgsrc = "/static/personal_img/user.jpg";
+                        $("#personal_img").attr("src", userimgsrc);
+                        $("#user_info").text('您的账户尚未开通会员服务，');
+                    }
+                    else if (data.member_type == 'month') {
+                        var vipimgsrc = "/static/personal_img/vip.png";
+                        $("#personal_img").attr("src", vipimgsrc);
+                        $("#user_info").text('您的账户目前是包月会员，可免费下载数据，当前账户余额：' + data.user_money + '元，');
+                    }
+                    else if (data.member_type == 'year') {
+                        var vipimgsrc = "/static/personal_img/vip.png";
+                        $("#personal_img").attr("src", vipimgsrc);
+                        $("#user_info").text('您的账户目前是年费会员，可免费下载数据，当前账户余额：' + data.user_money + '元，');
+                    }
+                    $("#user_info").append('<a data-toggle=\"modal\" data-target=\"#modal_recharge\" style=\'\'>点此充值</button>');
+                    cityDist(data);
+                }
+            });
+        }
+        $(document).ready(function () {
+            show_user_info()
+
+            {#            get profit cost market value trend data#}
+            $.ajax({
+                type: 'GET',
+                url: '{{ url_for("restfulapi.positionhistory") }}',
+                data: {
+                    'username': "{{ current_user.username }}"
+                },
+                dataType: 'json',
+                success: function (data) {
+                    console.log(data);
+                    profittrend(data);
+                }
+            })
+
+
+creat_calendar()
+
+        });
     </script>
 
     <script>
