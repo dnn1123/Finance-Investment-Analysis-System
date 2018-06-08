@@ -1,17 +1,18 @@
 {% extends "global_industry/global_industry_base.html" %}
 {% block styles %}
-    <script type="text/javascript" src="{{ url_for('static',filename='js/echarts_sunburst.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static',filename='js/echarts_sunburst.js') }}"
+            xmlns="http://www.w3.org/1999/html"></script>
 {% endblock %}
 {% block tab %}
-    <ul class="nav nav-pills" xmlns="http://www.w3.org/1999/html">
-        <li class="active"><a>RA.投资分类评级</a></li>
-        <li><a href="{{ url_for('global_industry.cns_market_new') }}">CHS.大陆市场</a></li>
-        <li><a href="{{ url_for('global_industry.hks_market') }}">HKS.香港市场</a></li>
-        <li><a href="{{ url_for('global_industry.usa_market_new') }}">USA.美国市场</a></li>
-        <li><a href="{{ url_for('global_industry.uks_market') }}">UKS.英国市场</a></li>
-        <li><a href="{{ url_for('global_industry.eps_market') }}">EPS.欧洲市场</a></li>
-        <li><a href="{{ url_for('global_industry.jps_market') }}">JPS.日本市场</a></li>
-    </ul>
+{#    <ul class="nav nav-pills" xmlns="http://www.w3.org/1999/html">#}
+{#        <li class="active"><a>RA.投资分类评级</a></li>#}
+{#        <li><a href="{{ url_for('global_industry.cns_market_new') }}">CHS.大陆市场</a></li>#}
+{#        <li><a href="{{ url_for('global_industry.hks_market') }}">HKS.香港市场</a></li>#}
+{#        <li><a href="{{ url_for('global_industry.usa_market_new') }}">USA.美国市场</a></li>#}
+{#        <li><a href="{{ url_for('global_industry.uks_market') }}">UKS.英国市场</a></li>#}
+{#        <li><a href="{{ url_for('global_industry.eps_market') }}">EPS.欧洲市场</a></li>#}
+{#        <li><a href="{{ url_for('global_industry.jps_market') }}">JPS.日本市场</a></li>#}
+{#    </ul>#}
 
 {% endblock %}
 
@@ -24,58 +25,104 @@
 {% endblock %}
 
 {% block table %}
-    <div class="module" style="margin-top:10px;border-radius:5px">
 
-        <div class="module-body">
-            <div style="width: 100%;height:600px">
-                <div id="echarts" style="height: 500px;width: 50%;float: left">
+        <div class="btn-box-row row-fluid">
+            <div class="module" style="margin-top:10px;border-radius:5px">
 
+                <div class="module-head" id="head_1">
+                    <button class="btn btn-primary">多因子投资分类评级</button>
+<button class="btn btn-mini btn-primary subscribe_str" style="float: right;margin-left: 5px" onclick="View_the_results()">
+                        查看评级结果
+                    </button>
                 </div>
-                <div style="float: right;width: 40%;height:550px" class="well well-lg">
-                    <h3 style="margin-left: 10px"> 全球股票投资分类评级</h3>
-                    <h5 style="margin-left: 25px">投资分类评级是基于市场历史情况深度学习以及市场实时动态把控以及以往投资经验的一种描述上市公司证券投资吸引力的标准化系统方法。
-                        系统对股市进行实时的检测，在每日零时自动获取最新市场信息，对所有在市股票进行等级评定，旨在从最科学、最客观的角度为用户提供最优的决策建议。
-                    </h5>
-                    <div class="module">
-                        <div class="module-head">
-                            <button class="btn btn-primary" id="intro_btn_1" href="#intro_div_1" data-toggle="tab">
-                                实时数据
-                            </button>
-                            <button style="margin-left: 35px" class="btn btn-primary" id="intro_btn_2" href="#intro_div_2" data-toggle="tab">
-                                科学计算
-                            </button>
-                            <button style="margin-left: 35px" class="btn btn-primary" id="intro_btn_3" href="#intro_div_3" data-toggle="tab">
-                                合理分级
-                            </button>
-                        </div>
-                        <div class="module-body">
-                            <div class="tab-content" style="width:98%;">
-                                <div id="intro_div_1" class="tab-pane fade in active" style="width: 100%">
-                                    <h5 >
-                                        投资分类评级模型整合最具参考价值的三类共计15种决策指标（左图）,市场数据每日自动获取，对实时数据进行划分与清理，进一步提高数据价值，为每一只股票的分类评级决策提供有力保障。</h5>
+                <div class="module-body" id="body_1">
+
+                        <div style="width: 100%;height:600px">
+                            <div id="echarts" style="height: 500px;width: 50%;float: left">
+
+                            </div>
+                            <div style="float: right;width: 40%;height:550px" class="well well-lg">
+                                <h3 style="margin-left: 10px">多因子投资分类评级</h3>
+                                <h5 style="margin-left: 25px">
+                                    投资分类评级是基于市场历史情况深度学习以及市场实时动态把控以及以往投资经验的一种描述上市公司证券投资吸引力的标准化系统方法。
+                                    系统对股市进行实时的检测，在每日零时自动获取最新市场信息，对所有在市股票进行等级评定，旨在从最科学、最客观的角度为用户提供最优的决策建议。
+                                </h5>
+                                <div class="module">
+                                    <div class="module-head">
+                                        <button class="btn btn-primary" id="intro_btn_1" href="#intro_div_1"
+                                                data-toggle="tab">
+                                            实时数据
+                                        </button>
+                                        <button style="margin-left: 35px" class="btn btn-primary" id="intro_btn_2"
+                                                href="#intro_div_2" data-toggle="tab">
+                                            科学计算
+                                        </button>
+                                        <button style="margin-left: 35px" class="btn btn-primary" id="intro_btn_3"
+                                                href="#intro_div_3" data-toggle="tab">
+                                            合理分级
+                                        </button>
+
+                                    </div>
+                                    <div class="module-body">
+                                        <div class="tab-content" style="width:98%;">
+                                            <div id="intro_div_1" class="tab-pane fade in active" style="width: 100%">
+                                                <h5>
+                                                    投资分类评级模型整合最具参考价值的三类共计15种决策指标（左图）,市场数据每日自动获取，对实时数据进行划分与清理，进一步提高数据价值，为每一只股票的分类评级决策提供有力保障。</h5>
+                                            </div>
+                                            <div id="intro_div_2" class="tab-pane fade" style="width: 100%">
+                                                <h5>
+                                                    投资分类评级模型采用人工智能与深度学习相结合的科学计算方式，对每一只股票，从多角度分析评价，并按一定权重将各因素下评价结果整合，得出最终的评价结果。
+
+                                                    计算方式如下：
+                                                    </br>
+                                                    a)市净率低于全市场平均值
+                                                    </br>
+b)以五年平均盈余计算的PE低于全市场平均值 </br>
+c)每股流动资产至少是股价的30% </br>
+d)股息收益率不低于全市场平均值 </br>
+e)股价现金流量比低于全市场平均值 </br>
+f)长期借款占总资本比例低于50% </br>
+g)流动比例高于全市场平均值
+                                                </h5>
+                                            </div>
+                                            <div id="intro_div_3" class="tab-pane fade" style="width: 100%">
+                                                <h5> A. 最佳的投资:能够在较长时间内保持繁荣，并同时拥有较高资产规模的公司；</br>
+                                                    B. 有待考察的投资:能够在最近一段时间内保持景气，并同时拥有一定资产规模的公司；</br>
+                                                    C. 一般的投资:能够在最近一段时间内维持稳定，并同时至少达到一定资产规模的公司；</br>
+                                                    D. 缺乏价值的投资:最近一段时间内陷入低迷、衰退及崩溃的公司；</br>
+                                                    E. 未分类的投资:新上市、刚完成重大资产重组或业务重组等目前不宜做出评价的公司。</br> </h5>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div id="intro_div_2" class="tab-pane fade" style="width: 100%">
-                                    <h5 >
-                                        投资分类评级模型采用人工智能与深度学习相结合的科学计算方式，对每一只股票，从多角度分析评价，并按一定权重将各因素下评价结果整合，得出最终的评价结果。
-                                    </h5>
-                                </div>
-                                <div id="intro_div_3" class="tab-pane fade" style="width: 100%">
-                                    <h5 > A. 最佳的投资:能够在较长时间内保持繁荣，并同时拥有较高资产规模的公司；</br>
-                                        B. 有待考察的投资:能够在最近一段时间内保持景气，并同时拥有一定资产规模的公司；</br>
-                                        C. 一般的投资:能够在最近一段时间内维持稳定，并同时至少达到一定资产规模的公司；</br>
-                                        D. 缺乏价值的投资:最近一段时间内陷入低迷、衰退及崩溃的公司；</br>
-                                        E. 未分类的投资:新上市、刚完成重大资产重组或业务重组等目前不宜做出评价的公司。</br> </h5>
-                                </div>
+
+
                             </div>
                         </div>
-                    </div>
-
 
                 </div>
+
             </div>
         </div>
-    </div>
+        <div class="btn-box-row row-fluid">
+            <div class="module" style="margin-top:10px;border-radius:5px">
+
+                <div class="module-head">
+                    <button class="btn btn-primary">更多评级方法敬请期待...</button>
+
+                </div>
+
+
+            </div>
+        </div>
+
     <script>
+    $("#head_1").click(function(){
+        $("#body_1").toggle()
+    })
+    function View_the_results(){
+        window.location.href="{{ url_for('global_industry.cns_market_new') }}";
+    }
         var colors = ['#00688B', '#008B8B', '#009ACD', '#00B2EE', '#00B2EE'];
         var bgColor = '#FFFFFF';
 
@@ -318,6 +365,8 @@
 <SCRIPT Language=VBScript><!--
 
 //-->
+
+
 
 
 

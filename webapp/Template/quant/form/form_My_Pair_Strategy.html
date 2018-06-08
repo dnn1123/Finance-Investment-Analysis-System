@@ -1,9 +1,14 @@
 <form id="backtest_form">
     <input type="text" value="My_Pair_Strategy" style="display: none" name="type">
     <div class="row-fluid">
-        <div class="span6">
-            <strong>股票代码1：</strong>
-            <div class="input-append input-group btn-group">
+        <table>
+            <tbody>
+            <tr>
+                <td width="100px">
+                    <strong>股票代码1：</strong>
+                </td>
+                <td width="150px">
+                    <div class="input-append input-group btn-group">
                 <input type="text" class="stockcode" name="instrument_1">
                 <button class="btn btn-mini dropdown-toggle" data-toggle="dropdown">
                     <span class="caret"></span>
@@ -12,10 +17,12 @@
                     <!-- dropdown menu links -->
                 </ul>
             </div>
-        </div>
-        <div class="span6">
-            <strong>股票代码2：</strong>
-            <div class="input-append input-group btn-group">
+                </td>
+                <td width="100px">
+                    <strong>股票代码2：</strong>
+                </td>
+                <td width="150px">
+                    <div class="input-append input-group btn-group">
                 <input type="text" class="stockcode" name="instrument_2">
                 <button class="btn btn-mini dropdown-toggle" data-toggle="dropdown">
                     <span class="caret"></span>
@@ -24,24 +31,41 @@
                     <!-- dropdown menu links -->
                 </ul>
             </div>
-        </div>
+                </td>
+            </tr>
+            <tr>
+                <td width="100px">
+                    <strong>投入资金：</strong>
+                </td>
+                <td width="150px">
+                    <input type="text" placeholder="" name="cash">
+                </td>
+                <td width="100px">
+                    <strong>手续费率：</strong>
+                </td>
+                <td width="150px">
+                    <input type="text" placeholder="" name="commission">
+                </td>
+            </tr>
+            <tr>
+                <td width="100px">
+                    <strong>回测开始日期：</strong>
+                </td>
+                <td width="150px">
+                    <input type="text" placeholder="" name="sdate" class="form_datetime">
+                </td>
+                <td width="100px">
+                    <strong>回测结束日期：</strong>
+                </td>
+                <td width="150px">
+                    <input type="text" placeholder="" name="edate" class="form_datetime">
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
     </div>
-    <div class="row-fluid">
-        <div class="span6">
-            <strong>投入资金：</strong><input type="text" placeholder="" name="cash">
-        </div>
-        <div class="span6">
-            <strong>手续费率：</strong><input type="text" placeholder="" name="commission">
-        </div>
-    </div>
-    <div class="row-fluid">
-        <div class="span6">
-            <strong>回测开始日期：</strong><input type="text" placeholder="" name="sdate" class="form_datetime">
-        </div>
-        <div class="span6">
-            <strong>回测结束日期：</strong><input type="text" placeholder="" name="edate" class="form_datetime">
-        </div>
-    </div>
+
 </form>
 <div class="row-fluid">
     <button class="btn btn-primary submit" style="float: right">提交</button>
