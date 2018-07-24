@@ -2304,6 +2304,9 @@
 
         {#         获取选中指标数据#}
         function getindex_data(allchecked_list, en_name_list, cn_name_list) {
+            console.log(allchecked_list)
+            console.log(cn_name_list)
+            console.log(en_name_list)
             $.ajax({
                 type: 'GET',
                 url: '{{url_for("restfulapi.finance_index_data")}}',
@@ -2323,6 +2326,8 @@
                     }
                     data.the_year.reverse();
                     data_checked = data
+                    console.log('data')
+                    console.log(data)
                 }
             })
             get_invest_index_data()
@@ -2620,11 +2625,15 @@
                 end = mid
             }
             year_list_cutted = data.the_year.slice(start, end)
+            console.log( data.indexes)
             for (var i = 0; i < data.indexes.length; i++) {
                 str = "data." + data.indexes[i] + "_list"
-                index_list_cutted[i] = eval(str).slice(start, end)
+                if(eval(str)){
+                    index_list_cutted[i] = eval(str).slice(start, end)
+                }
+
             }
-            {#console.log(data)#}
+            console.log(index_list_cutted)
             CreatTable_new(year_list_cutted, index_list_cutted, start, data)
 
         }
@@ -2657,8 +2666,10 @@
                 unit_flag = parseInt($("select#unit_new").val());
                 value = index_list_cutted[i];
                 {#console.log(value)#}
+
                 var value2 = [];
-                for (var j = 0; j < value.length; j++) {
+                if(value){
+                    for (var j = 0; j < value.length; j++) {
                     if (value[j] == null) {
                         var td_b = $("<td>" + '0' + "</td>");
                         td_b.appendTo(tr_b);
@@ -2667,6 +2678,7 @@
                         var td_b = $("<td>" + (value[j] / unit_flag).toFixed(2) + "</td>");
                         td_b.appendTo(tr_b);
                     }
+                }
                 }
             }
             $("#datatable_new").append("</table>");
@@ -3113,6 +3125,7 @@
         {#拼接财务报表和投资指标数据&&规范化财务指标数据invest_data#}
         function creat_data_for_echart() {
             {#            合并数据合并后数据data_merge#}
+            console.log('aaaaaaa')
             console.log(data_checked)
             data_merge = [].concat(invest_data)
             data_merge['stockcode'] = currentcode

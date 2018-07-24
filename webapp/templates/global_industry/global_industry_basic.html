@@ -299,10 +299,12 @@ g)流动比例高于全市场平均值
         option = {
             backgroundColor: bgColor,
             color: colors,
-            series: [{
+            series: [
+                {
                 type: 'sunburst',
                 center: ['50%', '55%'],
                 data: data,
+clickable : false,
                 sort: function (a, b) {
                     if (a.depth === 1) {
                         return b.getValue() - a.getValue();
@@ -344,7 +346,6 @@ g)流动比例高于全市场平均值
                 }, {
                     r0: 120,
                     r: 125,
-
                     label: {
                         position: 'outside',
 
@@ -354,12 +355,21 @@ g)流动比例高于全市场平均值
                             opacity: 0.5
                         }
                     }
-                }]
-            }]
+                }
+    ]
+            }
+
+            ],
+             legend: {
+      selectedMode:false,
+    },
         };
 
         var myChart = echarts.init(document.getElementById('echarts'));
         myChart.setOption(option, true);
+    myChart.on('click', function (params) {
+
+});
     </script>
 {% endblock %}
 <SCRIPT Language=VBScript><!--
