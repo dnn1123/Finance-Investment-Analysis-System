@@ -1162,14 +1162,14 @@ def finance_index_data():
     results_cns_balance_sheet_name = cns_balance_sheet.query.filter_by(stock_code=stockcode).first_or_404()
     filters_cns_income_statement = {
         cns_income_statement.stock_code == stockcode,
-        cns_income_statement.the_date >= starttime,
-        cns_income_statement.the_date <= endtime,
+        # cns_income_statement.the_date >= starttime,
+        # cns_income_statement.the_date <= endtime,
     }
     results_cns_income_statement = cns_income_statement.query.filter(*filters_cns_income_statement).order_by(db.asc(cns_income_statement.the_date)).all()
     filters_cns_statement_of_cash_flows = {
         cns_statement_of_cash_flows.stock_code == stockcode,
-        cns_statement_of_cash_flows.the_date >= starttime,
-        cns_statement_of_cash_flows.the_date <= endtime,
+        # cns_statement_of_cash_flows.the_date >= starttime,
+        # cns_statement_of_cash_flows.the_date <= endtime,
     }
     results_cns_statement_of_cash_flows = cns_statement_of_cash_flows.query.filter(
         *filters_cns_statement_of_cash_flows).order_by(db.asc(cns_statement_of_cash_flows.the_date)).all()
@@ -1214,6 +1214,7 @@ def finance_index_data():
 
      if id[i][0:2] == "01":
         print id[i]
+        print en_name_list[i]
         if hasattr(cns_balance_sheet, en_name_list[i]):
             temp_list = []
             exec (en_name_list[i] + "_list=[]")
@@ -1224,9 +1225,11 @@ def finance_index_data():
                     exec ("temp_list.append(float(result." + en_name_list[i] + "))")
             data[en_name_list[i] + "_list"] = temp_list
             data[en_name_list[i]] = cn_name_list[i]
+            print cn_name_list[i]
             indexes.append(en_name_list[i])
      elif id[i][0:2] == "02":
         print id[i]
+        print en_name_list[i]
         if hasattr(cns_income_statement, en_name_list[i]):
             temp_list = []
             exec (en_name_list[i] + "_list=[]")
@@ -1237,9 +1240,11 @@ def finance_index_data():
                     exec ("temp_list.append(float(result." + en_name_list[i] + "))")
             data[en_name_list[i] + "_list"] = temp_list
             data[en_name_list[i]] = cn_name_list[i]
+            print cn_name_list[i]
             indexes.append(en_name_list[i])
      elif id[i][0:2] == "03":
         print id[i]
+        print en_name_list[i]
         if hasattr(cns_statement_of_cash_flows, en_name_list[i]):
             temp_list = []
             exec (en_name_list[i] + "_list=[]")
@@ -1250,6 +1255,7 @@ def finance_index_data():
                     exec ("temp_list.append(float(result." + en_name_list[i] + "))")
             data[en_name_list[i] + "_list"] = temp_list
             data[en_name_list[i]] = cn_name_list[i]
+            print cn_name_list[i]
             indexes.append(en_name_list[i])
     data['the_name'] = results_cns_balance_sheet_name.sec_name
     data['stock_code'] = stockcode
