@@ -1,8 +1,6 @@
 # encoding:utf-8
 from flask import Blueprint, redirect, render_template, url_for
 from os import path
-from webapp.extensions import finance_analyst_permission
-from flask_principal import Permission, UserNeed, RoleNeed
 from flask_login import login_required, current_user
 
 stock_blueprint = Blueprint(
@@ -14,8 +12,12 @@ stock_blueprint = Blueprint(
 
 
 # 用户登陆后主页
-@stock_blueprint.route('/', methods=('GET', 'POST'))
+@stock_blueprint.route('/home', methods=['GET', 'POST'])
 @login_required
 def home():
-    roles = current_user.roles
-    return render_template("stock/home.html", current_user=current_user, roles=roles)
+    return render_template("stock/home.html")
+
+@stock_blueprint.route('/myposition/', methods=['GET', 'POST'])
+@login_required
+def myposition():
+    return render_template('myposition.html', current_user=current_user)

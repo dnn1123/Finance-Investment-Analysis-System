@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+        <script type="text/javascript" src="{{ url_for('static',filename='js/echarts.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static',filename='js/china.js') }}"></script>
+</head>
+<body>
+<div style="width: 300px;height: 300px" id="map"></div>
+</body>
+<script>
+    var myChart = echarts.init(document.getElementById('map'));
+    option = {
+    tooltip: {
+        trigger: 'item',
+        formatter: '{b}'
+    },
+    series: [
+        {
+            name: '中国',
+            type: 'map',
+            mapType: 'china',
+            selectedMode : 'single',
+            label: {
+                normal: {
+                    show: true
+                },
+                emphasis: {
+                    show: true
+                }
+            },
+            data:[
+                {name:'广东', selected:true}
+            ]
+        }
+    ]
+};
+    myChart.setOption(option);
+    myChart.on('click', function (params) {//点击事件
+        console.log(params);
+        province = params.name
+            })
+</script>
+</html>

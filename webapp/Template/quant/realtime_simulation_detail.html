@@ -1,0 +1,100 @@
+{% extends "quant_base.html" %}
+{% block content %}
+    <div class="module">
+        <div class="module-head">
+            <h2 id="strategy_name"></h2>
+        </div>
+        <div class="module-body">
+            <div class="row-fluid">
+                <div class="span9" id="strategy_detail">
+                </div>
+                <div class="span3">
+                    <h3 id="status"></h3>
+                    <h4 id="period"></h4>
+                    {#            <button>暂停</button><button class="disabled">已运行</button><button>删除策略</button>#}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="module">
+        <div class="module-head">最近动态</div>
+        <div class="module-body" id="trends">
+        </div>
+    </div>
+
+    {##}
+    {#<div class="module">#}
+    {#<div class="module-head">策略详情</div>#}
+    {#<div class="module-body">#}
+    {#    各种收益率#}
+    {#    图表#}
+    {#    持仓情况分析（根据交易记录）#}
+    {#</div>#}
+    {##}
+    {#</div>#}
+{% endblock %}
+{% block scripts %}
+    <script>
+        var subscribe_id = {{ subscribe_id }}
+            $(document).ready(function () {
+                get_strategy_info();
+                get_data()
+            });
+
+        function get_data() {
+            $.ajax({
+                type: "GET",
+                data: {"id": subscribe_id},
+                url: "{{ url_for("quant_api.get_realtime_simulation_detail_data") }}",
+                dataType: "json",
+                success: function (data) {
+                    for (i = 0; i < data.date.length; i++) {
+                        html = '<p>' + data.date[i] + '&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp' + data.message[i] + '</p>'
+                        $("#trends").append(html)
+                    }
+                }
+            })
+
+        }
+        function get_strategy_info() {
+            $.ajax({
+                type: "GET",
+                data: {"id": subscribe_id},
+                url: "{{ url_for("quant_api.get_subscribe_strategy_info") }}",
+                dataType: "json",
+                success: function (data) {
+                    if (data.str_name_en == 'Pair_Strategy_Based_Bank') {
+                        $("#strategy_name").text(data.strategy_name)
+                        html = '<p><strong>策略类型：</strong>' + data.str_name + '</p><p><strong>策略所属：</strong>' + data.type + '</p> <p><strong>应用股票：</strong>' + data.params.instrument_1 + '、' + data.params.instrument_2 + '</p> <p><strong>手续费率：</strong>' + data.params.commission + '</p> <p><strong>投入资金：</strong>' + data.params.cash + '</p> <p><strong>创建日期：</strong>' + data.build_date + '</p>'
+                        $("#strategy_detail").append(html)
+                        $("#status").text(data.status)
+                        $("#period").text(data.period + "天")
+                    }
+                    if (data.str_name_en == 'DoubleMA_Strategy') {
+                        $("#strategy_name").text(data.strategy_name)
+                        html = '<p><strong>策略类型：</strong>' + data.str_name + '</p><p><strong>策略所属：</strong>' + data.type + '</p> <p><strong>应用股票：</strong>' + data.params.instrument + '</p> <p><strong>手续费率：</strong>' + data.params.commission + '</p> <p><strong>投入资金：</strong>' + data.params.cash + '</p> <p><strong>创建日期：</strong>' + data.build_date + '</p>'
+                        $("#strategy_detail").append(html)
+                        $("#status").text(data.status)
+                        $("#period").text(data.period + "天")
+
+                    }
+                    if (data.str_name_en == 'Buy_Everyday') {
+                        $("#strategy_name").text(data.strategy_name)
+                        html = '<p><strong>策略类型：</strong>' + data.str_name + '</p><p><strong>策略所属：</strong>' + data.type + '</p> <p><strong>应用股票：</strong>' + data.params.instrument + '</p> <p><strong>手续费率：</strong>' + data.params.commission + '</p> <p><strong>投入资金：</strong>' + data.params.cash + '</p> <p><strong>创建日期：</strong>' + data.build_date + '</p>'
+                        $("#strategy_detail").append(html)
+                        $("#status").text(data.status)
+                        $("#period").text(data.period + "天")
+                    }
+                    if (data.str_name_en == 'My_Pair_Strategy') {
+                        $("#strategy_name").text(data.strategy_name)
+                        html = '<p><strong>策略类型：</strong>' + data.str_name + '</p><p><strong>策略所属：</strong>' + data.type + '</p> <p><strong>应用股票：</strong>' + data.params.instrument_1 + '、' + data.params.instrument_2 + '</p> <p><strong>手续费率：</strong>' + data.params.commission + '</p> <p><strong>投入资金：</strong>' + data.params.cash + '</p> <p><strong>创建日期：</strong>' + data.build_date + '</p>'
+                        $("#strategy_detail").append(html);
+                        $("#status").text(data.status);
+                        $("#period").text(data.period + "天")
+                    }
+                }
+            })
+        }
+
+    </script>
+{% endblock %}

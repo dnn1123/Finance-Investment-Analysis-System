@@ -1,218 +1,162 @@
 /**
- * pagination分页插件
- * @version 1.3.1
- * @author mss
- * @url http://maxiaoxiang.com/jQuery-plugins/plugins/pagination.html
+ * This jQuery plugin displays pagination links inside the selected elements.
  *
- * @调用方法
- * $(selector).pagination();
+ * @author Gabriel Birke (birke *at* d-scribe *dot* de)
+ * @version 1.2
+ * @param {int} maxentries Number of entries to paginate
+ * @param {Object} opts Several options (see README for documentation)
+ * @return {Object} jQuery Object
  */
-;(function (factory) {
-    if (typeof define === "function" && (define.amd || define.cmd) && !jQuery) {
-        // AMD或CMD
-        define([ "jquery" ],factory);
-    } else if (typeof module === 'object' && module.exports) {
-        // Node/CommonJS
-        module.exports = function( root, jQuery ) {
-            if ( jQuery === undefined ) {
-                if ( typeof window !== 'undefined' ) {
-                    jQuery = require('jquery');
-                } else {
-                    jQuery = require('jquery')(root);
-                }
-            }
-            factory(jQuery);
-            return jQuery;
-        };
-    } else {
-        //Browser globals
-        factory(jQuery);
-    }
-}(function ($) {
-
-	//配置参数
-	var defaults = {
-		totalData: 0,			//数据总条数
-		showData: 0,			//每页显示的条数
-		pageCount: 9,			//总页数,默认为9
-		current: 1,				//当前第几页
-		prevCls: 'prev',		//上一页class
-		nextCls: 'next',		//下一页class
-		prevContent: '<',		//上一页内容
-		nextContent: '>',		//下一页内容
-		activeCls: 'active',	//当前页选中状态
-		coping: false,			//首页和尾页
-		isHide: false,			//当前页数为0页或者1页时不显示分页
-		homePage: '',			//首页节点内容
-		endPage: '',			//尾页节点内容
-		keepShowPN: false,		//是否一直显示上一页下一页
-		count: 3,				//当前页前后分页个数
-		jump: false,			//跳转到指定页数
-		jumpIptCls: 'jump-ipt',	//文本框内容
-		jumpBtnCls: 'jump-btn',	//跳转按钮
-		jumpBtn: '跳转',		//跳转按钮文本
-		callback: function(){}	//回调
-	};
-
-	var Pagination = function(element,options){
-		//全局变量
-		var opts = options,//配置
-			current,//当前页
-			$document = $(document),
-			$obj = $(element);//容器
-
+jQuery.fn.pagination = function(maxentries, opts){
+	opts = jQuery.extend({
+		items_per_page:10,
+		num_display_entries:10,
+		current_page:0,
+		num_edge_entries:0,
+		link_to:"#",
+		prev_text:"Prev",
+		next_text:"Next",
+		ellipse_text:"...",
+		prev_show_always:true,
+		next_show_always:true,
+		callback:function(){return false;}
+	},opts||{});
+	
+	return this.each(function() {
 		/**
-		 * 设置总页数
-		 * @param int page 页码
-		 * @return opts.pageCount 总页数配置
+		 * 计算最大分页显示数目
 		 */
-		this.setPageCount = function(page){
-			return opts.pageCount = page;
-		};
-
+		function numPages() {
+			return Math.ceil(maxentries/opts.items_per_page);
+		}	
 		/**
-		 * 获取总页数
-		 * 如果配置了总条数和每页显示条数，将会自动计算总页数并略过总页数配置，反之
-		 * @return int p 总页数
+		 * 极端分页的起始和结束点，这取决于current_page 和 num_display_entries.
+		 * @返回 {数组(Array)}
 		 */
-		this.getPageCount = function(){
-			return opts.totalData || opts.showData ? Math.ceil(parseInt(opts.totalData) / opts.showData) : opts.pageCount;
-		};
-
-		/**
-		 * 获取当前页
-		 * @return int current 当前第几页
-		 */
-		this.getCurrent = function(){
-			return current;
-		};
-
-		/**
-		 * 填充数据
-		 * @param int index 页码
-		 */
-		this.filling = function(index){
-			var html = '';
-			current = index || opts.current;//当前页码
-			var pageCount = this.getPageCount();//获取的总页数
-			if(opts.keepShowPN || current > 1){//上一页
-				html += '<a href="javascript:;" class="'+opts.prevCls+'">'+opts.prevContent+'</a>';
-			}else{
-				if(opts.keepShowPN == false){
-					$obj.find('.'+opts.prevCls) && $obj.find('.'+opts.prevCls).remove();
-				}
-			}
-			if(current >= opts.count + 2 && current != 1 && pageCount != opts.count){
-				var home = opts.coping && opts.homePage ? opts.homePage : '1';
-				html += opts.coping ? '<a href="javascript:;" data-page="1">'+home+'</a><span>...</span>' : '';
-			}
-			var end = current + opts.count;
-			var start = '';
-			//修复到最后一页时比第一页少显示两页
-			start = current === pageCount ? current - opts.count - 2 : current - opts.count;
-			((start > 1 && current < opts.count) || current == 1) && end++;
-			(current > pageCount - opts.count && current >= pageCount) && start++;
-			for (;start <= end; start++) {
-				if(start <= pageCount && start >= 1){
-					if(start != current){
-						html += '<a href="javascript:;" data-page="'+start+'">'+ start +'</a>';
-					}else{
-						html += '<span class="'+opts.activeCls+'">'+start+'</span>';
-					}
-				}
-			}
-			if(current + opts.count < pageCount && current >= 1 && pageCount > opts.count){
-				var end = opts.coping && opts.endPage ? opts.endPage : pageCount;
-				html += opts.coping ? '<span>...</span><a href="javascript:;" data-page="'+pageCount+'">'+end+'</a>' : '';
-			}
-			if(opts.keepShowPN || current < pageCount){//下一页
-				html += '<a href="javascript:;" class="'+opts.nextCls+'">'+opts.nextContent+'</a>'
-			}else{
-				if(opts.keepShowPN == false){
-					$obj.find('.'+opts.nextCls) && $obj.find('.'+opts.nextCls).remove();
-				}
-			}
-			html += opts.jump ? '<input type="text" class="'+opts.jumpIptCls+'"><a href="javascript:;" class="'+opts.jumpBtnCls+'">'+opts.jumpBtn+'</a>' : '';
-			$obj.empty().html(html);
-		};
-
-		//绑定事件
-		this.eventBind = function(){
-			var that = this;
-			var pageCount = that.getPageCount();//总页数
-			var index = 1;
-			$obj.off().on('click','a',function(){
-				if($(this).hasClass(opts.nextCls)){
-					if($obj.find('.'+opts.activeCls).text() >= pageCount){
-						$(this).addClass('disabled');
-						return false;
-					}else{
-						index = parseInt($obj.find('.'+opts.activeCls).text()) + 1;
-					}
-				}else if($(this).hasClass(opts.prevCls)){
-					if($obj.find('.'+opts.activeCls).text() <= 1){
-						$(this).addClass('disabled');
-						return false;
-					}else{
-						index = parseInt($obj.find('.'+opts.activeCls).text()) - 1;
-					}
-				}else if($(this).hasClass(opts.jumpBtnCls)){
-					if($obj.find('.'+opts.jumpIptCls).val() !== ''){
-						index = parseInt($obj.find('.'+opts.jumpIptCls).val());
-					}else{
-						return;
-					}
-				}else{
-					index = parseInt($(this).data('page'));
-				}
-				that.filling(index);
-				typeof opts.callback === 'function' && opts.callback(that);
-			});
-			//输入跳转的页码
-			$obj.on('input propertychange','.'+opts.jumpIptCls,function(){
-				var $this = $(this);
-				var val = $this.val();
-				var reg = /[^\d]/g;
-	            if (reg.test(val)) {
-	                $this.val(val.replace(reg, ''));
-	            }
-	            (parseInt(val) > pageCount) && $this.val(pageCount);
-	            if(parseInt(val) === 0){//最小值为1
-	            	$this.val(1);
-	            }
-			});
-			//回车跳转指定页码
-			$document.keydown(function(e){
-		        if(e.keyCode == 13 && $obj.find('.'+opts.jumpIptCls).val()){
-		        	var index = parseInt($obj.find('.'+opts.jumpIptCls).val());
-		            that.filling(index);
-					typeof opts.callback === 'function' && opts.callback(that);
-		        }
-		    });
-		};
-
-		//初始化
-		this.init = function(){
-			this.filling(opts.current);
-			this.eventBind();
-			if(opts.isHide && this.getPageCount() == '1' || this.getPageCount() == '0') $obj.hide();
-		};
-		this.init();
-	};
-
-	$.fn.pagination = function(parameter,callback){
-		if(typeof parameter == 'function'){//重载
-			callback = parameter;
-			parameter = {};
-		}else{
-			parameter = parameter || {};
-			callback = callback || function(){};
+		function getInterval()  {
+			var ne_half = Math.ceil(opts.num_display_entries/2);
+			var np = numPages();
+			var upper_limit = np-opts.num_display_entries;
+			var start = current_page>ne_half?Math.max(Math.min(current_page-ne_half, upper_limit), 0):0;
+			var end = current_page>ne_half?Math.min(current_page+ne_half, np):Math.min(opts.num_display_entries, np);
+			return [start,end];
 		}
-		var options = $.extend({},defaults,parameter);
-		return this.each(function(){
-			var pagination = new Pagination(this, options);
-			callback(pagination);
-		});
-	};
+		
+		/**
+		 * 分页链接事件处理函数
+		 * @参数 {int} page_id 为新页码
+		 */
+		function pageSelected(page_id, evt){
+			current_page = page_id;
+			drawLinks();
+			var continuePropagation = opts.callback(page_id, panel);
+			if (!continuePropagation) {
+				if (evt.stopPropagation) {
+					evt.stopPropagation();
+				}
+				else {
+					evt.cancelBubble = true;
+				}
+			}
+			return continuePropagation;
+		}
+		
+		/**
+		 * 此函数将分页链接插入到容器元素中
+		 */
+		function drawLinks() {
+			panel.empty();
+			var interval = getInterval();
+			var np = numPages();
+			// 这个辅助函数返回一个处理函数调用有着正确page_id的pageSelected。
+			var getClickHandler = function(page_id) {
+				return function(evt){ return pageSelected(page_id,evt); }
+			}
+			//辅助函数用来产生一个单链接(如果不是当前页则产生span标签)
+			var appendItem = function(page_id, appendopts){
+				page_id = page_id<0?0:(page_id<np?page_id:np-1); // 规范page id值
+				appendopts = jQuery.extend({text:page_id+1, classes:""}, appendopts||{});
+				if(page_id == current_page){
+					var lnk = jQuery("<span class='current'>"+(appendopts.text)+"</span>");
+				}else{
+					var lnk = jQuery("<a>"+(appendopts.text)+"</a>")
+						.bind("click", getClickHandler(page_id))
+						.attr('href', opts.link_to.replace(/__id__/,page_id));		
+				}
+				if(appendopts.classes){lnk.addClass(appendopts.classes);}
+				panel.append(lnk);
+			}
+			// 产生"Previous"-链接
+			if(opts.prev_text && (current_page > 0 || opts.prev_show_always)){
+				appendItem(current_page-1,{text:opts.prev_text, classes:"prev"});
+			}
+			// 产生起始点
+			if (interval[0] > 0 && opts.num_edge_entries > 0)
+			{
+				var end = Math.min(opts.num_edge_entries, interval[0]);
+				for(var i=0; i<end; i++) {
+					appendItem(i);
+				}
+				if(opts.num_edge_entries < interval[0] && opts.ellipse_text)
+				{
+					jQuery("<span>"+opts.ellipse_text+"</span>").appendTo(panel);
+				}
+			}
+			// 产生内部的些链接
+			for(var i=interval[0]; i<interval[1]; i++) {
+				appendItem(i);
+			}
+			// 产生结束点
+			if (interval[1] < np && opts.num_edge_entries > 0)
+			{
+				if(np-opts.num_edge_entries > interval[1]&& opts.ellipse_text)
+				{
+					jQuery("<span>"+opts.ellipse_text+"</span>").appendTo(panel);
+				}
+				var begin = Math.max(np-opts.num_edge_entries, interval[1]);
+				for(var i=begin; i<np; i++) {
+					appendItem(i);
+				}
+				
+			}
+			// 产生 "Next"-链接
+			if(opts.next_text && (current_page < np-1 || opts.next_show_always)){
+				appendItem(current_page+1,{text:opts.next_text, classes:"next"});
+			}
+		}
+		
+		//从选项中提取current_page
+		var current_page = opts.current_page;
+		//创建一个显示条数和每页显示条数值
+		maxentries = (!maxentries || maxentries < 0)?1:maxentries;
+		opts.items_per_page = (!opts.items_per_page || opts.items_per_page < 0)?1:opts.items_per_page;
+		//存储DOM元素，以方便从所有的内部结构中获取
+		var panel = jQuery(this);
+		// 获得附加功能的元素
+		this.selectPage = function(page_id){ pageSelected(page_id);}
+		this.prevPage = function(){ 
+			if (current_page > 0) {
+				pageSelected(current_page - 1);
+				return true;
+			}
+			else {
+				return false;
+			}
+		}
+		this.nextPage = function(){ 
+			if(current_page < numPages()-1) {
+				pageSelected(current_page+1);
+				return true;
+			}
+			else {
+				return false;
+			}
+		}
+		// 所有初始化完成，绘制链接
+		drawLinks();
+        // 回调函数
+        opts.callback(current_page, this);
+	});
+}
 
-}));
+

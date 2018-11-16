@@ -1,0 +1,22 @@
+{% extends "stock_group_base.html" %}
+
+{% block tab %}
+<div class="content" style="height: 100%">
+    <div class="module">
+        <div class="module-head">请选择一个地区</div>
+        <div class="module-body" style="text-align: center">
+            <div class="row-fluid">
+                <div class="span4">
+                    <a href="{{ url_for("stock_group.cns_home") }}"> <img src="../static/cns_home.png"> </a>
+                </div>
+                <div class="span4">
+                    <a href="#"> <img src="../static/usa_home.png"> </a>
+                </div>
+               <div class="span4">
+                   <a href="#"> <img src="../static/hks_home.png"> </a>
+               </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

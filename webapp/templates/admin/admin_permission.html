@@ -1,0 +1,217 @@
+{% extends "stock_base.html" %}
+{% block current_user %}
+    当前用户：{{ current_user.username }}
+{% endblock %}
+{% block body %}
+    <div class="span9">
+        <div class="content">
+            <div class="btn-controls">
+                <!-- 修改权限模态框 -->
+                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                     aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal"
+                                        aria-hidden="true">&times;</button>
+                                <h4 class="modal-title" id="myModalLabel">修改权限</h4>
+                            </div>
+                            <div class="modal-body" id="modal_body">
+                                <div id="name_div" style="float:left"></div>
+                                <div id="new_permission" style="float:left;margin-left:20px">
+                                    <select id="n_permission">
+                                        <option value="1">管理员</option>
+                                        <option value="3">游客</option>
+                                        <option value="2">操盘手</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                                <button type="button" class="btn btn-primary" id="submit_change">提交更改</button>
+                            </div>
+                        </div><!-- /.modal-content -->
+                    </div><!-- /.modal -->
+                </div>
+{#                用户列表#}
+                <div class="module">
+                    <div class="module-head">
+                        <button id="head1" class="btn btn-primary" data-toggle="button">用户列表</button>
+                    </div>
+                    <div class="module-body" id="body1">
+                        <div class="btn-box-row row-fluid">
+                            <div class="span12" style="background-color:white">
+                                <div style="height:100px;">
+                                    <table id="mytable_for_users" style="text-align:center;height:100px">
+                                        <thead>
+                                        <tr>
+                                            <th>
+                                                用户名
+                                            </th>
+                                            <th>
+                                                权限
+                                            </th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="tbody">
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+{#                分类列表#}
+                <div class="module">
+                    <div class="module-head">
+                        <button id="head3" class="btn btn-primary" data-toggle="button">更新数据库</button>
+                        <div class="span3 pull-right" style="float:right;margin-right:0px;text-align: right">
+
+                                    <button class="btn btn-mini btn-primary" type="button" id="updata_company_list"
+                                            >更新
+                                    </button>
+
+
+                                </div>
+                    </div>
+                    <div class="module-body" id="body3">
+                        <div class="btn-box-row row-fluid">
+                            <div class="span12" style="background-color:white">
+                                <div style="height:100px;">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="module">
+                    <div class="module-head">
+                        <button id="head2" class="btn btn-primary" data-toggle="button">分类列表</button>
+                    </div>
+                    <div class="module-body" id="body2">
+                        <div class="btn-box-row row-fluid">
+                            <div class="span12" style="background-color:white">
+                                <div style="height:100px;">
+                                    <table id="mytable_for_wind" style="text-align:center;height:100px">
+                                        <thead>
+                                        <tr>
+                                            <th>
+                                                用户名
+                                            </th>
+                                            <th>
+                                                权限
+                                            </th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="tbody">
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        {#    折叠#}
+        $("#head1").click(function () {
+            $("#body1").toggle()
+        })
+        var user_name = ''
+        function creat_user_table() {
+            $.ajax({
+                type: 'POST',
+                url: '{{url_for("restfulapi.admin")}}',
+                data: {
+                    'code': '000001',
+                },
+                dataType: 'json',
+                async: false,
+                success: function (data) {
+                    console.log(data)
+
+                    for (i = 0; i < data.name_list.length; i++) {
+                        if (data.permission_list[i] == 1) {
+                            str1 = '管理员'
+                        }
+                        else if (data.permission_list[i] == 2) {
+                            str1 = '操盘手'
+                        }
+                        else if (data.permission_list[i] == 3) {
+                            str1 = '游客'
+                        }
+
+                        str = "<tr><td>" + data.name_list[i] + "</td><td>" + str1 + "<a type='button' id='" + data.name_list[i] + "' data-toggle='modal'data-target='#myModal' onclick=' user_name=this.id '>" +
+                                "修改</a></td></tr>"
+                        $("#tbody").append(str)
+                    }
+                    var table = $('#mytable_for_users').DataTable({
+                        "lengthChange": false,
+                        "pageLength": 5,
+                        "searching": false,
+                        "language": {
+                            "emptyTable": "没有数据",
+                            "loadingRecords": "加载中…",
+                            "processing": "查询中…",
+                            "search": "检索:",
+                            "lengthMenu": "每页 _MENU_ 条",
+                            "zeroRecords": "没有数据",
+                            "paginate": {
+                                "first": "第一页",
+                                "last": "最后一页",
+                                "next": "",
+                                "previous": ""
+                            },
+                            "info": "第 _PAGE_ 页 / 总 _PAGES_ 页",
+                            "infoEmpty": "没有数据",
+                            "infoFiltered": "(过滤总件数 _MAX_ 条)"
+                        },
+                 dom: 'Bfrtip',
+                        buttons: {
+                            buttons: [
+                                {extend: 'copy', 'text': '复制', 'className': 'btn btn-default btn-xs',},
+                                {extend: 'excel', 'text': '导出Excel', 'className': 'btn btn-default btn-xs',}
+                            ]
+                        }
+
+                    })
+                }
+            })
+        }
+        $('#myModal').on('show.bs.modal', function () {
+            $("#name_div").html(user_name)
+        });
+        function firstvisit() {
+            creat_user_table()
+        }
+        $("#submit_change").click(function () {
+            var n_permission = document.getElementById("n_permission").value;
+            $.ajax({
+                type: 'POST',
+                url: '{{url_for("restfulapi.change_permission")}}',
+                data: {
+                    permission: n_permission,
+                    name: user_name,
+                },
+                dataType: 'json',//希望服务器返回json格式的数据
+                async: false,
+                success: function (data) {
+                    alert("更新成功！")
+                    location.reload()
+                }
+            })
+        })
+        $("#updata_company_list").click(function(){
+             $.ajax({
+                type: 'POST',
+                url:  '{{url_for("restfulapi.updata_company_list")}}',
+                dataType: 'json',
+                success: function (data) {
+                    alert('yes')
+                }})
+        })
+        firstvisit()
+    </script>
+{% endblock %}

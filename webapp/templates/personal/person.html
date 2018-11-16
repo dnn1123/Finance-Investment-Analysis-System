@@ -1,0 +1,374 @@
+{% extends "stock_base.html" %}
+{% block current_user %}
+    当前用户：{{ current_user.username }}
+{% endblock %}
+{% block styles %}
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        #right-nav {
+            width: 40px;
+            height: 100%;
+            position: fixed;
+            top: 0;
+            right: 0;
+            z-index: 20;
+            border-right: 5px solid #7A6E6E;
+        }
+
+        #right-nav .w {
+            position: fixed;
+            bottom: 22px;
+            right: 0;
+            width: 40px;
+            height: 76%;
+        }
+
+        #right-nav-list1 {
+            position: relative;
+            right: 0;
+            top: 0;
+            z-index: 20;
+        }
+
+        #right-nav-list2 {
+            position: fixed;
+            right: 0;
+            bottom: 0;
+            z-index: 20;
+        }
+
+        #right-nav li {
+            position: relative;
+            left: 0;
+            top: 0;
+            height: 34px;
+            width: 40px;
+            margin-bottom: 1px;
+        }
+
+        #right-nav li a {
+            width: 100%;
+            height: 100%;
+            display: block;
+            background: #7a6e6e;
+            padding: 7px;
+            box-sizing: border-box;
+            border-radius: 3px;
+            /*transition: all linear 300ms;*/
+        }
+
+        #right-nav li div {
+            position: absolute;
+            left: 50px;
+            top: 0;
+            z-index: -1;
+            font-size: 12px;
+            background: #c81623;
+            color: #fff;
+            height: 34px;
+            width: 60px;
+            line-height: 31px;
+            text-align: center;
+            border-radius: 3px;
+            transition: all linear 300ms;
+        }
+
+        #right-nav li:hover, #right-nav li:hover a {
+            background-color: #c81623;
+        }
+
+        #right-nav li:hover div {
+            left: -58px;
+        }
+
+        .divCollapse {
+            display: none;
+            bottom: 40px;
+            right: 3px; /*举例右边3像素*/
+            position: fixed;
+        {#            background: none repeat scroll 0 0 #FFFFFF;#} border: 1px solid #5e5e5e;
+            padding-bottom: 3px;
+            width: 300px;
+            height: 500px;
+            background-color: white;
+            border-radius: 8px;
+        }
+
+        .img1 {
+            border-radius: 50%;
+            overflow: hidden;
+        }
+
+        .divcheckbox {
+            margin-left: 10px;
+            margin-top: 5px;
+            display: block;
+            font-size: 18px;
+            text-align: left;
+        }
+
+        .checkbox {
+            float: left;
+        }
+
+        .checkbox1 {
+            float: left;
+        }
+    </style>
+{% endblock %}
+{% block body %}
+    <!--个人消息侧栏-->
+    <div class="J-global-toolbar">
+        <div class="toolbar-wrap J-wrap">
+            <div class="toolbar">
+                <div class="toolbar-panels J-panel">
+                    <div style="visibility: hidden;"
+                         class="J-content toolbar-panel tbar-panel-cart toolbar-animate-out">
+                        <div style="width: 100%;background-color:#d3d7d4;border-top-left-radius: 8px;">
+                            <img style="margin-left: 1px;margin-bottom: 2px" src="/static/5_24.png">
+                            <label style="color: white;font-size: large;margin: 1px;">个人信息</label></br>
+                        </div>
+                        <div>
+                            <div class="img1"
+                                 style="float:left;width: 100px;height: 100px;background-color: #d3d7d4;margin-top: 10px;margin-left: 10px">
+                                {% if user.permissions==3 %}
+                                    <img style="  width: 100%;height: 100%;margin-left: 1px;margin-bottom: 2px"
+                                         src="/static/personal_img/visitor.png">
+                                {% elif user.permissions==2 %}
+                                    <img style="  width: 100%;height: 100%;margin-left: 1px;margin-bottom: 2px"
+                                         src="/static/personal_img/trader.png">
+                                {% elif user.permissions==1 %}
+                                    <img style="  width: 100%;height: 100%;margin-left: 1px;margin-bottom: 2px"
+                                         src="/static/personal_img/administrator.png">
+                                {% endif %}
+                            </div>
+                            <a style="display:block;color: black;float: left;margin-left: 10px;margin-top: 20px;font-size: 20px">用户名：{{ user.user_name }}</a></br>
+                            <a style="display:block;float:left;color: black;margin-left: 10px;margin-top: 10px;font-size: 20px">身份：{{ rolename }}</a>
+                            {% if user.permissions==1 %}
+                                <div style="float: left;width: 100%;margin-top:10px;background-color:#d3d7d4">
+                                    <legend>我的权限</legend>
+                                    <div style="margin: 10px">
+                                        <a href="/admin">管理员权限</a>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="toolbar-header"></div>
+
+
+                <div class="toolbar-tabs J-tab">
+                    <div class="toolbar-tab tbar-tab-cart">
+                        {#                        <i class="tab-ico"></i>#}
+                        <img src="/static/5_24.png" style="margin-top: 7px;margin-left: 2px">
+                        <em class="tab-text ">个人信息</em>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--主页面功能栏-->
+    <div class="span9">
+        <div class="content">
+            <div class="btn-controls">
+                <div class="btn-box-row row-fluid">
+                    <div class="module span12">
+                        <div class="module-head">关注股票列表:</div>
+                        <div id="div_favoritecode" class="row-fluid">
+                            <div class="btn-box small span4" style="height:300px;">
+                                <div class="module-head">添加关注股票:</div>
+                                <form id="searchform" class="navbar-form navbar-left" role="search" method="post"
+                                      action="{{ url_for('restfulapi.add_code') }}">
+                                    <div class="input-group"
+                                         style="float:left;margin-top:5px;margin-left:5px;width:95%;">
+                                        <input id="stockcode" type="text" class="form-control" placeholder="Search"
+                                               name="stockcode" style="float:left;width:85%;height:25px;">
+                                        <div class="input-group-btn">
+                                            <button id="submitbtn" class="btn btn-default" type="submit"
+                                                    style="float:left;margin-left: 10px;margin-top:5px;height:25px;padding: 8.5px 12px">
+                                                <span class="glyphicon glyphicon-search"></span></button>
+                                            <ul class="dropdown-menu dropdown-menu-right" role="menu"></ul>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <div class="btn-box small span4" style="height:300px;">
+                                <div class="module-head">已关注股票:</div>
+                                <div id="code_show" style="width: 100%;height:70%;overflow-x: auto;margin-top: 5px;"></div>
+                                <input type="button" id="add_to_analyse" value="添加至投资分析"
+                                       style="font-size: 15px;float: right;margin-right: 5px;margin-top: 5px;">
+                                <input type="button" id="delete_code" value="删除"
+                                       style="font-size: 15px;float: right;margin-right: 5px;margin-top: 5px;">
+                            </div>
+
+                            <div class="btn-box small span4" style="height:300px;">
+                                <div class="module-head">分析股票列表:</div>
+                                <div id="code_show2" style="width: 100%;height:70%;overflow-x: auto;margin-top: 5px;">
+                                </div>
+                                <input type="button" id="analyse" value="投资分析"
+                                       style="font-size: 15px;float: right;margin-right: 5px;margin-top: 5px;">
+                                <input type="button" id="delete_code1" value="删除"
+                                       style="font-size: 15px;float: right;margin-right: 5px;margin-top: 5px;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="btn-box-row row-fluid">
+                    <div class="module span12">
+                        <div class="module-head">投资组合:</div>
+                        <div id="div_portfolio"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $("#delete_code").click(function () {
+            var selected = [];
+            $(".checkbox").each(function () {
+                if ($(this).is(':checked')) {
+                    selected.push($(this).attr('value'))
+                }
+            });
+            console.log(selected);
+            $.ajax({
+                type: 'POST',
+                url: '{{url_for("restfulapi.delete_code")}}',
+                data: {
+                    'selected': selected
+                },
+                dataType: 'json',
+                success: function (data) {
+                    if (data.a)
+                        window.location.href = ""
+                }
+            })
+        });
+
+        $("#add_to_analyse").click(function () {
+            var selected_code = []
+            var selected_name = []
+            $(".checkbox").each(function () {
+                if ($(this).is(':checked')) {
+                    selected_code.push($(this).attr('value'))
+                    selected_name.push($(this).attr('text'))
+                    $(this).iCheck('uncheck')
+                }
+            })
+            for (i = 0; i < selected_code.length; i++) {
+                $("#code_show2").append("<div class='divcheckbox' id='analyse_div_" + selected_code[i] + "'><input type='checkbox' class='checkbox' value='" + selected_code[i] + "' id='" + selected_code[i] + "' >" + selected_name[i] + "—" + selected_code[i] + "</div>")
+            }
+        })
+
+        $("#delete_code1").click(function () {
+            var selected = []
+            $(".checkbox").each(function () {
+                if ($(this).is(':checked')) {
+                    $("#analyse_div_" + $(this).attr('value')).remove()
+                }
+            })
+
+        })
+
+        $("#analyse").click(function () {
+            alert('功能维护')
+        })
+
+        var stocksuggest = $("input[name='stockcode']").bsSuggest({
+            indexKey: 1,
+            allowNoKeyword: false,
+            getDataMethod: "url",
+            url: '{{url_for("restfulapi.stock_code",q="")}}',
+            processData: function (json) {     // url 获取数据时，对数据的处理，作为 getData 的回调函数
+                var i, len, data = {value: []};
+
+                if (!json || !json.stockcode || json.stockcode.length == 0) {
+                    return false;
+                }
+                len = json.stockcode.length;
+
+                for (i = 0; i < len; i++) {
+                    data.value.push({
+                        "Id": (i + 1),
+                        "stockcode": json.stockcode[i],
+                        "stockname": json.stockname[i],
+                    });
+                }
+                return data;
+            }
+        })
+
+        $("#submitbtn").click(function () {
+            $.ajax({
+                type: 'POST',
+                url: '{{url_for("restfulapi.iscode")}}',
+                data: {
+                    'code': $("#stockcode").val(),
+                },
+                dataType: 'json',
+                success: function (data) {
+                    if (data.the_name != 'false') {
+                        $.ajax({
+                            type: 'POST',
+                            url: '{{url_for("restfulapi.is_repeatcode")}}',
+                            data: {
+                                'code': $("#stockcode").val(),
+                            },
+                            dataType: 'json',
+                            success: function (data) {
+                                if (data.exit == 'true') {
+                                    alert('您已关注该股票，请勿重复操作！')
+                                }
+                                else if (data.exit == 'flase') {
+                                    $("#searchform").submit();
+                                }
+                            }
+                        })
+                    }
+                    else {
+                        alert($("#stockcode").val() + "号股票不存在！")
+                    }
+                }
+            })
+        })
+
+        function creatindex() {
+            $.ajax({
+                type: 'POST',
+                url: '{{url_for("restfulapi.search")}}',
+                data: {
+                    'code': '000001',
+                },
+                dataType: 'json',
+                success: function (data) {
+                    console.log(data)
+                    for (i = 0; i < data.code_list.length; i++) {
+                        $("#code_show").append("<div class='divcheckbox'><input type='checkbox' class='checkbox' value='" + data.code_list[i] + "' id='" + data.code_list[i] + "' text='" + data.name_list[i] + "'>" + data.name_list[i] + "—" + data.code_list[i] + "</div>")
+                    }
+                }
+            })
+        }
+
+        function first_visit() {
+            creatindex()
+        }
+
+        $(document).ready(function () {
+            first_visit()
+        })
+    </script>
+{% endblock %}

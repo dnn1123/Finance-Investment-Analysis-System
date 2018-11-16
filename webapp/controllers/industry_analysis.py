@@ -12,143 +12,62 @@ from sqlalchemy.orm import sessionmaker  # me
 import MySQLdb, time, datetime, re  # re用于判断是否含中文
 
 industryanalysis_blueprint = Blueprint(
-    'industry_analysis',
+    'industry_analysis_old',
     __name__,
     template_folder=path.join(path.pardir, 'templates', 'industry_analysis'),
-    url_prefix="/industry_analysis"
+    url_prefix="/industry_analysis_old"
 )
 
 
 @industryanalysis_blueprint.route('/industry_status', methods=('GET', 'POST'))
-@industryanalysis_blueprint.route('/industry_status/<int:parameter>', methods=('GET', 'POST'))  # string,int不一样
+@industryanalysis_blueprint.route('/industry_status/<int:parameter>', methods=('GET', 'POST'))
 @login_required
-def industry_status(industry_gicscode_1="15", industry_gicscode_2="1510", industry_gicscode_3="151010",
-                    industry_gicscode_4="25102010", parameter=4):  # 默认显示第四级分类
+def industry_status(industry_gicscode_1='10', industry_gicscode_2="1010", industry_gicscode_3="101010",
+                    industry_gicscode_4="10101010", parameter=4):  # 默认显示第四级分类
+
     parameter = parameter
+
     cns_filterform1 = cns_filterForm1()
     cns_filterform2 = cns_filterForm2()
     cns_filterform3 = cns_filterForm3()
     cns_filterform4 = cns_filterForm4()
-    db_engine = create_engine('mysql://root:0000@localhost/test?charset=utf8')
-    Session = sessionmaker(bind=db_engine)
-    session = Session()
-    year_list = session.query(distinct(finance_basics_add.the_year)).all()
-    rs = None  # 结果集初始为None，为什么
+
     if parameter == 1:
         if cns_filterform1.validate_on_submit():
             industry_gicscode_1 = cns_filterform1.gics_code.data
         else:
             industry_gicscode_1 = industry_gicscode_1
-        rs = session.query(func.sum(finance_basics_add.tot_oper_rev).label("tot_oper_rev"),
-                           func.sum(finance_basics_add.net_profit_is).label("net_profit_is"),
-                           func.sum(finance_basics_add.wgsd_net_inc).label("wgsd_net_inc"),
-                           func.sum(finance_basics_add.tot_assets).label("tot_assets"),
-                           func.sum(finance_basics_add.tot_liab).label("tot_liab"),
-                           func.sum(finance_basics_add.wgsd_com_eq).label("wgsd_com_eq"),
-                           func.sum(finance_basics_add.operatecashflow_ttm2).label("operatecashflow_ttm2"),
-                           func.sum(finance_basics_add.investcashflow_ttm2).label("investcashflow_ttm2"),
-                           func.sum(finance_basics_add.financecashflow_ttm2).label("financecashflow_ttm2"),
-                           func.sum(finance_basics_add.cashflow_ttm2).label("cashflow_ttm2"),
-                           func.avg(finance_basics_add.net_profit_rate).label("net_profit_rate"),
-                           func.avg(finance_basics_add.tot_assets_turnover).label("tot_assets_turnover"),
-                           func.avg(finance_basics_add.equ_multi).label("equ_multi"),
-                           func.avg(finance_basics_add.roe_tot).label("roe_tot"),
-                           func.avg(finance_basics_add.roe_holder).label("roe_holder"),
-                           func.count(finance_basics_add.trade_code).label("company_num"),
-                           cns_department_industry.industry_gics_1.label("industry_gics_1")).filter(
-            finance_basics_add.trade_code == cns_stock_industry.trade_code).filter(
-            cns_stock_industry.industry_gicscode_4 == cns_sub_industry.industry_gicscode_4).filter(
-            cns_sub_industry.belong == cns_industry.industry_gicscode_3).filter(
-            cns_industry.belong == cns_group_industry.industry_gicscode_2).filter(
-            cns_group_industry.belong == cns_department_industry.industry_gicscode_1).filter(
-            cns_department_industry.industry_gicscode_1 == industry_gicscode_1).group_by(
-            finance_basics_add.the_year).all()
     if parameter == 2:
         if cns_filterform2.validate_on_submit():
             industry_gicscode_2 = cns_filterform2.gics_code.data
         else:
             industry_gicscode_2 = industry_gicscode_2
-        rs = session.query(func.sum(finance_basics_add.tot_oper_rev).label("tot_oper_rev"),
-                           func.sum(finance_basics_add.net_profit_is).label("net_profit_is"),
-                           func.sum(finance_basics_add.wgsd_net_inc).label("wgsd_net_inc"),
-                           func.sum(finance_basics_add.tot_assets).label("tot_assets"),
-                           func.sum(finance_basics_add.tot_liab).label("tot_liab"),
-                           func.sum(finance_basics_add.wgsd_com_eq).label("wgsd_com_eq"),
-                           func.sum(finance_basics_add.operatecashflow_ttm2).label("operatecashflow_ttm2"),
-                           func.sum(finance_basics_add.investcashflow_ttm2).label("investcashflow_ttm2"),
-                           func.sum(finance_basics_add.financecashflow_ttm2).label("financecashflow_ttm2"),
-                           func.sum(finance_basics_add.cashflow_ttm2).label("cashflow_ttm2"),
-                           func.avg(finance_basics_add.net_profit_rate).label("net_profit_rate"),
-                           func.avg(finance_basics_add.tot_assets_turnover).label("tot_assets_turnover"),
-                           func.avg(finance_basics_add.equ_multi).label("equ_multi"),
-                           func.avg(finance_basics_add.roe_tot).label("roe_tot"),
-                           func.avg(finance_basics_add.roe_holder).label("roe_holder"),
-                           func.count(finance_basics_add.trade_code).label("company_num"),
-                           cns_group_industry.industry_gics_2.label("industry_gics_2")).filter(
-            finance_basics_add.trade_code == cns_stock_industry.trade_code).filter(
-            cns_stock_industry.industry_gicscode_4 == cns_sub_industry.industry_gicscode_4).filter(
-            cns_sub_industry.belong == cns_industry.industry_gicscode_3).filter(
-            cns_industry.belong == cns_group_industry.industry_gicscode_2).filter(
-            cns_group_industry.industry_gicscode_2 == industry_gicscode_2).group_by(finance_basics_add.the_year).all()
     if parameter == 3:
         if cns_filterform3.validate_on_submit():
             industry_gicscode_3 = cns_filterform3.gics_code.data
         else:
             industry_gicscode_3 = industry_gicscode_3
-        rs = session.query(func.sum(finance_basics_add.tot_oper_rev).label("tot_oper_rev"),
-                           func.sum(finance_basics_add.net_profit_is).label("net_profit_is"),
-                           func.sum(finance_basics_add.wgsd_net_inc).label("wgsd_net_inc"),
-                           func.sum(finance_basics_add.tot_assets).label("tot_assets"),
-                           func.sum(finance_basics_add.tot_liab).label("tot_liab"),
-                           func.sum(finance_basics_add.wgsd_com_eq).label("wgsd_com_eq"),
-                           func.sum(finance_basics_add.operatecashflow_ttm2).label("operatecashflow_ttm2"),
-                           func.sum(finance_basics_add.investcashflow_ttm2).label("investcashflow_ttm2"),
-                           func.sum(finance_basics_add.financecashflow_ttm2).label("financecashflow_ttm2"),
-                           func.sum(finance_basics_add.cashflow_ttm2).label("cashflow_ttm2"),
-                           func.avg(finance_basics_add.net_profit_rate).label("net_profit_rate"),
-                           func.avg(finance_basics_add.tot_assets_turnover).label("tot_assets_turnover"),
-                           func.avg(finance_basics_add.equ_multi).label("equ_multi"),
-                           func.avg(finance_basics_add.roe_tot).label("roe_tot"),
-                           func.avg(finance_basics_add.roe_holder).label("roe_holder"),
-                           func.count(finance_basics_add.trade_code).label("company_num"),
-                           cns_industry.industry_gics_3.label("industry_gics_3")).filter(
-            finance_basics_add.trade_code == cns_stock_industry.trade_code).filter(
-            cns_stock_industry.industry_gicscode_4 == cns_sub_industry.industry_gicscode_4).filter(
-            cns_sub_industry.belong == cns_industry.industry_gicscode_3).filter(
-            cns_industry.industry_gicscode_3 == industry_gicscode_3).group_by(finance_basics_add.the_year).all()
     if parameter == 4:
         if cns_filterform4.validate_on_submit():
             industry_gicscode_4 = cns_filterform4.gics_code.data
         else:
             industry_gicscode_4 = industry_gicscode_4
-        rs = session.query(func.sum(finance_basics_add.tot_oper_rev).label("tot_oper_rev"),
-                           func.sum(finance_basics_add.net_profit_is).label("net_profit_is"),
-                           func.sum(finance_basics_add.wgsd_net_inc).label("wgsd_net_inc"),
-                           func.sum(finance_basics_add.tot_assets).label("tot_assets"),
-                           func.sum(finance_basics_add.tot_liab).label("tot_liab"),
-                           func.sum(finance_basics_add.wgsd_com_eq).label("wgsd_com_eq"),
-                           func.sum(finance_basics_add.operatecashflow_ttm2).label("operatecashflow_ttm2"),
-                           func.sum(finance_basics_add.investcashflow_ttm2).label("investcashflow_ttm2"),
-                           func.sum(finance_basics_add.financecashflow_ttm2).label("financecashflow_ttm2"),
-                           func.sum(finance_basics_add.cashflow_ttm2).label("cashflow_ttm2"),
-                           func.avg(finance_basics_add.net_profit_rate).label("net_profit_rate"),
-                           func.avg(finance_basics_add.tot_assets_turnover).label("tot_assets_turnover"),
-                           func.avg(finance_basics_add.equ_multi).label("equ_multi"),
-                           func.avg(finance_basics_add.roe_tot).label("roe_tot"),
-                           func.avg(finance_basics_add.roe_holder).label("roe_holder"),
-                           func.count(finance_basics_add.trade_code).label("company_num"),
-                           cns_sub_industry.industry_gicscode_4,
-                           cns_sub_industry.industry_gics_4.label("industry_gics_4")).filter(
-            finance_basics_add.trade_code == cns_stock_industry.trade_code).filter(
-            cns_stock_industry.industry_gicscode_4 == cns_sub_industry.industry_gicscode_4).filter(
-            cns_sub_industry.industry_gicscode_4 == industry_gicscode_4).group_by(finance_basics_add.the_year).all()
-    # 计算rs的长度
-    rs_list = range(len(rs))
-    rs_list.reverse()
+
     return render_template("industry_analysis/industry_status.html", parameter=parameter,
                            cns_filterform1=cns_filterform1, cns_filterform2=cns_filterform2,
-                           cns_filterform3=cns_filterform3, cns_filterform4=cns_filterform4, year_list=year_list, rs=rs,
-                           rs_list=rs_list)
+                           cns_filterform3=cns_filterform3, cns_filterform4=cns_filterform4,
+                           industry_gicscode_1=industry_gicscode_1, industry_gicscode_2=industry_gicscode_2,
+                           industry_gicscode_3=industry_gicscode_3, industry_gicscode_4=industry_gicscode_4)
+
+
+@industryanalysis_blueprint.route('/industry_compare', methods=('GET', 'POST'))
+@industryanalysis_blueprint.route('/industry_compare/<int:param>', methods=('GET', 'POST'))
+@login_required
+def industry_compare(param=4):  # 默认显示第四级分类
+
+    param = param
+
+    return render_template("industry_analysis/industry_compare.html", param=param)
 
 
 # ----cns 大陆市场----
@@ -500,44 +419,7 @@ def annual_table_b(year='20151231', parameter=4):  # 默认是2015年
                            max_wgsd_com_eq=max_wgsd_com_eq)
 
 
-@industryanalysis_blueprint.route('/market_status', methods=('GET', 'POST'))  # 太慢了！！！
+@industryanalysis_blueprint.route('/market_value', methods=('GET', 'POST'))  # 太慢了！！！
 @login_required
-def market_status():
-    db_engine = create_engine('mysql://root:0000@localhost/test?charset=utf8')
-    Session = sessionmaker(bind=db_engine)
-    session = Session()
-    # 做一个year_list，以万科A为标准
-    year_list = []
-    wanke_latest = session.query((finance_basics_add.the_year).label("the_year")).filter(
-        finance_basics_add.sec_name == '万科A').order_by(finance_basics_add.the_year.desc()).first()
-    year = int(wanke_latest.the_year[:4])
-    n = 10  # 需要加1
-    while n > 0:
-        year_list.append(str(year) + '1231')
-        year = year - 1
-        n = n - 1
-    # 结果如下：['20161231', '20151231', '20141231', '20131231', '20121231', '20111231', '20101231', '20091231', '20081231', '20071231']
-    # 做一个结果集
-    rs_list = []
-    for year in year_list:
-        rs = session.query(func.sum(finance_basics_add.tot_oper_rev).label("tot_oper_rev"),
-                           func.sum(finance_basics_add.net_profit_is).label("net_profit_is"),
-                           func.sum(finance_basics_add.wgsd_net_inc).label("wgsd_net_inc"),
-                           func.sum(finance_basics_add.tot_assets).label("tot_assets"),
-                           func.sum(finance_basics_add.tot_liab).label("tot_liab"),
-                           func.sum(finance_basics_add.net_assets).label("net_assets"),
-                           func.sum(finance_basics_add.wgsd_com_eq).label("wgsd_com_eq"),
-                           func.sum(finance_basics_add.operatecashflow_ttm2).label("operatecashflow_ttm2"),
-                           func.sum(finance_basics_add.investcashflow_ttm2).label("investcashflow_ttm2"),
-                           func.sum(finance_basics_add.financecashflow_ttm2).label("financecashflow_ttm2"),
-                           func.sum(finance_basics_add.cashflow_ttm2).label("cashflow_ttm2"),
-                           func.sum(finance_basics_add.free_cash_flow).label("free_cash_flow"),
-                           func.avg(finance_basics_add.net_profit_rate).label("net_profit_rate"),
-                           func.avg(finance_basics_add.tot_assets_turnover).label("tot_assets_turnover"),
-                           func.avg(finance_basics_add.equ_multi).label("equ_multi"),
-                           func.avg(finance_basics_add.roe_tot).label("roe_tot"),
-                           func.avg(finance_basics_add.roe_holder).label("roe_holder"),
-                           func.count(finance_basics_add.trade_code).label("company_num"),
-                           finance_basics_add.the_year).filter(finance_basics_add.the_year == year).first()
-        rs_list.append(rs)
-    return render_template('industry_analysis/market_status.html', rs_list=rs_list)
+def market_value():
+    return render_template('industry_analysis/market_value.html')

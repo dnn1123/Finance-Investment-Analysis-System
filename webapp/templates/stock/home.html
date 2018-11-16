@@ -1,82 +1,927 @@
 {% extends "stock_base.html" %}
-{% block current_user %}
-    当前用户：{{ current_user.username }}
+{% block styles %}
+    <style>
+
+
+        .customers {
+            font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .customers td, .customers th {
+            font-size: 1em;
+            border: 1px solid #8B8986;
+            padding: 3px 7px 2px 7px;
+            text-align: center;
+        }
+
+        .customers th {
+            font-size: 1.1em;
+            text-align: center;
+            padding-top: 5px;
+            padding-bottom: 4px;
+        }
+
+
+    </style>
 {% endblock %}
+
+{% block current_user %}
+    {{ current_user.username }}
+{% endblock %}
+
 {% block body %}
-    <div class="parent" style="width:100%;height:50%;text-align: center;background-color: rgba(161,252,146,0.11);">
-        {% for role in roles %}
-            {% if role.id == 1 %}
-                <div class="panel panel-primary" style="height:60%;width: 15%;float: left;margin: 2%;">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">分析体系</h3>
-                    </div>
-                    <div class="panel-body">
-                        <a href="{{ url_for('stock_solo.basic') }}">单个证券</a><br>
-                        <a href="{{ url_for('stock_group.navigation') }}">一组证券</a><br>
-                        <a href="{{ url_for('global_industry.basic') }}">行业状况</a><br>
-                        <a href="{{ url_for('invest_env.cpi_why') }}">整体状况</a><br>
-                        <a href="{{ url_for('industry_analysis.market_status') }}">投资分类评级</a>
+
+    {#    充值模态框#}
+    <div class="modal fade" id="modal_recharge" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title" id="myModalLabel">账户充值</h4>
+                </div>
+                {#                            <div class="modal-body">#}
+
+                <div class="input-group" style="margin-left:10px">
+                    <input type="text" class="span3 form-control" id="recharge_money" style="height: 30px"
+                           placeholder="请输入充值金额(整数)" name="recharge_money">
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" id="recharge">充值</button>
+                </div>
+
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div>
+    {#    签到模态框#}
+    <div class="modal hide fade in" id="modal_signin" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title" id="myModalLabel">每日签到送积分</h4>
+                </div>
+                <div class="modal-body">
+                    {#                    签到#}
+                    <div id="page-content">
+                        <div style="text-align: center;background-color: #2FAA00;height: 50px;margin-bottom: 20px;">
+                            <span style="cursor: pointer;font-weight: 600;font-size: 20px;color: #fff;height: 50px;line-height: 50px;">每日签到</span>
+                        </div>
+                        <div class="container-fluid">
+                            <div class="row-fluid" id="calendar">
+
+                            </div>
+                            <div id="btnDiv" style="display: none;">
+                                <div class="row-fluid text-center">
+                                    <span class="btn btn-default">签到</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            {% endif %}
-            {% if role.id == 2 %}
-                <a href="{{ url_for('stock_solo.maintanance') }}">
-                    <div class="panel panel-success" style="height:60%;width: 15%;float: left;margin: 2%;">
-                        <div class="panel-heading">
-                            <h3 class="panel-title">计算体系</h3>
-                        </div>
-                        <div class="panel-body">
-                            智能计算<br>量化分析<br>表现评价
-                        </div>
-                    </div>
-                </a>
-            {% endif %}
-            {% if role.id == 3 %}
-                <a href="{{ url_for('stock_solo.maintanance') }}">
-                    <div class="panel panel-info" style="height:60%;width: 15%;float: left;margin: 2%;">
-                        <div class="panel-heading">
-                            <h3 class="panel-title">表现体系</h3>
-                        </div>
-                        <div class="panel-body">
-                            分组结果<br>优化结果<br>调整结果
-                        </div>
-                    </div>
-                </a>
-            {% endif %}
-            {% if role.id == 4 %}
-                <a href="{{ url_for('stock_solo.maintanance') }}">
-                    <div class="panel panel-warning" style="height:60%;width: 15%;float: left;margin: 2%;">
-                        <div class="panel-heading">
-                            <h3 class="panel-title">决策体系</h3>
-                        </div>
-                        <div class="panel-body">
-                            选择组合<br>组合管理<br>组合筛选
-                        </div>
-                    </div>
-                </a>
-            {% endif %}
-            {% if role.id == 5 %}
-                <a href="{{ url_for('stock_solo.maintanance') }}">
-                    <div class="panel panel-danger" style="height:60%;width: 15%;float: left;margin: 2%;">
-                        <div class="panel-heading">
-                            <h3 class="panel-title">交易体系</h3>
-                        </div>
-                        <div class="panel-body">
-                            账户管理<br>交易控制<br>风险监测
-                        </div>
-                    </div>
-                </a>
-            {% endif %}
-        {% endfor %}
-        {#            <a href="{{ url_for('stock_solo.maintanance') }}">#}
-        {#                <div class="panel panel-primary" style="height:60%;width: 15%;float: left;margin: 2%;">#}
-        {#                    <div class="panel-heading">#}
-        {#                        <h3 class="panel-title">评价体系</h3>#}
-        {#                    </div>#}
-        {#                    <div class="panel-body">#}
-        {#                        收益评价<br>股票评价<br>用户评价#}
-        {#                    </div>#}
-        {#                </div>#}
-        {#            </a>#}
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" id="signin_today" >签到</button>
+                </div>
+
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
     </div>
+    {#    this is the body part#}
+    <div class="span9">
+        <div class="content">
+
+            <div class="btn-controls">
+                <div class="btn-box-row row-fluid">
+                    <div class="btn-box big span12" style="text-align:left;">
+                        <div style="margin-top:6px;margin-left:20px;font-size:40px;float:left;">
+                            {{ current_user.username }}
+
+                        </div>
+                        <img id='personal_img'
+                             style="height:30px;width:30px;margin-top:2px;margin-left:10px;margin-right:10px;float:left;border-radius: 50%;border: none;overflow: hidden;"
+                             src="">
+                        <button class="btn btn-primary" style="margin-left: 40px" data-toggle="modal"
+                                data-target="#modal_signin">每日签到
+                        </button>
+                        <div id="user_info" style="float:top;margin-top:50px;margin-left: 20px"></div>
+                    </div>
+
+                </div>
+                <div class="btn-box-row row-fluid">
+                    <a href="{{ url_for('main.my_favoritecode') }}" class="btn-box big span4"><i
+                            class=" icon-random"></i><b id="myfavorites"></b>
+                        <p class="text-muted">
+                            我关注的股票</p>
+                    </a>
+
+                    <a href="{{ url_for('stock.myposition') }}" class="btn-box big span4"><i class="icon-user"></i><b
+                            id="mypositions"></b>
+                        <p class="text-muted">
+                            当前持仓股票</p>
+                    </a>
+
+                    <a href="#" class="btn-box big span4"><i class="icon-money"></i><b id="myprofits"></b>
+                        <p class="text-muted">
+                            当前持仓收益</p>
+                    </a>
+                </div>
+                <div class="btn-box-row row-fluid">
+                    <div class="span8">
+                        <div class="row-fluid">
+                            <div class="span12">
+                                <a href="{{ url_for('message.my_message') }}" class="btn-box small span4"><i
+                                        class="icon-envelope"></i><b id="mymessages">0</b>
+                                    <p class="text-muted">
+                                        我的消息</p>
+                                </a>
+                                <a href="{{ url_for('stock.myposition') }}" class="btn-box small span4"><i
+                                        class="icon-group"></i><b
+                                        id="mytraderec"></b>
+                                    <p class="text-muted">
+                                        我的交易</p>
+                                </a>
+                                <a href="{{ url_for("quant.models") }}" class="btn-box small span4"><i
+                                        class="icon-exchange"></i><b>3</b>
+                                    <p class="text-muted">
+                                        我的量化模型</p>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="row-fluid">
+                            <div class="span12">
+                                <a href="#" class="btn-box small span4"><i class="icon-save"></i><b>1</b>
+                                    <p class="text-muted">
+                                        我的投资组合</p>
+                                </a>
+
+                                <a href="{{ url_for('message.system_message') }}" class="btn-box small span4"><i
+                                        class="icon-bullhorn"></i><b id="mysystem">0</b>
+                                    <p class="text-muted">
+                                        我的新闻</p>
+                                </a>
+                                <a href="#" class="btn-box small span4"><i class="icon-sort-down"></i><b>
+                                    1</b>
+                                    <p class="text-muted">
+                                        我的财务分析模型</p></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="btn-box span4" style="height: 290px" id="cityDist">
+
+                    </div>
+                </div>
+            </div>
+            <!--/#btn-controls-->
+            <div class="module">
+                <div class="module-head">
+                    <h3>
+                        历史盈利趋势</h3>
+                </div>
+                <div class="module-body">
+                    <div class="chart inline-legend grid">
+                        <div id="profittrend" class="graph" style="height: 300px">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--/.module-->
+
+        </div>
+        <!--/.content-->
+    </div>
+    <script>
+        var signindate_list = []
+        var myDate = new Date;
+        var year = myDate.getFullYear();//获取当前年
+        var month = myDate.getMonth() + 1;//获取当前月
+        var date = myDate.getDate();//获取当前日
+
+        $("#recharge").click(function () {
+            $.ajax({
+                type: 'GET',
+                url: '{{ url_for("restfulapi.change_money") }}',
+                data: {
+                    'action': "add",
+                    'count': $("#recharge_money").val(),
+                },
+                dataType: 'json',
+                success: function (data) {
+                    console.log(data);
+                    alert('充值成功！');
+                    location.reload()
+                }
+            })
+        });
+
+        function cityDist(data) {
+            var valueDist = new Array();
+            for (var i = 0; i < data['cityrec'].length; i++) {
+                valueDist.push({
+                    name: data['cityrec'][i][0].substr(0, data['cityrec'][i][0].length - 1),
+                    value: data['cityrec'][i][1]
+                })
+            }
+            console.log(valueDist);
+            var myChart = echarts.init(document.getElementById('cityDist'));
+            var option = {
+                backgroundColor: '#404a59',
+                title: {
+                    text: '当前持仓地区分布',
+                    subtext: 'data by 魔法金融',
+                    left: 'center',
+                    textStyle: {
+                        color: '#fff'
+                    }
+                },
+                tooltip: {
+                    trigger: 'item',
+                    formatter: function (param) {
+                        return param.name + " : " + param.value[2];
+                    }
+                },
+                legend: {
+                    orient: 'vertical',
+                    y: 'bottom',
+                    x: 'right',
+                    data: ['城市数'],
+                    textStyle: {
+                        color: '#fff'
+                    }
+                },
+                geo: {
+                    map: 'china',
+                    label: {
+                        emphasis: {
+                            show: false
+                        }
+                    },
+                    roam: true,
+                    itemStyle: {
+                        normal: {
+                            areaColor: '#323c48',
+                            borderColor: '#111'
+                        },
+                        emphasis: {
+                            areaColor: '#2a333d'
+                        }
+                    }
+                },
+                series: [
+                    {
+                        name: '城市数',
+                        type: 'scatter',
+                        coordinateSystem: 'geo',
+                        data: convertData(valueDist),
+                        symbolSize: function (val) {
+                            return 5 * val[2];
+                        },
+                        label: {
+                            normal: {
+                                formatter: '{b}',
+                                position: 'right',
+                                show: false
+                            },
+                            emphasis: {
+                                show: true
+                            }
+                        },
+                        itemStyle: {
+                            normal: {
+                                color: '#ddb926'
+                            }
+                        }
+                    },
+                    {
+                        type: 'effectScatter',
+                        coordinateSystem: 'geo',
+                        data: convertData(valueDist.sort(function (a, b) {
+                            return b.value - a.value;
+                        }).slice(0, 2)),
+                        symbolSize: function (val) {
+                            return 5 * val[2];
+                        },
+                        showEffectOn: 'render',
+                        rippleEffect: {
+                            brushType: 'stroke'
+                        },
+                        hoverAnimation: true,
+                        label: {
+                            normal: {
+                                formatter: '{b}',
+                                position: 'right',
+                                show: true
+                            }
+                        },
+                        itemStyle: {
+                            normal: {
+                                color: '#f4e925',
+                                shadowBlur: 10,
+                                shadowColor: '#333'
+                            }
+                        },
+                        zlevel: 1
+                    }
+                ]
+            };
+            myChart.setOption(option);
+        }
+        ;
+        function profittrend(data) {
+            var myChart = echarts.init(document.getElementById('profittrend'));
+            var option = {
+
+                tooltip: {
+                    trigger: 'axis'
+                },
+                legend: {
+                    data: ['收益', '成本', '市值']
+                },
+                color: ['#6633FF', '#FF69B4', '#00008B'],
+
+
+                toolbox: {
+                    show: true,
+                    feature: {
+                        dataZoom: {
+                            yAxisIndex: 'none'
+                        },
+                        dataView: {
+                            optionToContent: function (opt) {
+                                var axisData = opt.xAxis[0].data;
+                                var series = opt.series;
+                                var table = '<table id="test" class="table-bordered table-striped" style="width:100%;text-align:center">',
+                                        table = table + '<tbody><tr>' + '<td>时间</td>' + '<td>' + series[0].name + '</td>' + '<td>' + series[1].name + '</td>' + '</tr>';
+                                for (var i = 0, l = axisData.length; i < l; i++) {
+                                    table += '<tr>' + '<td>' + axisData[i] + '</td>' + '<td>' + series[0].data[i] + '</td>' + '<td>' + series[1].data[i] + '</td>' + '</tr>';
+                                }
+                                table += '</tbody>';
+                                return table;
+                            },
+                            readOnly: false
+                        },
+                        magicType: {type: ['line', 'bar']},
+                        restore: {},
+                        saveAsImage: {}
+                    }
+                },
+                xAxis: {
+                    type: 'category',
+                    boundaryGap: false,
+                    data: data['results']['date']
+                },
+                yAxis: {
+                    type: 'value',
+                    axisLabel: {
+                        formatter: '{value} 元'
+                    }
+                },
+                series: [
+                    {
+                        name: '收益',
+                        type: 'line',
+                        data: data['results']['profit'],
+                        {#                    markPoint: {#}
+                        {#                        data: [#}
+                        {#                            {type: 'max', name: '最大值'},#}
+                        {#                            {type: 'min', name: '最小值'}#}
+                        {#                        ]#}
+                        {#                    },#}
+                        markLine: {
+                            data: [
+                                {type: 'average', name: '平均值'}
+                            ]
+                        },
+                    },
+                    {
+                        name: '成本',
+                        type: 'bar',
+                        data: data['results']['cost'],
+                        {#                    markPoint: {#}
+                        {#                        data: [#}
+                        {#                            {name: '周最低', value: -2, xAxis: 1, yAxis: -1.5}#}
+                        {#                        ]#}
+                        {#                    },#}
+                        {#                    markLine: {#}
+                        {#                        data: [#}
+                        {#                            {type: 'average', name: '平均值'},#}
+                        {#                            [{#}
+                        {#                                symbol: 'none',#}
+                        {#                                x: '90%',#}
+                        {#                                yAxis: 'max'#}
+                        {#                            }, {#}
+                        {#                                symbol: 'circle',#}
+                        {#                                label: {#}
+                        {#                                    normal: {#}
+                        {#                                        position: 'start',#}
+                        {#                                        formatter: '最大值'#}
+                        {#                                    }#}
+                        {#                                },#}
+                        {#                                type: 'max',#}
+                        {#                                name: '最高点'#}
+                        {#                            }]#}
+                        {#                        ]#}
+                        {#                    }#}
+                    },
+                    {
+                        name: '市值',
+                        type: 'bar',
+                        data: data['results']['value'],
+                        {#                    markPoint: {#}
+                        {#                        data: [#}
+                        {#                            {name: '周最低', value: -2, xAxis: 1, yAxis: -1.5}#}
+                        {#                        ]#}
+                        {#                    },#}
+                        {#                    markLine: {#}
+                        {#                        data: [#}
+                        {#                            {type: 'average', name: '平均值'},#}
+                        {#                            [{#}
+                        {#                                symbol: 'none',#}
+                        {#                                x: '90%',#}
+                        {#                                yAxis: 'max'#}
+                        {#                            }, {#}
+                        {#                                symbol: 'circle',#}
+                        {#                                label: {#}
+                        {#                                    normal: {#}
+                        {#                                        position: 'start',#}
+                        {#                                        formatter: '最大值'#}
+                        {#                                    }#}
+                        {#                                },#}
+                        {#                                type: 'max',#}
+                        {#                                name: '最高点'#}
+                        {#                            }]#}
+                        {#                        ]#}
+                        {#                    }#}
+                    }
+                ]
+            };
+            myChart.setOption(option);
+        }
+        {#map coordinates#}
+        var geoCoordMap = {
+            '海门': [121.15, 31.89],
+            '鄂尔多斯': [109.781327, 39.608266],
+            '招远': [120.38, 37.35],
+            '舟山': [122.207216, 29.985295],
+            '齐齐哈尔': [123.97, 47.33],
+            '盐城': [120.13, 33.38],
+            '赤峰': [118.87, 42.28],
+            '青岛': [120.33, 36.07],
+            '乳山': [121.52, 36.89],
+            '金昌': [102.188043, 38.520089],
+            '泉州': [118.58, 24.93],
+            '莱西': [120.53, 36.86],
+            '日照': [119.46, 35.42],
+            '胶南': [119.97, 35.88],
+            '南通': [121.05, 32.08],
+            '拉萨': [91.11, 29.97],
+            '云浮': [112.02, 22.93],
+            '梅州': [116.1, 24.55],
+            '文登': [122.05, 37.2],
+            '上海': [121.48, 31.22],
+            '攀枝花': [101.718637, 26.582347],
+            '威海': [122.1, 37.5],
+            '承德': [117.93, 40.97],
+            '厦门': [118.1, 24.46],
+            '汕尾': [115.375279, 22.786211],
+            '潮州': [116.63, 23.68],
+            '丹东': [124.37, 40.13],
+            '太仓': [121.1, 31.45],
+            '曲靖': [103.79, 25.51],
+            '烟台': [121.39, 37.52],
+            '福州': [119.3, 26.08],
+            '瓦房店': [121.979603, 39.627114],
+            '即墨': [120.45, 36.38],
+            '抚顺': [123.97, 41.97],
+            '玉溪': [102.52, 24.35],
+            '张家口': [114.87, 40.82],
+            '阳泉': [113.57, 37.85],
+            '莱州': [119.942327, 37.177017],
+            '湖州': [120.1, 30.86],
+            '汕头': [116.69, 23.39],
+            '昆山': [120.95, 31.39],
+            '宁波': [121.56, 29.86],
+            '湛江': [110.359377, 21.270708],
+            '揭阳': [116.35, 23.55],
+            '荣成': [122.41, 37.16],
+            '连云港': [119.16, 34.59],
+            '葫芦岛': [120.836932, 40.711052],
+            '常熟': [120.74, 31.64],
+            '东莞': [113.75, 23.04],
+            '河源': [114.68, 23.73],
+            '淮安': [119.15, 33.5],
+            '泰州': [119.9, 32.49],
+            '南宁': [108.33, 22.84],
+            '营口': [122.18, 40.65],
+            '惠州': [114.4, 23.09],
+            '江阴': [120.26, 31.91],
+            '蓬莱': [120.75, 37.8],
+            '韶关': [113.62, 24.84],
+            '嘉峪关': [98.289152, 39.77313],
+            '广州': [113.23, 23.16],
+            '延安': [109.47, 36.6],
+            '太原': [112.53, 37.87],
+            '清远': [113.01, 23.7],
+            '中山': [113.38, 22.52],
+            '昆明': [102.73, 25.04],
+            '寿光': [118.73, 36.86],
+            '盘锦': [122.070714, 41.119997],
+            '长治': [113.08, 36.18],
+            '深圳': [114.07, 22.62],
+            '珠海': [113.52, 22.3],
+            '宿迁': [118.3, 33.96],
+            '咸阳': [108.72, 34.36],
+            '铜川': [109.11, 35.09],
+            '平度': [119.97, 36.77],
+            '佛山': [113.11, 23.05],
+            '海口': [110.35, 20.02],
+            '江门': [113.06, 22.61],
+            '章丘': [117.53, 36.72],
+            '肇庆': [112.44, 23.05],
+            '大连': [121.62, 38.92],
+            '临汾': [111.5, 36.08],
+            '吴江': [120.63, 31.16],
+            '石嘴山': [106.39, 39.04],
+            '沈阳': [123.38, 41.8],
+            '苏州': [120.62, 31.32],
+            '茂名': [110.88, 21.68],
+            '嘉兴': [120.76, 30.77],
+            '长春': [125.35, 43.88],
+            '胶州': [120.03336, 36.264622],
+            '银川': [106.27, 38.47],
+            '张家港': [120.555821, 31.875428],
+            '三门峡': [111.19, 34.76],
+            '锦州': [121.15, 41.13],
+            '南昌': [115.89, 28.68],
+            '柳州': [109.4, 24.33],
+            '三亚': [109.511909, 18.252847],
+            '自贡': [104.778442, 29.33903],
+            '吉林': [126.57, 43.87],
+            '阳江': [111.95, 21.85],
+            '泸州': [105.39, 28.91],
+            '西宁': [101.74, 36.56],
+            '宜宾': [104.56, 29.77],
+            '呼和浩特': [111.65, 40.82],
+            '成都': [104.06, 30.67],
+            '大同': [113.3, 40.12],
+            '镇江': [119.44, 32.2],
+            '桂林': [110.28, 25.29],
+            '张家界': [110.479191, 29.117096],
+            '宜兴': [119.82, 31.36],
+            '北海': [109.12, 21.49],
+            '西安': [108.95, 34.27],
+            '金坛': [119.56, 31.74],
+            '东营': [118.49, 37.46],
+            '牡丹江': [129.58, 44.6],
+            '遵义': [106.9, 27.7],
+            '绍兴': [120.58, 30.01],
+            '扬州': [119.42, 32.39],
+            '常州': [119.95, 31.79],
+            '潍坊': [119.1, 36.62],
+            '重庆': [106.54, 29.59],
+            '台州': [121.420757, 28.656386],
+            '南京': [118.78, 32.04],
+            '滨州': [118.03, 37.36],
+            '贵阳': [106.71, 26.57],
+            '无锡': [120.29, 31.59],
+            '本溪': [123.73, 41.3],
+            '克拉玛依': [84.77, 45.59],
+            '渭南': [109.5, 34.52],
+            '马鞍山': [118.48, 31.56],
+            '宝鸡': [107.15, 34.38],
+            '焦作': [113.21, 35.24],
+            '句容': [119.16, 31.95],
+            '北京': [116.46, 39.92],
+            '徐州': [117.2, 34.26],
+            '衡水': [115.72, 37.72],
+            '包头': [110, 40.58],
+            '绵阳': [104.73, 31.48],
+            '乌鲁木齐': [87.68, 43.77],
+            '枣庄': [117.57, 34.86],
+            '杭州': [120.19, 30.26],
+            '淄博': [118.05, 36.78],
+            '鞍山': [122.85, 41.12],
+            '溧阳': [119.48, 31.43],
+            '库尔勒': [86.06, 41.68],
+            '安阳': [114.35, 36.1],
+            '开封': [114.35, 34.79],
+            '济南': [117, 36.65],
+            '德阳': [104.37, 31.13],
+            '温州': [120.65, 28.01],
+            '九江': [115.97, 29.71],
+            '邯郸': [114.47, 36.6],
+            '临安': [119.72, 30.23],
+            '兰州': [103.73, 36.03],
+            '沧州': [116.83, 38.33],
+            '临沂': [118.35, 35.05],
+            '南充': [106.110698, 30.837793],
+            '天津': [117.2, 39.13],
+            '富阳': [119.95, 30.07],
+            '泰安': [117.13, 36.18],
+            '诸暨': [120.23, 29.71],
+            '郑州': [113.65, 34.76],
+            '哈尔滨': [126.63, 45.75],
+            '聊城': [115.97, 36.45],
+            '芜湖': [118.38, 31.33],
+            '唐山': [118.02, 39.63],
+            '平顶山': [113.29, 33.75],
+            '邢台': [114.48, 37.05],
+            '德州': [116.29, 37.45],
+            '济宁': [116.59, 35.38],
+            '荆州': [112.239741, 30.335165],
+            '宜昌': [111.3, 30.7],
+            '义乌': [120.06, 29.32],
+            '丽水': [119.92, 28.45],
+            '洛阳': [112.44, 34.7],
+            '秦皇岛': [119.57, 39.95],
+            '株洲': [113.16, 27.83],
+            '石家庄': [114.48, 38.03],
+            '莱芜': [117.67, 36.19],
+            '常德': [111.69, 29.05],
+            '保定': [115.48, 38.85],
+            '湘潭': [112.91, 27.87],
+            '金华': [119.64, 29.12],
+            '岳阳': [113.09, 29.37],
+            '长沙': [113, 28.21],
+            '衢州': [118.88, 28.97],
+            '廊坊': [116.7, 39.53],
+            '菏泽': [115.480656, 35.23375],
+            '合肥': [117.27, 31.86],
+            '武汉': [114.31, 30.52],
+            '大庆': [125.03, 46.58]
+        };
+
+        var convertData = function (data) {
+            var res = [];
+            for (var i = 0; i < data.length; i++) {
+                var geoCoord = geoCoordMap[data[i].name];
+                if (geoCoord) {
+                    res.push({
+                        name: data[i].name,
+                        value: geoCoord.concat(data[i].value)
+                    });
+                }
+            }
+            return res;
+        };
+        {#        签到功能#}
+        var calUtil = {
+
+            getDaysInmonth: function (iMonth, iYear) {
+                var dPrevDate = new Date(iYear, iMonth, 0);
+                return dPrevDate.getDate();
+            },
+            bulidCal: function (iYear, iMonth) {
+                var aMonth = new Array();
+                aMonth[0] = new Array(7);
+                aMonth[1] = new Array(7);
+                aMonth[2] = new Array(7);
+                aMonth[3] = new Array(7);
+                aMonth[4] = new Array(7);
+                aMonth[5] = new Array(7);
+                aMonth[6] = new Array(7);
+                var dCalDate = new Date(iYear, iMonth - 1, 1);
+                var iDayOfFirst = dCalDate.getDay();
+                var iDaysInMonth = calUtil.getDaysInmonth(iMonth, iYear);
+                var iVarDate = 1;
+                var d, w;
+                aMonth[0][0] = "日";
+                aMonth[0][1] = "一";
+                aMonth[0][2] = "二";
+                aMonth[0][3] = "三";
+                aMonth[0][4] = "四";
+                aMonth[0][5] = "五";
+                aMonth[0][6] = "六";
+                for (d = iDayOfFirst; d < 7; d++) {
+                    aMonth[1][d] = iVarDate;
+                    iVarDate++;
+                }
+                for (w = 2; w < 7; w++) {
+                    for (d = 0; d < 7; d++) {
+                        if (iVarDate <= iDaysInMonth) {
+                            aMonth[w][d] = iVarDate;
+                            iVarDate++;
+                        }
+                    }
+                }
+                if (!aMonth[6][0]) {
+                    delete aMonth[6];
+                }
+                return aMonth;
+            },
+            ifHasSigned: function (signList, day) {
+                var signed = false;
+                for (var key in signList) {
+                    if (signList[key] == day) {
+                        signed = true;
+                    }
+                }
+                {#                $.each(signList, function (index, item) {#}
+                {#                    var date = new Date(item.signDate);#}
+                {#                    if (date.getDate() == day) {#}
+                {#                        signed = true;#}
+                {#                        return false;#}
+                {#                    }#}
+                {#                });#}
+                return signed;
+            },
+            drawCal: function (iYear, iMonth, signList) {
+                var currentYearMonth = iYear + "年" + iMonth + "月";
+                var myMonth = calUtil.bulidCal(iYear, iMonth);
+
+                var htmls = new Array();
+                htmls.push("<div class='sign_main' id='sign_layer'>");
+                htmls.push("<div class='sign_succ_calendar_title'>");
+                {#                htmls.push("<div class='calendar_month_span'>" + currentYearMonth + "</div>");#}
+                htmls.push("</div>");
+                htmls.push("<div class='sign' id='sign_cal' >");
+                htmls.push("<table class='customers' >");
+                htmls.push("<tr><th colspan='7'>" + currentYearMonth + "</th></tr>");
+                htmls.push("<tr>");
+                htmls.push("<th>" + myMonth[0][0] + "</th>");
+                htmls.push("<th>" + myMonth[0][1] + "</th>");
+                htmls.push("<th>" + myMonth[0][2] + "</th>");
+                htmls.push("<th>" + myMonth[0][3] + "</th>");
+                htmls.push("<th>" + myMonth[0][4] + "</th>");
+                htmls.push("<th>" + myMonth[0][5] + "</th>");
+                htmls.push("<th>" + myMonth[0][6] + "</th>");
+                htmls.push("</tr>");
+                var d, w;
+                for (w = 1; w < myMonth.length - 1; w++) {
+                    htmls.push("<tr>");
+                    for (d = 0; d < 7; d++) {
+                        var ifHasSigned = calUtil.ifHasSigned(signList, myMonth[w][d]);
+
+
+                        if (ifHasSigned) {
+                            htmls.push("<td style='background-color:#50e469'>" + (!isNaN(myMonth[w][d]) ? myMonth[w][d] : " ") + "</td>");
+
+                        } else {
+                            htmls.push("<td>" + (!isNaN(myMonth[w][d]) ? myMonth[w][d] : " ") + "</td>");
+                        }
+                    }
+                    htmls.push("</tr>");
+                }
+                htmls.push("</table>");
+                htmls.push("</div>");
+                htmls.push("</div>");
+                return htmls.join('');
+            }
+        };
+        {#        签到按钮#}
+        $("#signin_today").click(function () {
+            $.ajax({
+                type: 'GET',
+                url: '{{ url_for("restfulapi.signin") }}',
+                data: {
+                    'username': "{{ current_user.username }}",
+                    'date':year+"-"+month+"-"+date
+                },
+                async: false,
+                dataType: 'json',
+                success: function (data) {
+                    alert('签到成功，获得一积分')
+                    show_user_info()
+                    creat_calendar()
+                }
+            })
+        })
+        {#            绘制签到日历#}
+        function creat_calendar(){
+            signindate_list=[]
+            var today = false
+            $.ajax({
+                type: 'GET',
+                url: '{{ url_for("restfulapi.get_signin_date_list") }}',
+                data: {
+                    'username': "{{ current_user.username }}"
+                },
+                async: false,
+                dataType: 'json',
+                success: function (data) {
+                    date_list = data.date_list
+
+                    for (i in date_list) {
+                        if (date_list[i].split("-")[0] == year && date_list[i].split("-")[1] == month) {
+                            console.log(date_list[i].split("-")[2])
+                            signindate_list.push(date_list[i].split("-")[2])
+                            if(date_list[i].split("-")[2]==date){
+                                today = true
+                            }
+                        }
+                    }
+                }
+            })
+            console.log(signindate_list)
+            var str = calUtil.drawCal(year, month, signindate_list);
+            $("#calendar").html(str);
+            if(today){
+                 $("#signin_today").html( '已签到');
+                    $("#signin_today").attr("disabled", true);
+            }
+
+        }
+        function show_user_info(){
+            $.ajax({
+                type: 'GET',
+                url: '{{ url_for("restfulapi.home") }}',
+                data: {
+                    'username': "{{ current_user.username }}",
+                },
+                dataType: 'json',
+                success: function (data) {
+                    console.log(data);
+                    $("#myfavorites").text(data.favorite_stock_count);
+                    $("#mypositions").text(data.position_stock_count);
+                    $("#myprofits").text(data.position_profit.toFixed(2));
+                    $("#mytraderec").text(data.trade_rec_count);
+                    if (data.member_type == null) {
+                        var userimgsrc = "/static/personal_img/user.jpg";
+                        $("#personal_img").attr("src", userimgsrc);
+                        $("#user_info").text('您的账户尚未开通会员服务，');
+                    }
+                    else if (data.member_type == 'month') {
+                        var vipimgsrc = "/static/personal_img/vip.png";
+                        $("#personal_img").attr("src", vipimgsrc);
+                        $("#user_info").text('您的账户目前是包月会员，可免费下载数据，当前账户余额：' + data.user_money + '元，');
+                    }
+                    else if (data.member_type == 'year') {
+                        var vipimgsrc = "/static/personal_img/vip.png";
+                        $("#personal_img").attr("src", vipimgsrc);
+                        $("#user_info").text('您的账户目前是年费会员，可免费下载数据，当前账户余额：' + data.user_money + '元，');
+                    }
+                    $("#user_info").append('<a data-toggle=\"modal\" data-target=\"#modal_recharge\" style=\'\'>点此充值</button>');
+                    cityDist(data);
+                }
+            });
+        }
+        $(document).ready(function () {
+            show_user_info()
+
+            {#            get profit cost market value trend data#}
+            $.ajax({
+                type: 'GET',
+                url: '{{ url_for("restfulapi.positionhistory") }}',
+                data: {
+                    'username': "{{ current_user.username }}"
+                },
+                dataType: 'json',
+                success: function (data) {
+                    console.log(data);
+                    profittrend(data);
+                }
+            })
+
+
+creat_calendar()
+
+        });
+    </script>
+
+    <script>
+        setInterval(cc, 30000);
+        setInterval(dd, 30000);
+
+        function cc() {
+            $.ajax({
+                type: 'GET',
+                url: '{{ url_for("message_api.get_message_count") }}',
+                dataType: 'json',
+                success: function (data) {
+                    console.log(data);
+                    if (data.count > 0) {
+                        $("#mymessages").text(data.count)
+                    }
+                    else {
+                        $("#mymessages").text('0')
+                    }
+
+                }
+            })
+        }
+
+        function dd() {
+            $.ajax({
+                type: 'GET',
+                url: '{{ url_for("message_api.get_system_message_count") }}',
+                dataType: 'json',
+                success: function (data) {
+                    if (data.count > 0) {
+                        $("#mysystem").text(data.count)
+                    }
+                    else {
+                        $("#mysystem").text('0')
+                    }
+
+                }
+            })
+        }
+
+    </script>
 {% endblock %}

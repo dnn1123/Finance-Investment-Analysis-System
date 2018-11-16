@@ -1,49 +1,79 @@
 {% extends "industry_analysis/industry_analysis_base.html" %}
 
 {% block form %}
-    <!--通过parameter判断显示哪种表单-->
     {% if parameter==1 %}
-        <form class="form-search" method="POST" action="{{ url_for('industry_analysis.industry_status',parameter=1) }}">
-        {{ cns_filterform1.hidden_tag() }}
-        {{ cns_filterform1.gics_code(class_='input-sm') }}
-        <input class="btn btn-success btn-xs" type="submit" value="搜索" >
-    </form>
+        <form class="navbar-form navbar-left" role="search" method="POST" id="form1"
+              action="{{ url_for('industry_analysis.industry_status',parameter=1) }}">
+            <div class="input-group">
+                {{ cns_filterform1.hidden_tag() }}
+                {{ cns_filterform1.gics_code(class_='input-sm') }}
+                <div class="input-group-btn">
+                    <button id="submitbtn1" class="btn btn-default" type="submit"
+                            style="padding: 8.5px 12px"><span
+                            class="glyphicon glyphicon-search"></span></button>
+                    <ul class="dropdown-menu dropdown-menu-right" role="menu"></ul>
+                </div>
+            </div>
+        </form>
     {% elif parameter==2 %}
-        <form class="form-search" method="POST" action="{{ url_for('industry_analysis.industry_status',parameter=2) }}">
-        {{ cns_filterform2.hidden_tag() }}
-        {{ cns_filterform2.gics_code(class_='input-sm') }}
-        <input class="btn btn-success btn-xs" type="submit" value="搜索" >
-    </form>
+        <form class="navbar-form navbar-left" method="POST" id="form2"
+              action="{{ url_for('industry_analysis.industry_status',parameter=2) }}">
+            <div class="input-group">
+                {{ cns_filterform2.hidden_tag() }}
+                {{ cns_filterform2.gics_code(class_='input-sm') }}
+                <div class="input-group-btn">
+                    <button id="submitbtn2" class="btn btn-default" type="submit"
+                            style="padding: 8.5px 12px"><span
+                            class="glyphicon glyphicon-search"></span></button>
+                    <ul class="dropdown-menu dropdown-menu-right" role="menu"></ul>
+                </div>
+            </div>
+        </form>
     {% elif parameter==3 %}
-        <form class="form-search" method="POST" action="{{ url_for('industry_analysis.industry_status',parameter=3) }}">
-        {{ cns_filterform3.hidden_tag() }}
-        {{ cns_filterform3.gics_code(class_='input-sm') }}
-        <input class="btn btn-success btn-xs" type="submit" value="搜索" >
-    </form>
+        <form class="navbar-form navbar-left" method="POST" id="form3"
+              action="{{ url_for('industry_analysis.industry_status',parameter=3) }}">
+            <div class="input-group">
+                {{ cns_filterform3.hidden_tag() }}
+                {{ cns_filterform3.gics_code(class_='input-sm') }}
+                <div class="input-group-btn">
+                    <button id="submitbtn3" class="btn btn-default" type="submit"
+                            style="padding: 8.5px 12px"><span
+                            class="glyphicon glyphicon-search"></span></button>
+                    <ul class="dropdown-menu dropdown-menu-right" role="menu"></ul>
+                </div>
+            </div>
+        </form>
     {% elif parameter==4 %}
-        <form class="form-search" method="POST" action="{{ url_for('industry_analysis.industry_status',parameter=4) }}">
-        {{ cns_filterform4.hidden_tag() }}
-        {{ cns_filterform4.gics_code(class_='input-sm') }}
-        <input class="btn btn-success btn-xs" type="submit" value="搜索" >
-    </form>
+        <form class="navbar-form navbar-left" method="POST" id="form4"
+              action="{{ url_for('industry_analysis.industry_status',parameter=4) }}">
+            <div class="input-group">
+                {{ cns_filterform4.hidden_tag() }}
+                {{ cns_filterform4.gics_code(class_='input-sm') }}
+                <div class="input-group-btn">
+                    <button id="submitbtn4" class="btn btn-default" type="submit"
+                            style="padding: 8.5px 12px"><span
+                            class="glyphicon glyphicon-search"></span></button>
+                    <ul class="dropdown-menu dropdown-menu-right" role="menu"></ul>
+                </div>
+            </div>
+        </form>
     {% endif %}
-
 {% endblock %}
 
 {% block fixTable %}
     <script>
-			$(document).ready(function() {
-				$("#fixTable").tableHeadFixer({"left" : 1});
-			});
+        $(document).ready(function () {
+            $("#fixTable").tableHeadFixer({"left": 1});
+        });
     </script>
 {% endblock %}
 
 {% block tab %}
     <ul class="nav nav-pills">
-        <li><a href="{{ url_for('.market_status') }}">A.市场概况</a></li>
+        <li><a href="{{ url_for('.market_value') }}">市场分析</a></li>
         <li class="dropdown active"> <!--tip 可以同时写两个属性-->
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                B.行业状况 <span class="caret"></span>
+                行业状况 <span class="caret"></span>
             </a>
             <ul class="dropdown-menu">
                 <li><a href="{{ url_for('.industry_status',parameter=1) }}">部门</a></li>
@@ -52,13 +82,22 @@
                 <li><a href="{{ url_for('.industry_status',parameter=4) }}">子行业</a></li>
             </ul>
         </li>
-        <li><a>C.图表分析</a></li>
-        <li><a href="{{ url_for('.cns_home') }}">1.上市公司名单</a></li>
-        <li><a>2.制图数据</a></li>
-        <li><a href="{{ url_for('.annual_table') }}">年度表.A</a></li>
         <li class="dropdown"> <!--tip 可以同时写两个属性-->
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                年度表.B <span class="caret"></span>
+                对比分析 <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+                <li><a href="{{ url_for('.industry_compare',param=1) }}">部门</a></li>
+                <li><a href="{{ url_for('.industry_compare',param=2) }}">行业组</a></li>
+                <li><a href="{{ url_for('.industry_compare',param=3) }}">行业</a></li>
+                <li><a href="{{ url_for('.industry_compare',param=4) }}">子行业</a></li>
+            </ul>
+        </li>
+        <li><a href="{{ url_for('.cns_home') }}">上市公司名单</a></li>
+        <li><a href="{{ url_for('.annual_table') }}">年度表A</a></li>
+        <li class="dropdown"> <!--tip 可以同时写两个属性-->
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                年度表B <span class="caret"></span>
             </a>
             <ul class="dropdown-menu">
                 <li><a href="{{ url_for('.annual_table_b',parameter=1) }}">部门</a></li>
@@ -71,949 +110,2482 @@
 {% endblock %}
 
 {% block container %}
-<div id="basics" style="height:auto;overflow-y:auto;border: 1px inset">
-    {% if parameter==1 %}
-        <table id="fixTable" style="width: 100%;white-space:nowrap;">
-            <thead>
-            <tr bgcolor="#FFCC33"> <!--table样式不对-->
-                <th style="width: 9%;">{{ rs[0].industry_gics_1 }}</th>
-                {% for x in range(year_list|length()) %}
-                    <th style="width: 3.5%;">
-                        {{ year_list[x][0][:4] }}年度 &nbsp;&nbsp;&nbsp;<!--笨方法-->
-                    </th>
-                {% endfor %}
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td style="width: 9%;">营业收入总和</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].tot_oper_rev==None or rs[x].tot_oper_rev==0%}
-                            NA
-                        {% else %}
-                            {{ (rs[x].tot_oper_rev/100000000)|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>净利润总和</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].net_profit_is==None or rs[x].net_profit_is==0%}
-                            NA
-                        {% else %}
-                            {{ (rs[x].net_profit_is/100000000)|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>归属股东利润总和</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].wgsd_com_eq==None or rs[x].wgsd_com_eq==0%}
-                            NA
-                        {% else %}
-                            {{ (rs[x].wgsd_com_eq/100000000)|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>总资产总和</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].tot_assets==None or rs[x].tot_assets== 0 %}
-                            NA
-                        {% else %}
-                            {{ (rs[x].tot_assets/100000000)|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>总负债总和</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].tot_liab==None or rs[x].tot_liab == 0 %}
-                            NA
-                        {% else %}
-                            {{ (rs[x].tot_liab/100000000)|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>净资产总和</td>
-                {% for x in rs_list %}
-                    <td> <!--要判断得太多了-->
-                        {% if rs[x].tot_assets==None or rs[x].tot_assets==0 or rs[x].tot_liab==None or rs[x].tot_liab==0 or (rs[x].tot_assets-rs[x].tot_liab) == None or (rs[x].tot_assets-rs[x].tot_liab) == 0 %}
-                            NA
-                        {% else %}
-                            {{ ((rs[x].tot_assets-rs[x].tot_liab)/100000000)|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>股东权益总和</td> <!--这个指标对吗？？？-->
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].wgsd_com_eq==None or rs[x].wgsd_com_eq == 0 %}
-                            NA
-                        {% else %}
-                            {{ (rs[x].wgsd_com_eq/100000000)|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>经营性现金流总和</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].operatecashflow_ttm2==None or rs[x].operatecashflow_ttm2 == 0 %}
-                            NA
-                        {% else %}
-                            {{ (rs[x].operatecashflow_ttm2/100000000)|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>投资性现金流总和</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].investcashflow_ttm2==None or rs[x].investcashflow_ttm2 == 0 %}
-                            NA
-                        {% else %}
-                            {{ (rs[x].investcashflow_ttm2/100000000)|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>融资性现金流总和</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].financecashflow_ttm2==None or rs[x].financecashflow_ttm2 == 0 %}
-                            NA
-                        {% else %}
-                            {{ (rs[x].financecashflow_ttm2/100000000)|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>总现金流总和</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].cashflow_ttm2==None or rs[x].cashflow_ttm2 == 0 %}
-                            NA
-                        {% else %}
-                            {{ (rs[x].cashflow_ttm2/100000000)|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>自由现金流估计</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].operatecashflow_ttm2==None or rs[x].investcashflow_ttm2==None or (rs[x].operatecashflow_ttm2-rs[x].investcashflow_ttm2)==None or (rs[x].operatecashflow_ttm2-rs[x].investcashflow_ttm2)== 0 %}
-                            NA
-                        {% else %}
-                            {{ ((rs[x].operatecashflow_ttm2-rs[x].investcashflow_ttm2)/100000000)|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>平均净利润率</td> <!--平均是什么意思？-->
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].net_profit_rate == None or rs[x].net_profit_rate==0%}
-                            NA
-                        {% else %}
-                            {{ rs[x].net_profit_rate|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>平均总资产周转率</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].tot_assets_turnover == None or rs[x].tot_assets_turnover==0%}
-                            NA
-                        {% else %}
-                            {{ rs[x].tot_assets_turnover|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>平均权益乘数</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].equ_multi == None or rs[x].equ_multi==0%}
-                            NA
-                        {% else %}
-                            {{ rs[x].equ_multi|round(2)}}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>平均净资产收益率（总额）</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].roe_tot == None or rs[x].roe_tot==0%}
-                            NA
-                        {% else %}
-                            {{ rs[x].roe_tot|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>平均净资产收益率（股东）</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].roe_holder == None or rs[x].roe_holder==0%}
-                            NA
-                        {% else %}
-                            {{ rs[x].roe_holder|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>上市公司数量</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].company_num == None %}
-                            NA
-                        {% else %}
-                            {{ rs[x].company_num }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            </tbody>
-        </table>
-    {% elif parameter==2 %}
-        <table id="fixTable" style="width: 100%;white-space:nowrap;">
-            <thead>
-            <tr bgcolor="#FFCC33"> <!--table样式不对-->
-                <th style="width: 9%;">{{ rs[0].industry_gics_2 }}</th>
-                {% for x in range(year_list|length()) %}
-                    <th style="width: 3.5%;">
-                        {{ year_list[x][0][:4] }}年度 &nbsp;&nbsp;&nbsp;<!--笨方法-->
-                    </th>
-                {% endfor %}
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td style="width: 9%;">营业收入总和</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].tot_oper_rev==None or rs[x].tot_oper_rev==0%}
-                            NA
-                        {% else %}
-                            {{ (rs[x].tot_oper_rev/100000000)|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>净利润总和</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].net_profit_is==None or rs[x].net_profit_is==0%}
-                            NA
-                        {% else %}
-                            {{ (rs[x].net_profit_is/100000000)|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>归属股东利润总和</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].wgsd_com_eq==None or rs[x].wgsd_com_eq==0%}
-                            NA
-                        {% else %}
-                            {{ (rs[x].wgsd_com_eq/100000000)|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>总资产总和</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].tot_assets==None or rs[x].tot_assets== 0 %}
-                            NA
-                        {% else %}
-                            {{ (rs[x].tot_assets/100000000)|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>总负债总和</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].tot_liab==None or rs[x].tot_liab == 0 %}
-                            NA
-                        {% else %}
-                            {{ (rs[x].tot_liab/100000000)|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>净资产总和</td>
-                {% for x in rs_list %}
-                    <td> <!--要判断得太多了-->
-                        {% if rs[x].tot_assets==None or rs[x].tot_assets==0 or rs[x].tot_liab==None or rs[x].tot_liab==0 or (rs[x].tot_assets-rs[x].tot_liab) == None or (rs[x].tot_assets-rs[x].tot_liab) == 0 %}
-                            NA
-                        {% else %}
-                            {{ ((rs[x].tot_assets-rs[x].tot_liab)/100000000)|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>股东权益总和</td> <!--这个指标对吗？？？-->
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].wgsd_com_eq==None or rs[x].wgsd_com_eq == 0 %}
-                            NA
-                        {% else %}
-                            {{ (rs[x].wgsd_com_eq/100000000)|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>经营性现金流总和</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].operatecashflow_ttm2==None or rs[x].operatecashflow_ttm2 == 0 %}
-                            NA
-                        {% else %}
-                            {{ (rs[x].operatecashflow_ttm2/100000000)|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>投资性现金流总和</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].investcashflow_ttm2==None or rs[x].investcashflow_ttm2 == 0 %}
-                            NA
-                        {% else %}
-                            {{ (rs[x].investcashflow_ttm2/100000000)|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>融资性现金流总和</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].financecashflow_ttm2==None or rs[x].financecashflow_ttm2 == 0 %}
-                            NA
-                        {% else %}
-                            {{ (rs[x].financecashflow_ttm2/100000000)|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>总现金流总和</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].cashflow_ttm2==None or rs[x].cashflow_ttm2 == 0 %}
-                            NA
-                        {% else %}
-                            {{ (rs[x].cashflow_ttm2/100000000)|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>自由现金流估计</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].operatecashflow_ttm2==None or rs[x].investcashflow_ttm2==None or (rs[x].operatecashflow_ttm2-rs[x].investcashflow_ttm2)==None or (rs[x].operatecashflow_ttm2-rs[x].investcashflow_ttm2)== 0 %}
-                            NA
-                        {% else %}
-                            {{ ((rs[x].operatecashflow_ttm2-rs[x].investcashflow_ttm2)/100000000)|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>平均净利润率</td> <!--平均是什么意思？-->
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].net_profit_rate == None or rs[x].net_profit_rate==0%}
-                            NA
-                        {% else %}
-                            {{ rs[x].net_profit_rate|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>平均总资产周转率</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].tot_assets_turnover == None or rs[x].tot_assets_turnover==0%}
-                            NA
-                        {% else %}
-                            {{ rs[x].tot_assets_turnover|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>平均权益乘数</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].equ_multi == None or rs[x].equ_multi==0%}
-                            NA
-                        {% else %}
-                            {{ rs[x].equ_multi|round(2)}}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>平均净资产收益率（总额）</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].roe_tot == None or rs[x].roe_tot==0%}
-                            NA
-                        {% else %}
-                            {{ rs[x].roe_tot|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>平均净资产收益率（股东）</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].roe_holder == None or rs[x].roe_holder==0%}
-                            NA
-                        {% else %}
-                            {{ rs[x].roe_holder|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>上市公司数量</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].company_num == None %}
-                            NA
-                        {% else %}
-                            {{ rs[x].company_num }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            </tbody>
-        </table>
-    {% elif parameter==3 %}
-        <table id="fixTable" style="width: 100%;white-space:nowrap;">
-            <thead>
-            <tr bgcolor="#FFCC33"> <!--table样式不对-->
-                <th style="width: 9%;">{{ rs[0].industry_gics_3 }}</th>
-                {% for x in range(year_list|length()) %}
-                    <th style="width: 3.5%;">
-                        {{ year_list[x][0][:4] }}年度 &nbsp;&nbsp;&nbsp;<!--笨方法-->
-                    </th>
-                {% endfor %}
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td style="width: 9%;">营业收入总和</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].tot_oper_rev==None or rs[x].tot_oper_rev==0%}
-                            NA
-                        {% else %}
-                            {{ (rs[x].tot_oper_rev/100000000)|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>净利润总和</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].net_profit_is==None or rs[x].net_profit_is==0%}
-                            NA
-                        {% else %}
-                            {{ (rs[x].net_profit_is/100000000)|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>归属股东利润总和</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].wgsd_com_eq==None or rs[x].wgsd_com_eq==0%}
-                            NA
-                        {% else %}
-                            {{ (rs[x].wgsd_com_eq/100000000)|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>总资产总和</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].tot_assets==None or rs[x].tot_assets== 0 %}
-                            NA
-                        {% else %}
-                            {{ (rs[x].tot_assets/100000000)|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>总负债总和</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].tot_liab==None or rs[x].tot_liab == 0 %}
-                            NA
-                        {% else %}
-                            {{ (rs[x].tot_liab/100000000)|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>净资产总和</td>
-                {% for x in rs_list %}
-                    <td> <!--要判断得太多了-->
-                        {% if rs[x].tot_assets==None or rs[x].tot_assets==0 or rs[x].tot_liab==None or rs[x].tot_liab==0 or (rs[x].tot_assets-rs[x].tot_liab) == None or (rs[x].tot_assets-rs[x].tot_liab) == 0 %}
-                            NA
-                        {% else %}
-                            {{ ((rs[x].tot_assets-rs[x].tot_liab)/100000000)|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>股东权益总和</td> <!--这个指标对吗？？？-->
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].wgsd_com_eq==None or rs[x].wgsd_com_eq == 0 %}
-                            NA
-                        {% else %}
-                            {{ (rs[x].wgsd_com_eq/100000000)|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>经营性现金流总和</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].operatecashflow_ttm2==None or rs[x].operatecashflow_ttm2 == 0 %}
-                            NA
-                        {% else %}
-                            {{ (rs[x].operatecashflow_ttm2/100000000)|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>投资性现金流总和</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].investcashflow_ttm2==None or rs[x].investcashflow_ttm2 == 0 %}
-                            NA
-                        {% else %}
-                            {{ (rs[x].investcashflow_ttm2/100000000)|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>融资性现金流总和</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].financecashflow_ttm2==None or rs[x].financecashflow_ttm2 == 0 %}
-                            NA
-                        {% else %}
-                            {{ (rs[x].financecashflow_ttm2/100000000)|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>总现金流总和</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].cashflow_ttm2==None or rs[x].cashflow_ttm2 == 0 %}
-                            NA
-                        {% else %}
-                            {{ (rs[x].cashflow_ttm2/100000000)|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>自由现金流估计</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].operatecashflow_ttm2==None or rs[x].investcashflow_ttm2==None or (rs[x].operatecashflow_ttm2-rs[x].investcashflow_ttm2)==None or (rs[x].operatecashflow_ttm2-rs[x].investcashflow_ttm2)== 0 %}
-                            NA
-                        {% else %}
-                            {{ ((rs[x].operatecashflow_ttm2-rs[x].investcashflow_ttm2)/100000000)|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>平均净利润率</td> <!--平均是什么意思？-->
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].net_profit_rate == None or rs[x].net_profit_rate==0%}
-                            NA
-                        {% else %}
-                            {{ rs[x].net_profit_rate|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>平均总资产周转率</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].tot_assets_turnover == None or rs[x].tot_assets_turnover==0%}
-                            NA
-                        {% else %}
-                            {{ rs[x].tot_assets_turnover|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>平均权益乘数</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].equ_multi == None or rs[x].equ_multi==0%}
-                            NA
-                        {% else %}
-                            {{ rs[x].equ_multi|round(2)}}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>平均净资产收益率（总额）</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].roe_tot == None or rs[x].roe_tot==0%}
-                            NA
-                        {% else %}
-                            {{ rs[x].roe_tot|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>平均净资产收益率（股东）</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].roe_holder == None or rs[x].roe_holder==0%}
-                            NA
-                        {% else %}
-                            {{ rs[x].roe_holder|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>上市公司数量</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].company_num == None %}
-                            NA
-                        {% else %}
-                            {{ rs[x].company_num }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            </tbody>
-        </table>
-    {% elif parameter==4 %}
-        <table id="fixTable" style="width: 100%;white-space:nowrap;">
-            <thead>
-            <tr bgcolor="#FFCC33"> <!--table样式不对-->
-                <th style="width: 9%;">{{ rs[0].industry_gics_4 }}   </th>
-                {% for x in range(year_list|length()) %}
-                    <th style="width: 3.5%;">
-                        {{ year_list[x][0][:4] }}年度 &nbsp;&nbsp;&nbsp;<!--笨方法-->
-                    </th>
-                {% endfor %}
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td style="width: 9%;">营业收入总和</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].tot_oper_rev==None or rs[x].tot_oper_rev==0%}
-                            NA
-                        {% else %}
-                            {{ (rs[x].tot_oper_rev/100000000)|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>净利润总和</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].net_profit_is==None or rs[x].net_profit_is==0%}
-                            NA
-                        {% else %}
-                            {{ (rs[x].net_profit_is/100000000)|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>归属股东利润总和</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].wgsd_com_eq==None or rs[x].wgsd_com_eq==0%}
-                            NA
-                        {% else %}
-                            {{ (rs[x].wgsd_com_eq/100000000)|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>总资产总和</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].tot_assets==None or rs[x].tot_assets== 0 %}
-                            NA
-                        {% else %}
-                            {{ (rs[x].tot_assets/100000000)|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>总负债总和</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].tot_liab==None or rs[x].tot_liab == 0 %}
-                            NA
-                        {% else %}
-                            {{ (rs[x].tot_liab/100000000)|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>净资产总和</td>
-                {% for x in rs_list %}
-                    <td> <!--要判断得太多了-->
-                        {% if rs[x].tot_assets==None or rs[x].tot_assets==0 or rs[x].tot_liab==None or rs[x].tot_liab==0 or (rs[x].tot_assets-rs[x].tot_liab) == None or (rs[x].tot_assets-rs[x].tot_liab) == 0 %}
-                            NA
-                        {% else %}
-                            {{ ((rs[x].tot_assets-rs[x].tot_liab)/100000000)|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>股东权益总和</td> <!--这个指标对吗？？？-->
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].wgsd_com_eq==None or rs[x].wgsd_com_eq == 0 %}
-                            NA
-                        {% else %}
-                            {{ (rs[x].wgsd_com_eq/100000000)|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>经营性现金流总和</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].operatecashflow_ttm2==None or rs[x].operatecashflow_ttm2 == 0 %}
-                            NA
-                        {% else %}
-                            {{ (rs[x].operatecashflow_ttm2/100000000)|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>投资性现金流总和</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].investcashflow_ttm2==None or rs[x].investcashflow_ttm2 == 0 %}
-                            NA
-                        {% else %}
-                            {{ (rs[x].investcashflow_ttm2/100000000)|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>融资性现金流总和</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].financecashflow_ttm2==None or rs[x].financecashflow_ttm2 == 0 %}
-                            NA
-                        {% else %}
-                            {{ (rs[x].financecashflow_ttm2/100000000)|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>总现金流总和</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].cashflow_ttm2==None or rs[x].cashflow_ttm2 == 0 %}
-                            NA
-                        {% else %}
-                            {{ (rs[x].cashflow_ttm2/100000000)|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>自由现金流估计</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].operatecashflow_ttm2==None or rs[x].investcashflow_ttm2==None or (rs[x].operatecashflow_ttm2-rs[x].investcashflow_ttm2)==None or (rs[x].operatecashflow_ttm2-rs[x].investcashflow_ttm2)== 0 %}
-                            NA
-                        {% else %}
-                            {{ ((rs[x].operatecashflow_ttm2-rs[x].investcashflow_ttm2)/100000000)|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>平均净利润率</td> <!--平均是什么意思？-->
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].net_profit_rate == None or rs[x].net_profit_rate==0%}
-                            NA
-                        {% else %}
-                            {{ rs[x].net_profit_rate|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>平均总资产周转率</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].tot_assets_turnover == None or rs[x].tot_assets_turnover==0%}
-                            NA
-                        {% else %}
-                            {{ rs[x].tot_assets_turnover|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>平均权益乘数</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].equ_multi == None or rs[x].equ_multi==0%}
-                            NA
-                        {% else %}
-                            {{ rs[x].equ_multi|round(2)}}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>平均净资产收益率（总额）</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].roe_tot == None or rs[x].roe_tot==0%}
-                            NA
-                        {% else %}
-                            {{ rs[x].roe_tot|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>平均净资产收益率（股东）</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].roe_holder == None or rs[x].roe_holder==0%}
-                            NA
-                        {% else %}
-                            {{ rs[x].roe_holder|round(2) }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>上市公司数量</td>
-                {% for x in rs_list %}
-                    <td>
-                        {% if rs[x].company_num == None %}
-                            NA
-                        {% else %}
-                            {{ rs[x].company_num }}
-                        {% endif %}
-                    </td>
-                {% endfor %}
-            </tr>
-            </tbody>
-        </table>
-    {% endif %}
-</div>
-{% endblock %}
+    <div id="basics" style="height:auto">
+        {% if parameter==1 %}
+            <div id="myTabChoice1" style="width: 100%;height:600px;margin:auto">
+                <ul id="myTab" class="nav nav-tabs">
+                    <li class="disabled">
+                        <a href="javascript:return false;" data-toggle="tab" disabled='true'>视图：</a>
+                    </li>
+                    <li class="active"><a href="#chart" data-toggle="tab">图表</a></li>
+                    <li><a href="#table" data-toggle="tab" onclick="RequestTable1()">数据</a></li>
+                </ul>
+                <div id="choice" class="tab-content">
+                    <div class="tab-pane fade in active" id="chart">
+                        <div id="mychart" style="width:85%;height:60%;;float:right"></div>
+                        <div id="mychoice" style="width:15%;height:72%;float:left;overflow-y :auto">
+                            <div style="width:100%;height:30px;margin-top:10px;background-color:lightgray">
+                                <div class="checkbox" style="width:80%;height:20px;float:left;margin-left:5px">
+                                    <label><input type="checkbox" value="tot_oper_rev" checked="checked"
+                                                  id="first_check">总营业收入</label>
+                                </div>
+                                <div style="width:10px;height:10px;margin-right:5px;float:right;margin-top:15px;background-color:black"
+                                     id="i_tot_oper_rev"></div>
+                            </div>
+                            <div style="width:100%;height:30px;margin-top:10px;background-color:lightgray">
+                                <div class="checkbox" style="width:80%;height:20px;float:left;margin-left:5px">
+                                    <label><input type="checkbox" value="net_profit_is">净利润总和</label>
+                                </div>
+                                <div style="width:10px;height:10px;margin-right:5px;float:right;margin-top:15px;background-color:white"
+                                     id="i_net_profit_is"></div>
+                            </div>
+                            <div style="width:100%;height:30px;margin-top:10px;background-color:lightgray">
+                                <div class="checkbox" style="width:80%;height:20px;float:left;margin-left:5px">
+                                    <label><input type="checkbox" value="wgsd_net_inc">归属股东利润总和</label>
+                                </div>
+                                <div style="width:10px;height:10px;margin-right:5px;float:right;margin-top:15px;background-color:white"
+                                     id="i_wgsd_net_inc"></div>
+                            </div>
+                            <div style="width:100%;height:30px;margin-top:10px;background-color:lightgray">
+                                <div class="checkbox" style="width:80%;height:20px;float:left;margin-left:5px">
+                                    <label><input type="checkbox" value="tot_assets">总资产总和</label>
+                                </div>
+                                <div style="width:10px;height:10px;margin-right:5px;float:right;margin-top:15px;background-color:white"
+                                     id="i_tot_assets"></div>
+                            </div>
+                            <div style="width:100%;height:30px;margin-top:10px;background-color:lightgray">
+                                <div class="checkbox" style="width:80%;height:20px;float:left;margin-left:5px">
+                                    <label><input type="checkbox" value="tot_liab">总负债总和</label>
+                                </div>
+                                <div style="width:10px;height:10px;margin-right:5px;float:right;margin-top:15px;background-color:white"
+                                     id="i_tot_liab"></div>
+                            </div>
+                            <div style="width:100%;height:30px;margin-top:10px;background-color:lightgray">
+                                <div class="checkbox" style="width:80%;height:20px;float:left;margin-left:5px">
+                                    <label><input type="checkbox" value="net_assets">净资产总和</label>
+                                </div>
+                                <div style="width:10px;height:10px;margin-right:5px;float:right;margin-top:15px;background-color:white"
+                                     id="i_net_assets"></div>
+                            </div>
+                            <div style="width:100%;height:30px;margin-top:10px;background-color:lightgray">
+                                <div class="checkbox" style="width:80%;height:20px;float:left;margin-left:5px">
+                                    <label><input type="checkbox" value="wgsd_com_eq">股东权益总和</label>
+                                </div>
+                                <div style="width:10px;height:10px;margin-right:5px;float:right;margin-top:15px;background-color:white"
+                                     id="i_wgsd_com_eq"></div>
+                            </div>
+                            <div style="width:100%;height:30px;margin-top:10px;background-color:lightgray">
+                                <div class="checkbox" style="width:80%;height:20px;float:left;margin-left:5px">
+                                    <label><input type="checkbox" value="operatecashflow_ttm2">经营性现金流总和</label>
+                                </div>
+                                <div style="width:10px;height:10px;margin-right:5px;float:right;margin-top:15px;background-color:white"
+                                     id="i_operatecashflow_ttm2"></div>
+                            </div>
+                            <div style="width:100%;height:30px;margin-top:10px;background-color:lightgray">
+                                <div class="checkbox" style="width:80%;height:20px;float:left;margin-left:5px">
+                                    <label><input type="checkbox" value="investcashflow_ttm2">投资性现金流总和</label>
+                                </div>
+                                <div style="width:10px;height:10px;margin-right:5px;float:right;margin-top:15px;background-color:white"
+                                     id="i_investcashflow_ttm2"></div>
+                            </div>
+                            <div style="width:100%;height:30px;margin-top:10px;background-color:lightgray">
+                                <div class="checkbox" style="width:80%;height:20px;float:left;margin-left:5px">
+                                    <label><input type="checkbox" value="financecashflow_ttm2">融资性现金流总和</label>
+                                </div>
+                                <div style="width:10px;height:10px;margin-right:5px;float:right;margin-top:15px;background-color:white"
+                                     id="i_financecashflow_ttm2"></div>
+                            </div>
+                            <div style="width:100%;height:30px;margin-top:10px;background-color:lightgray">
+                                <div class="checkbox" style="width:80%;height:20px;float:left;margin-left:5px">
+                                    <label><input type="checkbox" value="cashflow_ttm2">总现金流总和</label>
+                                </div>
+                                <div style="width:10px;height:10px;margin-right:5px;float:right;margin-top:15px;background-color:white"
+                                     id="i_cashflow_ttm2"></div>
+                            </div>
+                            <div style="width:100%;height:30px;margin-top:10px;background-color:lightgray">
+                                <div class="checkbox" style="width:80%;height:20px;float:left;margin-left:5px">
+                                    <label><input type="checkbox" value="free_cash_flow">自由现金流估计</label>
+                                </div>
+                                <div style="width:10px;height:10px;margin-right:5px;float:right;margin-top:15px;background-color:white"
+                                     id="i_free_cash_flow"></div>
+                            </div>
+                        </div>
+                        <div style="float:right;width:81.5%;height:10%;margin-top:1%;border-radius:8px;background-color:#dcdcdc">
+                            <div style="float: left;margin-left: 20px;margin-top:20px">
+                                <a style="width:50px;margin-left:10px;color: #0c0c0c">起始时间:</a><input size="16"
+                                                                                                      type="text"
+                                                                                                      value="1991-12-31"
+                                                                                                      id="endtime"
+                                                                                                      readonly
+                                                                                                      class="form_datetime">
+                                <a style="width:50px;margin-left:10px;color: #0c0c0c">结束时间:</a><input size="16"
+                                                                                                      type="text"
+                                                                                                      value="2016-12-31"
+                                                                                                      id="starttime"
+                                                                                                      readonly
+                                                                                                      class="form_datetime">
+                                <a style="width:50px;margin-left:10px;color: #0c0c0c">单位:</a>
+                                <select id="unit">
+                                    <option value="0">亿</option>
+                                    <option value="1">千亿</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="table">
+                        <div id="mytable" style="width:100%;height:100%;float:right"></div>
+                    </div>
+                </div>
+            </div>
+            <script>
+                $("#submitbtn1").click(function () {
+                    $("#form1").submit();
+                    Chosenindexes = ['tot_oper_rev']
+                    RequestChart1();
+                });
+            </script>
+            <!--建图-->
+            <script>
+                var myChart = echarts.init(document.getElementById('mychart'));
+                var market_results1;
+                var dict = {
+                    'tot_oper_rev': '总营业收入',
+                    'net_profit_is': '净利润总和',
+                    'wgsd_net_inc': '归属股东利润总和',
+                    'tot_assets': '总资产总和',
+                    'tot_liab': '总负债总和',
+                    'net_assets': '净资产总和',
+                    'wgsd_com_eq': '股东权益总和',
+                    'operatecashflow_ttm2': '经营性现金流总和',
+                    'investcashflow_ttm2': '投资性现金流总和',
+                    'financecashflow_ttm2': '融资性现金流总和',
+                    'cashflow_ttm2': '总现金流总和',
+                    'free_cash_flow': '自由现金流估计',
+                    'net_profit_rate': '平均净利润率',
+                    'tot_assets_turnover': '平均总资产周转率',
+                    'equ_multi': '平均权益乘数',
+                    'roe_tot': '平均净资产收益率',
+                    'roe_holder': '平均净资产收益率（股东）'
+                };
+                $.ajax({
+                    type: 'GET',
+                    url: '{{ url_for("restfulapi.market_status1") }}',
+                    data: {
+                        code:{{ industry_gicscode_1|safe }},
+                        starttime: '19911231',
+                        endtime: '20161231',
+                        indexes: ['tot_oper_rev'],
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        dataSeries = [];
+                        temp = {
+                            name: data.indexes,
+                            type: 'line',
+                            lineStyle: {normal: {width: 2}},
+                            itemStyle: {normal: {color: '#000000'}},
+                            symbolSize: 8,
+                            smooth: true,
+                            data: numfilter(eval("data." + data.indexes))
+                        };
+                        dataSeries.push(temp);
+                        option = {
+                            title: {
+                                text: '财务指标分析图',
+                                left: '45%'
+                            },
+                            tooltip: {
+                                trigger: 'item',
+                                formatter: function (params) {
+                                    return dict[params.seriesName] + "<br/> 时间：" + params.name + "<br/> 数据：" + params.data;
+                                }
+                            },
+                            legend: {
+                                data: [],
+                                orient: 'vertical',
+                                left: '85%',
+                                top: '10%',
+                                formatter: function (name) {
+                                    return dict[name];
+                                }
+                            },
+                            grid: {
+                                left: '5%',
+                                top: '10%',
+                                containLabel: true
+                            },
+                            toolbox: {
+                                feature: {
+                                    magicType: {
+                                        type: ['line', 'bar']
+                                    }
+                                }
+                            },
+                            xAxis: {
+                                type: 'category',
+                                boundaryGap: false,
+                                axisTick: {
+                                    show: false
+                                },
+                                data: dateformat(data.the_year),
+                                Interval: 5
+                            },
+                            yAxis: {
+                                type: 'value',
+                                axisTick: {
+                                    show: false
+                                },
+                            },
+                            dataZoom: [
+                                {
+                                    type: 'slider',
+                                    xAxisIndex: [0],
+                                    startValue: "2016年Q4",
+                                    endValue: "1991年Q4",
+                                    filterMode: 'filter',
+                                }
+                            ],
+                            series: dataSeries
+                        };
+                        myChart.setOption(option, true);
+                        myChart.on('datazoom', function (params) {
+                            option.xAxis.interval = 10 * (params.end - params.start) / 100;
+                            var ends = (2016 - Math.ceil(params.start / 100 * 25)) + '-12-31'
+                            if (Math.ceil(1 - params.end / 100)) {
+                                var starts = (1991 + Math.ceil((1 - params.end / 100) * 25) - 1) + '-12-31'
+                            }
+                            else {
+                                var starts = '1991-12-31'
+                            }
+                            set_timepicker(starts, ends)
+                        });
+                        function set_timepicker(start, end) {
+                            document.getElementById('endtime').value = start
+                            document.getElementById('starttime').value = end
+                        }
+                    }
+                });
+                function RequestChart1() {
+                    $.ajax({
+                        type: 'GET',
+                        url: '{{ url_for("restfulapi.market_status1") }}',
+                        data: {
+                            code: {{ industry_gicscode_1|safe }},
+                            starttime: '19911231',
+                            endtime: '20161231',
+                            indexes: Chosenindexes,
+                        },
+                        dataType: 'json',
+                        success: function (data) {
+                            market_results1 = data;
+                            CreateChart1();
+                        }
+                    });
+                }
+                function CreateChart1() {
+                    dataSeries = [];
+                    for (var i = 0; i < market_results1.indexes.length; i++) {
+                        temp = {
+                            name: market_results1.indexes[i],
+                            type: 'line',
+                            lineStyle: {normal: {width: 2}},
+                            itemStyle: {normal: {color: Chosenindexes[market_results1.indexes[i]]}},
+                            symbolSize: 8,
+                            smooth: true,
+                            data: numfilter(eval("market_results1." + market_results1.indexes[i]))
+                        };
+                        dataSeries.push(temp);
+                    }
+                    option = {
+                        title: {
+                            text: '财务指标分析图',
+                            left: '45%'
+                        },
+                        tooltip: {
+                            trigger: 'item',
+                            formatter: function (params) {
+                                return dict[params.seriesName] + "<br/> 时间：" + params.name + "<br/> 数据：" + params.data;
+                            }
+                        },
+                        legend: {
+                            data: [],
+                            orient: 'vertical',
+                            left: '85%',
+                            top: '10%',
+                            formatter: function (name) {
+                                return dict[name];
+                            }
+                        },
+                        grid: {
+                            left: '5%',
+                            top: '10%',
+                            containLabel: true
+                        },
+                        toolbox: {
+                            feature: {
+                                magicType: {
+                                    type: ['line', 'bar']
+                                }
+                            }
+                        },
+                        xAxis: {
+                            type: 'category',
+                            boundaryGap: false,
+                            axisTick: {
+                                show: false
+                            },
+                            data: dateformat(market_results1.the_year),
+                            Interval: 5
+                        },
+                        yAxis: {
+                            type: 'value',
+                            axisTick: {
+                                show: false
+                            },
+                        },
+                        dataZoom: [
+                            {
+                                type: 'slider',
+                                xAxisIndex: [0],
+                                startValue: "2016年Q4",
+                                endValue: "1991年Q4",
+                                filterMode: 'filter',
+                            }
+                        ],
+                        series: dataSeries
+                    };
+                    myChart.setOption(option, true);
+                    myChart.on('datazoom', function (params) {
+                        option.xAxis.interval = 10 * (params.end - params.start) / 100;
+                        var ends = (2016 - Math.ceil(params.start / 100 * 25)) + '-12-31'
+                        if (Math.ceil(1 - params.end / 100)) {
+                            var starts = (1991 + Math.ceil((1 - params.end / 100) * 25) - 1) + '-12-31'
+                        }
+                        else {
+                            var starts = '1991-12-31'
+                        }
+                        set_timepicker(starts, ends)
+                    });
+                    function set_timepicker(start, end) {
+                        document.getElementById('endtime').value = start
+                        document.getElementById('starttime').value = end
+                    }
+                }
+                function set_time() {
+                    document.getElementById('endtime').value = "1991-12-31"
+                    document.getElementById('starttime').value = "2016-12-31"
+                }
+            </script>
+            <!--建表-->
+            <script>
+                var market_results_t1;
+                var invest_results_t1;
+                function RequestTable1() {
+                    var opt = myChart.getOption();
+                    var dz = opt.dataZoom[0];
+                    $.ajax({
+                        type: 'GET',
+                        url: '{{url_for("restfulapi.market_status1")}}',
+                        data: {
+                            code: {{ industry_gicscode_1|safe }},
+                            starttime: opt.xAxis[0].data[dz.endValue],
+                            endtime: opt.xAxis[0].data[dz.startValue],
+                            indexes: Chosenindexes
+                        },
+                        dataType: 'json',//希望服务器返回json格式的数据
+                        success: function (data) {
+                            console.log(data)
+                            market_results_t1 = data;
+                            invest_results_t1 = data;
+                            CreateTable1();
+                        }
+                    })
+                }
+                function CreateTable1() {
+                    $("#mytable").empty();
+                    var table = $("<table id=\"temptable\" style=\"text-align:center\" class=\"row-border hover order-column\" cellspacing=\"0\" width=\"100%\"  >");
+                    table.appendTo($("#mytable"));
+                    th = $("<thead></thead>");
+                    th.appendTo(table);
+                    var tr = $("<tr></tr>");
+                    tr.appendTo(th);
+                    var td = $("<td id=\"subject\">" + "项目" + "</td>");
+                    td.appendTo(tr);
+                    theyear = dateformat(market_results_t1.the_year)
+                    for (var j = 0; j < theyear.length; j++) {
+                        var td = $("<td>" + theyear[j] + "</td>");
+                        td.appendTo(tr);
+                    }
+                    tb = $("<tbody></tbody>");
+                    tb.appendTo(table);
+                    $("#mytable").append("</table>");
+                    var mydatatb = $('#temptable').DataTable({
+                        "info": false,
+                        "processing": true,
+                        "scrollX": true,
+                        "searching": true,
+                        "fixedColumns": { //固定列的配置项
+                            "leftColumns": 1//固定左边第一列
+                        },
+                        "language": {
+                            "emptyTable": "没有数据",
+                            "loadingRecords": "加载中…",
+                            "processing": "查询中…",
+                            "search": "检索:",
+                            "lengthMenu": "每页 _MENU_ 条",
+                            "zeroRecords": "没有数据",
+                            "paginate": {
+                                "first": "第一页",
+                                "last": "最后一页",
+                                "next": "",
+                                "previous": ""
+                            },
+                            "info": "第 _PAGE_ 页 / 总 _PAGES_ 页",
+                            "infoEmpty": "没有数据",
+                            "infoFiltered": "(过滤总件数 _MAX_ 条)"
+                        }
+                    });
+                    setTimeout("$(\"#subject\").trigger(\"click\")", 100);
+                    for (var i = 0; i < market_results_t1.indexes.length; i++) {
+                        var rowNode = mydatatb
+                            .row.add([dict[market_results_t1.indexes[i]]].concat(numfilter(eval("market_results_t1." + market_results_t1.indexes[i]))))
+                            .draw()
+                            .node();
+                        $(rowNode)
+                            .attr('id', market_results_t1.indexes[i]);
+                    }
+                    for (var key in Chosenindexes) {
+                        $('tr#' + key).css('color', Chosenindexes[key])
+                    }
+                }
+            </script>
+            <!--复选框操作-->
+            <script>
+                var Chosenindexes = new Array();
+                Chosenindexes = ['tot_oper_rev'];
+                Chosenindexes['tot_oper_rev'] = "#000000";
+                $(document).ready(function () {
 
-{#测试使用：#}
-{#{{ rs[0][1] }}<br>#}
-{#{{ rs[0][2] }}<br>#}
-{#{{ rs[0][3] }}<br>#}
-{#{{ rs[0][4] }}<br>#}
-{#{{ rs[0][5] }}<br>#}
-{#{{ rs[0][6] }}<br>#}
-{#{{ rs[0][7] }}<br>#}
-{#{{ rs[0][8] }}<br>#}
-{#{{ rs[0][9] }}<br>#}
-{#{{ rs[0][10] }}<br>#}
-{#{{ rs[0][11] }}<br>#}
+                });
+                $(":checkbox").change(function () {
+                    indexname = $(this).val();
+                    if ($(this).is(':checked') == true) {
+                        colorname = NewColor();
+                        console.log(this);
+                        Chosenindexes.push(indexname);
+                        Chosenindexes[indexname] = colorname;
+                        $("#i_" + indexname).css("background-color", colorname);
+                        console.log(Chosenindexes);
+                    }
+                    else {
+                        Chosenindexes.remove(indexname);
+                        console.log(Chosenindexes);
+                        $("#i_" + indexname).css("background-color", "white");
+                    }
+
+                    $("div#unselected").empty();
+                    $("div#selected").empty();
+                    $("input[type=checkbox]").each(function () {//each()方法遍历所有的复选框
+                        if ($(this).is(':checked') == true) {//这里就可以判断当前是否被选择了
+                            var tempspan = $("<span class=\"label label-default\" data-stopPropagation=\"true\"id =\"" + indexname + "\">" + dict[indexname] + "</span>")
+                            tempspan.appendTo($("div#unselected"));
+                            $("div#unselected").append(" ");
+                        }
+                    })
+                    RequestChart1();
+                    set_time();
+                });
+            </script>
+            <!--时间控制框-->
+            <script>
+                var starttime = "19911231";
+                var endtime = "20161231";
+                $(".form_datetime").datetimepicker({
+                    format: 'yyyy-mm-dd ',
+                    startView: 4,
+                    minView: 4,
+                    maxView: 4,
+                    autoclose: true,
+                    pickerPosition: 'top-right'
+                });
+                $('#starttime').datetimepicker('setStartDate', '1991-12-31');
+                $('#starttime').datetimepicker('setEndDate', '2016-12-31');
+                $('#endtime').datetimepicker('setStartDate', '1991-12-31');
+                $('#endtime').datetimepicker('setEndDate', '2016-12-31');
+                $('#starttime')
+                    .datetimepicker()
+                    .on('changeDate', function (ev) {
+                        starts = ev.date.Format("yyyy年Q4");
+                        option.dataZoom[0].startValue = starts;
+                        myChart.setOption(option);
+                        RequestTable1();
+                    });
+                $('#endtime')
+                    .datetimepicker()
+                    .on('changeDate', function (ev) {
+                        ends = ev.date.Format("yyyy年Q4");
+                        option.dataZoom[0].endValue = ends;
+                        myChart.setOption(option);
+                        RequestTable1();
+                    });
+                Date.prototype.Format = function (fmt) { //author: meizz
+                    var o = {
+                        "M+": this.getMonth() + 1, //月份
+                        "d+": this.getDate(), //日
+                        "h+": this.getHours(), //小时
+                        "m+": this.getMinutes(), //分
+                        "s+": this.getSeconds(), //秒
+                        "q+": Math.floor((this.getMonth() + 3) / 3), //季度
+                        "S": this.getMilliseconds() //毫秒
+                    };
+                    if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+                    for (var k in o)
+                        if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+                    return fmt;
+                }
+                function dateformat(olddate) {
+                    newdate = []
+                    for (i = 0; i < olddate.length; i++) {
+                        var str = olddate[i];
+                        var reg = /1231/g;
+                        str = str.replace(reg, '年Q4');
+                        newdate.push(str)
+                    }
+                    return newdate
+                }
+            </script>
+            <!--单位转换-->
+            <script>
+                denominator = 1
+                $("select#unit").change(function () {
+                    flag = $(this).val();
+                    if (flag == "0") {
+                        denominator = 1;
+                        RequestChart1();
+                        CreateTable1();
+                        set_time();
+                    }
+                    if (flag == "1") {
+                        denominator = 1000;
+                        RequestChart1();
+                        CreateTable1();
+                        set_time();
+                    }
+                });
+                function numfilter(oldnum) {
+                    newnum = []
+                    for (i = 0; i < oldnum.length; i++) {
+                        temp = oldnum[i] / denominator;
+                        newnum.push(temp.toFixed(2))
+                    }
+                    return newnum;
+                }
+            </script>
+
+        {% elif parameter==2 %}
+            <div id="myTabChoice2" style="width: 100%;height:600px;margin:auto">
+                <ul id="myTab" class="nav nav-tabs">
+                    <li class="disabled">
+                        <a href="javascript:return false;" data-toggle="tab" disabled='true'>视图：</a>
+                    </li>
+                    <li class="active"><a href="#chart" data-toggle="tab">图表</a></li>
+                    <li><a href="#table" data-toggle="tab" onclick="RequestTable1()">数据</a></li>
+                </ul>
+                <div id="choice" class="tab-content">
+                    <div class="tab-pane fade in active" id="chart">
+                        <div id="mychart" style="width:85%;height:60%;;float:right"></div>
+                        <div id="mychoice" style="width:15%;height:72%;float:left;overflow-y :auto">
+                            <div style="width:100%;height:30px;margin-top:10px;background-color:lightgray">
+                                <div class="checkbox" style="width:80%;height:20px;float:left;margin-left:5px">
+                                    <label><input type="checkbox" value="tot_oper_rev" checked="checked"
+                                                  id="first_check">总营业收入</label>
+                                </div>
+                                <div style="width:10px;height:10px;margin-right:5px;float:right;margin-top:15px;background-color:black"
+                                     id="i_tot_oper_rev"></div>
+                            </div>
+                            <div style="width:100%;height:30px;margin-top:10px;background-color:lightgray">
+                                <div class="checkbox" style="width:80%;height:20px;float:left;margin-left:5px">
+                                    <label><input type="checkbox" value="net_profit_is">净利润总和</label>
+                                </div>
+                                <div style="width:10px;height:10px;margin-right:5px;float:right;margin-top:15px;background-color:white"
+                                     id="i_net_profit_is"></div>
+                            </div>
+                            <div style="width:100%;height:30px;margin-top:10px;background-color:lightgray">
+                                <div class="checkbox" style="width:80%;height:20px;float:left;margin-left:5px">
+                                    <label><input type="checkbox" value="wgsd_net_inc">归属股东利润总和</label>
+                                </div>
+                                <div style="width:10px;height:10px;margin-right:5px;float:right;margin-top:15px;background-color:white"
+                                     id="i_wgsd_net_inc"></div>
+                            </div>
+                            <div style="width:100%;height:30px;margin-top:10px;background-color:lightgray">
+                                <div class="checkbox" style="width:80%;height:20px;float:left;margin-left:5px">
+                                    <label><input type="checkbox" value="tot_assets">总资产总和</label>
+                                </div>
+                                <div style="width:10px;height:10px;margin-right:5px;float:right;margin-top:15px;background-color:white"
+                                     id="i_tot_assets"></div>
+                            </div>
+                            <div style="width:100%;height:30px;margin-top:10px;background-color:lightgray">
+                                <div class="checkbox" style="width:80%;height:20px;float:left;margin-left:5px">
+                                    <label><input type="checkbox" value="tot_liab">总负债总和</label>
+                                </div>
+                                <div style="width:10px;height:10px;margin-right:5px;float:right;margin-top:15px;background-color:white"
+                                     id="i_tot_liab"></div>
+                            </div>
+                            <div style="width:100%;height:30px;margin-top:10px;background-color:lightgray">
+                                <div class="checkbox" style="width:80%;height:20px;float:left;margin-left:5px">
+                                    <label><input type="checkbox" value="net_assets">净资产总和</label>
+                                </div>
+                                <div style="width:10px;height:10px;margin-right:5px;float:right;margin-top:15px;background-color:white"
+                                     id="i_net_assets"></div>
+                            </div>
+                            <div style="width:100%;height:30px;margin-top:10px;background-color:lightgray">
+                                <div class="checkbox" style="width:80%;height:20px;float:left;margin-left:5px">
+                                    <label><input type="checkbox" value="wgsd_com_eq">股东权益总和</label>
+                                </div>
+                                <div style="width:10px;height:10px;margin-right:5px;float:right;margin-top:15px;background-color:white"
+                                     id="i_wgsd_com_eq"></div>
+                            </div>
+                            <div style="width:100%;height:30px;margin-top:10px;background-color:lightgray">
+                                <div class="checkbox" style="width:80%;height:20px;float:left;margin-left:5px">
+                                    <label><input type="checkbox" value="operatecashflow_ttm2">经营性现金流总和</label>
+                                </div>
+                                <div style="width:10px;height:10px;margin-right:5px;float:right;margin-top:15px;background-color:white"
+                                     id="i_operatecashflow_ttm2"></div>
+                            </div>
+                            <div style="width:100%;height:30px;margin-top:10px;background-color:lightgray">
+                                <div class="checkbox" style="width:80%;height:20px;float:left;margin-left:5px">
+                                    <label><input type="checkbox" value="investcashflow_ttm2">投资性现金流总和</label>
+                                </div>
+                                <div style="width:10px;height:10px;margin-right:5px;float:right;margin-top:15px;background-color:white"
+                                     id="i_investcashflow_ttm2"></div>
+                            </div>
+                            <div style="width:100%;height:30px;margin-top:10px;background-color:lightgray">
+                                <div class="checkbox" style="width:80%;height:20px;float:left;margin-left:5px">
+                                    <label><input type="checkbox" value="financecashflow_ttm2">融资性现金流总和</label>
+                                </div>
+                                <div style="width:10px;height:10px;margin-right:5px;float:right;margin-top:15px;background-color:white"
+                                     id="i_financecashflow_ttm2"></div>
+                            </div>
+                            <div style="width:100%;height:30px;margin-top:10px;background-color:lightgray">
+                                <div class="checkbox" style="width:80%;height:20px;float:left;margin-left:5px">
+                                    <label><input type="checkbox" value="cashflow_ttm2">总现金流总和</label>
+                                </div>
+                                <div style="width:10px;height:10px;margin-right:5px;float:right;margin-top:15px;background-color:white"
+                                     id="i_cashflow_ttm2"></div>
+                            </div>
+                            <div style="width:100%;height:30px;margin-top:10px;background-color:lightgray">
+                                <div class="checkbox" style="width:80%;height:20px;float:left;margin-left:5px">
+                                    <label><input type="checkbox" value="free_cash_flow">自由现金流估计</label>
+                                </div>
+                                <div style="width:10px;height:10px;margin-right:5px;float:right;margin-top:15px;background-color:white"
+                                     id="i_free_cash_flow"></div>
+                            </div>
+                        </div>
+                        <div style="float:right;width:81.5%;height:10%;margin-top:1%;border-radius:8px;background-color:#dcdcdc">
+                            <div style="float: left;margin-left: 20px;margin-top:20px">
+                                <a style="width:50px;margin-left:10px;color: #0c0c0c">起始时间:</a><input size="16"
+                                                                                                      type="text"
+                                                                                                      value="1991-12-31"
+                                                                                                      id="endtime"
+                                                                                                      readonly
+                                                                                                      class="form_datetime">
+                                <a style="width:50px;margin-left:10px;color: #0c0c0c">结束时间:</a><input size="16"
+                                                                                                      type="text"
+                                                                                                      value="2016-12-31"
+                                                                                                      id="starttime"
+                                                                                                      readonly
+                                                                                                      class="form_datetime">
+                                <a style="width:50px;margin-left:10px;color: #0c0c0c">单位:</a>
+                                <select id="unit">
+                                    <option value="0">亿</option>
+                                    <option value="1">千亿</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="table">
+                        <div id="mytable" style="width:100%;height:100%;float:right"></div>
+                    </div>
+                </div>
+            </div>
+
+            <script>
+                $("#submitbtn2").click(function () {
+                    $("#form2").submit();
+                    Chosenindexes = ['tot_oper_rev'];
+                    RequestChart1();
+                });
+            </script>
+            <!--建图-->
+            <script>
+                var myChart = echarts.init(document.getElementById('mychart'));
+                var market_results1;
+                var dict = {
+                    'tot_oper_rev': '总营业收入',
+                    'net_profit_is': '净利润总和',
+                    'wgsd_net_inc': '归属股东利润总和',
+                    'tot_assets': '总资产总和',
+                    'tot_liab': '总负债总和',
+                    'net_assets': '净资产总和',
+                    'wgsd_com_eq': '股东权益总和',
+                    'operatecashflow_ttm2': '经营性现金流总和',
+                    'investcashflow_ttm2': '投资性现金流总和',
+                    'financecashflow_ttm2': '融资性现金流总和',
+                    'cashflow_ttm2': '总现金流总和',
+                    'free_cash_flow': '自由现金流估计',
+                    'net_profit_rate': '平均净利润率',
+                    'tot_assets_turnover': '平均总资产周转率',
+                    'equ_multi': '平均权益乘数',
+                    'roe_tot': '平均净资产收益率',
+                    'roe_holder': '平均净资产收益率（股东）'
+                };
+                $.ajax({
+                    type: 'GET',
+                    url: '{{ url_for("restfulapi.market_status2") }}',
+                    data: {
+                        code:{{ industry_gicscode_2|safe }},
+                        starttime: '19911231',
+                        endtime: '20161231',
+                        indexes: ['tot_oper_rev'],
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        dataSeries = [];
+                        temp = {
+                            name: data.indexes,
+                            type: 'line',
+                            lineStyle: {normal: {width: 2}},
+                            itemStyle: {normal: {color: '#000000'}},
+                            symbolSize: 8,
+                            smooth: true,
+                            data: numfilter(eval("data." + data.indexes))
+                        };
+                        dataSeries.push(temp);
+                        option = {
+                            title: {
+                                text: '财务指标分析图',
+                                left: '45%'
+                            },
+                            tooltip: {
+                                trigger: 'item',
+                                formatter: function (params) {
+                                    return dict[params.seriesName] + "<br/> 时间：" + params.name + "<br/> 数据：" + params.data;
+                                }
+                            },
+                            legend: {
+                                data: [],
+                                orient: 'vertical',
+                                left: '85%',
+                                top: '10%',
+                                formatter: function (name) {
+                                    return dict[name];
+                                }
+                            },
+                            grid: {
+                                left: '5%',
+                                top: '10%',
+                                containLabel: true
+                            },
+                            toolbox: {
+                                feature: {
+                                    magicType: {
+                                        type: ['line', 'bar']
+                                    }
+                                }
+                            },
+                            xAxis: {
+                                type: 'category',
+                                boundaryGap: false,
+                                axisTick: {
+                                    show: false
+                                },
+                                data: dateformat(data.the_year),
+                                Interval: 5
+                            },
+                            yAxis: {
+                                type: 'value',
+                                axisTick: {
+                                    show: false
+                                },
+                            },
+                            dataZoom: [
+                                {
+                                    type: 'slider',
+                                    xAxisIndex: [0],
+                                    startValue: "2016年Q4",
+                                    endValue: "1991年Q4",
+                                    filterMode: 'filter',
+                                }
+                            ],
+                            series: dataSeries
+                        };
+                        myChart.setOption(option, true);
+                        myChart.on('datazoom', function (params) {
+                            option.xAxis.interval = 10 * (params.end - params.start) / 100;
+                            var ends = (2016 - Math.ceil(params.start / 100 * 25)) + '-12-31'
+                            if (Math.ceil(1 - params.end / 100)) {
+                                var starts = (1991 + Math.ceil((1 - params.end / 100) * 25) - 1) + '-12-31'
+                            }
+                            else {
+                                var starts = '1991-12-31'
+                            }
+                            set_timepicker(starts, ends)
+                        });
+                        function set_timepicker(start, end) {
+                            document.getElementById('endtime').value = start
+                            document.getElementById('starttime').value = end
+                        }
+                    }
+                });
+                function RequestChart1() {
+                    $.ajax({
+                        type: 'GET',
+                        url: '{{ url_for("restfulapi.market_status2") }}',
+                        data: {
+                            code: {{ industry_gicscode_2|safe }},
+                            starttime: '19911231',
+                            endtime: '20161231',
+                            indexes: Chosenindexes,
+                        },
+                        dataType: 'json',
+                        success: function (data) {
+                            market_results1 = data;
+                            CreateChart1();
+                        }
+                    });
+                }
+                function CreateChart1() {
+                    dataSeries = [];
+                    for (var i = 0; i < market_results1.indexes.length; i++) {
+                        temp = {
+                            name: market_results1.indexes[i],
+                            type: 'line',
+                            lineStyle: {normal: {width: 2}},
+                            itemStyle: {normal: {color: Chosenindexes[market_results1.indexes[i]]}},
+                            symbolSize: 8,
+                            smooth: true,
+                            data: numfilter(eval("market_results1." + market_results1.indexes[i]))
+                        };
+                        dataSeries.push(temp);
+                    }
+                    option = {
+                        title: {
+                            text: '财务指标分析图',
+                            left: '45%'
+                        },
+                        tooltip: {
+                            trigger: 'item',
+                            formatter: function (params) {
+                                return dict[params.seriesName] + "<br/> 时间：" + params.name + "<br/> 数据：" + params.data;
+                            }
+                        },
+                        legend: {
+                            data: [],
+                            orient: 'vertical',
+                            left: '85%',
+                            top: '10%',
+                            formatter: function (name) {
+                                return dict[name];
+                            }
+                        },
+                        grid: {
+                            left: '5%',
+                            top: '10%',
+                            containLabel: true
+                        },
+                        toolbox: {
+                            feature: {
+                                magicType: {
+                                    type: ['line', 'bar']
+                                }
+                            }
+                        },
+                        xAxis: {
+                            type: 'category',
+                            boundaryGap: false,
+                            axisTick: {
+                                show: false
+                            },
+                            data: dateformat(market_results1.the_year),
+                            Interval: 5
+                        },
+                        yAxis: {
+                            type: 'value',
+                            axisTick: {
+                                show: false
+                            },
+                        },
+                        dataZoom: [
+                            {
+                                type: 'slider',
+                                xAxisIndex: [0],
+                                startValue: "2016年Q4",
+                                endValue: "1991年Q4",
+                                filterMode: 'filter',
+                            }
+                        ],
+                        series: dataSeries
+                    };
+                    myChart.setOption(option, true);
+                    myChart.on('datazoom', function (params) {
+                        option.xAxis.interval = 10 * (params.end - params.start) / 100;
+                        var ends = (2016 - Math.ceil(params.start / 100 * 25)) + '-12-31'
+                        if (Math.ceil(1 - params.end / 100)) {
+                            var starts = (1991 + Math.ceil((1 - params.end / 100) * 25) - 1) + '-12-31'
+                        }
+                        else {
+                            var starts = '1991-12-31'
+                        }
+                        set_timepicker(starts, ends)
+                    });
+                    function set_timepicker(start, end) {
+                        document.getElementById('endtime').value = start
+                        document.getElementById('starttime').value = end
+                    }
+                }
+                function set_time() {
+                    document.getElementById('endtime').value = "1991-12-31"
+                    document.getElementById('starttime').value = "2016-12-31"
+                }
+            </script>
+            <!--建表-->
+            <script>
+                var market_results_t1;
+                var invest_results_t1;
+                function RequestTable1() {
+                    var opt = myChart.getOption();
+                    var dz = opt.dataZoom[0];
+                    $.ajax({
+                        type: 'GET',
+                        url: '{{url_for("restfulapi.market_status2")}}',
+                        data: {
+                            code: {{ industry_gicscode_2|safe }},
+                            starttime: opt.xAxis[0].data[dz.endValue],
+                            endtime: opt.xAxis[0].data[dz.startValue],
+                            indexes: Chosenindexes
+                        },
+                        dataType: 'json',//希望服务器返回json格式的数据
+                        success: function (data) {
+                            console.log(data)
+                            market_results_t1 = data;
+                            invest_results_t1 = data;
+                            CreateTable1();
+                        }
+                    })
+                }
+                function CreateTable1() {
+                    $("#mytable").empty();
+                    var table = $("<table id=\"temptable\" style=\"text-align:center\" class=\"row-border hover order-column\" cellspacing=\"0\" width=\"100%\"  >");
+                    table.appendTo($("#mytable"));
+                    th = $("<thead></thead>");
+                    th.appendTo(table);
+                    var tr = $("<tr></tr>");
+                    tr.appendTo(th);
+                    var td = $("<td id=\"subject\">" + "项目" + "</td>");
+                    td.appendTo(tr);
+                    theyear = dateformat(market_results_t1.the_year)
+                    for (var j = 0; j < theyear.length; j++) {
+                        var td = $("<td>" + theyear[j] + "</td>");
+                        td.appendTo(tr);
+                    }
+                    tb = $("<tbody></tbody>");
+                    tb.appendTo(table);
+                    $("#mytable").append("</table>");
+                    var mydatatb = $('#temptable').DataTable({
+                        "info": false,
+                        "processing": true,
+                        "scrollX": true,
+                        "searching": true,
+                        "fixedColumns": { //固定列的配置项
+                            "leftColumns": 1//固定左边第一列
+                        },
+                        "language": {
+                            "emptyTable": "没有数据",
+                            "loadingRecords": "加载中…",
+                            "processing": "查询中…",
+                            "search": "检索:",
+                            "lengthMenu": "每页 _MENU_ 条",
+                            "zeroRecords": "没有数据",
+                            "paginate": {
+                                "first": "第一页",
+                                "last": "最后一页",
+                                "next": "",
+                                "previous": ""
+                            },
+                            "info": "第 _PAGE_ 页 / 总 _PAGES_ 页",
+                            "infoEmpty": "没有数据",
+                            "infoFiltered": "(过滤总件数 _MAX_ 条)"
+                        }
+                    });
+                    setTimeout("$(\"#subject\").trigger(\"click\")", 100);
+                    for (var i = 0; i < market_results_t1.indexes.length; i++) {
+                        var rowNode = mydatatb
+                            .row.add([dict[market_results_t1.indexes[i]]].concat(numfilter(eval("market_results_t1." + market_results_t1.indexes[i]))))
+                            .draw()
+                            .node();
+                        $(rowNode)
+                            .attr('id', market_results_t1.indexes[i]);
+                    }
+                    for (var key in Chosenindexes) {
+                        $('tr#' + key).css('color', Chosenindexes[key])
+                    }
+                }
+            </script>
+            <!--复选框操作-->
+            <script>
+                var Chosenindexes = new Array();
+                Chosenindexes = ['tot_oper_rev'];
+                Chosenindexes['tot_oper_rev'] = "#000000";
+                $(document).ready(function () {
+
+                });
+                $(":checkbox").change(function () {
+                    indexname = $(this).val();
+                    if ($(this).is(':checked') == true) {
+                        colorname = NewColor();
+                        console.log(this);
+                        Chosenindexes.push(indexname);
+                        Chosenindexes[indexname] = colorname;
+                        $("#i_" + indexname).css("background-color", colorname);
+                        console.log(Chosenindexes);
+                    }
+                    else {
+                        Chosenindexes.remove(indexname);
+                        console.log(Chosenindexes);
+                        $("#i_" + indexname).css("background-color", "white");
+                    }
+
+                    $("div#unselected").empty();
+                    $("div#selected").empty();
+                    $("input[type=checkbox]").each(function () {//each()方法遍历所有的复选框
+                        if ($(this).is(':checked') == true) {//这里就可以判断当前是否被选择了
+                            var tempspan = $("<span class=\"label label-default\" data-stopPropagation=\"true\"id =\"" + indexname + "\">" + dict[indexname] + "</span>")
+                            tempspan.appendTo($("div#unselected"));
+                            $("div#unselected").append(" ");
+                        }
+                    })
+                    RequestChart1();
+                    set_time();
+                });
+            </script>
+            <!--时间控制框-->
+            <script>
+                var starttime = "19911231";
+                var endtime = "20161231";
+                $(".form_datetime").datetimepicker({
+                    format: 'yyyy-mm-dd ',
+                    startView: 4,
+                    minView: 4,
+                    maxView: 4,
+                    autoclose: true,
+                    pickerPosition: 'top-right'
+                });
+                $('#starttime').datetimepicker('setStartDate', '1991-12-31');
+                $('#starttime').datetimepicker('setEndDate', '2016-12-31');
+                $('#endtime').datetimepicker('setStartDate', '1991-12-31');
+                $('#endtime').datetimepicker('setEndDate', '2016-12-31');
+                $('#starttime')
+                    .datetimepicker()
+                    .on('changeDate', function (ev) {
+                        starts = ev.date.Format("yyyy年Q4");
+                        option.dataZoom[0].startValue = starts;
+                        myChart.setOption(option);
+                        RequestTable1();
+                    });
+                $('#endtime')
+                    .datetimepicker()
+                    .on('changeDate', function (ev) {
+                        ends = ev.date.Format("yyyy年Q4");
+                        option.dataZoom[0].endValue = ends;
+                        myChart.setOption(option);
+                        RequestTable1();
+                    });
+                Date.prototype.Format = function (fmt) { //author: meizz
+                    var o = {
+                        "M+": this.getMonth() + 1, //月份
+                        "d+": this.getDate(), //日
+                        "h+": this.getHours(), //小时
+                        "m+": this.getMinutes(), //分
+                        "s+": this.getSeconds(), //秒
+                        "q+": Math.floor((this.getMonth() + 3) / 3), //季度
+                        "S": this.getMilliseconds() //毫秒
+                    };
+                    if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+                    for (var k in o)
+                        if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+                    return fmt;
+                }
+                function dateformat(olddate) {
+                    newdate = []
+                    for (i = 0; i < olddate.length; i++) {
+                        var str = olddate[i];
+                        var reg = /1231/g;
+                        str = str.replace(reg, '年Q4');
+                        newdate.push(str)
+                    }
+                    return newdate
+                }
+            </script>
+            <!--单位转换-->
+            <script>
+                denominator = 1
+                $("select#unit").change(function () {
+                    flag = $(this).val();
+                    if (flag == "0") {
+                        denominator = 1;
+                        RequestChart1();
+                        CreateTable1();
+                        set_time();
+                    }
+                    if (flag == "1") {
+                        denominator = 1000;
+                        RequestChart1();
+                        CreateTable1();
+                        set_time();
+                    }
+                });
+                function numfilter(oldnum) {
+                    newnum = []
+                    for (i = 0; i < oldnum.length; i++) {
+                        temp = oldnum[i] / denominator;
+                        newnum.push(temp.toFixed(2))
+                    }
+                    return newnum;
+                }
+            </script>
+
+        {% elif parameter==3 %}
+            <div id="myTabChoice3" style="width: 100%;height:600px;margin:auto">
+                <ul id="myTab" class="nav nav-tabs">
+                    <li class="disabled">
+                        <a href="javascript:return false;" data-toggle="tab" disabled='true'>视图：</a>
+                    </li>
+                    <li class="active"><a href="#chart" data-toggle="tab">图表</a></li>
+                    <li><a href="#table" data-toggle="tab" onclick="RequestTable1()">数据</a></li>
+                </ul>
+                <div id="choice" class="tab-content">
+                    <div class="tab-pane fade in active" id="chart">
+                        <div id="mychart" style="width:85%;height:60%;;float:right"></div>
+                        <div id="mychoice" style="width:15%;height:72%;float:left;overflow-y :auto">
+                            <div style="width:100%;height:30px;margin-top:10px;background-color:lightgray">
+                                <div class="checkbox" style="width:80%;height:20px;float:left;margin-left:5px">
+                                    <label><input type="checkbox" value="tot_oper_rev" checked="checked"
+                                                  id="first_check">总营业收入</label>
+                                </div>
+                                <div style="width:10px;height:10px;margin-right:5px;float:right;margin-top:15px;background-color:black"
+                                     id="i_tot_oper_rev"></div>
+                            </div>
+                            <div style="width:100%;height:30px;margin-top:10px;background-color:lightgray">
+                                <div class="checkbox" style="width:80%;height:20px;float:left;margin-left:5px">
+                                    <label><input type="checkbox" value="net_profit_is">净利润总和</label>
+                                </div>
+                                <div style="width:10px;height:10px;margin-right:5px;float:right;margin-top:15px;background-color:white"
+                                     id="i_net_profit_is"></div>
+                            </div>
+                            <div style="width:100%;height:30px;margin-top:10px;background-color:lightgray">
+                                <div class="checkbox" style="width:80%;height:20px;float:left;margin-left:5px">
+                                    <label><input type="checkbox" value="wgsd_net_inc">归属股东利润总和</label>
+                                </div>
+                                <div style="width:10px;height:10px;margin-right:5px;float:right;margin-top:15px;background-color:white"
+                                     id="i_wgsd_net_inc"></div>
+                            </div>
+                            <div style="width:100%;height:30px;margin-top:10px;background-color:lightgray">
+                                <div class="checkbox" style="width:80%;height:20px;float:left;margin-left:5px">
+                                    <label><input type="checkbox" value="tot_assets">总资产总和</label>
+                                </div>
+                                <div style="width:10px;height:10px;margin-right:5px;float:right;margin-top:15px;background-color:white"
+                                     id="i_tot_assets"></div>
+                            </div>
+                            <div style="width:100%;height:30px;margin-top:10px;background-color:lightgray">
+                                <div class="checkbox" style="width:80%;height:20px;float:left;margin-left:5px">
+                                    <label><input type="checkbox" value="tot_liab">总负债总和</label>
+                                </div>
+                                <div style="width:10px;height:10px;margin-right:5px;float:right;margin-top:15px;background-color:white"
+                                     id="i_tot_liab"></div>
+                            </div>
+                            <div style="width:100%;height:30px;margin-top:10px;background-color:lightgray">
+                                <div class="checkbox" style="width:80%;height:20px;float:left;margin-left:5px">
+                                    <label><input type="checkbox" value="net_assets">净资产总和</label>
+                                </div>
+                                <div style="width:10px;height:10px;margin-right:5px;float:right;margin-top:15px;background-color:white"
+                                     id="i_net_assets"></div>
+                            </div>
+                            <div style="width:100%;height:30px;margin-top:10px;background-color:lightgray">
+                                <div class="checkbox" style="width:80%;height:20px;float:left;margin-left:5px">
+                                    <label><input type="checkbox" value="wgsd_com_eq">股东权益总和</label>
+                                </div>
+                                <div style="width:10px;height:10px;margin-right:5px;float:right;margin-top:15px;background-color:white"
+                                     id="i_wgsd_com_eq"></div>
+                            </div>
+                            <div style="width:100%;height:30px;margin-top:10px;background-color:lightgray">
+                                <div class="checkbox" style="width:80%;height:20px;float:left;margin-left:5px">
+                                    <label><input type="checkbox" value="operatecashflow_ttm2">经营性现金流总和</label>
+                                </div>
+                                <div style="width:10px;height:10px;margin-right:5px;float:right;margin-top:15px;background-color:white"
+                                     id="i_operatecashflow_ttm2"></div>
+                            </div>
+                            <div style="width:100%;height:30px;margin-top:10px;background-color:lightgray">
+                                <div class="checkbox" style="width:80%;height:20px;float:left;margin-left:5px">
+                                    <label><input type="checkbox" value="investcashflow_ttm2">投资性现金流总和</label>
+                                </div>
+                                <div style="width:10px;height:10px;margin-right:5px;float:right;margin-top:15px;background-color:white"
+                                     id="i_investcashflow_ttm2"></div>
+                            </div>
+                            <div style="width:100%;height:30px;margin-top:10px;background-color:lightgray">
+                                <div class="checkbox" style="width:80%;height:20px;float:left;margin-left:5px">
+                                    <label><input type="checkbox" value="financecashflow_ttm2">融资性现金流总和</label>
+                                </div>
+                                <div style="width:10px;height:10px;margin-right:5px;float:right;margin-top:15px;background-color:white"
+                                     id="i_financecashflow_ttm2"></div>
+                            </div>
+                            <div style="width:100%;height:30px;margin-top:10px;background-color:lightgray">
+                                <div class="checkbox" style="width:80%;height:20px;float:left;margin-left:5px">
+                                    <label><input type="checkbox" value="cashflow_ttm2">总现金流总和</label>
+                                </div>
+                                <div style="width:10px;height:10px;margin-right:5px;float:right;margin-top:15px;background-color:white"
+                                     id="i_cashflow_ttm2"></div>
+                            </div>
+                            <div style="width:100%;height:30px;margin-top:10px;background-color:lightgray">
+                                <div class="checkbox" style="width:80%;height:20px;float:left;margin-left:5px">
+                                    <label><input type="checkbox" value="free_cash_flow">自由现金流估计</label>
+                                </div>
+                                <div style="width:10px;height:10px;margin-right:5px;float:right;margin-top:15px;background-color:white"
+                                     id="i_free_cash_flow"></div>
+                            </div>
+                        </div>
+                        <div style="float:right;width:81.5%;height:10%;margin-top:1%;border-radius:8px;background-color:#dcdcdc">
+                            <div style="float: left;margin-left: 20px;margin-top:20px">
+                                <a style="width:50px;margin-left:10px;color: #0c0c0c">起始时间:</a><input size="16"
+                                                                                                      type="text"
+                                                                                                      value="1991-12-31"
+                                                                                                      id="endtime"
+                                                                                                      readonly
+                                                                                                      class="form_datetime">
+                                <a style="width:50px;margin-left:10px;color: #0c0c0c">结束时间:</a><input size="16"
+                                                                                                      type="text"
+                                                                                                      value="2016-12-31"
+                                                                                                      id="starttime"
+                                                                                                      readonly
+                                                                                                      class="form_datetime">
+                                <a style="width:50px;margin-left:10px;color: #0c0c0c">单位:</a>
+                                <select id="unit">
+                                    <option value="0">亿</option>
+                                    <option value="1">百亿</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="table">
+                        <div id="mytable" style="width:100%;height:100%;float:right"></div>
+                    </div>
+                </div>
+            </div>
+
+            <script>
+                $("#submitbtn3").click(function () {
+                    $("#form3").submit();
+                    Chosenindexes = ['tot_oper_rev'];
+                    RequestChart1();
+                });
+            </script>
+            <!--建图-->
+            <script>
+                var myChart = echarts.init(document.getElementById('mychart'));
+                var market_results1;
+                var dict = {
+                    'tot_oper_rev': '总营业收入',
+                    'net_profit_is': '净利润总和',
+                    'wgsd_net_inc': '归属股东利润总和',
+                    'tot_assets': '总资产总和',
+                    'tot_liab': '总负债总和',
+                    'net_assets': '净资产总和',
+                    'wgsd_com_eq': '股东权益总和',
+                    'operatecashflow_ttm2': '经营性现金流总和',
+                    'investcashflow_ttm2': '投资性现金流总和',
+                    'financecashflow_ttm2': '融资性现金流总和',
+                    'cashflow_ttm2': '总现金流总和',
+                    'free_cash_flow': '自由现金流估计',
+                    'net_profit_rate': '平均净利润率',
+                    'tot_assets_turnover': '平均总资产周转率',
+                    'equ_multi': '平均权益乘数',
+                    'roe_tot': '平均净资产收益率',
+                    'roe_holder': '平均净资产收益率（股东）'
+                };
+                $.ajax({
+                    type: 'GET',
+                    url: '{{ url_for("restfulapi.market_status3") }}',
+                    data: {
+                        code:{{ industry_gicscode_3|safe }},
+                        starttime: '19911231',
+                        endtime: '20161231',
+                        indexes: ['tot_oper_rev'],
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        dataSeries = [];
+                        temp = {
+                            name: data.indexes,
+                            type: 'line',
+                            lineStyle: {normal: {width: 2}},
+                            itemStyle: {normal: {color: '#000000'}},
+                            symbolSize: 8,
+                            smooth: true,
+                            data: numfilter(eval("data." + data.indexes))
+                        };
+                        dataSeries.push(temp);
+                        option = {
+                            title: {
+                                text: '财务指标分析图',
+                                left: '45%'
+                            },
+                            tooltip: {
+                                trigger: 'item',
+                                formatter: function (params) {
+                                    return dict[params.seriesName] + "<br/> 时间：" + params.name + "<br/> 数据：" + params.data;
+                                }
+                            },
+                            legend: {
+                                data: [],
+                                orient: 'vertical',
+                                left: '85%',
+                                top: '10%',
+                                formatter: function (name) {
+                                    return dict[name];
+                                }
+                            },
+                            grid: {
+                                left: '5%',
+                                top: '10%',
+                                containLabel: true
+                            },
+                            toolbox: {
+                                feature: {
+                                    magicType: {
+                                        type: ['line', 'bar']
+                                    }
+                                }
+                            },
+                            xAxis: {
+                                type: 'category',
+                                boundaryGap: false,
+                                axisTick: {
+                                    show: false
+                                },
+                                data: dateformat(data.the_year),
+                                Interval: 5
+                            },
+                            yAxis: {
+                                type: 'value',
+                                axisTick: {
+                                    show: false
+                                },
+                            },
+                            dataZoom: [
+                                {
+                                    type: 'slider',
+                                    xAxisIndex: [0],
+                                    startValue: "2016年Q4",
+                                    endValue: "1991年Q4",
+                                    filterMode: 'filter',
+                                }
+                            ],
+                            series: dataSeries
+                        };
+                        myChart.setOption(option, true);
+                        myChart.on('datazoom', function (params) {
+                            option.xAxis.interval = 10 * (params.end - params.start) / 100;
+                            var ends = (2016 - Math.ceil(params.start / 100 * 25)) + '-12-31'
+                            if (Math.ceil(1 - params.end / 100)) {
+                                var starts = (1991 + Math.ceil((1 - params.end / 100) * 25) - 1) + '-12-31'
+                            }
+                            else {
+                                var starts = '1991-12-31'
+                            }
+                            set_timepicker(starts, ends)
+                        });
+                        function set_timepicker(start, end) {
+                            document.getElementById('endtime').value = start
+                            document.getElementById('starttime').value = end
+                        }
+                    }
+                });
+                function RequestChart1() {
+                    $.ajax({
+                        type: 'GET',
+                        url: '{{ url_for("restfulapi.market_status3") }}',
+                        data: {
+                            code: {{ industry_gicscode_3|safe }},
+                            starttime: '19911231',
+                            endtime: '20161231',
+                            indexes: Chosenindexes,
+                        },
+                        dataType: 'json',
+                        success: function (data) {
+                            market_results1 = data;
+                            CreateChart1();
+                        }
+                    });
+                }
+                function CreateChart1() {
+                    dataSeries = [];
+                    for (var i = 0; i < market_results1.indexes.length; i++) {
+                        temp = {
+                            name: market_results1.indexes[i],
+                            type: 'line',
+                            lineStyle: {normal: {width: 2}},
+                            itemStyle: {normal: {color: Chosenindexes[market_results1.indexes[i]]}},
+                            symbolSize: 8,
+                            smooth: true,
+                            data: numfilter(eval("market_results1." + market_results1.indexes[i]))
+                        };
+                        dataSeries.push(temp);
+                    }
+                    option = {
+                        title: {
+                            text: '财务指标分析图',
+                            left: '45%'
+                        },
+                        tooltip: {
+                            trigger: 'item',
+                            formatter: function (params) {
+                                return dict[params.seriesName] + "<br/> 时间：" + params.name + "<br/> 数据：" + params.data;
+                            }
+                        },
+                        legend: {
+                            data: [],
+                            orient: 'vertical',
+                            left: '85%',
+                            top: '10%',
+                            formatter: function (name) {
+                                return dict[name];
+                            }
+                        },
+                        grid: {
+                            left: '5%',
+                            top: '10%',
+                            containLabel: true
+                        },
+                        toolbox: {
+                            feature: {
+                                magicType: {
+                                    type: ['line', 'bar']
+                                }
+                            }
+                        },
+                        xAxis: {
+                            type: 'category',
+                            boundaryGap: false,
+                            axisTick: {
+                                show: false
+                            },
+                            data: dateformat(market_results1.the_year),
+                            Interval: 5
+                        },
+                        yAxis: {
+                            type: 'value',
+                            axisTick: {
+                                show: false
+                            },
+                        },
+                        dataZoom: [
+                            {
+                                type: 'slider',
+                                xAxisIndex: [0],
+                                startValue: "2016年Q4",
+                                endValue: "1991年Q4",
+                                filterMode: 'filter',
+                            }
+                        ],
+                        series: dataSeries
+                    };
+                    myChart.setOption(option, true);
+                    myChart.on('datazoom', function (params) {
+                        option.xAxis.interval = 10 * (params.end - params.start) / 100;
+                        var ends = (2016 - Math.ceil(params.start / 100 * 25)) + '-12-31'
+                        if (Math.ceil(1 - params.end / 100)) {
+                            var starts = (1991 + Math.ceil((1 - params.end / 100) * 25) - 1) + '-12-31'
+                        }
+                        else {
+                            var starts = '1991-12-31'
+                        }
+                        set_timepicker(starts, ends)
+                    });
+                    function set_timepicker(start, end) {
+                        document.getElementById('endtime').value = start
+                        document.getElementById('starttime').value = end
+                    }
+                }
+                function set_time() {
+                    document.getElementById('endtime').value = "1991-12-31"
+                    document.getElementById('starttime').value = "2016-12-31"
+                }
+            </script>
+            <!--建表-->
+            <script>
+                var market_results_t1;
+                var invest_results_t1;
+                function RequestTable1() {
+                    var opt = myChart.getOption();
+                    var dz = opt.dataZoom[0];
+                    $.ajax({
+                        type: 'GET',
+                        url: '{{url_for("restfulapi.market_status3")}}',
+                        data: {
+                            code: {{ industry_gicscode_3|safe }},
+                            starttime: opt.xAxis[0].data[dz.endValue],
+                            endtime: opt.xAxis[0].data[dz.startValue],
+                            indexes: Chosenindexes
+                        },
+                        dataType: 'json',//希望服务器返回json格式的数据
+                        success: function (data) {
+                            console.log(data)
+                            market_results_t1 = data;
+                            invest_results_t1 = data;
+                            CreateTable1();
+                        }
+                    })
+                }
+                function CreateTable1() {
+                    $("#mytable").empty();
+                    var table = $("<table id=\"temptable\" style=\"text-align:center\" class=\"row-border hover order-column\" cellspacing=\"0\" width=\"100%\"  >");
+                    table.appendTo($("#mytable"));
+                    th = $("<thead></thead>");
+                    th.appendTo(table);
+                    var tr = $("<tr></tr>");
+                    tr.appendTo(th);
+                    var td = $("<td id=\"subject\">" + "项目" + "</td>");
+                    td.appendTo(tr);
+                    theyear = dateformat(market_results_t1.the_year)
+                    for (var j = 0; j < theyear.length; j++) {
+                        var td = $("<td>" + theyear[j] + "</td>");
+                        td.appendTo(tr);
+                    }
+                    tb = $("<tbody></tbody>");
+                    tb.appendTo(table);
+                    $("#mytable").append("</table>");
+                    var mydatatb = $('#temptable').DataTable({
+                        "info": false,
+                        "processing": true,
+                        "scrollX": true,
+                        "searching": true,
+                        "fixedColumns": { //固定列的配置项
+                            "leftColumns": 1//固定左边第一列
+                        },
+                        "language": {
+                            "emptyTable": "没有数据",
+                            "loadingRecords": "加载中…",
+                            "processing": "查询中…",
+                            "search": "检索:",
+                            "lengthMenu": "每页 _MENU_ 条",
+                            "zeroRecords": "没有数据",
+                            "paginate": {
+                                "first": "第一页",
+                                "last": "最后一页",
+                                "next": "",
+                                "previous": ""
+                            },
+                            "info": "第 _PAGE_ 页 / 总 _PAGES_ 页",
+                            "infoEmpty": "没有数据",
+                            "infoFiltered": "(过滤总件数 _MAX_ 条)"
+                        }
+                    });
+                    setTimeout("$(\"#subject\").trigger(\"click\")", 100);
+                    for (var i = 0; i < market_results_t1.indexes.length; i++) {
+                        var rowNode = mydatatb
+                            .row.add([dict[market_results_t1.indexes[i]]].concat(numfilter(eval("market_results_t1." + market_results_t1.indexes[i]))))
+                            .draw()
+                            .node();
+                        $(rowNode)
+                            .attr('id', market_results_t1.indexes[i]);
+                    }
+                    for (var key in Chosenindexes) {
+                        $('tr#' + key).css('color', Chosenindexes[key])
+                    }
+                }
+            </script>
+            <!--复选框操作-->
+            <script>
+                var Chosenindexes = new Array();
+                Chosenindexes = ['tot_oper_rev'];
+                Chosenindexes['tot_oper_rev'] = "#000000";
+                $(document).ready(function () {
+
+                });
+                $(":checkbox").change(function () {
+                    indexname = $(this).val();
+                    if ($(this).is(':checked') == true) {
+                        colorname = NewColor();
+                        console.log(this);
+                        Chosenindexes.push(indexname);
+                        Chosenindexes[indexname] = colorname;
+                        $("#i_" + indexname).css("background-color", colorname);
+                        console.log(Chosenindexes);
+                    }
+                    else {
+                        Chosenindexes.remove(indexname);
+                        console.log(Chosenindexes);
+                        $("#i_" + indexname).css("background-color", "white");
+                    }
+
+                    $("div#unselected").empty();
+                    $("div#selected").empty();
+                    $("input[type=checkbox]").each(function () {//each()方法遍历所有的复选框
+                        if ($(this).is(':checked') == true) {//这里就可以判断当前是否被选择了
+                            var tempspan = $("<span class=\"label label-default\" data-stopPropagation=\"true\"id =\"" + indexname + "\">" + dict[indexname] + "</span>")
+                            tempspan.appendTo($("div#unselected"));
+                            $("div#unselected").append(" ");
+                        }
+                    })
+                    RequestChart1();
+                    set_time();
+                });
+            </script>
+            <!--时间控制框-->
+            <script>
+                var starttime = "19911231";
+                var endtime = "20161231";
+                $(".form_datetime").datetimepicker({
+                    format: 'yyyy-mm-dd ',
+                    startView: 4,
+                    minView: 4,
+                    maxView: 4,
+                    autoclose: true,
+                    pickerPosition: 'top-right'
+                });
+                $('#starttime').datetimepicker('setStartDate', '1991-12-31');
+                $('#starttime').datetimepicker('setEndDate', '2016-12-31');
+                $('#endtime').datetimepicker('setStartDate', '1991-12-31');
+                $('#endtime').datetimepicker('setEndDate', '2016-12-31');
+                $('#starttime')
+                    .datetimepicker()
+                    .on('changeDate', function (ev) {
+                        starts = ev.date.Format("yyyy年Q4");
+                        option.dataZoom[0].startValue = starts;
+                        myChart.setOption(option);
+                        RequestTable1();
+                    });
+                $('#endtime')
+                    .datetimepicker()
+                    .on('changeDate', function (ev) {
+                        ends = ev.date.Format("yyyy年Q4");
+                        option.dataZoom[0].endValue = ends;
+                        myChart.setOption(option);
+                        RequestTable1();
+                    });
+                Date.prototype.Format = function (fmt) { //author: meizz
+                    var o = {
+                        "M+": this.getMonth() + 1, //月份
+                        "d+": this.getDate(), //日
+                        "h+": this.getHours(), //小时
+                        "m+": this.getMinutes(), //分
+                        "s+": this.getSeconds(), //秒
+                        "q+": Math.floor((this.getMonth() + 3) / 3), //季度
+                        "S": this.getMilliseconds() //毫秒
+                    };
+                    if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+                    for (var k in o)
+                        if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+                    return fmt;
+                }
+                function dateformat(olddate) {
+                    newdate = []
+                    for (i = 0; i < olddate.length; i++) {
+                        var str = olddate[i];
+                        var reg = /1231/g;
+                        str = str.replace(reg, '年Q4');
+                        newdate.push(str)
+                    }
+                    return newdate
+                }
+            </script>
+            <!--单位转换-->
+            <script>
+                denominator = 1
+                $("select#unit").change(function () {
+                    flag = $(this).val();
+                    if (flag == "0") {
+                        denominator = 1;
+                        RequestChart1();
+                        CreateTable1();
+                        set_time();
+                    }
+                    if (flag == "1") {
+                        denominator = 100;
+                        RequestChart1();
+                        CreateTable1();
+                        set_time();
+                    }
+                });
+                function numfilter(oldnum) {
+                    newnum = []
+                    for (i = 0; i < oldnum.length; i++) {
+                        temp = oldnum[i] / denominator;
+                        newnum.push(temp.toFixed(2))
+                    }
+                    return newnum;
+                }
+            </script>
+
+        {% elif parameter==4 %}
+            <div id="myTabChoice4" style="width: 100%;height:600px;margin:auto">
+                <ul id="myTab" class="nav nav-tabs">
+                    <li class="disabled">
+                        <a href="javascript:return false;" data-toggle="tab" disabled='true'>视图：</a>
+                    </li>
+                    <li class="active"><a href="#chart" data-toggle="tab">图表</a></li>
+                    <li><a href="#table" data-toggle="tab" onclick="RequestTable1()">数据</a></li>
+                </ul>
+                <div id="choice" class="tab-content">
+                    <div class="tab-pane fade in active" id="chart">
+                        <div id="mychart" style="width:85%;height:60%;;float:right"></div>
+                        <div id="mychoice" style="width:15%;height:72%;float:left;overflow-y :auto">
+                            <div style="width:100%;height:30px;margin-top:10px;background-color:lightgray">
+                                <div class="checkbox" style="width:80%;height:20px;float:left;margin-left:5px">
+                                    <label><input type="checkbox" value="tot_oper_rev" checked="checked"
+                                                  id="first_check">总营业收入</label>
+                                </div>
+                                <div style="width:10px;height:10px;margin-right:5px;float:right;margin-top:15px;background-color:black"
+                                     id="i_tot_oper_rev"></div>
+                            </div>
+                            <div style="width:100%;height:30px;margin-top:10px;background-color:lightgray">
+                                <div class="checkbox" style="width:80%;height:20px;float:left;margin-left:5px">
+                                    <label><input type="checkbox" value="net_profit_is">净利润总和</label>
+                                </div>
+                                <div style="width:10px;height:10px;margin-right:5px;float:right;margin-top:15px;background-color:white"
+                                     id="i_net_profit_is"></div>
+                            </div>
+                            <div style="width:100%;height:30px;margin-top:10px;background-color:lightgray">
+                                <div class="checkbox" style="width:80%;height:20px;float:left;margin-left:5px">
+                                    <label><input type="checkbox" value="wgsd_net_inc">归属股东利润总和</label>
+                                </div>
+                                <div style="width:10px;height:10px;margin-right:5px;float:right;margin-top:15px;background-color:white"
+                                     id="i_wgsd_net_inc"></div>
+                            </div>
+                            <div style="width:100%;height:30px;margin-top:10px;background-color:lightgray">
+                                <div class="checkbox" style="width:80%;height:20px;float:left;margin-left:5px">
+                                    <label><input type="checkbox" value="tot_assets">总资产总和</label>
+                                </div>
+                                <div style="width:10px;height:10px;margin-right:5px;float:right;margin-top:15px;background-color:white"
+                                     id="i_tot_assets"></div>
+                            </div>
+                            <div style="width:100%;height:30px;margin-top:10px;background-color:lightgray">
+                                <div class="checkbox" style="width:80%;height:20px;float:left;margin-left:5px">
+                                    <label><input type="checkbox" value="tot_liab">总负债总和</label>
+                                </div>
+                                <div style="width:10px;height:10px;margin-right:5px;float:right;margin-top:15px;background-color:white"
+                                     id="i_tot_liab"></div>
+                            </div>
+                            <div style="width:100%;height:30px;margin-top:10px;background-color:lightgray">
+                                <div class="checkbox" style="width:80%;height:20px;float:left;margin-left:5px">
+                                    <label><input type="checkbox" value="net_assets">净资产总和</label>
+                                </div>
+                                <div style="width:10px;height:10px;margin-right:5px;float:right;margin-top:15px;background-color:white"
+                                     id="i_net_assets"></div>
+                            </div>
+                            <div style="width:100%;height:30px;margin-top:10px;background-color:lightgray">
+                                <div class="checkbox" style="width:80%;height:20px;float:left;margin-left:5px">
+                                    <label><input type="checkbox" value="wgsd_com_eq">股东权益总和</label>
+                                </div>
+                                <div style="width:10px;height:10px;margin-right:5px;float:right;margin-top:15px;background-color:white"
+                                     id="i_wgsd_com_eq"></div>
+                            </div>
+                            <div style="width:100%;height:30px;margin-top:10px;background-color:lightgray">
+                                <div class="checkbox" style="width:80%;height:20px;float:left;margin-left:5px">
+                                    <label><input type="checkbox" value="operatecashflow_ttm2">经营性现金流总和</label>
+                                </div>
+                                <div style="width:10px;height:10px;margin-right:5px;float:right;margin-top:15px;background-color:white"
+                                     id="i_operatecashflow_ttm2"></div>
+                            </div>
+                            <div style="width:100%;height:30px;margin-top:10px;background-color:lightgray">
+                                <div class="checkbox" style="width:80%;height:20px;float:left;margin-left:5px">
+                                    <label><input type="checkbox" value="investcashflow_ttm2">投资性现金流总和</label>
+                                </div>
+                                <div style="width:10px;height:10px;margin-right:5px;float:right;margin-top:15px;background-color:white"
+                                     id="i_investcashflow_ttm2"></div>
+                            </div>
+                            <div style="width:100%;height:30px;margin-top:10px;background-color:lightgray">
+                                <div class="checkbox" style="width:80%;height:20px;float:left;margin-left:5px">
+                                    <label><input type="checkbox" value="financecashflow_ttm2">融资性现金流总和</label>
+                                </div>
+                                <div style="width:10px;height:10px;margin-right:5px;float:right;margin-top:15px;background-color:white"
+                                     id="i_financecashflow_ttm2"></div>
+                            </div>
+                            <div style="width:100%;height:30px;margin-top:10px;background-color:lightgray">
+                                <div class="checkbox" style="width:80%;height:20px;float:left;margin-left:5px">
+                                    <label><input type="checkbox" value="cashflow_ttm2">总现金流总和</label>
+                                </div>
+                                <div style="width:10px;height:10px;margin-right:5px;float:right;margin-top:15px;background-color:white"
+                                     id="i_cashflow_ttm2"></div>
+                            </div>
+                            <div style="width:100%;height:30px;margin-top:10px;background-color:lightgray">
+                                <div class="checkbox" style="width:80%;height:20px;float:left;margin-left:5px">
+                                    <label><input type="checkbox" value="free_cash_flow">自由现金流估计</label>
+                                </div>
+                                <div style="width:10px;height:10px;margin-right:5px;float:right;margin-top:15px;background-color:white"
+                                     id="i_free_cash_flow"></div>
+                            </div>
+                        </div>
+                        <div style="float:right;width:81.5%;height:10%;margin-top:1%;border-radius:8px;background-color:#dcdcdc">
+                            <div style="float: left;margin-left: 20px;margin-top:20px">
+                                <a style="width:50px;margin-left:10px;color: #0c0c0c">起始时间:</a><input size="16"
+                                                                                                      type="text"
+                                                                                                      value="1991-12-31"
+                                                                                                      id="endtime"
+                                                                                                      readonly
+                                                                                                      class="form_datetime">
+                                <a style="width:50px;margin-left:10px;color: #0c0c0c">结束时间:</a><input size="16"
+                                                                                                      type="text"
+                                                                                                      value="2016-12-31"
+                                                                                                      id="starttime"
+                                                                                                      readonly
+                                                                                                      class="form_datetime">
+                                <a style="width:50px;margin-left:10px;color: #0c0c0c">单位:</a>
+                                <select id="unit">
+                                    <option value="0">亿</option>
+                                    <option value="1">千万</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="table">
+                        <div id="mytable" style="width:100%;height:100%;float:right"></div>
+                    </div>
+                </div>
+            </div>
+
+            <script>
+                $("#submitbtn4").click(function () {
+                    $("#form4").submit();
+                    Chosenindexes = ['tot_oper_rev'];
+                    RequestChart1();
+                });
+            </script>
+            <!--建图-->
+            <script>
+                var myChart = echarts.init(document.getElementById('mychart'));
+                var market_results1;
+                var dict = {
+                    'tot_oper_rev': '总营业收入',
+                    'net_profit_is': '净利润总和',
+                    'wgsd_net_inc': '归属股东利润总和',
+                    'tot_assets': '总资产总和',
+                    'tot_liab': '总负债总和',
+                    'net_assets': '净资产总和',
+                    'wgsd_com_eq': '股东权益总和',
+                    'operatecashflow_ttm2': '经营性现金流总和',
+                    'investcashflow_ttm2': '投资性现金流总和',
+                    'financecashflow_ttm2': '融资性现金流总和',
+                    'cashflow_ttm2': '总现金流总和',
+                    'free_cash_flow': '自由现金流估计',
+                    'net_profit_rate': '平均净利润率',
+                    'tot_assets_turnover': '平均总资产周转率',
+                    'equ_multi': '平均权益乘数',
+                    'roe_tot': '平均净资产收益率',
+                    'roe_holder': '平均净资产收益率（股东）'
+                };
+                $.ajax({
+                    type: 'GET',
+                    url: '{{ url_for("restfulapi.market_status4") }}',
+                    data: {
+                        code:{{ industry_gicscode_4|safe }},
+                        starttime: '19911231',
+                        endtime: '20161231',
+                        indexes: ['tot_oper_rev'],
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        dataSeries = [];
+                        temp = {
+                            name: data.indexes,
+                            type: 'line',
+                            lineStyle: {normal: {width: 2}},
+                            itemStyle: {normal: {color: '#000000'}},
+                            symbolSize: 8,
+                            smooth: true,
+                            data: numfilter(eval("data." + data.indexes))
+                        };
+                        dataSeries.push(temp);
+                        option = {
+                            title: {
+                                text: '财务指标分析图',
+                                left: '45%'
+                            },
+                            tooltip: {
+                                trigger: 'item',
+                                formatter: function (params) {
+                                    return dict[params.seriesName] + "<br/> 时间：" + params.name + "<br/> 数据：" + params.data;
+                                }
+                            },
+                            legend: {
+                                data: [],
+                                orient: 'vertical',
+                                left: '85%',
+                                top: '10%',
+                                formatter: function (name) {
+                                    return dict[name];
+                                }
+                            },
+                            grid: {
+                                left: '5%',
+                                top: '10%',
+                                containLabel: true
+                            },
+                            toolbox: {
+                                feature: {
+                                    magicType: {
+                                        type: ['line', 'bar']
+                                    }
+                                }
+                            },
+                            xAxis: {
+                                type: 'category',
+                                boundaryGap: false,
+                                axisTick: {
+                                    show: false
+                                },
+                                data: dateformat(data.the_year),
+                                Interval: 5
+                            },
+                            yAxis: {
+                                type: 'value',
+                                axisTick: {
+                                    show: false
+                                },
+                            },
+                            dataZoom: [
+                                {
+                                    type: 'slider',
+                                    xAxisIndex: [0],
+                                    startValue: "2016年Q4",
+                                    endValue: "1991年Q4",
+                                    filterMode: 'filter',
+                                }
+                            ],
+                            series: dataSeries
+                        };
+                        myChart.setOption(option, true);
+                        myChart.on('datazoom', function (params) {
+                            option.xAxis.interval = 10 * (params.end - params.start) / 100;
+                            var ends = (2016 - Math.ceil(params.start / 100 * 25)) + '-12-31'
+                            if (Math.ceil(1 - params.end / 100)) {
+                                var starts = (1991 + Math.ceil((1 - params.end / 100) * 25) - 1) + '-12-31'
+                            }
+                            else {
+                                var starts = '1991-12-31'
+                            }
+                            set_timepicker(starts, ends)
+                        });
+                        function set_timepicker(start, end) {
+                            document.getElementById('endtime').value = start
+                            document.getElementById('starttime').value = end
+                        }
+                    }
+                });
+                function RequestChart1() {
+                    $.ajax({
+                        type: 'GET',
+                        url: '{{ url_for("restfulapi.market_status4") }}',
+                        data: {
+                            code: {{ industry_gicscode_4|safe }},
+                            starttime: '19911231',
+                            endtime: '20161231',
+                            indexes: Chosenindexes,
+                        },
+                        dataType: 'json',
+                        success: function (data) {
+                            market_results1 = data;
+                            CreateChart1();
+                        }
+                    });
+                }
+                function CreateChart1() {
+                    dataSeries = [];
+                    for (var i = 0; i < market_results1.indexes.length; i++) {
+                        temp = {
+                            name: market_results1.indexes[i],
+                            type: 'line',
+                            lineStyle: {normal: {width: 2}},
+                            itemStyle: {normal: {color: Chosenindexes[market_results1.indexes[i]]}},
+                            symbolSize: 8,
+                            smooth: true,
+                            data: numfilter(eval("market_results1." + market_results1.indexes[i]))
+                        };
+                        dataSeries.push(temp);
+                    }
+                    option = {
+                        title: {
+                            text: '财务指标分析图',
+                            left: '45%'
+                        },
+                        tooltip: {
+                            trigger: 'item',
+                            formatter: function (params) {
+                                return dict[params.seriesName] + "<br/> 时间：" + params.name + "<br/> 数据：" + params.data;
+                            }
+                        },
+                        legend: {
+                            data: [],
+                            orient: 'vertical',
+                            left: '85%',
+                            top: '10%',
+                            formatter: function (name) {
+                                return dict[name];
+                            }
+                        },
+                        grid: {
+                            left: '5%',
+                            top: '10%',
+                            containLabel: true
+                        },
+                        toolbox: {
+                            feature: {
+                                magicType: {
+                                    type: ['line', 'bar']
+                                }
+                            }
+                        },
+                        xAxis: {
+                            type: 'category',
+                            boundaryGap: false,
+                            axisTick: {
+                                show: false
+                            },
+                            data: dateformat(market_results1.the_year),
+                            Interval: 5
+                        },
+                        yAxis: {
+                            type: 'value',
+                            axisTick: {
+                                show: false
+                            },
+                        },
+                        dataZoom: [
+                            {
+                                type: 'slider',
+                                xAxisIndex: [0],
+                                startValue: "2016年Q4",
+                                endValue: "1991年Q4",
+                                filterMode: 'filter',
+                            }
+                        ],
+                        series: dataSeries
+                    };
+                    myChart.setOption(option, true);
+                    myChart.on('datazoom', function (params) {
+                        option.xAxis.interval = 10 * (params.end - params.start) / 100;
+                        var ends = (2016 - Math.ceil(params.start / 100 * 25)) + '-12-31'
+                        if (Math.ceil(1 - params.end / 100)) {
+                            var starts = (1991 + Math.ceil((1 - params.end / 100) * 25) - 1) + '-12-31'
+                        }
+                        else {
+                            var starts = '1991-12-31'
+                        }
+                        set_timepicker(starts, ends)
+                    });
+                    function set_timepicker(start, end) {
+                        document.getElementById('endtime').value = start
+                        document.getElementById('starttime').value = end
+                    }
+                }
+                function set_time() {
+                    document.getElementById('endtime').value = "1991-12-31"
+                    document.getElementById('starttime').value = "2016-12-31"
+                }
+            </script>
+            <!--建表-->
+            <script>
+                var market_results_t1;
+                var invest_results_t1;
+                function RequestTable1() {
+                    var opt = myChart.getOption();
+                    var dz = opt.dataZoom[0];
+                    $.ajax({
+                        type: 'GET',
+                        url: '{{url_for("restfulapi.market_status4")}}',
+                        data: {
+                            code: {{ industry_gicscode_4|safe }},
+                            starttime: opt.xAxis[0].data[dz.endValue],
+                            endtime: opt.xAxis[0].data[dz.startValue],
+                            indexes: Chosenindexes
+                        },
+                        dataType: 'json',//希望服务器返回json格式的数据
+                        success: function (data) {
+                            console.log(data)
+                            market_results_t1 = data;
+                            invest_results_t1 = data;
+                            CreateTable1();
+                        }
+                    })
+                }
+                function CreateTable1() {
+                    $("#mytable").empty();
+                    var table = $("<table id=\"temptable\" style=\"text-align:center\" class=\"row-border hover order-column\" cellspacing=\"0\" width=\"100%\"  >");
+                    table.appendTo($("#mytable"));
+                    th = $("<thead></thead>");
+                    th.appendTo(table);
+                    var tr = $("<tr></tr>");
+                    tr.appendTo(th);
+                    var td = $("<td id=\"subject\">" + "项目" + "</td>");
+                    td.appendTo(tr);
+                    theyear = dateformat(market_results_t1.the_year)
+                    for (var j = 0; j < theyear.length; j++) {
+                        var td = $("<td>" + theyear[j] + "</td>");
+                        td.appendTo(tr);
+                    }
+                    tb = $("<tbody></tbody>");
+                    tb.appendTo(table);
+                    $("#mytable").append("</table>");
+                    var mydatatb = $('#temptable').DataTable({
+                        "info": false,
+                        "processing": true,
+                        "scrollX": true,
+                        "searching": true,
+                        "fixedColumns": { //固定列的配置项
+                            "leftColumns": 1//固定左边第一列
+                        },
+                        "language": {
+                            "emptyTable": "没有数据",
+                            "loadingRecords": "加载中…",
+                            "processing": "查询中…",
+                            "search": "检索:",
+                            "lengthMenu": "每页 _MENU_ 条",
+                            "zeroRecords": "没有数据",
+                            "paginate": {
+                                "first": "第一页",
+                                "last": "最后一页",
+                                "next": "",
+                                "previous": ""
+                            },
+                            "info": "第 _PAGE_ 页 / 总 _PAGES_ 页",
+                            "infoEmpty": "没有数据",
+                            "infoFiltered": "(过滤总件数 _MAX_ 条)"
+                        }
+                    });
+                    setTimeout("$(\"#subject\").trigger(\"click\")", 100);
+                    for (var i = 0; i < market_results_t1.indexes.length; i++) {
+                        var rowNode = mydatatb
+                            .row.add([dict[market_results_t1.indexes[i]]].concat(numfilter(eval("market_results_t1." + market_results_t1.indexes[i]))))
+                            .draw()
+                            .node();
+                        $(rowNode)
+                            .attr('id', market_results_t1.indexes[i]);
+                    }
+                    for (var key in Chosenindexes) {
+                        $('tr#' + key).css('color', Chosenindexes[key])
+                    }
+                }
+            </script>
+            <!--复选框操作-->
+            <script>
+                var Chosenindexes = new Array();
+                Chosenindexes = ['tot_oper_rev'];
+                Chosenindexes['tot_oper_rev'] = "#000000";
+                $(document).ready(function () {
+
+                });
+                $(":checkbox").change(function () {
+                    indexname = $(this).val();
+                    if ($(this).is(':checked') == true) {
+                        colorname = NewColor();
+                        console.log(this);
+                        Chosenindexes.push(indexname);
+                        Chosenindexes[indexname] = colorname;
+                        $("#i_" + indexname).css("background-color", colorname);
+                        console.log(Chosenindexes);
+                    }
+                    else {
+                        Chosenindexes.remove(indexname);
+                        console.log(Chosenindexes);
+                        $("#i_" + indexname).css("background-color", "white");
+                    }
+
+                    $("div#unselected").empty();
+                    $("div#selected").empty();
+                    $("input[type=checkbox]").each(function () {//each()方法遍历所有的复选框
+                        if ($(this).is(':checked') == true) {//这里就可以判断当前是否被选择了
+                            var tempspan = $("<span class=\"label label-default\" data-stopPropagation=\"true\"id =\"" + indexname + "\">" + dict[indexname] + "</span>")
+                            tempspan.appendTo($("div#unselected"));
+                            $("div#unselected").append(" ");
+                        }
+                    })
+                    RequestChart1();
+                    set_time();
+                });
+            </script>
+            <!--时间控制框-->
+            <script>
+                var starttime = "19911231";
+                var endtime = "20161231";
+                $(".form_datetime").datetimepicker({
+                    format: 'yyyy-mm-dd ',
+                    startView: 4,
+                    minView: 4,
+                    maxView: 4,
+                    autoclose: true,
+                    pickerPosition: 'top-right'
+                });
+                $('#starttime').datetimepicker('setStartDate', '1991-12-31');
+                $('#starttime').datetimepicker('setEndDate', '2016-12-31');
+                $('#endtime').datetimepicker('setStartDate', '1991-12-31');
+                $('#endtime').datetimepicker('setEndDate', '2016-12-31');
+                $('#starttime')
+                    .datetimepicker()
+                    .on('changeDate', function (ev) {
+                        starts = ev.date.Format("yyyy年Q4");
+                        option.dataZoom[0].startValue = starts;
+                        myChart.setOption(option);
+                        RequestTable1();
+                    });
+                $('#endtime')
+                    .datetimepicker()
+                    .on('changeDate', function (ev) {
+                        ends = ev.date.Format("yyyy年Q4");
+                        option.dataZoom[0].endValue = ends;
+                        myChart.setOption(option);
+                        RequestTable1();
+                    });
+                Date.prototype.Format = function (fmt) { //author: meizz
+                    var o = {
+                        "M+": this.getMonth() + 1, //月份
+                        "d+": this.getDate(), //日
+                        "h+": this.getHours(), //小时
+                        "m+": this.getMinutes(), //分
+                        "s+": this.getSeconds(), //秒
+                        "q+": Math.floor((this.getMonth() + 3) / 3), //季度
+                        "S": this.getMilliseconds() //毫秒
+                    };
+                    if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+                    for (var k in o)
+                        if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+                    return fmt;
+                }
+                function dateformat(olddate) {
+                    newdate = []
+                    for (i = 0; i < olddate.length; i++) {
+                        var str = olddate[i];
+                        var reg = /1231/g;
+                        str = str.replace(reg, '年Q4');
+                        newdate.push(str)
+                    }
+                    return newdate
+                }
+            </script>
+            <!--单位转换-->
+            <script>
+                denominator = 1
+                $("select#unit").change(function () {
+                    flag = $(this).val();
+                    if (flag == "0") {
+                        denominator = 1;
+                        RequestChart1();
+                        CreateTable1();
+                        set_time();
+                    }
+                    if (flag == "1") {
+                        denominator = 0.1;
+                        RequestChart1();
+                        CreateTable1();
+                        set_time();
+                    }
+                });
+                function numfilter(oldnum) {
+                    newnum = []
+                    for (i = 0; i < oldnum.length; i++) {
+                        temp = oldnum[i] / denominator;
+                        newnum.push(temp.toFixed(2))
+                    }
+                    return newnum;
+                }
+            </script>
+
+        {% endif %}
+    </div>
+    <!--面板切换-->
+    <script>
+        $("#mydropdown").on("click", "[data-stopPropagation]", function (e) {
+            e.stopPropagation();
+        })
+    </script>
+    <!--随机生成颜色-->
+    <script>
+        function NewColor() {
+            var colorElements = "0,1,2,3,4,5,6,7,8,9,a,b,c,d,e,f";
+            var colorArray = colorElements.split(",");
+            var color = "#";
+            for (var i = 0; i < 6; i++) {
+                color += colorArray[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+    </script>
+    <!--删除函数-->
+    <script>
+        Array.prototype.indexOf = function (val) {
+            for (var i = 0; i < this.length; i++) {
+                if (this[i] == val) return i;
+            }
+            return -1;
+        };
+        Array.prototype.remove = function (val) {
+            var index = this.indexOf(val);
+            if (index > -1) {
+                this.splice(index, 1);
+            }
+        };
+    </script>
+    <!--搜索事件-->
+    <script>
+        function selectline(linename) {
+            for (var line in option.series) {
+                l = parseInt(line);
+                if (option.series[l].name == linename) {
+                    tempcolor = NewColor();
+                    option.series[l].lineStyle.normal.color = tempcolor;
+                    option.series[l].itemStyle.normal.color = tempcolor;
+                    $("span#" + linename).css('color', tempcolor);
+                    selectedindexes.push(l);
+                    selectedindexname.push(option.series[l].name);
+                    option.legend.data = selectedindexname;
+                    myChart.setOption(option);
+                }
+            }
+        }
+        function unselectline(linename) {
+            for (var line in option.series) {
+                l = parseInt(line);
+                if (option.series[l].name == linename) {
+                    option.series[l].lineStyle.normal.color = '#C4D2DB';
+                    option.series[l].itemStyle.normal.color = '#C4D2DB';
+                    $("span#" + linename).css('color', 'white');
+                    selectedindexes.splice(selectedindexes.indexOf(l), 1);
+                    selectedindexname.splice(selectedindexname.indexOf(option.series[l].name), 1);
+                    option.legend.data = selectedindexname;
+                    myChart.setOption(option);
+                }
+            }
+        }
+    </script>
+{% endblock %}
 
 
 <SCRIPT Language=VBScript><!--
 
-//--></SCRIPT>
+//-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</SCRIPT>

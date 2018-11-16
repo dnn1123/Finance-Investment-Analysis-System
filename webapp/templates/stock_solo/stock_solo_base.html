@@ -1,42 +1,66 @@
-{% extends "stock_base.html" %}
-
-{% block current_user %}
-    当前用户：{{ current_user.username }}
-{% endblock %}
-
-{% block body %}
-	{% block tab %}{% endblock %}
-<br>
-	{% block search %}{% endblock %}
-    <div id="myTabContent">
-        <div id="basics" style="height:80%;width: 100%;">
-            <div class="leftbox" style="position:relative;">
-                {% block choice %}{% endblock %}
-            </div>
-            <div class="rightbox">
-                <ul id="myTab" class="nav nav-tabs">
-                    <li class="disabled">
-                        <a href="javascript:return false;" data-toggle="tab" disabled='true'>视图：</a>
-                    </li>
-                    <li><a href="#chart" data-toggle="tab">图表</a></li>
-                    <li><a href="#table" data-toggle="tab" onclick="RequestTable()">数据</a></li>
-                </ul>
-                <div id="myTabContent" class="tab-content">
-                    <div class="tab-pane fade in active" id="chart">
-                        {% block chart %}{% endblock %}
-                    </div>
-                    <div class="tab-pane fade" id="table">
-                        {% block table %}{% endblock %}
-                    </div>
-                </div>
-                <div class="well well-lg" >
-                    {% block toolbox %}{% endblock %}
-                </div>
-
-            </div>
-
+{% if current_user.is_authenticated %}
+    {% extends "stock_base.html" %}
+{% else %}
+    {% extends "stock_base_visitor.html" %}
+{% endif %}
+{% block searchForm %}
+    <form id="searchform" class="navbar-search pull-left input-append" role="search" method="post"
+          action="{{ url_for('stock_solo.basic') }}">
+        <div class="input-group">
+            <input type="text" class="span3 form-control" id="stockcode" style="height: 30px"
+                   placeholder="Search" name="stockcode">
+            <button id="submitbtn" class="btn dropdown-toggle" style="height: 30px" data-toggle="dropdown"
+                    type="submit"><i class="icon-search"></i></button>
+            <ul class="dropdown-menu" role="menu" style="left: 0!important;"></ul>
         </div>
-    </div>
-
-    {% block scripts %} {% endblock %}
+    </form>
 {% endblock %}
+{% block JavaScripts %}
+    <script>
+        var stocksuggest = $("input[name='stockcode']").bsSuggest({
+            indexKey: 1,
+            allowNoKeyword: false,
+            getDataMethod: "url",
+            url: '{{url_for("restfulapi.stock_code",q="")}}',
+            processData: function (json) {     // url 获取数据时，对数据的处理，作为 getData 的回调函数
+                var i, len, data = {value: []};
+                if (!json || !json.stockcode || json.stockcode.length == 0) {
+                    return false;
+                }
+                len = json.stockcode.length;
+                for (i = 0; i < len; i++) {
+                    data.value.push({
+                        "Id": (i + 1),
+                        "stockcode": json.stockcode[i],
+                        "stockname": json.stockname[i],
+                    });
+                }
+                return data;
+            }
+        });
+        $("#submitbtn").click(function () {
+            $.ajax({
+                type: 'POST',
+                url: '{{url_for("restfulapi.iscode")}}',
+                data: {
+                    'code': $("#stockcode").val(),
+                },
+                dataType: 'json',
+                success: function (data) {
+                    if (data.the_name != 'false') {
+                        $("#searchform").submit();
+                    }
+                    else {
+                        alert($("#stockcode").val() + "号股票不存在！")
+                    }
+                }
+            })
+        })
+        $(function () {
+            $("[data-toggle='tooltip']").tooltip();
+        });
+    </script>
+    {% block scripts %}{% endblock %}
+{% endblock %}
+
+

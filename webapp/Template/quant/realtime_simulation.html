@@ -1,0 +1,262 @@
+{% extends "quant_base.html" %}
+{% block content %}
+    <div class="module">
+        <div class="module-head">
+            <button id="head1" class="btn btn-primary" data-toggle="button">我的订阅</button>
+            <div class="span3 pull-right" style="float:right;margin-right:0px;text-align: right">
+                <button class="btn btn-mini btn-primary" type="button" data-toggle="modal"
+                        data-target="#subscribe">创建
+                </button>
+            </div>
+        </div>
+        <div class="module-body">
+            <div class="row-fluid">
+                <div class="span12" style="background-color:white">
+                    <table id="mytable" style="text-align:center;width: 90%;">
+                        <thead>
+                        <tr>
+                            <th>
+                                选择
+                            </th>
+                            <th>
+                                策略名称
+                            </th>
+                            <th>
+                                策略类型
+                            </th>
+                            <th>
+                                投入资金
+                            </th>
+                            <th>
+                                当前市值
+                            </th>
+                            <th>
+                                状态
+                            </th>
+                            <th>
+                                构建日期
+                            </th>
+                            <th>
+                                操作
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody id="tbody">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {#    <div class="btn-controls">#}
+    {#        <div class="btn-box-row row-fluid">#}
+    {#            <a href="#" class="btn-box big span4"><i class="icon-money "></i><b id="portfolio">-</b>#}
+    {#                <p class="text-muted">#}
+    {#                    总市值</p>#}
+    {#            </a><a href="#" class="btn-box big span4"><i class="icon-glass"></i><b id="culrtn">-</b>#}
+    {#            <p class="text-muted">#}
+    {#                总成本</p>#}
+    {#        </a><a href="#" class="btn-box big span4"><i class="icon-random"></i><b id="meanrtn">-</b>#}
+    {#            <p class="text-muted">#}
+    {#                总利润</p>#}
+    {#        </a>#}
+    {#        </div>#}
+    {#    </div>#}
+    {#    <div class="btn-controls">#}
+    {#        <div class="btn-box-row row-fluid">#}
+    {#            <a href="#" class="btn-box big span4"><i class="icon-money "></i><b id="portfolio">-</b>#}
+    {#                <p class="text-muted">#}
+    {#                    累计收益率</p>#}
+    {#            </a><a href="#" class="btn-box big span4"><i class="icon-glass"></i><b id="culrtn">-</b>#}
+    {#            <p class="text-muted">#}
+    {#                平均日收益率</p>#}
+    {#        </a><a href="#" class="btn-box big span4"><i class="icon-random"></i><b id="meanrtn">-</b>#}
+    {#            <p class="text-muted">#}
+    {#                近一个月收益率最高</p>#}
+    {#        </a>#}
+    {#        </div>#}
+    {#    </div>#}
+    {#    <div class="module">#}
+    {#        <div class="module-head">资金分布</div>#}
+    {#        投入 市值#}
+    {#    </div>#}
+    {#    <div class="module">#}
+    {#        <div class="module-head">夏普率条形图</div>#}
+    {#    </div>#}
+    {#    <div class="module">#}
+    {#        <div class="module-head">最大回撤条形图</div>#}
+    {#    </div>#}
+    {#    <div class="module">#}
+    {#        <div class="module-head">平均日收益率条形图</div>#}
+    {#    </div>#}
+    {#    <div class="module">#}
+    {#        <div class="module-head">利润条形图</div>#}
+    {#    </div>#}
+{% endblock %}
+{% block bottombody %}
+    <!-- Modal -->
+    <div id="subscribe" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3>添加订阅</h3>
+        </div>
+        <div class="modal-body">
+            <select id="form_type">
+                <option disabled selected value>请选择……</option>
+                <option value="Pair_Strategy_Based_Bank">配对策略</option>
+                <option value="DoubleMA_Strategy">双均线策略</option>
+                <option value="Buy_Everyday">每日一买</option>
+                <option value="My_Pair_Strategy">双股票策略</option>
+            </select>
+            <div id="div_form"></div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn" data-dismiss="modal" aria-hidden="true">关闭</button>
+        </div>
+    </div>
+{% endblock %}
+{% block scripts %}
+    <script>
+        $(document).ready(function () {
+            mytable = $('#mytable').DataTable({
+                "info": false,
+                "lengthChange": false,
+                "pageLength": 5,
+                "searching": false,
+                "language": {
+                    "emptyTable": "没有数据",
+                    "loadingRecords": "加载中…",
+                    "processing": "查询中…",
+                    "search": "检索:",
+                    "lengthMenu": "每页 _MENU_ 条",
+                    "zeroRecords": "没有数据",
+                    "paginate": {
+                        "first": "第一页",
+                        "last": "最后一页",
+                        "next": "",
+                        "previous": ""
+                    },
+                    "info": "第 _PAGE_ 页 / 总 _PAGES_ 页",
+                    "infoEmpty": "没有数据",
+                    "infoFiltered": "(过滤总件数 _MAX_ 条)"
+                },
+                "columnDefs": [{
+                    "targets": 0,
+                    "render": function (data, type, row) {
+                        return '<input type="checkbox"/>'
+                    }
+                }, {
+                    "targets": 1,
+                    "render": function (data, type, row) {
+                        html = "{{ url_for("quant.realtime_simulation") }}";
+                        return '<a href="' + html + row[0] + '">' + data + '</a>';
+                    }
+                }, {
+                    "targets": 3,
+                    "render": function (data, type, row) {
+                        return data + '元';
+                    }
+                }, {
+                    "targets": 7,
+                    "render": function (data, type, row) {
+                        return '<button class="btn-success btn-mini start_subscribe" id="' + row[0] + '">运行</button><br><button class="btn-primary btn-mini stop_subscribe" id="' + row[0] + '">暂停</button><br><button class="btn-warning btn-mini delete_subscribe" id="' + row[0] + '">删除</button>'
+                    }
+                }],
+
+            });
+            getdata()
+        })
+
+    </script>
+
+    <script>
+        //选择订阅类型
+        $("#form_type").on('change', function (e) {
+            $.ajax({
+                type: "GET",
+                data: {"type": $("#form_type").val()},
+                url: "{{ url_for("quant_api.request_liveform") }}",
+                dataType: "html",
+                success: function (data) {
+                    $("#div_form").html(data)
+                }
+            })
+        });
+
+        $("#div_form").on('click', '.submit', function () {
+            $('#subscribe').modal('hide');
+            $.ajax({
+                type: "POST",//方法类型
+                dataType: "json",//预期服务器返回的数据类型
+                url: "{{ url_for("quant_api.subscribe") }}",//url
+                data: $('#backtest_form').serialize(),
+                success: function (result) {
+                    alert(result.data);
+                    getdata()
+                }
+            })
+        });
+
+        $("#mytable").on('click', '.delete_subscribe', function () {
+                $.ajax({
+                    type: "GET",//方法类型
+                    dataType: "json",//预期服务器返回的数据类型
+                    url: "{{ url_for("quant_api.delete_subscribe") }}",//url
+                    data: {"id": $(this).attr('id')},
+                    success: function (result) {
+                        alert(result.result);
+                        getdata()
+                    }
+                })
+            }
+        );
+        $("#mytable").on('click', '.start_subscribe', function () {
+                $.ajax({
+                    type: "GET",//方法类型
+                    dataType: "json",//预期服务器返回的数据类型
+                    url: "{{ url_for("quant_api.start_subscribe") }}",//url
+                    data: {"id": $(this).attr('id')},
+                    success: function (result) {
+                        alert(result.result);
+                        getdata()
+                    }
+                })
+            }
+        );
+
+        $("#mytable").on('click', '.stop_subscribe', function () {
+                $.ajax({
+                    type: "GET",//方法类型
+                    dataType: "json",//预期服务器返回的数据类型
+                    url: "{{ url_for("quant_api.stop_subscribe") }}",//url
+                    data: {"id": $(this).attr('id')},
+                    success: function (result) {
+                        alert(result.result);
+                        getdata()
+                    }
+                })
+            }
+        )
+
+    </script>
+    <script>
+        function getdata() {
+            $.ajax({
+                type: "GET",//方法类型
+                dataType: "json",//预期服务器返回的数据类型
+                url: "{{ url_for("quant_api.get_realtime_simulation_data") }}",//url
+                {#data#}
+                success: function (result) {
+                    mytable.clear().draw()
+                    if (result.flag != "empty") {
+                        mytable.rows.add(result.data).draw()
+                    }
+                }
+            })
+        }
+    </script>
+
+
+{% endblock %}

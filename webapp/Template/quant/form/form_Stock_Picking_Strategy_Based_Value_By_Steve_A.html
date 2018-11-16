@@ -1,0 +1,37 @@
+<form id="backtest_form">
+    <input type="text" value="Stock_Picking_Strategy_Based_Value_By_Steve_A" style="display: none" name="type">
+
+    <div class="row-fluid">
+        <div class="span6">
+            <strong>投入资金：</strong><input type="text" placeholder="" name="cash">
+        </div>
+        <div class="span6">
+            <strong>手续费率：</strong><input type="text" placeholder="" name="commission">
+        </div>
+    </div>
+    <div class="row-fluid">
+
+        <div class="span6">
+            <strong>回测开始日期：</strong><input type="text" placeholder="" name="sdate" class="form_datetime">
+        </div>
+
+        <div class="span6">
+            <strong>回测结束日期：</strong><input type="text" placeholder="" name="edate" class="form_datetime">
+        </div>
+    </div>
+</form>
+<div class="row-fluid">
+    <button class="btn btn-primary submit" style="float: right">提交</button>
+</div>
+
+<script>
+    $('.form_datetime').datetimepicker({
+        format: 'yyyy-mm-dd',
+        startView: 4,
+        maxView: 4,
+        minView: 2,
+        autoclose: true,
+        pickerPosition: 'bottom-right'
+    })
+
+</script>
