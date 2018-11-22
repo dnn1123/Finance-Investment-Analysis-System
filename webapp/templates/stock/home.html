@@ -126,7 +126,7 @@
                             当前持仓股票</p>
                     </a>
 
-                    <a href="#" class="btn-box big span4"><i class="icon-money"></i><b id="myprofits"></b>
+                    <a href="{{ url_for('stock.myposition') }}" class="btn-box big span4"><i class="icon-money"></i><b id="myprofits"></b>
                         <p class="text-muted">
                             当前持仓收益</p>
                     </a>
@@ -155,7 +155,7 @@
                         </div>
                         <div class="row-fluid">
                             <div class="span12">
-                                <a href="#" class="btn-box small span4"><i class="icon-save"></i><b>1</b>
+                                <a href="{{ url_for('stock.myposition') }}" class="btn-box small span4"><i class="icon-save"></i><b>1</b>
                                     <p class="text-muted">
                                         我的投资组合</p>
                                 </a>
@@ -165,7 +165,7 @@
                                     <p class="text-muted">
                                         我的新闻</p>
                                 </a>
-                                <a href="#" class="btn-box small span4"><i class="icon-sort-down"></i><b>
+                                <a href="{{ url_for('quant.realtime_simulation') }}" class="btn-box small span4"><i class="icon-sort-down"></i><b>
                                     1</b>
                                     <p class="text-muted">
                                         我的财务分析模型</p></a>
