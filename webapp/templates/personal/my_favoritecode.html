@@ -230,9 +230,8 @@
                                             <a href="javascript:return false;" data-toggle="tab"
                                                disabled='true'>视图：</a>
                                         </li>
-                                        <li><a href="#chart" data-toggle="tab">图表</a></li>
-                                        <li><a href="#table" data-toggle="tab" onclick="RequestTable()">数据</a>
-                                        </li>
+                                        <li class = "active"><a href="#chart" data-toggle="tab" >图表</a></li>
+                                        <li><a href="#table" data-toggle="tab" onclick="RequestTable()">数据</a></li>
                                     </ul>
                                     <div id="myTabContent" class="tab-content" style="width: 100%;">
                                         <div class="tab-pane fade in active" id="chart">
@@ -247,10 +246,8 @@
                                                 <table id="fixTable" class="row-border hover order-column"
                                                        cellspacing="0">
                                                     <thead id="table_head">
-
                                                     </thead>
                                                     <tbody id="table_body">
-
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -1527,7 +1524,11 @@
             $('#fixTable').DataTable({
                 "info": false,
                 "processing": true,
-                "searching": true,
+                "searching": false,
+                "lengthChange": false,
+                "filter" : true, //是否启动过滤、搜索功能
+                "paginate" : true, //是否显示（应用）分页器
+                "pageLength": 5,
                 "language": {
                     "emptyTable": "没有数据",
                     "loadingRecords": "加载中…",
@@ -1709,13 +1710,18 @@
                                         {#                                        containLabel: true#}
                                     },
                                     toolbox: {
-
                                         feature: {
                                             saveAsImage: {},
                                             magicType: {
-                                                type: ['line', 'bar', 'stack', 'tiled']
+                                                type: ['line', 'bar', 'stack', 'tiled'],
+                                                title : {
+                                                    line : '折线图',
+                                                    bar : '柱形图',
+                                                    stack : '堆积',
+                                                    tiled : '平铺'
+                                                },
                                             }
-                                        }
+                                        },
                                     },
                                     xAxis: {
                                         type: 'category',
@@ -1783,7 +1789,7 @@
                                 }
                                 option = {
                                     title: {
-                                        text: "对比指标:" + index_title + "（单位：" + getunitname(unit) + "）"
+                                        text: "对比数据:" + index_title + "（单位：" + getunitname(unit) + "）"
                                     },
                                     tooltip: {
                                         trigger: 'axis',
@@ -1799,7 +1805,13 @@
                                         feature: {
                                             saveAsImage: {},
                                             magicType: {
-                                                type: ['line', 'bar', 'stack', 'tiled']
+                                                type: ['line', 'bar', 'stack', 'tiled'],
+                                                title : {
+                                                    line : '折线图',
+                                                    bar : '柱形图',
+                                                    stack : '堆积',
+                                                    tiled : '平铺'
+                                                },
                                             }
                                         }
                                     },
@@ -2253,8 +2265,6 @@
                     set_checked_code_color(selected_code, color)
                     createchart(selected_code, Uint, dzstartyear, dzendyear)
                     creattable(selected_code, Uint, dzstartyear, dzendyear)
-
-
                 }
             });
 
