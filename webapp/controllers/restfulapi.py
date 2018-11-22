@@ -1326,6 +1326,7 @@ def get_signin_date_list():
 def signin():
     username = request.args.get('username')
     date = request.args.get('date')
+    print username
     sign = user_signin()
     sign.user_name = username
     sign.signin_date = date
