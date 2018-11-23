@@ -1,0 +1,105 @@
+<form id="backtest_form">
+    <input type="text" value="Pair_Strategy_Based_Bank" style="display: none" name="type">
+    <div class="row-fluid">
+        <table>
+            <tbody>
+            <tr>
+                <td width="100px">
+                    <strong>股票代码1：</strong>
+                </td>
+                <td width="150px">
+                    <div class="input-append input-group btn-group">
+                        <input type="text" class="stockcode" name="instrument_1">
+                        <button class="btn btn-mini dropdown-toggle" data-toggle="dropdown">
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <!-- dropdown menu links -->
+                        </ul>
+                    </div>
+                </td>
+                <td width="100px">
+                    <strong>股票代码2：</strong>
+                </td>
+                <td width="150px">
+                    <div class="input-append input-group btn-group">
+                        <input type="text" class="stockcode" name="instrument_2">
+                        <button class="btn btn-mini dropdown-toggle" data-toggle="dropdown">
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <!-- dropdown menu links -->
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td width="100px">
+                    <strong>投入资金：</strong>
+                </td>
+                <td width="150px">
+                    <input type="text" placeholder="" name="cash">
+                </td>
+                <td width="100px">
+                    <strong>手续费率：</strong>
+                </td>
+                <td width="150px">
+                    <input type="text" placeholder="" name="commission">
+                </td>
+            </tr>
+            <tr>
+                <td width="100px">
+                    <strong>回测开始日期：</strong>
+                </td>
+                <td width="150px">
+                    <input type="text" placeholder="" name="sdate" class="form_datetime">
+                </td>
+                <td width="100px">
+                    <strong>回测结束日期：</strong>
+                </td>
+                <td width="150px">
+                    <input type="text" placeholder="" name="edate" class="form_datetime">
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+    </div>
+
+</form>
+<div class="row-fluid">
+    <button class="btn btn-primary submit" style="float: right">提交</button>
+</div>
+<script>
+    $('.form_datetime').datetimepicker({
+        format: 'yyyy-mm-dd',
+        startView: 4,
+        maxView: 4,
+        minView: 2,
+        autoclose: true,
+        pickerPosition: 'bottom-right'
+    })
+    $(".stockcode").bsSuggest({
+        indexKey: 1,
+        allowNoKeyword: true,
+        getDataMethod: "url",
+        showBtn: true,
+        url: '{{url_for("restfulapi.stock_code",q="")}}',
+        processData: function (json) {     // url 获取数据时，对数据的处理，作为 getData 的回调函数
+            var i, len, data = {value: []};
+            if (!json || !json.stockcode || json.stockcode.length == 0) {
+                return false;
+            }
+            len = json.stockcode.length;
+            for (i = 0; i < len; i++) {
+                data.value.push({
+                    "Id": (i + 1),
+                    "stockcode": json.stockcode[i],
+                    "stockname": json.stockname[i],
+                });
+            }
+            console.log(data)
+            return data;
+        }
+    });
+</script>

@@ -7,17 +7,17 @@
     <form class="form-search" method="POST" action="{{ url_for('industry_analysis.annual_table') }}">
         {{ year_form.hidden_tag() }}
         {{ year_form.year(class_='input-sm') }}
-        <input class="btn btn-success btn-xs" type="submit" value="搜索" >
+        <input class="btn btn-success btn-xs" type="submit" value="搜索">
     </form>
     当前年份为：{{ year[:4] }}年
 {% endblock %}
 
 {% block tab %}
     <ul class="nav nav-pills">
-        <li><a href="{{ url_for('.market_status') }}">A.市场概况</a></li>
+        <li><a href="{{ url_for('.market_value') }}">市场分析</a></li>
         <li class="dropdown"> <!--tip 可以同时写两个属性-->
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                B.行业状况 <span class="caret"></span>
+                行业状况 <span class="caret"></span>
             </a>
             <ul class="dropdown-menu">
                 <li><a href="{{ url_for('.industry_status',parameter=1) }}">部门</a></li>
@@ -26,13 +26,22 @@
                 <li><a href="{{ url_for('.industry_status',parameter=4) }}">子行业</a></li>
             </ul>
         </li>
-        <li><a>C.图表分析</a></li>
-        <li><a href="{{ url_for('.cns_home') }}">1.上市公司名单</a></li>
-        <li><a>2.制图数据</a></li>
-        <li class="active"><a href="{{ url_for('.annual_table') }}">年度表.A</a></li>
         <li class="dropdown"> <!--tip 可以同时写两个属性-->
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                年度表.B <span class="caret"></span>
+                对比分析 <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+                <li><a href="{{ url_for('.industry_compare',param=1) }}">部门</a></li>
+                <li><a href="{{ url_for('.industry_compare',param=2) }}">行业组</a></li>
+                <li><a href="{{ url_for('.industry_compare',param=3) }}">行业</a></li>
+                <li><a href="{{ url_for('.industry_compare',param=4) }}">子行业</a></li>
+            </ul>
+        </li>
+        <li><a href="{{ url_for('.cns_home') }}">上市公司名单</a></li>
+        <li class="active"><a href="{{ url_for('.annual_table') }}">年度表A</a></li>
+        <li class="dropdown"> <!--tip 可以同时写两个属性-->
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                年度表B <span class="caret"></span>
             </a>
             <ul class="dropdown-menu">
                 <li><a href="{{ url_for('.annual_table_b',parameter=1) }}">部门</a></li>
@@ -44,160 +53,151 @@
     </ul>
 {% endblock %}
 
-<!--没法用fixTable，因为有3000+股票，速度太慢-->
-{#{% block fixTable %}#}
-{#    <script>#}
-{#			$(document).ready(function() {#}
-{#				$("#fixTable").tableHeadFixer({"left" : 2});#}
-{#			});#}
-{#    </script>#}
-{#{% endblock %}#}
-
 {% block container %}
     <div id="basics" style="height:60%;width:100%;overflow-y:auto;overflow-x:scroll;border: 1px inset">
-    <table style="width: 1200px;"> <!--设置绝对宽度对吗???-->
-        <thead>
-        <tr bgcolor="#CC0000"> <!--还差证监会分类-->
-            <td style="width: 5%;"><font color="white">证券代码</font></td>
-            <td style="width: 5%;"><font color="white">证券名称</font></td>
-            <td style="width: 5%;"><font color="white">营业收入</font></td>
-            <td style="width: 5%;"><font color="white">净利润（总额）</font></td>
-            <td style="width: 5%;"><font color="white">净利润（股东）</font></td>
-            <td style="width: 5%;"><font color="white">总资产</font></td>
-            <td style="width: 5%;"><font color="white">总负债</font></td>
-            <td style="width: 5%;"><font color="white">净资产</font></td>
-            <td style="width: 5%;"><font color="white">归属股东权益</font></td>
-            <td style="width: 5%;"><font color="white">经营活动现金流量</font></td>
-            <td style="width: 5%;"><font color="white">投资活动现金流量</font></td>
-            <td style="width: 5%;"><font color="white">融资活动现金流量</font></td>
-            <td style="width: 5%;"><font color="white">总现金流总和</font></td>
-            <td style="width: 5%;"><font color="white">自由现金流估计</font></td>
-            <td style="width: 5%;"><font color="white">净利润率</font></td>
-            <td style="width: 5%;"><font color="white">总资产周转率</font></td>
-            <td style="width: 5%;"><font color="white">权益乘数</font></td>
-            <td style="width: 5%;"><font color="white">净资产收益率（总额）</font></td>
-            <td style="width: 5%;"><font color="white">净资产收益率（股东）</font></td>
-        </tr>
-        </thead>
-        <tbody>
-        {% for x in range(length) %}
-            <tr><!--每一行都是两种结果集的输组合-->
-                <td>{{ rs[x].trade_code }}</td>
-                <td>{{ rs[x].sec_name }}</td>
-                <td>
-                    {% if rs[x].tot_oper_rev == None  %}
-                        NA
-                    {% else %}
-                        {{ (rs[x].tot_oper_rev/100000000)|round(2) }}
-                    {% endif %}
-                </td>
-                <td>
-                    {% if rs[x].net_profit_is == None  %}
-                        NA
-                    {% else %}
-                        {{ (rs[x].net_profit_is/100000000)|round(2) }}</td>
-                    {% endif %}
-                <td>
-                    {% if rs[x].wgsd_net_inc == None  %}
-                        NA
-                    {% else %}
-                        {{ (rs[x].wgsd_net_inc/100000000)|round(2) }}</td>
-                    {% endif %}
-                <td>
-                    {% if rs[x].tot_assets == None  %}
-                        NA
-                    {% else %}
-                        {{ (rs[x].tot_assets/100000000)|round(2) }}</td>
-                    {% endif %}
-                <td>
-                    {% if rs[x].tot_liab == None  %}
-                        NA
-                    {% else %}
-                        {{ (rs[x].tot_liab/100000000)|round(2) }}</td>
-                    {% endif %}
-                <td>
-                    {% if rs[x].net_assets == None  %}
-                        NA
-                    {% else %}
-                        {{ (rs[x].net_assets/100000000)|round(2) }}</td>
-                    {% endif %}
-                <td>
-                    {% if rs[x].wgsd_com_eq == None  %}
-                        NA
-                    {% else %}
-                        {{ (rs[x].wgsd_com_eq/100000000)|round(2) }}</td>
-                    {% endif %}
-                <td>
-                    {% if rs[x].operatecashflow_ttm2 == None  %}
-                        NA
-                    {% else %}
-                        {{ (rs[x].operatecashflow_ttm2/100000000)|round(2) }}</td>
-                    {% endif %}
-                <td>
-                    {% if rs[x].investcashflow_ttm2 == None  %}
-                        NA
-                    {% else %}
-                        {{ (rs[x].investcashflow_ttm2/100000000)|round(2) }}</td>
-                    {% endif %}
-                <td>
-                    {% if rs[x].financecashflow_ttm2 == None  %}
-                        NA
-                    {% else %}
-                        {{ (rs[x].financecashflow_ttm2/100000000)|round(2) }}</td>
-                    {% endif %}
-                <td>
-                    {% if rs[x].cashflow_ttm2 == None  %}
-                        NA
-                    {% else %}
-                        {{ (rs[x].cashflow_ttm2/100000000)|round(2) }}</td>
-                    {% endif %}
-                <td>
-                    {% if rs[x].free_cash_flow == None  %}
-                        NA
-                    {% else %}
-                        {{ (rs[x].free_cash_flow/100000000)|round(2) }}</td>
-                    {% endif %}
-                <td>
-                    {% if rs[x].net_profit_rate == None  %}
-                        NA
-                    {% else %}
-                    {{ rs[x].net_profit_rate|round(3) }}
-                    {% endif %}
-                </td>
-                <td>
-                    {% if rs[x].tot_assets_turnover == None  %}
-                        NA
-                    {% else %}
-                    {{ rs[x].tot_assets_turnover|round(3) }}
-                    {% endif %}
-                </td>
-                <td>
-                    {% if rs[x].equ_multi == None  %}
-                        NA
-                    {% else %}
-                    {{ rs[x].equ_multi|round(3) }}
-                    {% endif %}
-                </td>
-                <td>
-                    {% if rs[x].roe_tot == None  %}
-                        NA
-                    {% else %}
-                    {{ rs[x].roe_tot|round(3) }}
-                    {% endif %}
-                </td>
-                <td>
-                    {% if rs[x].roe_holder == None  %}
-                        NA
-                    {% else %}
-                    {{ rs[x].roe_holder|round(3) }}
-                    {% endif %}
-                </td>
+        <table style="width: 1200px;"> <!--设置绝对宽度对吗???-->
+            <thead>
+            <tr bgcolor="#CC0000"> <!--还差证监会分类-->
+                <td style="width: 5%;"><font color="white">证券代码</font></td>
+                <td style="width: 5%;"><font color="white">证券名称</font></td>
+                <td style="width: 5%;"><font color="white">营业收入</font></td>
+                <td style="width: 5%;"><font color="white">净利润（总额）</font></td>
+                <td style="width: 5%;"><font color="white">净利润（股东）</font></td>
+                <td style="width: 5%;"><font color="white">总资产</font></td>
+                <td style="width: 5%;"><font color="white">总负债</font></td>
+                <td style="width: 5%;"><font color="white">净资产</font></td>
+                <td style="width: 5%;"><font color="white">归属股东权益</font></td>
+                <td style="width: 5%;"><font color="white">经营活动现金流量</font></td>
+                <td style="width: 5%;"><font color="white">投资活动现金流量</font></td>
+                <td style="width: 5%;"><font color="white">融资活动现金流量</font></td>
+                <td style="width: 5%;"><font color="white">总现金流总和</font></td>
+                <td style="width: 5%;"><font color="white">自由现金流估计</font></td>
+                <td style="width: 5%;"><font color="white">净利润率</font></td>
+                <td style="width: 5%;"><font color="white">总资产周转率</font></td>
+                <td style="width: 5%;"><font color="white">权益乘数</font></td>
+                <td style="width: 5%;"><font color="white">净资产收益率（总额）</font></td>
+                <td style="width: 5%;"><font color="white">净资产收益率（股东）</font></td>
             </tr>
-        {% endfor %}
-    </tbody>
-    </table>
-</div>
-{% endblock%}
+            </thead>
+            <tbody>
+            {% for x in range(length) %}
+                <tr><!--每一行都是两种结果集的输组合-->
+                    <td>{{ rs[x].trade_code }}</td>
+                    <td>{{ rs[x].sec_name }}</td>
+                    <td>
+                        {% if rs[x].tot_oper_rev == None %}
+                            NA
+                        {% else %}
+                            {{ (rs[x].tot_oper_rev/100000000)|round(2) }}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if rs[x].net_profit_is == None %}
+                            NA
+                        {% else %}
+                            {{ (rs[x].net_profit_is/100000000)|round(2) }}</td>
+                        {% endif %}
+                    <td>
+                        {% if rs[x].wgsd_net_inc == None %}
+                            NA
+                        {% else %}
+                            {{ (rs[x].wgsd_net_inc/100000000)|round(2) }}</td>
+                        {% endif %}
+                    <td>
+                        {% if rs[x].tot_assets == None %}
+                            NA
+                        {% else %}
+                            {{ (rs[x].tot_assets/100000000)|round(2) }}</td>
+                        {% endif %}
+                    <td>
+                        {% if rs[x].tot_liab == None %}
+                            NA
+                        {% else %}
+                            {{ (rs[x].tot_liab/100000000)|round(2) }}</td>
+                        {% endif %}
+                    <td>
+                        {% if rs[x].net_assets == None %}
+                            NA
+                        {% else %}
+                            {{ (rs[x].net_assets/100000000)|round(2) }}</td>
+                        {% endif %}
+                    <td>
+                        {% if rs[x].wgsd_com_eq == None %}
+                            NA
+                        {% else %}
+                            {{ (rs[x].wgsd_com_eq/100000000)|round(2) }}</td>
+                        {% endif %}
+                    <td>
+                        {% if rs[x].operatecashflow_ttm2 == None %}
+                            NA
+                        {% else %}
+                            {{ (rs[x].operatecashflow_ttm2/100000000)|round(2) }}</td>
+                        {% endif %}
+                    <td>
+                        {% if rs[x].investcashflow_ttm2 == None %}
+                            NA
+                        {% else %}
+                            {{ (rs[x].investcashflow_ttm2/100000000)|round(2) }}</td>
+                        {% endif %}
+                    <td>
+                        {% if rs[x].financecashflow_ttm2 == None %}
+                            NA
+                        {% else %}
+                            {{ (rs[x].financecashflow_ttm2/100000000)|round(2) }}</td>
+                        {% endif %}
+                    <td>
+                        {% if rs[x].cashflow_ttm2 == None %}
+                            NA
+                        {% else %}
+                            {{ (rs[x].cashflow_ttm2/100000000)|round(2) }}</td>
+                        {% endif %}
+                    <td>
+                        {% if rs[x].free_cash_flow == None %}
+                            NA
+                        {% else %}
+                            {{ (rs[x].free_cash_flow/100000000)|round(2) }}</td>
+                        {% endif %}
+                    <td>
+                        {% if rs[x].net_profit_rate == None %}
+                            NA
+                        {% else %}
+                            {{ rs[x].net_profit_rate|round(3) }}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if rs[x].tot_assets_turnover == None %}
+                            NA
+                        {% else %}
+                            {{ rs[x].tot_assets_turnover|round(3) }}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if rs[x].equ_multi == None %}
+                            NA
+                        {% else %}
+                            {{ rs[x].equ_multi|round(3) }}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if rs[x].roe_tot == None %}
+                            NA
+                        {% else %}
+                            {{ rs[x].roe_tot|round(3) }}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if rs[x].roe_holder == None %}
+                            NA
+                        {% else %}
+                            {{ rs[x].roe_holder|round(3) }}
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
 
 {% block navigation %}
     {% if pagination %}
@@ -208,20 +208,9 @@
 {% endblock %}
 
 <!--js写的分页-->
-{#{% block navigation%}#}
-{#    <div style="text-align: center"> <!--这两个div这么写才能实现导航栏居中-->#}
-{#    <div class="btn-group btn-group-xs" style="margin: auto"> <!--选择最小的xs的原因是因为只有点击文字才能触发链接-->#}
-{#        <span id="spanFirst" type="button" class="btn btn-default">第一页</span>#}
-{#        <span id="spanPre" type="button" class="btn btn-default">上一页</span>#}
-{#        <span id="spanNext" type="button" class="btn btn-default">下一页</span>#}
-{#        <span id="spanLast" type="button" class="btn btn-default">最后一页</span>#}
-{#    </div>#}
-{#    第<span id="spanPageNum"></span>页/共<span id="spanTotalPage"></span>页#}
-{#    </div>#}
-{#{% endblock %}#}
-
 
 
 <SCRIPT Language=VBScript><!--
 
-//--></SCRIPT>
+//-->
+</SCRIPT>

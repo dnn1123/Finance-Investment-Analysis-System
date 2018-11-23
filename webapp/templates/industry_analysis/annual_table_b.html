@@ -8,25 +8,25 @@
         <form class="form-search" method="POST" action="{{ url_for('industry_analysis.annual_table_b',parameter=1) }}">
             {{ year_form.hidden_tag() }}
             {{ year_form.year(class_='input-sm') }}
-            <input class="btn btn-success btn-xs" type="submit" value="搜索" >
+            <input class="btn btn-success btn-xs" type="submit" value="搜索">
         </form>
     {% elif parameter==2 %}
         <form class="form-search" method="POST" action="{{ url_for('industry_analysis.annual_table_b',parameter=2) }}">
             {{ year_form.hidden_tag() }}
             {{ year_form.year(class_='input-sm') }}
-            <input class="btn btn-success btn-xs" type="submit" value="搜索" >
+            <input class="btn btn-success btn-xs" type="submit" value="搜索">
         </form>
     {% elif parameter==3 %}
         <form class="form-search" method="POST" action="{{ url_for('industry_analysis.annual_table_b',parameter=3) }}">
             {{ year_form.hidden_tag() }}
             {{ year_form.year(class_='input-sm') }}
-            <input class="btn btn-success btn-xs" type="submit" value="搜索" >
+            <input class="btn btn-success btn-xs" type="submit" value="搜索">
         </form>
     {% elif parameter==4 %}
         <form class="form-search" method="POST" action="{{ url_for('industry_analysis.annual_table_b',parameter=4) }}">
             {{ year_form.hidden_tag() }}
             {{ year_form.year(class_='input-sm') }}
-            <input class="btn btn-success btn-xs" type="submit" value="搜索" >
+            <input class="btn btn-success btn-xs" type="submit" value="搜索">
         </form>
     {% endif %}
 
@@ -34,18 +34,18 @@
 
 {% block fixTable %}
     <script>
-        $(document).ready(function() {
-            $("#fixTable").tableHeadFixer({"left" : 2});
+        $(document).ready(function () {
+            $("#fixTable").tableHeadFixer({"left": 2});
         });
     </script>
 {% endblock %}
 
 {% block tab %}
     <ul class="nav nav-pills">
-        <li><a href="{{ url_for('.market_status') }}">A.市场概况</a></li>
+        <li><a href="{{ url_for('.market_value') }}">市场分析</a></li>
         <li class="dropdown"> <!--tip 可以同时写两个属性-->
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                B.行业状况 <span class="caret"></span>
+                行业状况 <span class="caret"></span>
             </a>
             <ul class="dropdown-menu">
                 <li><a href="{{ url_for('.industry_status',parameter=1) }}">部门</a></li>
@@ -54,13 +54,22 @@
                 <li><a href="{{ url_for('.industry_status',parameter=4) }}">子行业</a></li>
             </ul>
         </li>
-        <li><a>C.图表分析</a></li>
-        <li><a href="{{ url_for('.cns_home') }}">1.上市公司名单</a></li>
-        <li><a>2.制图数据</a></li>
-        <li><a href="{{ url_for('.annual_table') }}">年度表.A</a></li>
+        <li class="dropdown"> <!--tip 可以同时写两个属性-->
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                对比分析 <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+                <li><a href="{{ url_for('.industry_compare',param=1) }}">部门</a></li>
+                <li><a href="{{ url_for('.industry_compare',param=2) }}">行业组</a></li>
+                <li><a href="{{ url_for('.industry_compare',param=3) }}">行业</a></li>
+                <li><a href="{{ url_for('.industry_compare',param=4) }}">子行业</a></li>
+            </ul>
+        </li>
+        <li><a href="{{ url_for('.cns_home') }}">上市公司名单</a></li>
+        <li><a href="{{ url_for('.annual_table') }}">年度表A</a></li>
         <li class="dropdown active"> <!--tip 可以同时写两个属性-->
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                年度表.B <span class="caret"></span>
+                年度表B <span class="caret"></span>
             </a>
             <ul class="dropdown-menu">
                 <li><a href="{{ url_for('.annual_table_b',parameter=1) }}">部门</a></li>
@@ -72,278 +81,266 @@
     </ul>
 {% endblock %}
 
-<!--没法用fixTable，因为有3000+股票，速度太慢-->
-{#{% block fixTable %}#}
-{#    <script>#}
-{#			$(document).ready(function() {#}
-{#				$("#fixTable").tableHeadFixer({"left" : 2});#}
-{#			});#}
-{#    </script>#}
-{#{% endblock %}#}
-
 {% block container %}
 
-{#    当前年份为：{{ year[:4] }}年#}
-{#    测试用：{{ parameter }} <!--tip 高度首先自适应，然后再设置最大高度-->#}
-
     <div id="basics" style="height:auto;max-height:60%;overflow-y:auto;border: 1px inset">
-    <table id="fixTable" style="white-space: nowrap;">
-        <thead>
-        <tr bgcolor="#d3d3d3"> <!--还差证监会分类-->
-            <td>
-                {% if parameter == 1 %}
-                    部门
-                {% elif parameter==2 %}
-                    行业组
-                {% elif parameter==3 %}
-                    行业
-                {% elif parameter==4 %}
-                    子行业
-                {% endif %}
-            </td>
-            <td>
-                {% if parameter == 1 %}
-                    部门[分类代码]
-                {% elif parameter==2 %}
-                    行业组[分类代码]
-                {% elif parameter==3 %}
-                    行业[分类代码]
-                {% elif parameter==4 %}
-                    子行业[分类代码]
-                {% endif %}
-            </td>
-            <td>营业收入总和</td>
-            <td>净利润总和</td>
-            <td>归属股东利润总和</td>
-            <td>总资产总和</td>
-            <td>总负债总和</td>
-            <td>净资产总和</td>
-            <td>股东权益总和</td>
-            <td>经营性现金流量总和</td>
-            <td>投资性现金流量总和</td>
-            <td>融资性现金流量总和</td>
-            <td>总现金流总和</td>
-            <td>自由现金流估计</td>
-            <td>营业收入占比</td>
-            <td>净利润占比</td>
-            <td>归属股东净利润占比</td>
-            <td>总资产占比</td>
-            <td>总负债占比</td>
-            <td>净资产占比</td>
-            <td>股东权益占比</td>
-            <td>净利润率</td>
-            <td>总资产周转率</td>
-            <td>权益乘数</td>
-            <td>净资产收益率（总额）</td>
-            <td>净资产收益率（股东）</td>
-            <td>上市公司数量</td>
-        </tr>
-        </thead> <!--还差 5个比例显示！！！-->
-        <tbody id="paginate_table"> <!--通过id=paginate_table使用stock_base_xb最下面的script代码-->
-        {% for x in range(length) %} <!--不能这么写range(x)-->
-            <tr><!--每一行都是两种结果集的输组合--><!--每个数都除以100000000八位-->
-                <td bgcolor="#f5f5f5">
+        <table id="fixTable" style="white-space: nowrap;">
+            <thead>
+            <tr bgcolor="#d3d3d3"> <!--还差证监会分类-->
+                <td>
                     {% if parameter == 1 %}
-                        {{ rs[x].industry_gics_1 }}
+                        部门
                     {% elif parameter==2 %}
-                        {{ rs[x].industry_gics_2 }}
+                        行业组
                     {% elif parameter==3 %}
-                        {{ rs[x].industry_gics_3 }}
+                        行业
                     {% elif parameter==4 %}
-                        {{ rs[x].industry_gics_4 }}
+                        子行业
                     {% endif %}
                 </td>
-                <td bgcolor="#f5f5f5">
+                <td>
                     {% if parameter == 1 %}
-                        {{ rs[x].industry_gicscode_1 }}
+                        部门[分类代码]
                     {% elif parameter==2 %}
-                        {{ rs[x].industry_gicscode_2 }}
+                        行业组[分类代码]
                     {% elif parameter==3 %}
-                        {{ rs[x].industry_gicscode_3 }}
+                        行业[分类代码]
                     {% elif parameter==4 %}
-                        {{ rs[x].industry_gicscode_4 }}
+                        子行业[分类代码]
                     {% endif %}
                 </td>
-                <td>
-                    {% if rs[x].tot_oper_rev ==None %}
-                        NA
-                    {% else %}
-                        <div style="width: {{ (rs[x].tot_oper_rev/max_tot_oper_rev)*100 }}%;background-image: url(../../static/jianbian2.jpg);background-repeat:no-repeat">
-                        {{ (rs[x].tot_oper_rev/100000000)|round(2) }}
-                        </div>
-                    {% endif %}
-                </td>
-                <td>
-                    {% if rs[x].net_profit_is ==None  %}
-                        NA
-                    {% else %}
-                        {% if rs[x].net_profit_is > 0 %} <!--净利润 有为负数的情况-->
-                            <div style="width: {{ (rs[x].net_profit_is/max_net_profit_is)*100 }}%;background-image: url(../../static/jianbian2.jpg);background-repeat:no-repeat">
-                                {{ (rs[x].net_profit_is/100000000)|round(2) }}
-                            </div>
-                        {% else %}
-                            {{ (rs[x].net_profit_is/100000000)|round(2) }}
-                        {% endif %}
-                    {% endif %}
-                </td>
-                <td>
-                    {% if rs[x].wgsd_net_inc ==None %}
-                        NA
-                    {% else %}
-                        {% if rs[x].wgsd_net_inc > 0 %} <!--归属股东利润总额 有为负数的情况-->
-                            <div style="width: {{ (rs[x].wgsd_net_inc/max_wgsd_net_inc)*100 }}%;background-image: url(../../static/jianbian2.jpg);background-repeat:no-repeat">
-                                {{ (rs[x].wgsd_net_inc/100000000)|round(2) }}
-                            </div>
-                        {% else %}
-                            {{ (rs[x].wgsd_net_inc/100000000)|round(2) }}
-                        {% endif %}
-                    {% endif %}
-                </td>
-                <td>
-                    {% if rs[x].tot_assets ==None %}
-                        NA
-                    {% else %}
-                        <div style="width: {{ (rs[x].tot_assets/max_tot_assets)*100 }}%;background-image: url(../../static/jianbian2.jpg);background-repeat:no-repeat">
-                        {{ (rs[x].tot_assets/100000000)|round(2) }}
-                        </div>
-                    {% endif %}
-                </td>
-                <td>
-                    {% if rs[x].tot_liab ==None %}
-                        NA
-                    {% else %}
-                        <div style="width: {{ (rs[x].tot_liab/max_tot_liab)*100 }}%;background-image: url(../../static/jianbian2.jpg);background-repeat:no-repeat">
-                        {{ (rs[x].tot_liab/100000000)|round(2) }}
-                        </div>
-                    {% endif %}
-                </td>
-                <td>
-                    {% if rs[x].net_assets ==None %}
-                        NA
-                    {% else %} <!--问题？净资产能为负数吗，破产了吗-->
-                        <div style="width: {{ (rs[x].net_assets/max_net_assets)*100 }}%;background-image: url(../../static/jianbian2.jpg);background-repeat:no-repeat">
-                        {{ (rs[x].net_assets/100000000)|round(2) }}
-                        </div>
-                    {% endif %}
-                </td>
-                <td>
-                    {% if rs[x].wgsd_com_eq ==None %}
-                        NA
-                    {% else %}
-                        <div style="width: {{ (rs[x].wgsd_com_eq/max_wgsd_com_eq)*100 }}%;background-image: url(../../static/jianbian2.jpg);background-repeat:no-repeat">
-                            {{ (rs[x].wgsd_com_eq/100000000)|round(2) }}
-                        </div>
-                    {% endif %}
-                </td>
-                <td>
-                    {% if rs[x].operatecashflow_ttm2 ==None %}
-                        NA
-                    {% else %}
-                        {{ (rs[x].operatecashflow_ttm2/100000000)|round(2) }}
-                    {% endif %}
-                </td>
-                <td>
-                    {% if rs[x].investcashflow_ttm2 ==None %}
-                        NA
-                    {% else %}
-                        {{ (rs[x].investcashflow_ttm2/100000000)|round(2) }}
-                    {% endif %}
-                </td>
-                <td>
-                    {% if rs[x].financecashflow_ttm2 ==None %}
-                        NA
-                    {% else %}
-                        {{ (rs[x].financecashflow_ttm2/100000000)|round(2) }}
-                    {% endif %}
-                </td>
-                <td>
-                    {% if rs[x].cashflow_ttm2 ==None %}
-                        NA
-                    {% else %}
-                        {{ (rs[x].cashflow_ttm2/100000000)|round(2) }}
-                    {% endif %}
-                </td>
-                <td>
-                    {% if rs[x].free_cash_flow ==None %}
-                        NA
-                    {% else %}
-                        {{ (rs[x].free_cash_flow/100000000)|round(2) }}
-                    {% endif %}
-                </td>
-                <!--注意！！！以下指标均需要判断一下NONE和0-->
-                <td><!--营业收入占比-->
-                    {{ ((rs[x].tot_oper_rev/rs_all[0].all_tot_oper_rev)*100)|round(2) }}%
-                </td>
-                <td><!--净利润占比-->
-                    {{ ((rs[x].net_profit_is/rs_all[0].all_net_profit_is)*100)|round(2) }}%
-                </td>
-                <td><!--归属股东净利润占比-->
-                    {{ ((rs[x].wgsd_net_inc/rs_all[0].all_wgsd_net_inc)*100)|round(2) }}%
-                </td>
-                <td><!--总资产占比-->
-                    {{ ((rs[x].tot_assets/rs_all[0].all_tot_assets)*100)|round(2) }}%
-                </td>
-                <td><!--总负债-->
-                    {{ ((rs[x].tot_liab/rs_all[0].all_tot_liab)*100)|round(2) }}%
-                </td>
-                <td><!--净资产-->
-                    {{ ((rs[x].net_assets/rs_all[0].all_net_assets)*100)|round(2) }}%
-                </td>
-                <td><!--股东权益占比-->
-                    {{ ((rs[x].wgsd_com_eq/rs_all[0].all_wgsd_com_eq)*100)|round(2)  }}%
-                </td>
-                <td>
-                    {% if rs[x].net_profit_rate ==None %}
-                        NA
-                    {% else %}
-                        {{ (rs[x].net_profit_rate*100)|round(2) }}%
-                    {% endif %}
-                </td>
-                <td>
-                    {% if rs[x].tot_assets_turnover ==None %}
-                        NA
-                    {% else %}
-                        {{ (rs[x].tot_assets_turnover*100)|round(2) }}
-                    {% endif %}
-                </td>
-                <td>
-                    {% if rs[x].equ_multi ==None %}
-                        NA
-                    {% else %}
-                        {{ rs[x].equ_multi|round(2) }}%
-                    {% endif %}
-                </td>
-                <td>
-                    {% if rs[x].roe_tot ==None %}
-                        NA
-                    {% else %}
-                        {{ (rs[x].roe_tot*100)|round(2) }}
-                    {% endif %}
-                </td>
-                <td>
-                    {% if rs[x].roe_holder ==None %}
-                        NA
-                    {% else %}
-                        {{ (rs[x].roe_holder*100)|round(2) }}
-                    {% endif %}
-                </td>
-                <td>{{ rs[x].company_num }}</td>
+                <td>营业收入总和</td>
+                <td>净利润总和</td>
+                <td>归属股东利润总和</td>
+                <td>总资产总和</td>
+                <td>总负债总和</td>
+                <td>净资产总和</td>
+                <td>股东权益总和</td>
+                <td>经营性现金流量总和</td>
+                <td>投资性现金流量总和</td>
+                <td>融资性现金流量总和</td>
+                <td>总现金流总和</td>
+                <td>自由现金流估计</td>
+                <td>营业收入占比</td>
+                <td>净利润占比</td>
+                <td>归属股东净利润占比</td>
+                <td>总资产占比</td>
+                <td>总负债占比</td>
+                <td>净资产占比</td>
+                <td>股东权益占比</td>
+                <td>净利润率</td>
+                <td>总资产周转率</td>
+                <td>权益乘数</td>
+                <td>净资产收益率（总额）</td>
+                <td>净资产收益率（股东）</td>
+                <td>上市公司数量</td>
             </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+            </thead> <!--还差 5个比例显示！！！-->
+            <tbody id="paginate_table"> <!--通过id=paginate_table使用stock_base_xb最下面的script代码-->
+            {% for x in range(length) %} <!--不能这么写range(x)-->
+                <tr><!--每一行都是两种结果集的输组合--><!--每个数都除以100000000八位-->
+                    <td bgcolor="#f5f5f5">
+                        {% if parameter == 1 %}
+                            {{ rs[x].industry_gics_1 }}
+                        {% elif parameter==2 %}
+                            {{ rs[x].industry_gics_2 }}
+                        {% elif parameter==3 %}
+                            {{ rs[x].industry_gics_3 }}
+                        {% elif parameter==4 %}
+                            {{ rs[x].industry_gics_4 }}
+                        {% endif %}
+                    </td>
+                    <td bgcolor="#f5f5f5">
+                        {% if parameter == 1 %}
+                            {{ rs[x].industry_gicscode_1 }}
+                        {% elif parameter==2 %}
+                            {{ rs[x].industry_gicscode_2 }}
+                        {% elif parameter==3 %}
+                            {{ rs[x].industry_gicscode_3 }}
+                        {% elif parameter==4 %}
+                            {{ rs[x].industry_gicscode_4 }}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if rs[x].tot_oper_rev ==None %}
+                            NA
+                        {% else %}
+                            <div style="width: {{ (rs[x].tot_oper_rev/max_tot_oper_rev)*100 }}%;background-image: url(../../static/jianbian2.jpg);background-repeat:no-repeat">
+                                {{ (rs[x].tot_oper_rev/100000000)|round(2) }}
+                            </div>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if rs[x].net_profit_is ==None %}
+                            NA
+                        {% else %}
+                            {% if rs[x].net_profit_is > 0 %} <!--净利润 有为负数的情况-->
+                                <div style="width: {{ (rs[x].net_profit_is/max_net_profit_is)*100 }}%;background-image: url(../../static/jianbian2.jpg);background-repeat:no-repeat">
+                                    {{ (rs[x].net_profit_is/100000000)|round(2) }}
+                                </div>
+                            {% else %}
+                                {{ (rs[x].net_profit_is/100000000)|round(2) }}
+                            {% endif %}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if rs[x].wgsd_net_inc ==None %}
+                            NA
+                        {% else %}
+                            {% if rs[x].wgsd_net_inc > 0 %} <!--归属股东利润总额 有为负数的情况-->
+                                <div style="width: {{ (rs[x].wgsd_net_inc/max_wgsd_net_inc)*100 }}%;background-image: url(../../static/jianbian2.jpg);background-repeat:no-repeat">
+                                    {{ (rs[x].wgsd_net_inc/100000000)|round(2) }}
+                                </div>
+                            {% else %}
+                                {{ (rs[x].wgsd_net_inc/100000000)|round(2) }}
+                            {% endif %}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if rs[x].tot_assets ==None %}
+                            NA
+                        {% else %}
+                            <div style="width: {{ (rs[x].tot_assets/max_tot_assets)*100 }}%;background-image: url(../../static/jianbian2.jpg);background-repeat:no-repeat">
+                                {{ (rs[x].tot_assets/100000000)|round(2) }}
+                            </div>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if rs[x].tot_liab ==None %}
+                            NA
+                        {% else %}
+                            <div style="width: {{ (rs[x].tot_liab/max_tot_liab)*100 }}%;background-image: url(../../static/jianbian2.jpg);background-repeat:no-repeat">
+                                {{ (rs[x].tot_liab/100000000)|round(2) }}
+                            </div>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if rs[x].net_assets ==None %}
+                            NA
+                        {% else %} <!--问题？净资产能为负数吗，破产了吗-->
+                            <div style="width: {{ (rs[x].net_assets/max_net_assets)*100 }}%;background-image: url(../../static/jianbian2.jpg);background-repeat:no-repeat">
+                                {{ (rs[x].net_assets/100000000)|round(2) }}
+                            </div>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if rs[x].wgsd_com_eq ==None %}
+                            NA
+                        {% else %}
+                            <div style="width: {{ (rs[x].wgsd_com_eq/max_wgsd_com_eq)*100 }}%;background-image: url(../../static/jianbian2.jpg);background-repeat:no-repeat">
+                                {{ (rs[x].wgsd_com_eq/100000000)|round(2) }}
+                            </div>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if rs[x].operatecashflow_ttm2 ==None %}
+                            NA
+                        {% else %}
+                            {{ (rs[x].operatecashflow_ttm2/100000000)|round(2) }}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if rs[x].investcashflow_ttm2 ==None %}
+                            NA
+                        {% else %}
+                            {{ (rs[x].investcashflow_ttm2/100000000)|round(2) }}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if rs[x].financecashflow_ttm2 ==None %}
+                            NA
+                        {% else %}
+                            {{ (rs[x].financecashflow_ttm2/100000000)|round(2) }}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if rs[x].cashflow_ttm2 ==None %}
+                            NA
+                        {% else %}
+                            {{ (rs[x].cashflow_ttm2/100000000)|round(2) }}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if rs[x].free_cash_flow ==None %}
+                            NA
+                        {% else %}
+                            {{ (rs[x].free_cash_flow/100000000)|round(2) }}
+                        {% endif %}
+                    </td>
+                    <!--注意！！！以下指标均需要判断一下NONE和0-->
+                    <td><!--营业收入占比-->
+                        {{ ((rs[x].tot_oper_rev/rs_all[0].all_tot_oper_rev)*100)|round(2) }}%
+                    </td>
+                    <td><!--净利润占比-->
+                        {{ ((rs[x].net_profit_is/rs_all[0].all_net_profit_is)*100)|round(2) }}%
+                    </td>
+                    <td><!--归属股东净利润占比-->
+                        {{ ((rs[x].wgsd_net_inc/rs_all[0].all_wgsd_net_inc)*100)|round(2) }}%
+                    </td>
+                    <td><!--总资产占比-->
+                        {{ ((rs[x].tot_assets/rs_all[0].all_tot_assets)*100)|round(2) }}%
+                    </td>
+                    <td><!--总负债-->
+                        {{ ((rs[x].tot_liab/rs_all[0].all_tot_liab)*100)|round(2) }}%
+                    </td>
+                    <td><!--净资产-->
+                        {{ ((rs[x].net_assets/rs_all[0].all_net_assets)*100)|round(2) }}%
+                    </td>
+                    <td><!--股东权益占比-->
+                        {{ ((rs[x].wgsd_com_eq/rs_all[0].all_wgsd_com_eq)*100)|round(2) }}%
+                    </td>
+                    <td>
+                        {% if rs[x].net_profit_rate ==None %}
+                            NA
+                        {% else %}
+                            {{ (rs[x].net_profit_rate*100)|round(2) }}%
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if rs[x].tot_assets_turnover ==None %}
+                            NA
+                        {% else %}
+                            {{ (rs[x].tot_assets_turnover*100)|round(2) }}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if rs[x].equ_multi ==None %}
+                            NA
+                        {% else %}
+                            {{ rs[x].equ_multi|round(2) }}%
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if rs[x].roe_tot ==None %}
+                            NA
+                        {% else %}
+                            {{ (rs[x].roe_tot*100)|round(2) }}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if rs[x].roe_holder ==None %}
+                            NA
+                        {% else %}
+                            {{ (rs[x].roe_holder*100)|round(2) }}
+                        {% endif %}
+                    </td>
+                    <td>{{ rs[x].company_num }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
     </div>
 
-{#测试用<br>#}
-{#    {{ max_tot_oper_rev }}<br>#}
-{#    {{ max_net_profit_is }}<br>#}
-{#    {{ max_wgsd_net_inc }}<br>#}
-{#    {{ max_tot_assets }}<br>#}
-{#    {{ max_tot_liab }}<br>#}
-{#    {{ max_net_assets }}<br>#}
-{#    {{ max_wgsd_com_eq }}<br>#}
+    {#测试用<br>#}
+    {#    {{ max_tot_oper_rev }}<br>#}
+    {#    {{ max_net_profit_is }}<br>#}
+    {#    {{ max_wgsd_net_inc }}<br>#}
+    {#    {{ max_tot_assets }}<br>#}
+    {#    {{ max_tot_liab }}<br>#}
+    {#    {{ max_net_assets }}<br>#}
+    {#    {{ max_wgsd_com_eq }}<br>#}
 
-{% endblock%}
+{% endblock %}
 
 {#{% block navigation%}#}
 {#    <div style="text-align: center"> <!--这两个div这么写才能实现导航栏居中-->#}
@@ -361,4 +358,5 @@
 
 <SCRIPT Language=VBScript><!--
 
-//--></SCRIPT>
+//-->
+</SCRIPT>

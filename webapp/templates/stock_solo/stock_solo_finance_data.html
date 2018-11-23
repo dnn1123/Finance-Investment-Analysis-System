@@ -1,573 +1,1086 @@
 {% extends "stock_solo/stock_solo_base.html" %}
-
-{# 测试使用 #}
-{#    <form method="POST" class="form-inline">#}
-{#         <div class="form-group">#}
-{#            <label for="search">请输入您要添加/编辑的股票</label>#}
-{#		    <input type="text" id="search" name="search_share" data-provide="typeahead" data-items="4" placeholder="股票名称/代码" />#}
-{#         </div>#}
-{#         <div class="form-group">#}
-{#           <label for="share_amount"> 请输入/编辑您购买股票的数量</label>#}
-{#           <input type="text" name="amount"  id="share_amount" placeholder="购买股数" >#}
-{#        </div>#}
-{#           <input type="submit" class="startButton" value="提交" >#}
-{#</form>#}
-
-{% block form %}
-    <form class="form-search" method="POST" action="{{ url_for('stock_solo.finance_data') }}">
-        {{ form.hidden_tag() }}
-        {{ form.code(id='tags',class_='input-sm',placeholder='输入股票代号或名称',title="内含自动补全功能，输入关键字即可补全股票代码或名称") }}
-        <input class="btn btn-success btn-xs" type="submit" value="搜索" contenteditable="true" data-toggle="tooltip" title="内含自动补全功能，输入关键字即可补全股票代码或名称" data-placement="right">
-    </form>
-    <script>
-	$(function () { $("[data-toggle='tooltip']").tooltip(); });
-    </script> <!--用于实现“右侧提示框”-->
+{% block styles %}
+    <style>
+        .tot_oper_cost {
+            color: #C4D2DB;
+        }
+    </style>
 {% endblock %}
 
-{% block fixTable %}
+
+{% block search %}
+    <div class="container-fluid">
+        <form class="navbar-form navbar-left" role="search" method="post"
+              action="{{ url_for('stock_solo.invest_value') }}">
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Search" name="stockcode">
+                {#<select  class="selectpicker form-control"  data-live-search="true"  name="stockcode">
+                        <option>cow</option>
+                        <option>bull</option>
+                        <option class="get-class" disabled>ox</option>
+
+            </select>#}
+                <div class="input-group-btn">
+                    <button class="btn btn-default" type="submit" onclick="search()" style="padding: 8.5px 12px"><span
+                            class="glyphicon glyphicon-search"></span></button>
+                </div>
+            </div>
+        </form>
+    </div>
     <script>
-			$(document).ready(function() {
-				$("#fixTable").tableHeadFixer({"left" : 2});
-			});
+        $(document).ready(function () {
+
+            $('.selectpicker').selectpicker({});
+
+            // $('.selectpicker').selectpicker('hide');
+        })
     </script>
 {% endblock %}
 
 {% block tab %}
-        <ul class="nav nav-pills">
-            <li><a href="{{ url_for('stock_solo.basic') }}">基本情况</a></li>
-            <li><a href="{{ url_for('stock_solo.finance_data') }}">财务数据及分析</a></li>
-            <li><a href="{{ url_for('stock_solo.invest_value') }}">投资价值分析</a></li>
-            <li><a>制图数据</a></li>
-            <li><a href="#">图表分析</a></li>
-        </ul>
+    <ul class="nav nav-pills">
+        <li><a href="{{ url_for('stock_solo.basic') }}">基本情况</a></li>
+        <li><a href="{{ url_for('stock_solo.finance_data_yc') }}">财务数据及分析</a></li>
+        <li><a href="#">投资价值分析</a></li>
+        <li><a href="{{ url_for('stock_solo.compare') }}">股票对比分析</a></li>
+        <li><a href="#">图表分析</a></li>
+    </ul>
 {% endblock %}
 
+{% block choice %}
+    <div id="checkbox" style="height:85%;overflow-y :auto;margin-top:5%;">
+        <fieldset style='padding:0;' id="index">
+            <legend>指标选择</legend>
+
+        </fieldset>
+    </div>
+    <div style="margin-top: 7px">
+        <input type="button" value="全选" id="checkall"/>
+        <input type="button" value="全不选" id="revokeall"/>
+        {#    <input type="button" value="提交" id="commit" />#}
+    </div>
+
+
+    <script>
+        var Chosenindexes = new Array();
+        var dict1 = {
+             '营业总收入': 'tot_oper_rev',
+            '营业总成本': 'tot_oper_cost',
+            '息税前利润率': 'ebit_rate',
+            '财务费用': 'fin_exp_is',
+            '利润总额': 'tot_profit',
+            '净利润（总额）': 'net_profit_is',
+            '净利润（股东）': 'wgsd_net_inc',
+            '资产总计': 'tot_assets',
+            '流动资产合计': 'tot_cur_assets',
+            '非流动资产合计': 'tot_non_cur_assets',
+            '负债合计': 'tot_liab',
+            '流动负债合计': 'tot_cur_liab',
+            '非流动负债合计': 'tot_non_cur_liab',
+            '归属母公司股东权益': 'wgsd_com_eq',
+            '经营活动现金净流量': 'operatecashflow_ttm2',
+            '投资活动现金净流量': 'investcashflow_ttm2',
+            '筹资活动现金净流量': 'financecashflow_ttm2',
+            '现金净流量(TTM)': 'cashflow_ttm2',
+            '货币资金': 'monetary_cap',
+            '销售毛利率': 'grossprofitmargin',
+            '投入资本回报率': 'roic',
+            '营业周期': 'turndays',
+            '存货周转天数': 'invturndays',
+            '应收账款周转天数': 'arturndays',
+            '应付账款周转天数': 'apturndays'
+        };
+        function creatindex() {
+            for (var key in dict1) {
+                {#                if( key ==  "tot_oper_cost"){#}
+                {#                   $("#index").append("<div class='checkbox'><label style='font-size: 20px;'><input type='checkbox' id='first_check' value='" + key + "'  >" + dict1[key] + " <div id='div_" + key + "' style='height: 10px;width: 10px;float: right;margin: 5px'></div></label> </div>"#}
+                {#                }#}
+                {#                else{#}
+                $("#index").append("<div class='checkbox' style=' margin-left: 3px; margin-top: 3px;'><label style='font-size: 10px;'><input type='checkbox'  value='" + key + "'  >" + dict1[key] + " <div id='div_" + key + "' style='height: 10px;width: 10px;float: right;margin: 5px'></div></label> </div>")
+                {#                }#}
+            }
+        }
+        creatindex()
+        $(document).ready(function () {
+            $('input').iCheck({
+                checkboxClass: 'icheckbox_minimal-blue',
+                radioClass: 'iradio_minimal-blue',
+                increaseArea: '20%' // optional
+            });
+        });
+        $("input#commit").click(function () {
+            Chosenindexes = [];
+            $("div#unselected").empty();
+            $("div#selected").empty();
+            $("input[type=checkbox]").each(function () {//each()方法遍历所有的复选框
+                if ($(this).is(':checked') == true) {//这里就可以判断当前是否被选择了
+                    indexname = $(this).val();
+                    Chosenindexes.push(indexname);
+                    var tempspan = $("<span class=\"label label-default\" data-stopPropagation=\"true\" id=\"" + indexname + "\">" + dict[indexname] + "</span>")
+                    tempspan.appendTo($("div#unselected"));
+                    $("div#unselected").append(" ");
+                }
+            })
+            CreateChart();
+        })
+        $("input#CheckAll").click(function () {
+            $("input[type=checkbox]").each(function () {
+                $(this).iCheck('check');
+            })
+        })
+        $("input#UnCheckAll").click(function () {
+            $("input[type=checkbox]").each(function () {
+                $(this).iCheck('uncheck');
+            })
+        })
+        $('input').on('ifChecked', function (event) {
+            indexname = $(this).val();
+            console.log(this)
+            Chosenindexes[indexname] = NewColor();
+            $("#div_"+indexname).css("background-color", Chosenindexes[indexname])
+{#            $(this).parent().parent().css("color", Chosenindexes[indexname])#}
+            console.log(Chosenindexes)
+            CreateChart();
+            CreateTable();
+        });
+        $('input').on('ifUnchecked', function (event) {
+            indexname = $(this).val();
+            delete Chosenindexes[indexname]
+             $("#div_"+indexname).css("background-color", 'transparent')
+{#            $(this).parent().parent().css("color", "black")#}
+            console.log(Chosenindexes)
+            CreateChart();
+            CreateTable();
+        });
+
+    </script>
+
+{% endblock %}
+
+{% block chart %}
+    <div id="mychart" style="width: auto;height:60%;margin-left:20px"></div>
+{% endblock %}
 {% block table %}
-<table id="fixTable" border="1" style="border-color:#000; white-space:nowrap;">
-    <thead>
-      <tr bgcolor="#FFCC33">
-       <th>{{ results[0].sec_name }}</th>
-        <th class="td_bottom_line_title_2">项目</th>
-            {% for result in results %}
-                <td class="td_bottom_line">{{ result.the_year[:4] }}年12月31日</td>
-            {% endfor %}
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td style="border-style:none;">营业总收入</td>
-        <td class="td_project">R</td>
-        {% for result in results %}
-            <td class="td_num">
-                {% if  result.tot_oper_rev == None or result.tot_oper_rev == 0 %}
-                    NA
-                {% else %}
-                    {{ (result.tot_oper_rev|int()/100000000)|round(2) }}
-                {% endif %}
-            </td>
-        {% endfor %}
-      </tr>
-      <tr>
-        <td style="border-style:none;">营业总成本</td>
-        <td class="td_project">C</td>
-        {% for result in results %}
-            <td class="td_num">
-                {% if  result.tot_oper_cost == None or result.tot_oper_cost == 0 %}
-                    NA
-                {% else %}
-                    {{ ((result.tot_oper_cost|int)/100000000)|round(2) }}
-                {% endif %}
-            </td>
-        {% endfor %}
-      </tr>
-      <tr>
-        <td style="border-style:none;">财务费用</td>
-        <td class="td_project">FC</td>
-        {% for result in results %}
-            <td class="td_num">
-                {% if  result.fin_exp_is == None or result.fin_exp_is == 0 %}
-                    NA
-                {% else %}
-                    {{ ((result.fin_exp_is|int)/100000000)|round(2) }}
-                {% endif %}
-            </td>
-        {% endfor %}
-      </tr>
-      <tr>
-        <td style="border-style:none;">息税前利润</td>
-        <td class="td_project">EBIT</td>
-        {% for result in results %}
-            <td class="td_num">
-                {% if  (result.fin_exp_is == None or result.fin_exp_is == 0) or (result.tot_profit == None or result.tot_profit == 0)%}
-                    NA
-                {% else %}
-                    {{ ((result.fin_exp_is + result.tot_profit)/100000000)|round(2) }}
-                {% endif %}
-            </td>
-        {% endfor %}
-      </tr>
-      <tr>
-        <td style="border-style:none;">利润总额</td>
-        <td class="td_project">EBT</td>
-        {% for result in results %}
-            <td class="td_num">
-                {% if  result.tot_profit == None or result.tot_profit == 0 %}
-                    NA
-                {% else %}
-                    {{ (result.tot_profit/100000000)|round(2) }}
-                {% endif %}
-            </td>
-        {% endfor %}
-      </tr>
-      <tr>
-        <td style="border-style:none;">净利润（总额）</td>
-        <td class="td_project">E</td>
-        {% for result in results %}
-            <td class="td_num">
-                {% if  result.net_profit_is == None or result.net_profit_is == 0 %}
-                    NA
-                {% else %}
-                    {{ (result.net_profit_is/100000000)|round(2) }}
-                {% endif %}
-            </td>
-        {% endfor %}
-      </tr>
-      <tr>
-        <td class="td_bottom_line_title">净利润（股东）</td>
-        <td class="td_bottom_line_title_2">e</td>
-        {% for result in results %}
-            <td class="td_bottom_line">
-                {% if  result.wgsd_net_inc == None or result.wgsd_net_inc == 0 %}
-                    NA
-                {% else %}
-                    {{ (result.wgsd_net_inc/100000000)|round(2) }}
-                {% endif %}
-            </td>
-        {% endfor %}
-      </tr>
-      <tr>
-        <td style="border-style:none;">资产总计</td>
-        <td class="td_project">TA</td>
-        {% for result in results %}
-            <td class="td_num">
-                {% if  result.tot_assets == None or result.tot_assets == 0 %}
-                    NA
-                {% else %}
-                    {{ (result.tot_assets/100000000)|round(2) }}
-                {% endif %}
-            </td>
-        {% endfor %}
-      </tr>
-      <tr>
-        <td style="border-style:none;">流动资产</td>
-        <td class="td_project">CA</td>
-        {% for result in results %}
-            <td class="td_num">
-                {% if  result.tot_cur_assets == None or result.tot_cur_assets == 0 %}
-                    NA
-                {% else %}
-                    {{ (result.tot_cur_assets/100000000)|round(2) }}
-                {% endif %}
-            </td>
-        {% endfor %}
-      </tr>
-      <tr>
-        <td style="border-style:none;">非流动资产</td>
-        <td class="td_project">NCA</td>
-        {% for result in results %}
-            <td class="td_num">
-                {% if  result.tot_non_cur_assets == None or result.tot_non_cur_assets == 0 %}
-                    NA
-                {% else %}
-                    {{ (result.tot_non_cur_assets/100000000)|round(2) }}
-                {% endif %}
-            </td>
-        {% endfor %}
-      </tr>
-      <tr>
-        <td style="border-style:none;">负债合计</td>
-        <td class="td_project">TL</td>
-        {% for result in results %}
-            <td class="td_num">
-                {% if  result.tot_liab == None or result.tot_liab == 0 %}
-                    NA
-                {% else %}
-                    {{ (result.tot_liab/100000000)|round(2) }}
-                {% endif %}
-            </td>
-        {% endfor %}
-      </tr>
-      <tr>
-        <td style="border-style:none;">流动负债</td>
-        <td class="td_project">CL</td>
-        {% for result in results %}
-            <td class="td_num">
-                {% if  result.tot_cur_liab == None or result.tot_cur_liab == 0 %}
-                    NA
-                {% else %}
-                    {{ (result.tot_cur_liab/100000000)|round(2) }}
-                {% endif %}
-            </td>
-        {% endfor %}
-      </tr>
-      <tr>
-        <td style="border-style:none;">非流动负债</td>
-        <td class="td_project">NCL</td>
-        {% for result in results %}
-            <td class="td_num">
-                {% if  result.tot_non_cur_liab == None or result.tot_non_cur_liab == 0 %}
-                    NA
-                {% else %}
-                    {{ (result.tot_non_cur_liab/100000000)|round(2) }}
-                {% endif %}
-            </td>
-        {% endfor %}
-      </tr>
-      <tr>
-        <td style="border-style:none;">净资产</td>
-        <td class="td_project">NCL</td>
-        {% for result in results %}
-            <td class="td_num">
-                {% if  (result.tot_assets == None or result.tot_assets == 0) or (result.tot_liab == None or result.tot_liab == 0) %}
-                    NA
-                {% else %}
-                    {{ ((result.tot_assets - result.tot_liab)/100000000)|round(2) }}
-                {% endif %}
-            </td>
-        {% endfor %}
-      </tr>
-      <tr>
-        <td class="td_bottom_line_title">归属股东权益</td>
-        <td class="td_bottom_line_title_2">HE</td>
-        {% for result in results %}
-            <td class="td_bottom_line">
-                {% if  result.wgsd_com_eq == None or result.wgsd_com_eq == 0 %}
-                    NA
-                {% else %}
-                    {{ (result.wgsd_com_eq/100000000)|round(2) }}
-                {% endif %}
-            </td>
-        {% endfor %}
-      </tr>
-      <tr>
-        <td style="border-style:none;">经营活动现金流</td>
-        <td class="td_project">OCF</td>
-        {% for result in results %}
-            <td class="td_num">
-                {% if  result.operatecashflow_ttm2 == None or result.operatecashflow_ttm2 == 0 %}
-                    NA
-                {% else %}
-                    {{ (result.operatecashflow_ttm2/100000000)|round(2) }}
-                {% endif %}
-            </td>
-        {% endfor %}
-      </tr>
-      <tr>
-        <td style="border-style:none;">投资活动现金流</td>
-        <td class="td_project">ICF</td>
-        {% for result in results %}
-            <td class="td_num">
-                {% if  result.investcashflow_ttm2 == None or result.investcashflow_ttm2 == 0 %}
-                    NA
-                {% else %}
-                    {{ (result.investcashflow_ttm2/100000000)|round(2) }}
-                {% endif %}
-            </td>
-        {% endfor %}
-      </tr>
-      <tr>
-        <td style="border-style:none;">筹资活动现金流</td>
-        <td class="td_project">FCF</td>
-        {% for result in results %}
-            <td class="td_num">
-                {% if  result.financecashflow_ttm2 == None or result.financecashflow_ttm2 == 0 %}
-                    NA
-                {% else %}
-                    {{ (result.financecashflow_ttm2/100000000)|round(2) }}
-                {% endif %}
-            </td>
-        {% endfor %}
-      </tr>
-      <tr>
-        <td class="td_bottom_line_title">现金流合计</td>
-        <td class="td_bottom_line_title_2">TCF</td>
-        {% for result in results %}
-            <td class="td_bottom_line">
-                {% if  result.cashflow_ttm2 == None or result.cashflow_ttm2 == 0 %}
-                    NA
-                {% else %}
-                    {{ (result.cashflow_ttm2/100000000)|round(2) }}
-                {% endif %}
-            </td>
-        {% endfor %}
-      </tr>
-      <tr>
-        <td style="border-style:none;">货币资金</td>
-        <td class="td_project">CU</td>
-        {% for result in results %}
-            <td class="td_num">
-                {% if  result.monetary_cap == None or result.monetary_cap == 0 %}
-                    NA
-                {% else %}
-                    {{ (result.monetary_cap/100000000)|round(2) }}
-                {% endif %}
-            </td>
-        {% endfor %}
-      </tr>
-      <tr>
-        <td style="border-style:none;">净流动资产</td>
-        <td class="td_project">NLA</td>
-        {% for result in results %}
-            <td class="td_num">
-                {% if  (result.tot_cur_assets == None or result.tot_cur_assets == 0) or (result.tot_cur_liab == None or result.tot_cur_liab == 0) %}
-                    NA
-                {% else %}
-                    {{ ((result.tot_cur_assets - result.tot_cur_liab)/100000000)|round(2) }}
-                {% endif %}
-            </td>
-        {% endfor %}
-      </tr>
-      <tr>
-        <td class="td_bottom_line_title">自由现金流估计</td>
-        <td class="td_bottom_line_title_2">FCF</td>
-        {% for result in results %}
-            <td class="td_bottom_line">
-                {% if  (result.operatecashflow_ttm2 == None or result.operatecashflow_ttm2 == 0) or (result.investcashflow_ttm2 == None or result.investcashflow_ttm2 == 0) %}
-                    NA
-                {% else %}
-                    {{ ((result.operatecashflow_ttm2 + result.investcashflow_ttm2)/100000000)|round(2) }}
-                {% endif %}
-            </td>
-        {% endfor %}
-      </tr>
-      <tr>
-        <td style="border-style:none;">收入增长率</td>
-        <td class="td_project">RG</td>
-        {% for ratio in ratio_RG %}
-          <td class="td_num">
-              {% if ratio == None or ratio == 0 %}
-                 NA
-              {% else %}
-                {{ ((ratio-1)*100)|round(1) }}%
-              {% endif %}
-          </td>
-        {% endfor %}
-        <td class="td_num">NA</td>
-      </tr>
-      <tr>
-        <td style="border-style:none;">利润增长率</td>
-        <td class="td_project">CG</td>
-        {% for ratio in ratio_CG %}
-          <td class="td_num">
-              {% if ratio == None or ratio == 0 %}
-                NA
-              {% else %}
-                {{ ((ratio-1)*100)|round(1) }}%
-              {% endif %}
-          </td>
-        {% endfor %}
-        <td class="td_num">NA</td>
-      </tr>
-      <tr>
-        <td style="border-style:none;">毛利润率</td>
-        <td class="td_project">GPR</td>
-        {% for result in results %}
-          <td class="td_num">{{ (result.grossprofitmargin|float())|round(2) }}%</td>
-        {% endfor %}
-      </tr>
-      <tr>
-        <td style="border-style:none;">息税前利润率</td>
-        <td class="td_project">EBITPR</td>
-        {% for result in results %}
-          <td class="td_num"> <!--这里成功了-->
-              {% if (result.tot_oper_rev)|int()== 0 %}
-                  NA
-              {% else %}<!--从这里再开始做-->
-                  {{ ((((result.fin_exp_is)|int()+(result.tot_profit)|int())/(result.tot_oper_rev)|int())*100)|round(2) }}%
-              {% endif %}
-          </td>
-        {% endfor %}
-      </tr>
-      <tr>
-        <td style="border-style:none;">净利润率</td>
-        <td class="td_project">EPR</td>
-        {% for result in results %}
-          <td class="td_num">
-              {% if (result.tot_oper_rev)|int()== 0 %}
-                  NA
-              {% else %}
-                  {{ (((result.net_profit_is)|int()/(result.tot_oper_rev)|int())*100)|round(2) }}%
-              {% endif %}
-          </td>
-        {% endfor %}
-      </tr>
-      <tr>
-        <td style="border-style:none;">总资产周转率</td>
-        <td class="td_project">TTC</td>
-        {% for result in results %}
-          <td class="td_num">
-              {% if (result.tot_oper_rev)|int()== 0 %}
-                  NA
-              {% else %}
-                  {{ (((result.tot_oper_rev)|int()/(result.tot_assets)|int()))|round(2) }}
-              {% endif %}
-          </td>
-        {% endfor %}
-      </tr>
-      <tr>
-        <td style="border-style:none;">资产负债率</td>
-        <td class="td_project">ALR</td>
-        {% for result in results %}
-          <td class="td_num">
-              {% if (result.tot_oper_rev)|int()== 0 %}
-                  NA
-              {% else %}
-                  {{ (((result.tot_liab)|int()/(result.tot_assets)|int())*100)|round(2) }}%
-              {% endif %}
-          </td>
-        {% endfor %}
-      </tr>
-      <tr>
-        <td style="border-style:none;">权益乘数</td>
-        <td class="td_project">EM</td>
-        {% for result in results %}
-          <td class="td_num">
-              {% if (result.tot_assets|int() - result.tot_liab|int()) == 0 %}
-                  NA
-              {% else %}
-                  {{ ((result.tot_liab)|int()/(result.tot_assets|int() - result.tot_liab|int()))|round(2) }}
-              {% endif %}
-          </td>
-        {% endfor %}
-      </tr>
-      <tr>
-        <td style="border-style:none;">投入资本回报率</td>
-        <td class="td_project">ROIC</td>
-        {% for result in results %}
-          <td class="td_num">{{ result.roic|float(0.00)|round(2) }}%</td>
-        {% endfor %}
-      </tr>
-      <tr>
-        <td style="border-style:none;">总资产收益率</td>
-        <td class="td_project">ROA</td>
-        {% for result in results %}
-          <td class="td_num">
-              {% if (result.tot_assets)|int() == 0 %}
-                  NA
-              {% else %}
-                  {{ (((result.net_profit_is)|int()/result.tot_assets|int())*100)|round(2) }}%
-              {% endif %}
-          </td>
-        {% endfor %}
-      </tr>
-      <tr>
-        <td style="border-style:none;">净资产收益率（总额）</td> <!--如何给所有td统一设定样式？-->
-        <td class="td_project">ROE</td>
-        {% for result in results %}
-          <td class="td_num">
-              {% if (result.tot_assets|int()) - (result.tot_liab|int()) == 0 %}
-                  NA
-              {% else %}
-                  {{ ( ( (result.net_profit_is)|int()/((result.tot_assets|int()) - (result.tot_liab|int())) )*100 )|round(2) }}%
-              {% endif %}
-          </td>
-        {% endfor %}
-      </tr>
-      <tr>
-        <td class="td_bottom_line_title">净资产收益率（股东）</td>
-        <td class="td_bottom_line_title_2">roe</td>
-        {% for result in results %}
-          <td class="td_bottom_line">
-              {% if (result.wgsd_com_eq)|int() == 0 %}
-                  NA
-              {% else %}
-                  {{ (((result.wgsd_net_inc)|int()/(result.wgsd_com_eq)|int())*100)|round(2) }}%
-              {% endif %}
-          </td>
-        {% endfor %}
-      </tr>
-      <tr>
-        <td style="border-style:none;">流动比率</td>
-        <td class="td_project">CR</td>
-        {% for result in results %}
-          <td class="td_num">
-              {% if (result.tot_cur_liab)|int() == 0 %}
-                  NA
-              {% else %}
-                  {{ ((result.tot_cur_assets)|int()/(result.tot_cur_liab)|int())|round(2) }}
-              {% endif %}
-          </td>
-        {% endfor %}
-      </tr>
-      <tr>
-        <td style="border-style:none;">营业周期</td>
-        <td class="td_project">TCF</td>
-        {% for result in results %}
-            <td class="td_num">
-                {% if  result.turndays == None or result.turndays == 0 %}
-                    NA
-                {% else %}
-                    {{ result.turndays }}
-                {% endif %}
-            </td>
-        {% endfor %}
-      </tr>
-      <tr>
-        <td style="border-style:none;">存货周转天数</td>
-        <td class="td_project">ITD</td>
-        {% for result in results %}
-            <td class="td_num">
-                {% if  result.invturndays == None or result.invturndays == 0 %}
-                    NA
-                {% else %}
-                    {{ result.invturndays }}
-                {% endif %}
-            </td>
-        {% endfor %}
-      </tr>
-      <tr>
-        <td style="border-style:none;">应收账款周转天数</td>
-        <td class="td_project">RTD</td>
-        {% for result in results %}
-            <td class="td_num">
-                {% if  result.arturndays == None or result.arturndays == 0 %}
-                    NA
-                {% else %}
-                    {{ result.arturndays }}
-                {% endif %}
-            </td>
-        {% endfor %}
-      </tr>
-      <tr>
-        <td class="td_bottom_line_title">应付账款周转天数</td>
-        <td class="td_bottom_line_title_2">PTD</td>
-        {% for result in results %}
-            <td class="td_bottom_line">
-                {% if  result.apturndays == None or result.apturndays == 0 %}
-                    NA
-                {% else %}
-                    {{ result.apturndays }}
-                {% endif %}
-            </td>
-        {% endfor %}
-      </tr>
-{#      <tr>#}
-{#        <td style="border-style:none;">记账货币</td>#}
-{#        <td class="td_project">MOA</td>#}
-{#        {% for result in results %}#}
-{#          <td class="td_num">{{ stock.curr }}</td>#}
-{#        {% endfor %}#}
-{#      </tr>#}
-    </tbody>
-</table>
+    <div id="mytable" style="width: auto;height:60%;margin-left:20px"></div>
 {% endblock %}
+{% block toolbox %}
+    <div class="container">
+        <div class="row">
+            <div style="float: left;margin: 20px">
+                <a style="width:50px;margin-left:10px;color: #0c0c0c">单位:</a>
+                <select class="form-control" id="unit">
+                    <option value="0">元</option>
+                    <option value="1">百万</option>
+                </select>
+            </div>
+            <div style="float: left;margin: 20px">
+                <a style="width:50px;margin-left:10px;color: #0c0c0c">起始时间:</a><input size="16" type="text" value="2016-12-31" id="starttime" readonly class="form_datetime">
+            </div>
+            <div style="float: left;margin: 20px">
+                <a style="width:50px;margin-left:10px;color: #0c0c0c">结束时间:</a><input size="16" type="text" value="2006-01-01" id="endtime" readonly class="form_datetime">
+            </div>
+        </div>
+    </div>
 
-{#{% block scripts %}#}
-{#{{ super() }}#}
-{#    <script src="{{ url_for('static', filename='jquery.js') }}"></script> <!--为什么要用1.7的js文件。用这个的话会使得table溢出-->#}
-{# 	<script src="{{ url_for('static', filename='js/bootstrap-typeahead.js') }}"></script>#}
-{#    <script>#}
-{#		var subjects = {{stock_list|tojson}}#}
-{#		$('#search').typeahead({source: subjects})#}
-{#	</script>#}
-{#{% endblock %}#}
+    <script>
+        denominator = 1
+        var starttime = "20061231"
+        var endtime = "20161231"
+        $("select#unit").change(function () {
+            flag = $(this).val()
+            if (flag == "0") {
+                denominator = 1
+                CreateChart();
+                CreateTable();
+            }
+            if (flag == "1") {
+                denominator = 1000000
+                CreateChart();
+                CreateTable();
+            }
+        });
+        $(".form_datetime").datetimepicker({
+            format: 'yyyy-mm-dd ',
+            minView: 3,
+            autoclose: true,
+            pickerPosition: 'top-right'
+        });
+        $('#starttime')
+                .datetimepicker()
+                .on('changeDate', function (ev) {
+                    startime = ev.date.Format("yyyy年Q4")
+                    option.dataZoom[0].startValue = startime
+                    myChart.setOption(option)
+                    RequestTable();
+                });
+        $('#endtime')
+                .datetimepicker()
+                .on('changeDate', function (ev) {
+                    endtime = ev.date.Format("yyyy年Q4")
+                    option.dataZoom[0].endValue = endtime
+                    myChart.setOption(option)
+                    RequestTable();
+
+                });
+        Date.prototype.Format = function (fmt) { //author: meizz
+            var o = {
+                "M+": this.getMonth() + 1, //月份
+                "d+": this.getDate(), //日
+                "h+": this.getHours(), //小时
+                "m+": this.getMinutes(), //分
+                "s+": this.getSeconds(), //秒
+                "q+": Math.floor((this.getMonth() + 3) / 3), //季度
+                "S": this.getMilliseconds() //毫秒
+            };
+            if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+            for (var k in o)
+                if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+            return fmt;
+        }
+    </script>
+{% endblock %}
+{% block scripts %}
+    <script>
+        function selectline(linename) {
+            for (var line in option.series) {
+                l = parseInt(line);
+                if (option.series[l].name == linename) {
+                    tempcolor = NewColor();
+                    option.series[l].lineStyle.normal.color = tempcolor;
+                    option.series[l].itemStyle.normal.color = tempcolor;
+                    $("span#" + linename).css('color', tempcolor);
+                    selectedindexes.push(l);
+                    selectedindexname.push(option.series[l].name);
+                    option.legend.data = selectedindexname;
+                    myChart.setOption(option);
+                    {#if($('tr#'+option.series[l].name).length>0) {  列头不变色 将查询的data存储 分割函数 代码冗余度高
+                        $('tr#' + option.series[l].name).css('color', option.series[l].lineStyle.normal.color)
+                    }#}
+
+                }
+            }
+
+        }
+        function unselectline(linename) {
+            for (var line in option.series) {
+                l = parseInt(line);
+                if (option.series[l].name == linename) {
+                    option.series[l].lineStyle.normal.color = '#C4D2DB';
+                    option.series[l].itemStyle.normal.color = '#C4D2DB';
+                    $("span#" + linename).css('color', 'white');
+                    selectedindexes.splice(selectedindexes.indexOf(l), 1);
+                    selectedindexname.splice(selectedindexname.indexOf(option.series[l].name), 1);
+                    option.legend.data = selectedindexname;
+                    myChart.setOption(option);
+
+                }
+            }
+
+        }
+    </script>
+
+    <script>
+        var myChart = echarts.init(document.getElementById('mychart'));
+        var invest_results;
+        var finance_results;
+        var dict = {
+            'tot_oper_cost': '总营业成本',
+            'tot_oper_rev': '总营业收入',
+            'wgsd_net_inc': '净利润（股东）',
+            'tot_assets': '资产总计',
+            'wgsd_com_eq': '归属股东权益',
+            'net_inc_eq_rate': '净资产收益率（股东）',
+            'total_shares': '股本',
+            'earnings_per_share': '每股收益',
+            'net_assets_per_share': '每股净资产',
+            'cash_per_share': '每股账面现金',
+            'div_cashandstock': '每股现金股息',
+            'payment_proportion': '支付比例',
+            'equal_earning_rate': '均衡市盈率',
+            'equal_market_rate': '均衡市净率',
+            'com_value_evaluate': '公司价值估计',
+            'per_com_value_evaluate': '每股价值估计',
+            'fre_cash_evaluate': '自由现金流估计',
+            'ev': '市值',
+            'earning_rate': '市盈率',
+            'net_rate': '市净率',
+            'sale_rate': '市销率',
+            'cash_rate': '市现率',
+            'dividendyield2': '股息收益率',
+            'cash_yield_evaluate': '现金收益率估计',
+            'ev1': '整体价值估计（含货币）',
+            'ev2': '整体价值估计（不含货币）',
+            'employee': '雇员数量'
+        };
+
+        $.ajax({
+            type: 'GET',
+            url: '{{url_for("restfulapi.finance_data")}}',
+            data: {
+                stockcode: {{stockcode|safe}},
+                starttime: '19901231',
+                endtime: '20161231',
+                indexes: ['tot_oper_cost', 'tot_oper_rev', 'wgsd_net_inc', 'tot_assets', 'wgsd_com_eq', 'monetary_cap', 'operatecashflow_ttm2', 'investcashflow_ttm2']
+            },
+            dataType: 'json',//希望服务器返回json格式的数据
+            success: function (data) {
+                finance_results = data;
+                finance_results_t = data;
+                $.ajax({
+                    type: 'GET',
+                    url: '{{url_for("restfulapi.invest_data")}}',
+                    data: {
+                        stockcode: {{ stockcode|safe }},
+                        starttime: '19901231',
+                        endtime: '20161231',
+                        indexes: ['total_shares', 'div_cashandstock', 'ev', 'employee', 'dividendyield2', 'ev1', 'ev2']
+                    },
+                    dataType: 'json',//希望服务器返回json格式的数据
+                    success: function (data) {
+                        invest_results = data;
+                        invest_results_t = data;
+                        CreateChart();
+                        $("input#first_check").iCheck('check')
+                        {#                            选中一条线#}
+                    }
+                })
+            }
+        })
+        //                dataSeries = [{name:'123',type:'line',data:[1,2,3,4,5,6,7]},{name:'345',type:'line',data:[7,6,5,4,3,2,1]}];
+        function CreateChart() {
+            dataSeries = [];
+            for (var i = 0; i < finance_results.indexes.length; i++) {
+                if (Chosenindexes.hasOwnProperty(finance_results.indexes[i])) {
+                    temp = {
+                        name: finance_results.indexes[i],
+                        type: 'line',
+                        lineStyle: {normal: {width: 2}},
+                        itemStyle: {normal: {color: Chosenindexes[finance_results.indexes[i]]}},
+                        symbolSize: 8,
+                        smooth: true,
+                        data: numfilter(eval("finance_results." + finance_results.indexes[i]))
+                    };
+                    dataSeries.push(temp);
+                }
+            }
+            for (var i = 0; i < invest_results.indexes.length; i++) {
+                if (Chosenindexes.hasOwnProperty(invest_results.indexes[i])) {
+                    temp = {
+                        name: invest_results.indexes[i],
+                        type: 'line',
+                        lineStyle: {normal: {width: 2}},
+                        itemStyle: {normal: {color: Chosenindexes[invest_results.indexes[i]]}},
+                        symbolSize: 8,
+                        smooth: true,
+                        data: numfilter(eval("invest_results." + invest_results.indexes[i]))
+                    };
+                    dataSeries.push(temp);
+                }
+            }
+            if (Chosenindexes.hasOwnProperty("net_inc_eq_rate")) {
+                tempdata = []
+                for (i = 0; i < finance_results.the_year.length; i++) {
+                    datavalue = finance_results.wgsd_net_inc[i] / finance_results.wgsd_com_eq[i]
+                    tempdata.push(datavalue)
+                }
+                temp = {
+                    name: "net_inc_eq_rate",
+                    type: 'line',
+                    lineStyle: {normal: {width: 2}},
+                    itemStyle: {normal: {color: Chosenindexes["net_inc_eq_rate"]}},
+                    symbolSize: 8,
+                    smooth: true,
+                    data: numfilter(tempdata)
+                };
+                dataSeries.push(temp);
+            }
+            if (Chosenindexes.hasOwnProperty("earnings_per_share")) {
+                tempdata = []
+                for (i = 0; i < finance_results.the_year.length; i++) {
+                    datavalue = finance_results.wgsd_net_inc[i] / invest_results.total_shares[i]
+                    tempdata.push(datavalue)
+                }
+                temp = {
+                    name: "earnings_per_share",
+                    type: 'line',
+                    lineStyle: {normal: {width: 2}},
+                    itemStyle: {normal: {color: Chosenindexes["earnings_per_share"]}},
+                    symbolSize: 8,
+                    smooth: true,
+                    data: numfilter(tempdata)
+                };
+                dataSeries.push(temp);
+            }
+            if (Chosenindexes.hasOwnProperty("net_assets_per_share")) {
+                tempdata = []
+                for (i = 0; i < finance_results.the_year.length; i++) {
+                    datavalue = finance_results.wgsd_com_eq[i] / invest_results.total_shares[i]
+                    tempdata.push(datavalue)
+                }
+                temp = {
+                    name: "net_assets_per_share",
+                    type: 'line',
+                    lineStyle: {normal: {width: 2}},
+                    itemStyle: {normal: {color: Chosenindexes["net_assets_per_share"]}},
+                    symbolSize: 8,
+                    smooth: true,
+                    data: numfilter(tempdata)
+                };
+                dataSeries.push(temp);
+            }
+            if (Chosenindexes.hasOwnProperty("cash_per_share")) {
+                tempdata = []
+                for (i = 0; i < finance_results.the_year.length; i++) {
+                    datavalue = finance_results.monetary_cap[i] / invest_results.total_shares[i]
+                    tempdata.push(datavalue)
+                }
+                temp = {
+                    name: "cash_per_share",
+                    type: 'line',
+                    lineStyle: {normal: {width: 2}},
+                    itemStyle: {normal: {color: Chosenindexes["cash_per_share"]}},
+                    symbolSize: 8,
+                    smooth: true,
+                    data: numfilter(tempdata)
+                };
+                dataSeries.push(temp);
+            }
+            if (Chosenindexes.hasOwnProperty("payment_proportion")) {
+                tempdata = []
+                for (i = 0; i < finance_results.the_year.length; i++) {
+                    datavalue = (invest_results.total_shares[i] * invest_results.div_cashandstock[i]) / finance_results.wgsd_net_inc[i]
+                    tempdata.push(datavalue)
+                }
+                temp = {
+                    name: "payment_proportion",
+                    type: 'line',
+                    lineStyle: {normal: {width: 2}},
+                    itemStyle: {normal: {color: Chosenindexes["payment_proportion"]}},
+                    symbolSize: 8,
+                    smooth: true,
+                    data: numfilter(tempdata)
+                };
+                dataSeries.push(temp);
+            }
+            if (Chosenindexes.hasOwnProperty("equal_earning_rate")) {
+                tempdata = []
+                for (i = 0; i < finance_results.the_year.length; i++) {
+                    datavalue = 1 / (Math.pow(1 - finance_results.wgsd_net_inc[i] / finance_results.wgsd_com_eq[i], 5)) / (finance_results.wgsd_net_inc[i] / finance_results.wgsd_com_eq[i])
+                    tempdata.push(datavalue)
+                }
+                temp = {
+                    name: "equal_earning_rate",
+                    type: 'line',
+                    lineStyle: {normal: {width: 2}},
+                    itemStyle: {normal: {color: Chosenindexes["equal_earning_rate"]}},
+                    symbolSize: 8,
+                    smooth: true,
+                    data: numfilter(tempdata)
+                };
+                dataSeries.push(temp);
+            }
+            if (Chosenindexes.hasOwnProperty("equal_market_rate")) {
+                tempdata = []
+                for (i = 0; i < finance_results.the_year.length; i++) {
+                    datavalue = 1 / ( Math.pow(1 - finance_results.wgsd_net_inc[i] / finance_results.wgsd_com_eq[i], 5))
+                    tempdata.push(datavalue)
+                }
+                temp = {
+                    name: "equal_market_rate",
+                    type: 'line',
+                    lineStyle: {normal: {width: 2}},
+                    itemStyle: {normal: {color: Chosenindexes["equal_market_rate"]}},
+                    symbolSize: 8,
+                    smooth: true,
+                    data: numfilter(tempdata)
+                };
+                dataSeries.push(temp);
+            }
+            if (Chosenindexes.hasOwnProperty("com_value_evaluate")) {
+                tempdata = []
+                for (i = 0; i < finance_results.the_year.length; i++) {
+                    datavalue = finance_results.wgsd_net_inc[i] *
+                            (1 / (Math.pow(1 - finance_results.wgsd_net_inc[i] / finance_results.wgsd_com_eq[i], 5)) / (finance_results.wgsd_net_inc[i] / finance_results.wgsd_com_eq[i]))
+                    tempdata.push(datavalue)
+                }
+                temp = {
+                    name: "com_value_evaluate",
+                    type: 'line',
+                    lineStyle: {normal: {width: 2}},
+                    itemStyle: {normal: {color: Chosenindexes["com_value_evaluate"]}},
+                    symbolSize: 8,
+                    smooth: true,
+                    data: numfilter(tempdata)
+                };
+                dataSeries.push(temp);
+            }
+            if (Chosenindexes.hasOwnProperty("per_com_value_evaluate")) {
+                tempdata = []
+                for (i = 0; i < finance_results.the_year.length; i++) {
+                    datavalue = (finance_results.wgsd_net_inc[i] *
+                            (1 / (Math.pow(1 - finance_results.wgsd_net_inc[i] / finance_results.wgsd_com_eq[i], 5)) / (finance_results.wgsd_net_inc[i] / finance_results.wgsd_com_eq[i]))) / invest_results.total_shares[i]
+                    tempdata.push(datavalue)
+                }
+                temp = {
+                    name: "per_com_value_evaluate",
+                    type: 'line',
+                    lineStyle: {normal: {width: 2}},
+                    itemStyle: {normal: {color: Chosenindexes["per_com_value_evaluate"]}},
+                    symbolSize: 8,
+                    smooth: true,
+                    data: numfilter(tempdata)
+                };
+                dataSeries.push(temp);
+            }
+            if (Chosenindexes.hasOwnProperty("fre_cash_evaluate")) {
+                tempdata = []
+                for (i = 0; i < finance_results.the_year.length; i++) {
+                    datavalue = finance_results.operatecashflow_ttm2[i] + finance_results.investcashflow_ttm2[i]
+                    tempdata.push(datavalue)
+                }
+                temp = {
+                    name: "fre_cash_evaluate",
+                    type: 'line',
+                    lineStyle: {normal: {width: 2}},
+                    itemStyle: {normal: {color: Chosenindexes["fre_cash_evaluate"]}},
+                    symbolSize: 8,
+                    smooth: true,
+                    data: numfilter(tempdata)
+                };
+                dataSeries.push(temp);
+            }
+            if (Chosenindexes.hasOwnProperty("earning_rate")) {
+                tempdata = []
+                for (i = 0; i < finance_results.the_year.length; i++) {
+                    datavalue = invest_results.ev[i] / finance_results.wgsd_net_inc[i]
+                    tempdata.push(datavalue)
+                }
+                temp = {
+                    name: "earning_rate",
+                    type: 'line',
+                    lineStyle: {normal: {width: 2}},
+                    itemStyle: {normal: {color: Chosenindexes["earning_rate"]}},
+                    symbolSize: 8,
+                    smooth: true,
+                    data: numfilter(tempdata)
+                };
+                dataSeries.push(temp);
+            }
+            if (Chosenindexes.hasOwnProperty("net_rate")) {
+                tempdata = []
+                for (i = 0; i < finance_results.the_year.length; i++) {
+                    datavalue = invest_results.ev[i] / finance_results.wgsd_com_eq[i]
+                    tempdata.push(datavalue)
+                }
+                temp = {
+                    name: "net_rate",
+                    type: 'line',
+                    lineStyle: {normal: {width: 2}},
+                    itemStyle: {normal: {color: Chosenindexes["net_rate"]}},
+                    symbolSize: 8,
+                    smooth: true,
+                    data: numfilter(tempdata)
+                };
+                dataSeries.push(temp);
+            }
+            if (Chosenindexes.hasOwnProperty("sale_rate")) {
+                tempdata = []
+                for (i = 0; i < finance_results.the_year.length; i++) {
+                    datavalue = invest_results.ev[i] / finance_results.tot_oper_rev[i]
+                    tempdata.push(datavalue)
+                }
+                temp = {
+                    name: "sale_rate",
+                    type: 'line',
+                    lineStyle: {normal: {width: 2}},
+                    itemStyle: {normal: {color: Chosenindexes["sale_rate"]}},
+                    symbolSize: 8,
+                    smooth: true,
+                    data: numfilter(tempdata)
+                };
+                dataSeries.push(temp);
+            }
+            if (Chosenindexes.hasOwnProperty("cash_rate")) {
+                tempdata = []
+                for (i = 0; i < finance_results.the_year.length; i++) {
+                    datavalue = invest_results.ev[i] / finance_results.operatecashflow_ttm2[i]
+                    tempdata.push(datavalue)
+                }
+                temp = {
+                    name: "cash_rate",
+                    type: 'line',
+                    lineStyle: {normal: {width: 2}},
+                    itemStyle: {normal: {color: Chosenindexes["cash_rate"]}},
+                    symbolSize: 8,
+                    smooth: true,
+                    data: numfilter(tempdata)
+                };
+                dataSeries.push(temp);
+            }
+            if (Chosenindexes.hasOwnProperty("cash_yield_evaluate")) {
+                tempdata = []
+                for (i = 0; i < finance_results.the_year.length; i++) {
+                    datavalue = (finance_results.operatecashflow_ttm2[i] + finance_results.investcashflow_ttm2[i]) / invest_results.ev[i]
+                    tempdata.push(datavalue)
+                }
+                temp = {
+                    name: "cash_yield_evaluate",
+                    type: 'line',
+                    lineStyle: {normal: {width: 2}},
+                    itemStyle: {normal: {color: Chosenindexes["cash_yield_evaluate"]}},
+                    symbolSize: 8,
+                    smooth: true,
+                    data: numfilter(tempdata)
+                };
+                dataSeries.push(temp);
+            }
+            option = {
+                title: {
+                    text: finance_results['the_name'] + '财务指标及分析',
+                    left: '49%'
+                },
+
+                tooltip: {
+                    trigger: 'item',
+                    formatter: function (params) {
+                        return dict[params.seriesName] + "</br>" + "时间：" + params.name + "</br>" + "数据：" + params.data
+
+                    }
+                },
+                legend: {
+                    data: [],
+                    orient: 'vertical',
+                    left: '85%',
+                    top: '10%',
+                    formatter: function (name) {
+                        return dict[name];
+                    }
+
+                },
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '10%',
+                    containLabel: true
+                },
+                toolbox: {
+                    feature: {
+                        magicType: {
+                            type: ['line', 'bar', 'stack', 'tiled']
+                        }
+                    }
+
+                },
+                xAxis: {
+                    type: 'category',
+                    boundaryGap: false,
+                    axisTick: {
+                        show: false
+                    },
+                    data: dateformat(finance_results.the_year),
+                    Interval: 5
+                },
+                yAxis: {
+                    type: 'value',
+                    axisTick: {
+                        show: false
+                    },
+                },
+                dataZoom: [
+                    {   // 这个dataZoom组件，默认控制x轴。
+                        type: 'slider', // 这个 dataZoom 组件是 slider 型 dataZoom 组件
+                        xAxisIndex: [0],
+                        startValue: "2016年Q4",
+                        {#   start: 0,      // 左边在 10% 的位置。
+                            end: 100,         // 右边在 60% 的位置。
+                            top: '93%'#}
+                        endValue: "2006年Q4",
+                        filterMode: 'filter',
+                    },
+                    {   // 这个dataZoom组件，默认控制x轴。
+                        type: 'inside', // 这个 dataZoom 组件是 slider 型 dataZoom 组件
+                        xAxisIndex: [0],
+                        {#   start: 0,      // 左边在 10% 的位置。
+                            end: 100,         // 右边在 60% 的位置。
+                            top: '93%'#}
+                        filterMode: 'filter',
+                    }
+                ],
+                series: dataSeries
+            };
+            myChart.setOption(option, true);
+            myChart.on('datazoom', function (params) {
+                option.xAxis.interval = 10 * (params.end - params.start) / 100
+            })
+            myChart.on('mouseover', function (params) {
+                oldwidth = option.series[params.seriesIndex].lineStyle.normal.width;
+                if (oldwidth == 2) {
+                    option.series[params.seriesIndex].lineStyle.normal.width = 4;
+                    myChart.setOption(option);
+                }
+            })
+            myChart.on('mouseout', function (params) {
+                oldwidth = option.series[params.seriesIndex].lineStyle.normal.width;
+                if (oldwidth == 4) {
+                    option.series[params.seriesIndex].lineStyle.normal.width = 2;
+                    myChart.setOption(option);
+                }
+            })
+        }
+
+
+    </script>
+    <script>
+        var finance_results_t;
+        var invest_results_t;
+        function RequestTable() {
+
+            var opt = myChart.getOption();
+            var dz = opt.dataZoom[0];
+            $.ajax({
+                type: 'GET',
+                url: '{{url_for("restfulapi.finance_data")}}',
+                data: {
+                    stockcode:{{ stockcode|safe }},
+                    starttime: opt.xAxis[0].data[dz.endValue],
+                    endtime: opt.xAxis[0].data[dz.startValue],
+                    indexes: ['tot_oper_cost', 'tot_oper_rev', 'wgsd_net_inc', 'tot_assets', 'wgsd_com_eq', 'monetary_cap', 'operatecashflow_ttm2', 'investcashflow_ttm2']
+                },
+                dataType: 'json',//希望服务器返回json格式的数据
+                success: function (data) {
+                    console.log(data)
+                    finance_results_t = data;
+                    $.ajax({
+                        type: 'GET',
+                        url: '{{url_for("restfulapi.invest_data")}}',
+                        data: {
+                            stockcode: {{ stockcode|safe }},
+                            starttime: opt.xAxis[0].data[dz.endValue],
+                            endtime: opt.xAxis[0].data[dz.startValue],
+                            indexes: ['total_shares', 'div_cashandstock', 'ev', 'employee', 'dividendyield2', 'ev1', 'ev2']
+                        },
+                        dataType: 'json',//希望服务器返回json格式的数据
+                        success: function (data) {
+                            invest_results_t = data;
+                            CreateTable();
+
+                        }
+                    })
+                }
+            })
+        }
+        function CreateTable() {
+            $("#mytable").empty();
+            var table = $("<table id=\"temptable\" class=\"row-border hover order-column\" cellspacing=\"0\" width=\"100%\"  >");
+            table.appendTo($("#mytable"));
+            th = $("<thead></thead>");
+            th.appendTo(table);
+            var tr = $("<tr></tr>");
+            tr.appendTo(th);
+            var td = $("<td id=\"subject\">" + "项目" + "</td>");
+            td.appendTo(tr);
+            theyear = dateformat(finance_results_t.the_year)
+            for (var j = 0; j < theyear.length; j++) {
+                var td = $("<td>" + theyear[j] + "</td>");
+                td.appendTo(tr);
+            }
+            tb = $("<tbody></tbody>");
+            tb.appendTo(table);
+            $("#mytable").append("</table>");
+            var mydatatb = $('#temptable').DataTable({
+                "info": false,
+                "processing": true,
+                "scrollX": true,
+                "searching": true,
+                "fixedColumns": { //固定列的配置项
+                    "leftColumns": 1//固定左边第一列
+                },
+                "language": {
+                    "emptyTable": "没有数据",
+                    "loadingRecords": "加载中…",
+                    "processing": "查询中…",
+                    "search": "检索:",
+                    "lengthMenu": "每页 _MENU_ 条",
+                    "zeroRecords": "没有数据",
+                    "paginate": {
+                        "first": "第一页",
+                        "last": "最后一页",
+                        "next": "",
+                        "previous": ""
+                    },
+                    "info": "第 _PAGE_ 页 / 总 _PAGES_ 页",
+                    "infoEmpty": "没有数据",
+                    "infoFiltered": "(过滤总件数 _MAX_ 条)"
+                }
+
+
+            });
+            setTimeout("$(\"#subject\").trigger(\"click\")", 100);
+            for (var i = 0; i < finance_results_t.indexes.length; i++) {
+                if (Chosenindexes.hasOwnProperty(finance_results.indexes[i])) {
+                    var rowNode = mydatatb
+                            .row.add([dict[finance_results_t.indexes[i]]].concat(numfilter(eval("finance_results_t." + finance_results_t.indexes[i]))))
+                            .draw()
+                            .node();
+                    $(rowNode)
+                            .attr('id', finance_results_t.indexes[i]);
+                }
+            }
+            for (var i = 0; i < invest_results_t.indexes.length; i++) {
+                if (Chosenindexes.hasOwnProperty(invest_results_t.indexes[i])) {
+                    var rowNode = mydatatb
+                            .row.add([dict[invest_results_t.indexes[i]]].concat(numfilter(eval("invest_results_t." + invest_results_t.indexes[i]))))
+                            .draw()
+                            .node();
+                    $(rowNode)
+                            .attr('id', invest_results_t.indexes[i]);
+                }
+            }
+            if (Chosenindexes.hasOwnProperty("net_inc_eq_rate")) {
+                tempdata = []
+                for (i = 0; i < finance_results_t.the_year.length; i++) {
+                    datavalue = finance_results_t.wgsd_net_inc[i] / finance_results_t.wgsd_com_eq[i]
+                    tempdata.push(datavalue)
+                }
+                var rowNode = mydatatb
+                        .row.add([dict["net_inc_eq_rate"]].concat(numfilter(tempdata)))
+                        .draw()
+                        .node();
+                $(rowNode)
+                        .attr('id', "net_inc_eq_rate");
+            }
+            if (Chosenindexes.hasOwnProperty("earnings_per_share")) {
+                tempdata = []
+                for (i = 0; i < finance_results_t.the_year.length; i++) {
+                    datavalue = finance_results_t.wgsd_net_inc[i] / invest_results_t.total_shares[i]
+                    tempdata.push(datavalue)
+                }
+
+                var rowNode = mydatatb
+                        .row.add([dict["earnings_per_share"]].concat(numfilter(tempdata)))
+                        .draw()
+                        .node();
+                $(rowNode)
+                        .attr('id', "earnings_per_share");
+            }
+            if (Chosenindexes.hasOwnProperty("net_assets_per_share")) {
+                tempdata = []
+                for (i = 0; i < finance_results_t.the_year.length; i++) {
+                    datavalue = finance_results_t.wgsd_com_eq[i] / invest_results_t.total_shares[i]
+                    tempdata.push(datavalue)
+                }
+
+                var rowNode = mydatatb
+                        .row.add([dict["net_assets_per_share"]].concat(numfilter(tempdata)))
+                        .draw()
+                        .node();
+                $(rowNode)
+                        .attr('id', "net_assets_per_share");
+            }
+            if (Chosenindexes.hasOwnProperty("cash_per_share")) {
+                tempdata = []
+                for (i = 0; i < finance_results_t.the_year.length; i++) {
+                    datavalue = finance_results_t.monetary_cap[i] / invest_results_t.total_shares[i]
+                    tempdata.push(datavalue)
+                }
+
+                var rowNode = mydatatb
+                        .row.add([dict["cash_per_share"]].concat(numfilter(tempdata)))
+                        .draw()
+                        .node();
+                $(rowNode)
+                        .attr('id', "cash_per_share");
+            }
+            if (Chosenindexes.hasOwnProperty("payment_proportion")) {
+                tempdata = []
+                for (i = 0; i < finance_results_t.the_year.length; i++) {
+                    datavalue = (invest_results_t.total_shares[i] * invest_results_t.div_cashandstock[i]) / finance_results_t.wgsd_net_inc[i]
+                    tempdata.push(datavalue)
+                }
+
+                var rowNode = mydatatb
+                        .row.add([dict["payment_proportion"]].concat(numfilter(tempdata)))
+                        .draw()
+                        .node();
+                $(rowNode)
+                        .attr('id', "payment_proportion");
+            }
+            if (Chosenindexes.hasOwnProperty("equal_earning_rate")) {
+                tempdata = []
+                for (i = 0; i < finance_results_t.the_year.length; i++) {
+                    datavalue = 1 / (Math.pow(1 - finance_results_t.wgsd_net_inc[i] / finance_results_t.wgsd_com_eq[i], 5)) / (finance_results_t.wgsd_net_inc[i] / finance_results_t.wgsd_com_eq[i])
+                    tempdata.push(datavalue)
+                }
+
+                var rowNode = mydatatb
+                        .row.add([dict["equal_earning_rate"]].concat(numfilter(tempdata)))
+                        .draw()
+                        .node();
+                $(rowNode)
+                        .attr('id', "equal_earning_rate");
+            }
+            if (Chosenindexes.hasOwnProperty("equal_market_rate")) {
+                tempdata = []
+                for (i = 0; i < finance_results_t.the_year.length; i++) {
+                    datavalue = 1 / ( Math.pow(1 - finance_results_t.wgsd_net_inc[i] / finance_results_t.wgsd_com_eq[i], 5))
+                    tempdata.push(datavalue)
+                }
+
+                var rowNode = mydatatb
+                        .row.add([dict["equal_market_rate"]].concat(numfilter(tempdata)))
+                        .draw()
+                        .node();
+                $(rowNode)
+                        .attr('id', "equal_market_rate");
+            }
+            if (Chosenindexes.hasOwnProperty("com_value_evaluate")) {
+                tempdata = []
+                for (i = 0; i < finance_results_t.the_year.length; i++) {
+                    datavalue = finance_results_t.wgsd_net_inc[i] *
+                            (1 / (Math.pow(1 - finance_results_t.wgsd_net_inc[i] / finance_results_t.wgsd_com_eq[i], 5)) / (finance_results_t.wgsd_net_inc[i] / finance_results_t.wgsd_com_eq[i]))
+                    tempdata.push(datavalue)
+                }
+
+                var rowNode = mydatatb
+                        .row.add([dict["com_value_evaluate"]].concat(numfilter(tempdata)))
+                        .draw()
+                        .node();
+                $(rowNode)
+                        .attr('id', "com_value_evaluate");
+            }
+            if (Chosenindexes.hasOwnProperty("per_com_value_evaluate")) {
+                tempdata = []
+                for (i = 0; i < finance_results_t.the_year.length; i++) {
+                    datavalue = (finance_results_t.wgsd_net_inc[i] *
+                            (1 / (Math.pow(1 - finance_results_t.wgsd_net_inc[i] / finance_results_t.wgsd_com_eq[i], 5)) / (finance_results_t.wgsd_net_inc[i] / finance_results_t.wgsd_com_eq[i]))) / invest_results_t.total_shares[i]
+                    tempdata.push(datavalue)
+                }
+
+                var rowNode = mydatatb
+                        .row.add([dict["per_com_value_evaluate"]].concat(numfilter(tempdata)))
+                        .draw()
+                        .node();
+                $(rowNode)
+                        .attr('id', "per_com_value_evaluate");
+            }
+            if (Chosenindexes.hasOwnProperty("fre_cash_evaluate")) {
+                tempdata = []
+                for (i = 0; i < finance_results_t.the_year.length; i++) {
+                    datavalue = finance_results_t.operatecashflow_ttm2[i] + finance_results_t.investcashflow_ttm2[i]
+                    tempdata.push(datavalue)
+                }
+
+                var rowNode = mydatatb
+                        .row.add([dict["fre_cash_evaluate"]].concat(numfilter(tempdata)))
+                        .draw()
+                        .node();
+                $(rowNode)
+                        .attr('id', "fre_cash_evaluate");
+            }
+            if (Chosenindexes.hasOwnProperty("earning_rate")) {
+                tempdata = []
+                for (i = 0; i < finance_results_t.the_year.length; i++) {
+                    datavalue = invest_results_t.ev[i] / finance_results_t.wgsd_net_inc[i]
+                    tempdata.push(datavalue)
+                }
+
+                var rowNode = mydatatb
+                        .row.add([dict["earning_rate"]].concat(numfilter(tempdata)))
+                        .draw()
+                        .node();
+                $(rowNode)
+                        .attr('id', "earning_rate");
+            }
+            if (Chosenindexes.hasOwnProperty("net_rate")) {
+                tempdata = []
+                for (i = 0; i < finance_results_t.the_year.length; i++) {
+                    datavalue = invest_results_t.ev[i] / finance_results_t.wgsd_com_eq[i]
+                    tempdata.push(datavalue)
+                }
+
+                var rowNode = mydatatb
+                        .row.add([dict["net_rate"]].concat(numfilter(tempdata)))
+                        .draw()
+                        .node();
+                $(rowNode)
+                        .attr('id', "net_rate");
+            }
+            if (Chosenindexes.hasOwnProperty("sale_rate")) {
+                tempdata = []
+                for (i = 0; i < finance_results_t.the_year.length; i++) {
+                    datavalue = invest_results_t.ev[i] / finance_results_t.tot_oper_rev[i]
+                    tempdata.push(datavalue)
+                }
+
+                var rowNode = mydatatb
+                        .row.add([dict["sale_rate"]].concat(numfilter(tempdata)))
+                        .draw()
+                        .node();
+                $(rowNode)
+                        .attr('id', "sale_rate");
+            }
+            if (Chosenindexes.hasOwnProperty("cash_rate")) {
+                tempdata = []
+                for (i = 0; i < finance_results_t.the_year.length; i++) {
+                    datavalue = invest_results_t.ev[i] / finance_results_t.operatecashflow_ttm2[i]
+                    tempdata.push(datavalue)
+                }
+
+                var rowNode = mydatatb
+                        .row.add([dict["cash_rate"]].concat(numfilter(tempdata)))
+                        .draw()
+                        .node();
+                $(rowNode)
+                        .attr('id', "cash_rate");
+            }
+            if (Chosenindexes.hasOwnProperty("cash_yield_evaluate")) {
+                tempdata = []
+                for (i = 0; i < finance_results_t.the_year.length; i++) {
+                    datavalue = (finance_results_t.operatecashflow_ttm2[i] + finance_results_t.investcashflow_ttm2[i]) / invest_results_t.ev[i]
+                    tempdata.push(datavalue)
+                }
+
+                var rowNode = mydatatb
+                        .row.add([dict["cash_yield_evaluate"]].concat(numfilter(tempdata)))
+                        .draw()
+                        .node();
+                $(rowNode)
+                        .attr('id', "cash_yield_evaluate");
+            }
+            for (var key in Chosenindexes) {
+                $('tr#' + key).css('color', Chosenindexes[key])
+            }
+        }
+        function NewColor() {
+            var colorElements = "0,1,2,3,4,5,6,7,8,9,a,b,c,d,e,f";
+            var colorArray = colorElements.split(",");
+            var color = "#";
+            for (var i = 0; i < 6; i++) {
+                color += colorArray[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+        function numfilter(oldnum) {
+            newnum = []
+            for (i = 0; i < oldnum.length; i++) {
+                temp = oldnum[i] / denominator;
+                temp.toFixed(2);
+                newnum.push(temp)
+            }
+            return newnum;
+        }
+        function dateformat(olddate) {
+            newdate = []
+
+            for (i = 0; i < olddate.length; i++) {
+                var str = olddate[i];
+                var reg = /1231/g;
+                str = str.replace(reg, '年Q4');
+                newdate.push(str)
+            }
+            return newdate
+        }
+    </script>
+
+
+{% endblock %}

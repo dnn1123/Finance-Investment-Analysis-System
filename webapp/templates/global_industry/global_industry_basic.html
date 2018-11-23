@@ -1,175 +1,387 @@
 {% extends "global_industry/global_industry_base.html" %}
-
+{% block styles %}
+    <script type="text/javascript" src="{{ url_for('static',filename='js/echarts_sunburst.js') }}"
+            xmlns="http://www.w3.org/1999/html"></script>
+{% endblock %}
 {% block tab %}
-        <ul class="nav nav-pills">
-            <li class="active"><a>RA.投资分类评级</a></li>
-            <li><a href="{{ url_for('global_industry.cns_market') }}" >CHS.大陆市场</a></li>
-            <li><a>HKS.香港市场</a></li>
-            <li><a>USA.美国市场</a></li>
-            <li><a>UKS.英国市场</a></li>
-            <li><a>EPS.欧洲市场</a></li>
-            <li><a>JPS.日本市场</a></li>
-        </ul>
+{#    <ul class="nav nav-pills" xmlns="http://www.w3.org/1999/html">#}
+{#        <li class="active"><a>RA.投资分类评级</a></li>#}
+{#        <li><a href="{{ url_for('global_industry.cns_market_new') }}">CHS.大陆市场</a></li>#}
+{#        <li><a href="{{ url_for('global_industry.hks_market') }}">HKS.香港市场</a></li>#}
+{#        <li><a href="{{ url_for('global_industry.usa_market_new') }}">USA.美国市场</a></li>#}
+{#        <li><a href="{{ url_for('global_industry.uks_market') }}">UKS.英国市场</a></li>#}
+{#        <li><a href="{{ url_for('global_industry.eps_market') }}">EPS.欧洲市场</a></li>#}
+{#        <li><a href="{{ url_for('global_industry.jps_market') }}">JPS.日本市场</a></li>#}
+{#    </ul>#}
+
 {% endblock %}
 
 {% block fixTable %}
     <script>
-			$(document).ready(function() {
-				$("#fixTable").tableHeadFixer({"left" : 1});
-			});
+        $(document).ready(function () {
+            $("#fixTable").tableHeadFixer({"left": 1});
+        });
     </script>
 {% endblock %}
 
 {% block table %}
-    <br> <!--以后加id=fixTable-->
-<table  border="2" style="width:100%;height: 100%; border-style: groove;">
-    <thead>
-        <tr style="height: 15%">
-            <td rowspan="2" style="text-align:center; width:10%;"><img src="../static/logo.png"></td>
-            <td colspan="11"><h4 style="margin-left: 5%">全球股票投资分类评级</h4></td>
-        </tr>
-        <tr style="height: 5%">
-            <td style="background-color: #0e90d2;border-style:none;"></td>
-            <td style="background-color: #0e90d2;border-style:none;"></td>
-            <td style="background-color: #0e90d2;border-style:none;"></td>
-            <td style="background-color: #0e90d2;border-style:none;"></td>
-            <td style="background-color: #0e90d2;border-style:none;"></td>
-            <td style="background-color: #0e90d2;border-style:none;"></td>
-            <td style="background-color: #0e90d2;border-style:none;"></td>
-            <td style="background-color: #0e90d2;border-style:none;"></td>
-            <td style="background-color: #0e90d2;border-style:none;"></td>
-            <td style="background-color: #0e90d2;border-style:none;"></td>
-            <td style="background-color: #0e90d2;border-style:none;"></td>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td rowspan="3" style="text-align: center;">数据获取时间<br>2017年4月1日</td>
-            <td colspan="11"  style="border-bottom-style: none;padding-left: 20px;">投资分类评级是我们依据一系列原则、基础事实以及我们的投资经验建立的一种描述上市公司证券投资吸引力的标准化系统方法。</td>
-        </tr>
-        <tr>
-            <td colspan="11" style="border-style: none;padding-left: 20px;">投资分类评级将主要被我们应用在对普通股票的分类检索及投资吸引力评价中；同时，它也将对优先股票、普通债券及其他证券的投资吸引力评价提供有价值的指导。</td>
-        </tr>
-        <tr>
-            <td colspan="11" style="border-style: none;padding-left: 20px;">投资分类评级是描述上市证券投资吸引力的一种独立、客观、保守的标准化方法和参考系统。</td>
-        </tr>
-        <tr>
-            <td rowspan="2"></td>
-            <td colspan="11" style="border-bottom-style: none;padding-left: 20px;">我们将在投资分类评级中使用大写字母来标识不同的级别，并把每一个级别分别命名为：</td>
-        </tr>
-        <tr>
-            <td colspan="11" style="border-style: none;padding-left: 20px;">
-                      A.      最佳的投资——能够在较长时间内保持繁荣，并同时拥有较高资产规模的公司；<br>
-                      B.      有待考察的投资——能够在最近一段时间内保持景气，并同时拥有一定资产规模的公司；<br>
-                      C.      一般的投资——能够在最近一段时间内维持稳定，并同时至少达到一定资产规模的公司；<br>
-                      D.      缺乏价值的投资——最近一段时间内陷入低迷、衰退及崩溃的公司；<br>
-                      E.      未分类的投资——新上市、刚完成重大资产重组或业务重组等目前不宜做出评价的公司。
-            </td>
-        </tr>
 
-        <tr>
-            <td rowspan="2" style="border-style: none;text-align: center;padding-left: 20px;">最佳的投资：A评级</td>
-            <td colspan="11" style="background-color: rgba(4,5,4,0.07);padding-left: 20px;">
-                主要给予最优秀及最值得信任的上市公司股票。符合该评级标准的公司应具备如下条件：<br>1.      主要证券交易所重要股票指数的成份股；<br>2.      净资产收益率在最近6年中均不低于20%，且应至少有一年达到或接近25%，或与此接近；<br>3.      近期净利润超过或接近10亿、净资产超过或接近50亿但不得低于30亿，或与此接近；<br>4.      具有较长的优秀发展时期；<br>5.      具有较好的资本市场知名度和市场形象。
-            </td>
-        </tr>
+        <div class="btn-box-row row-fluid">
+            <div class="module" style="margin-top:10px;border-radius:5px">
 
-        <tr>
-            <td colspan="11" style="padding-left: 20px;">如果有个别条件不令人满意，但却非常有潜力的公司，将被评级为A-；其他保持评级为A。在定期调整中，评级可能会进行一次非越级变动。</td>
-        </tr>
-        <tr>
-            <td rowspan="2" style="text-align: center;padding-left: 20px;">有待考察的投资：B评级</td>
-            <td colspan="11" style="background-color: rgba(4,5,4,0.07);padding-left: 20px;">
-                主要给予有潜力获得更好发展并初具信任的上市公司股票。符合该评级标准的公司应具备如下条件：<br>
-                1.      净资产收益率在最近2年中均不低于15%，或与此接近；<br>
-                2.      近期净利润超过或接近5亿、净资产超过或接近30亿但不得低于20亿，或与此接近；<br>
-                3.      具有一定的较好发展时期；<br>
-                4.      具有一定的资本市场知名度。
-            </td>
-        </tr>
-        <tr>
-            <td colspan="11" style="padding-left: 20px;">
-                如果有个别条件突出，将被评级为B+；如果有个别条件不令人满意，将被评级为B-；其他保持评级为B。在定期调整中，评级可能会进行一次非越级变动。
-            </td>
-        </tr>
-        <tr>
-            <td rowspan="2" style="text-align: center;padding-left: 20px;">一般的投资：C评级</td>
-            <td colspan="11" style="background-color: rgba(4,5,4,0.07);padding-left: 20px;">
-                主要给予不具备明显吸引力但又并不糟糕的上市公司股票。符合该评级标准的公司应具备如下条件：<br>
-                1.      净资产收益率在最近2年中均不低于10%，或与此接近；<br>
-                2.      近期净资产不得低于10亿，或与此接近；<br>
-                3.      具有一定的稳定发展时期；<br>
-                4.      具有一些资本市场知名度。
-            </td>
-        </tr>
+                <div class="module-head" id="head_1">
+                    <button class="btn btn-primary">多因子投资分类评级</button>
+<button class="btn btn-mini btn-primary subscribe_str" style="float: right;margin-left: 5px" onclick="View_the_results()">
+                        查看评级结果
+                    </button>
+                </div>
+                <div class="module-body" id="body_1">
 
-        <tr>
-            <td colspan="11" style="padding-left: 20px;">
-                如果有个别条件突出，将被评级为C+；如果有个别条件不令人满意，将被评级为C-；其他保持评级为C。在定期调整中，评级可能会进行一次非越级变动。
-            </td>
-        </tr>
-        <tr>
-            <td rowspan="2" style="text-align: center;padding-left: 20px;">缺乏价值的投资：D评级</td>
-            <td colspan="11" style="background-color: rgba(4,5,4,0.07);padding-left: 20px;">
-                主要给予几乎没有吸引力及糟糕的上市公司股票。符合该评级标准的公司应具备如下条件：<br>
-                1.      净资产收益率在最近1年中不超过11%，或与此接近；<br>
-                2.      近期曾陷入财务困境或出现严重亏损的公司；<br>
-                3.      具有较差的资本市场形象。
-            </td>
-        </tr>
+                        <div style="width: 100%;height:600px">
+                            <div id="echarts" style="height: 500px;width: 50%;float: left">
 
-        <tr>
-            <td colspan="11" style="padding-left: 20px;">
-                如果有个别条件突出，将被评级为D+；其他保持评级为D。在定期调整中，评级可能会进行一次非越级变动。
-            </td>
-        </tr>
-        <tr>
-            <td rowspan="2" style="text-align: center;padding-left: 20px;">未分类的投资：E评级</td>
-            <td colspan="11" style="background-color: rgba(4,5,4,0.07);padding-left: 20px;">
-                主要给予首发上市、完成重大资产重组或业务重组不足3年的上市公司股票。但是，如果该公司之前于其他主要的证券交易所上市或其业务模式及经济特征已经被投资界充分地了解，则不适用该限制。
-            </td>
-        </tr>
+                            </div>
+                            <div style="float: right;width: 40%;height:550px" class="well well-lg">
+                                <h3 style="margin-left: 10px">多因子投资分类评级</h3>
+                                <h5 style="margin-left: 25px">
+                                    投资分类评级是基于市场历史情况深度学习以及市场实时动态把控以及以往投资经验的一种描述上市公司证券投资吸引力的标准化系统方法。
+                                    系统对股市进行实时的检测，在每日零时自动获取最新市场信息，对所有在市股票进行等级评定，旨在从最科学、最客观的角度为用户提供最优的决策建议。
+                                </h5>
+                                <div class="module">
+                                    <div class="module-head">
+                                        <button class="btn btn-primary" id="intro_btn_1" href="#intro_div_1"
+                                                data-toggle="tab">
+                                            实时数据
+                                        </button>
+                                        <button style="margin-left: 35px" class="btn btn-primary" id="intro_btn_2"
+                                                href="#intro_div_2" data-toggle="tab">
+                                            科学计算
+                                        </button>
+                                        <button style="margin-left: 35px" class="btn btn-primary" id="intro_btn_3"
+                                                href="#intro_div_3" data-toggle="tab">
+                                            合理分级
+                                        </button>
 
-        <tr>
-            <td colspan="11" style="padding-left: 20px;">
-                如果有个别可信程度较高的公司，可被提前调整为其他评级。在定期调整中，评级可能会进行一次越级变动。通常，在投资分类评级的定期调整中，只有进入或调出E评级时，才会产生越级变动。
-            </td>
-        </tr>
-        <tr>
-            <td style="text-align: center;padding-left: 20px;">投资分类评级</td>
-            <td colspan="2" style="padding-left: 20px;">A.最佳的投资</td>
-            <td colspan="3" style="padding-left: 20px;">B.有待考察的投资</td>
-            <td colspan="3" style="padding-left: 20px;">C.一般的投资</td>
-            <td colspan="2" style="padding-left: 20px;">D.缺乏价值的投资</td>
-            <td colspan="1" style="padding-left: 20px;">E.未分类的投资</td>
-        </tr>
-        <tr>
-            <td style="text-align: center;padding-left: 20px;">评价星级</td>
-            <td style="padding-left: 20px;">A</td>
-            <td style="padding-left: 20px;">A-</td>
-            <td style="padding-left: 20px;">B+</td>
-            <td style="padding-left: 20px;">B</td>
-            <td style="padding-left: 20px;">B-</td>
-            <td style="padding-left: 20px;">C+</td>
-            <td style="padding-left: 20px;">C</td>
-            <td style="padding-left: 20px;">C-</td>
-            <td style="padding-left: 20px;">D+</td>
-            <td style="padding-left: 20px;">D</td>
-            <td style="padding-left: 20px;">E</td>
-        </tr>
-        <tr>
-            <td style="text-align: center">覆盖范围</td>
-            <td colspan="11" style="padding-left: 20px;">
-                大陆市场   覆盖的是所有上市A股，在披露端展示的是沪深300指数成份股；可能会随着最新的成份股进行修改，下同 <br>
-                香港市场   覆盖的是恒生综合指数的成份股及港股通股票等，在披露端展示的是恒生指数成份股<br>
-                美国市场   覆盖的是标准普尔500指数的成份股及一些知名的公司，在披露端展示的是道琼斯指数成份股<br>
-                英国市场   覆盖的是富时100指数成分股，暂时不在披露端展示<br>
-                欧洲市场   覆盖的是STOXX欧洲50指数成份股以及一些知名的欧洲公司，暂时不在披露端展示<br>
-                日本市场   覆盖的是日经225指数成份股，暂时不在披露端展示
-            </td>
-        </tr>
-    </tbody>
-</table>
-{% endblock %}<SCRIPT Language=VBScript><!--
+                                    </div>
+                                    <div class="module-body">
+                                        <div class="tab-content" style="width:98%;">
+                                            <div id="intro_div_1" class="tab-pane fade in active" style="width: 100%">
+                                                <h5>
+                                                    投资分类评级模型整合最具参考价值的三类共计15种决策指标（左图）,市场数据每日自动获取，对实时数据进行划分与清理，进一步提高数据价值，为每一只股票的分类评级决策提供有力保障。</h5>
+                                            </div>
+                                            <div id="intro_div_2" class="tab-pane fade" style="width: 100%">
+                                                <h5>
+                                                    投资分类评级模型采用人工智能与深度学习相结合的科学计算方式，对每一只股票，从多角度分析评价，并按一定权重将各因素下评价结果整合，得出最终的评价结果。
 
-//--></SCRIPT>
+                                                    计算方式如下：
+                                                    </br>
+                                                    a)市净率低于全市场平均值
+                                                    </br>
+b)以五年平均盈余计算的PE低于全市场平均值 </br>
+c)每股流动资产至少是股价的30% </br>
+d)股息收益率不低于全市场平均值 </br>
+e)股价现金流量比低于全市场平均值 </br>
+f)长期借款占总资本比例低于50% </br>
+g)流动比例高于全市场平均值
+                                                </h5>
+                                            </div>
+                                            <div id="intro_div_3" class="tab-pane fade" style="width: 100%">
+                                                <h5> A. 最佳的投资:能够在较长时间内保持繁荣，并同时拥有较高资产规模的公司；</br>
+                                                    B. 有待考察的投资:能够在最近一段时间内保持景气，并同时拥有一定资产规模的公司；</br>
+                                                    C. 一般的投资:能够在最近一段时间内维持稳定，并同时至少达到一定资产规模的公司；</br>
+                                                    D. 缺乏价值的投资:最近一段时间内陷入低迷、衰退及崩溃的公司；</br>
+                                                    E. 未分类的投资:新上市、刚完成重大资产重组或业务重组等目前不宜做出评价的公司。</br> </h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+
+                </div>
+
+            </div>
+        </div>
+        <div class="btn-box-row row-fluid">
+            <div class="module" style="margin-top:10px;border-radius:5px">
+
+                <div class="module-head">
+                    <button class="btn btn-primary">更多评级方法敬请期待...</button>
+
+                </div>
+
+
+            </div>
+        </div>
+
+    <script>
+    $("#head_1").click(function(){
+        $("#body_1").toggle()
+    })
+    function View_the_results(){
+        window.location.href="{{ url_for('global_industry.cns_market_new') }}";
+    }
+        var colors = ['#00688B', '#008B8B', '#009ACD', '#00B2EE', '#00B2EE'];
+        var bgColor = '#FFFFFF';
+
+        var itemStyle = {
+            star5: {
+                color: colors[0]
+            },
+            star4: {
+                color: colors[1]
+            },
+            star3: {
+                color: colors[2]
+            },
+            star2: {
+                color: colors[3]
+            }
+        };
+
+        var data = [
+            {
+                name: 'I',
+                itemStyle: {
+                    normal: {
+                        color: colors[3]
+                    }
+                },
+                children: [{
+                    name: '日线数据',
+                    children: [{
+                        name: '3☆',
+                        children: [{
+                            name: '市净率'
+                        }, {
+                            name: '市盈率'
+                        }, {
+                            name: '股息率'
+                        }, {
+                            name: '收盘价'
+                        }, {
+                            name: '股价现金流量比'
+                        }]
+                    }]
+                }]
+            },
+            {
+                name: 'II',
+                itemStyle: {
+                    normal: {
+                        color: colors[1]
+                    }
+                },
+                children: [{
+                    name: '季度数据',
+                    children: [{
+                        name: '2☆',
+                        children: [{
+                            name: '长期借款'
+                        }, {
+                            name: '流动比率'
+                        }, {
+                            name: '总资本'
+                        }, {
+                            name: '每股流动资产'
+                        }, {
+                            name: '每股现金流量净额'
+                        }]
+                    }]
+                }]
+            },
+            {
+                name: 'III',
+                itemStyle: {
+                    normal: {
+                        color: colors[0]
+                    }
+                },
+                children: [{
+                    name: '板块数据',
+
+                    children: [{
+                        name: '1☆',
+                        children: [{
+                            name: '市净率平均值'
+                        }, {
+                            name: '市盈率平均值'
+                        }, {
+                            name: '股息收益率平均值'
+                        }, {
+                            name: '流动比例平均值'
+                        }, {
+                            name: '股价现金流量比平均值'
+                        }]
+                    }]
+                }]
+            },
+
+        ];
+
+        for (var j = 0; j < data.length; ++j) {
+            var level1 = data[j].children;
+            for (var i = 0; i < level1.length; ++i) {
+                var block = level1[i].children;
+                var bookScore = [];
+                var bookScoreId;
+                for (var star = 0; star < block.length; ++star) {
+                    var style = (function (name) {
+                        switch (name) {
+                            case '3☆':
+                                bookScoreId = 1;
+                                return itemStyle.star2;
+                            case '2☆':
+                                bookScoreId = 3;
+                                return itemStyle.star4;
+                            case '1☆':
+                                bookScoreId = 4;
+                                return itemStyle.star5;
+                        }
+                    })(block[star].name);
+
+                    block[star].label = {
+                        color: style.color,
+                        downplay: {
+                            opacity: 0.5
+                        }
+                    };
+
+                    if (block[star].children) {
+                        style = {
+                            opacity: 1,
+                            color: style.color
+                        };
+                        block[star].children.forEach(function (book) {
+                            book.value = 1;
+                            book.itemStyle = style;
+
+                            book.label = {
+                                color: style.color
+                            };
+
+                            var value = 1;
+                            if (bookScoreId === 0 || bookScoreId === 3) {
+                                value = 5;
+                            }
+
+                            if (bookScore[bookScoreId]) {
+                                bookScore[bookScoreId].value += value;
+                            }
+                            else {
+                                bookScore[bookScoreId] = {
+                                    color: colors[bookScoreId],
+                                    value: value
+                                };
+                            }
+                        });
+                    }
+                }
+                var color_tmp
+                if (bookScoreId == 1) {
+                    color_tmp = colors[3]
+                }
+                else if (bookScoreId == 3) {
+                    color_tmp = colors[5]
+                }
+                else if (bookScoreId == 4) {
+                    color_tmp = colors[0]
+                }
+                level1[i].itemStyle = {
+                    color: color_tmp
+                };
+            }
+
+        }
+
+        option = {
+            backgroundColor: bgColor,
+            color: colors,
+            series: [
+                {
+                type: 'sunburst',
+                center: ['50%', '55%'],
+                data: data,
+clickable : false,
+                sort: function (a, b) {
+                    if (a.depth === 1) {
+                        return b.getValue() - a.getValue();
+                    }
+                    else {
+                        return a.dataIndex - b.dataIndex;
+                    }
+                },
+                label: {
+                    rotate: 'radial',
+                    color: bgColor
+                },
+                itemStyle: {
+                    borderColor: bgColor,
+                    borderWidth: 2
+                },
+                levels: [{}, {
+                    r0: 0,
+                    r: 30,
+                    label: {
+                        rotate: 0
+                    }
+                }, {
+                    r0: 30,
+                    r: 95
+                }, {
+                    r0: 95,
+                    r: 120,
+                    itemStyle: {
+                        shadowBlur: 2,
+                        shadowColor: colors[2],
+                        color: 'transparent'
+                    },
+                    label: {
+                        rotate: 'tangential',
+                        fontSize: 10,
+                        color: colors[0]
+                    }
+                }, {
+                    r0: 120,
+                    r: 125,
+                    label: {
+                        position: 'outside',
+
+                    },
+                    downplay: {
+                        label: {
+                            opacity: 0.5
+                        }
+                    }
+                }
+    ]
+            }
+
+            ],
+             legend: {
+      selectedMode:false,
+    },
+        };
+
+        var myChart = echarts.init(document.getElementById('echarts'));
+        myChart.setOption(option, true);
+    myChart.on('click', function (params) {
+
+});
+    </script>
+{% endblock %}
+<SCRIPT Language=VBScript><!--
+
+//-->
+
+
+
+
+
+
+
+
+
+</SCRIPT>

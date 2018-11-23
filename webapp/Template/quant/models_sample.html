@@ -1,0 +1,18 @@
+{% extends "quant_base.html" %}
+{% block content %}
+<div class="module">
+    <div class="module-head">模型示例</div>
+    <div class="modal-body">
+        <img src="{{ url_for("static",filename='images/')}}{{ pic }}_params.png">
+    </div>
+</div>
+<div class="module" style="height: auto">
+    <div class="modal-body" style="height: auto">
+        <img src="{{ url_for("static",filename='images/') }}{{ pic }}_result.png">
+    </div>
+</div>
+{% endblock %}
+{% block scripts %}
+    
+    
+{% endblock %}

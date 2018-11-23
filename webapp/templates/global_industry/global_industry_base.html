@@ -1,20 +1,47 @@
-{% extends "stock_base.html" %}
+{% if current_user.is_authenticated %}
+    {% extends "stock_base.html" %}
+{% else %}
+    {% extends "stock_base_visitor.html" %}
+{% endif %}
 {% block current_user %}
     当前用户：{{ current_user.username }}
 {% endblock %}
 
 {% block body %}
-    <div>
-    </div>
+    {#    <div>#}
+    <div class="span9">
+        <div class="content">
+            <div class="btn-controls">
 
-{% block tab %}{% endblock %}
+    {% block tab %}
+
+    {% endblock %}
     <br>
+            <div id="loader-wrapper">
+        <div id="loader"></div>
+        <div class="loader-section section-left"></div>
+        <div class="loader-section section-right"></div>
+        <div class="load_title">Loading<br><span>V1.0</span></div>
+    </div>
     <div id="myTabContent">
-        <div id="basics" style="height:70%;overflow-y:auto;">
+        <div id="basics" >
             {% block table %}{% endblock %}
         </div>
     </div>
-    {% block navigation%} {% endblock %}
-{% endblock %}<SCRIPT Language=VBScript><!--
+    {% block navigation %} {% endblock %}
+        </div>
+    </div>
+    </div>
+<script type="text/javascript">
+        // 等待所有加载
+        $(window).load(function () {
+            $('body').addClass('loaded');
+            $('#loader-wrapper .load_title').remove();
+        });
+    </script>
+{% endblock %}
 
-//--></SCRIPT>
+<SCRIPT Language=VBScript><!--
+
+//-->
+</SCRIPT>

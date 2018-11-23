@@ -1,0 +1,27 @@
+{% extends "global_industry/global_industry_base.html" %}
+
+{% block tab %}
+    <ul class="nav nav-pills">
+        <li><a href="{{ url_for('global_industry.basic') }}">RA.投资分类评级</a></li>
+        <li><a href="{{ url_for('global_industry.cns_market_new') }}">CHS.大陆市场</a></li>
+        <li class="active"><a>HKS.香港市场</a></li>
+        <li><a  href="{{ url_for('global_industry.usa_market_new') }}">USA.美国市场</a></li>
+        <li><a href="{{ url_for('global_industry.uks_market') }}">UKS.英国市场</a></li>
+        <li><a href="{{ url_for('global_industry.eps_market') }}">EPS.欧洲市场</a></li>
+        <li><a href="{{ url_for('global_industry.jps_market') }}">JPS.日本市场</a></li>
+    </ul>
+{% endblock %}
+
+{% block table %}
+<div>
+        <div style="float: left;width: auto;margin-left: 35%">
+            尚未开放
+        </div>
+    </div>
+
+
+
+{% endblock %}
+
+
+
