@@ -1225,7 +1225,6 @@ def finance_index_data():
                     exec ("temp_list.append(float(result." + en_name_list[i] + "))")
             data[en_name_list[i] + "_list"] = temp_list
             data[en_name_list[i]] = cn_name_list[i]
-            print cn_name_list[i]
             indexes.append(en_name_list[i])
      elif id[i][0:2] == "02":
         print id[i]
