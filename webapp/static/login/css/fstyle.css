@@ -79,6 +79,7 @@ main {
           transform: translateY(10px);
   -webkit-transition: all 0.5s ease 0.7s;
   transition: all 0.5s ease 0.7s;
+  width: 80%;
 }
 .form__cover {
   position: absolute;
@@ -260,7 +261,7 @@ h1 {
   width: 100%;
   position: relative;
   margin-bottom: 25px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255,1);
   border-radius: 3px;
   -webkit-transition: all 0.3s ease;
   transition: all 0.3s ease;
