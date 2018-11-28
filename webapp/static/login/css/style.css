@@ -161,7 +161,7 @@ body {
 
 .connect {
     width: 305px;
-    margin: 35px auto 0 auto;
+    margin: 5px auto;
     font-size: 18px;
     font-weight: 700;
     text-shadow: 0 1px 3px rgba(0,0,0,.2);
@@ -171,18 +171,18 @@ body {
     display: inline-block;
     width: 32px;
     height: 35px;
-    margin-top: 15px;
+    margin-top: 0px;
     -o-transition: all .2s;
     -moz-transition: all .2s;
     -webkit-transition: all .2s;
     -ms-transition: all .2s;
 }
 
-.connect a.facebook { background: url(../img/facebook.png) center center no-repeat; }
-.connect a.twitter { background: url(../img/twitter.png) center center no-repeat; }
-.connect a.QQ { background: url(../img/QQ.png) center center no-repeat; }
-.connect a.weixin { background: url(../img/weixin.png) center center no-repeat; }
-.connect a.sina { background: url(../img/sina.png) center center no-repeat; }
+.connect a.facebook { background: url(../img/facebook.png) center center no-repeat;background-size: 100%; }
+.connect a.twitter { background: url(../img/twitter.png) center center no-repeat;background-size: 100%; }
+.connect a.QQ { background: url(../img/QQ_new.png) center center no-repeat;background-size: 100%; }
+.connect a.weixin { background: url(../img/wechat.png) center center no-repeat;background-size: 100%; }
+.connect a.sina { background: url(../img/sina_new.png) center center no-repeat;background-size: 100%;}
 
 
 .connect a:hover { background-position: center bottom; }

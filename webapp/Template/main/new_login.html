@@ -42,9 +42,8 @@
                     </div>
                 </div>
                 <div class="form__content">
-                    <h1>
-                        <p>魔法金融</p>
-                        <p>Fin-magic</p>
+                    <h1 >
+                        <img src = '../../static/icon/title_login.png' style="width: 100%;margin: auto">
                     </h1>
                     <div class="styled-input">
                         <input type="text" class="styled-input__input" name="user" autocomplete="off" >
@@ -66,41 +65,38 @@
                         <div class="styled-input__circle">
                         </div>
                     </div>
-                    <div style="color: red;margin-bottom: 5px">{{ error }}</div>
+                    <div style="color: red;margin-bottom: 5px;border-radius: 10%">{{ error }}</div>
                     <button class="styled-button" type="submit">
                         <span class="styled-button__real-text-holder">
                             <span class="styled-button__real-text">
-                                登陆
+                                登录
                             </span>
                             <span class="styled-button__moving-block face">
                                 <span class="styled-button__text-holder">
                                     <span class="styled-button__text">
-                                        登陆
+                                        登录
                                     </span>
                                 </span>
                             </span>
                             <span class="styled-button__moving-block back">
                                 <span class="styled-button__text-holder">
                                     <span class="styled-button__text">
-                                        登陆
+                                        登录
                                     </span>
                                 </span>
                             </span>
                         </span>
                     </button>
 
-
+                    <div > <p><a href="{{ url_for("stock_solo.basic") }}" style="color: whitesmoke">访客登陆</a>&nbsp&nbsp<a>|</a>&nbsp&nbsp<a>第三方登录</a></p></div>
                     <div class="connect">
-                <p>使用以下账号直接登录</p>
-                <p>
-                    <a class="QQ" href=""></a>
-                    <a class="weixin" href=""></a>
-                    <a class="sina" href=""></a>
-                </p>
-
-            </div>
-                    <div > <p><a href="{{ url_for("stock_solo.basic") }}">访客登陆</a></p></div>
-                    <div > <p>还没有账号？<a href="{{ url_for("main.register") }}">用户名注册</a>&nbsp&nbsp<a href="{{ url_for("main.register_phone") }}">手机注册</a></p></div>
+                        <p>
+                            <a class="QQ" href=""></a>
+                            <a class="weixin" href=""></a>
+                            <a class="sina" href=""></a>
+                        </p>
+                    </div>
+                    <div > <p>还没有账号？<a style="color: whitesmoke" href="{{ url_for("main.register") }}">用户名注册</a>&nbsp&nbsp<a style="color: whitesmoke" href="{{ url_for("main.register_phone") }}">手机注册</a></p></div>
 
         </div>
 
