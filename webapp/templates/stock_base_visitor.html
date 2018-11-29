@@ -169,13 +169,14 @@
     <div class="navbar-inner">
         <div class="container">
             <a class="btn btn-navbar" data-toggle="collapse" data-target=".navbar-inverse-collapse">
-                <i class="icon-reorder shaded"></i></a><a class="brand" href="{{ url_for("stock.home") }}">Fin-magic 魔法金融 </a>
+                <i class="icon-reorder shaded"></i></a>
+            <a class="brand" href="{{ url_for("stock.home") }}">Fin-magic 魔法金融 </a>
             <div class="nav-collapse collapse navbar-inverse-collapse">
                 {% block searchForm %}{% endblock %}
                 <ul class="nav pull-right" id="onav">
                     <li><a href="{{ url_for('main.index') }}"><i class="icon-th-list"></i>登陆账户</a></li>
                     <li><a href="{{ url_for('stock.home') }}"><i class="icon-home"></i>返回主页</a></li>
-                    <li><a href="#"><img id="myavatar" src="/static/avatar/user.png" class="nav-avatar"/></a></li>
+                    <li><a href="#"><img id="myavatar" src="../static/avatar/user.png" class="nav-avatar"/></a></li>
                     <li style="padding: 8px"><button class="btn btn-primary" onclick="window.location.href='{{ url_for("main.index") }}'">登陆</button></li>
                 </ul>
             </div>
