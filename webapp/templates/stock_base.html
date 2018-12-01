@@ -179,7 +179,7 @@
                     <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
                     <li class="active"><a href="{{ url_for('message.system_message') }}" ><i class="icon-bullhorn"></i><b id="b_for_system_message" style="color: #ef4300"> </b></a></li>
                     <li class="active"><a href="{{ url_for('message.my_message') }}" id="a_my_message"><i class="icon-envelope"></i><b id="b_for_my_message" style="color:#00c800"> </b></a></li>
-                    <li class="active"><a href="{{ url_for('stock_solo.basic') }}"><i><img src = '../static/icon/股票个体分析左.png' style="height: 15px;width: 16px"></i></a></li>
+                    <li class="active"><a href="{{ url_for('stock_solo.basic') }}"><i><img src = '../static/icon/gpgtfxz.png' style="height: 15px;width: 16px"></i></a></li>
                 </ul>
                 {% block searchForm %}{% endblock %}
                 <ul class="nav pull-right" id="onav">
@@ -187,18 +187,18 @@
                             class="caret"></b></a>
                         <ul class="dropdown-menu">
                             <li style="margin-left: 5px"><i class="icon-cog"></i><strong>&nbsp;&nbsp;&nbsp;&nbsp;财务分析</strong></li>
-                            <li style="margin-left: 12px"><a href="{{ url_for('stock_solo.basic') }}"><img src = '../static/icon/股票个体分析左.png' style="height: 14px;width: 14px">&nbsp;&nbsp;&nbsp;&nbsp;股票个体分析 </a></li>
-                            <li style="margin-left: 12px"><a href="{{ url_for('stock_group.navigation') }}"><img src = '../static/icon/股票总体概览左.png' style="height: 14px;width: 14px">&nbsp;&nbsp;&nbsp;&nbsp;股票总体概览</a></li>
-                            <li style="margin-left: 12px"><a href="{{ url_for('industry_analysis.mymark') }}"><img src = '../static/icon/整体行业状况分析左.png' style="height: 14px;width: 14px">&nbsp;&nbsp;&nbsp;&nbsp;整体行业状况分析</a></li>
-                            <li style="margin-left: 12px"><a href="{{ url_for('global_industry.basic') }}"><img src = '../static/icon/投资分类评级左.png' style="height: 14px;width: 14px">&nbsp;&nbsp;&nbsp;&nbsp;投资分类评级</a></li>
+                            <li style="margin-left: 12px"><a href="{{ url_for('stock_solo.basic') }}"><img src = '../static/icon/gpgtfxz.png' style="height: 14px;width: 14px">&nbsp;&nbsp;&nbsp;&nbsp;股票个体分析 </a></li>
+                            <li style="margin-left: 12px"><a href="{{ url_for('stock_group.navigation') }}"><img src = '../static/icon/gpztglz.png' style="height: 14px;width: 14px">&nbsp;&nbsp;&nbsp;&nbsp;股票总体概览</a></li>
+                            <li style="margin-left: 12px"><a href="{{ url_for('industry_analysis.mymark') }}"><img src = '../static/icon/zthyzkfxz.png' style="height: 14px;width: 14px">&nbsp;&nbsp;&nbsp;&nbsp;整体行业状况分析</a></li>
+                            <li style="margin-left: 12px"><a href="{{ url_for('global_industry.basic') }}"><img src = '../static/icon/tzflpjz.png' style="height: 14px;width: 14px">&nbsp;&nbsp;&nbsp;&nbsp;投资分类评级</a></li>
                             <li class="divider"></li>
-                            <li style="margin-left: 5px"><img src = '../static/icon/量化模型左.png' style="height: 14px;width: 14px"><strong>&nbsp;&nbsp;&nbsp;&nbsp;量化分析</strong></li>
-                            <li style="margin-left: 12px"><a href="{{ url_for("quant.models") }}"><img src = '../static/icon/量化模型左.png' style="height: 14px;width: 14px">&nbsp;&nbsp;&nbsp;&nbsp;量化模型 </a></li>
-                            <li style="margin-left: 12px"><a href="{{ url_for("quant.backtest") }}"><img src = '../static/icon/历史回测左.png' style="height: 14px;width: 14px">&nbsp;&nbsp;&nbsp;&nbsp;历史回测 </a></li>
-                            <li style="margin-left: 12px"><a href="{{ url_for("quant.realtime_simulation") }}"><img src = '../static/icon/实时模拟左.png' style="height: 14px;width: 14px">&nbsp;&nbsp;&nbsp;&nbsp;实时模拟</a></li>
+                            <li style="margin-left: 5px"><img src = '../static/icon/lhmxz.png' style="height: 14px;width: 14px"><strong>&nbsp;&nbsp;&nbsp;&nbsp;量化分析</strong></li>
+                            <li style="margin-left: 12px"><a href="{{ url_for("quant.models") }}"><img src = '../static/icon/lhmxz.png' style="height: 14px;width: 14px">&nbsp;&nbsp;&nbsp;&nbsp;量化模型 </a></li>
+                            <li style="margin-left: 12px"><a href="{{ url_for("quant.backtest") }}"><img src = '../static/icon/lshcz.png' style="height: 14px;width: 14px">&nbsp;&nbsp;&nbsp;&nbsp;历史回测 </a></li>
+                            <li style="margin-left: 12px"><a href="{{ url_for("quant.realtime_simulation") }}"><img src = '../static/icon/ssmnz.png' style="height: 14px;width: 14px">&nbsp;&nbsp;&nbsp;&nbsp;实时模拟</a></li>
                             <li class="divider"></li>
-                            <li style="margin-left: 5px"><img src = '../static/icon/交易系统左.png' style="height: 14px;width: 14px">&nbsp;&nbsp;&nbsp;&nbsp;<strong>交易模型</strong></li>
-                            <li style="margin-left: 12px"><a href="#"><img src = '../static/icon/交易系统左.png' style="height: 14px;width: 14px">&nbsp;&nbsp;&nbsp;&nbsp;交易系统</a></li>
+                            <li style="margin-left: 5px"><img src = '../static/icon/jyxtz.png' style="height: 14px;width: 14px">&nbsp;&nbsp;&nbsp;&nbsp;<strong>交易模型</strong></li>
+                            <li style="margin-left: 12px"><a href="#"><img src = '../static/icon/jyxtz.png' style="height: 14px;width: 14px">&nbsp;&nbsp;&nbsp;&nbsp;交易系统</a></li>
                         </ul>
                     </li>
                     <li><a href="{{ url_for('stock.home') }}"><i class="icon-home"></i>返回主页</a></li>
@@ -246,9 +246,9 @@
                                 class="icon-home"></i>&nbsp;&nbsp;&nbsp;&nbsp;我的账户
                         </a></li>
                         <!--关注股票的综合面板-->
-                        <li><a href="{{ url_for('main.my_favoritecode') }}"><img src = '../static/icon/我关注的股票左.png' style="height: 14px;width: 14px">&nbsp;&nbsp;&nbsp;&nbsp;我的关注股票</a>
+                        <li><a href="{{ url_for('main.my_favoritecode') }}"><img src = '../static/icon/wgzdgpz.png' style="height: 14px;width: 14px">&nbsp;&nbsp;&nbsp;&nbsp;我的关注股票</a>
                         </li>
-                        <li><a href="{{ url_for('stock.myposition') }}"><img src = '../static/icon/当前持仓左.png' style="height: 14px;width: 14px">&nbsp;&nbsp;&nbsp;&nbsp;当前持仓 </a>
+                        <li><a href="{{ url_for('stock.myposition') }}"><img src = '../static/icon/dqccz.png' style="height: 14px;width: 14px">&nbsp;&nbsp;&nbsp;&nbsp;当前持仓 </a>
                         </li>
                         <li><a href="{{ url_for('message.my_message') }}"><i class="icon-envelope"></i>&nbsp;&nbsp;&nbsp;&nbsp;我的动态 <b
                                 id="personal_message_count"
@@ -268,26 +268,26 @@
                         </i><i class="icon-chevron-down pull-right"></i><i class="icon-chevron-up pull-right">
                         </i>财务分析 </a>
                             <ul id="togglePages" class="collapse unstyled">
-                                <li><a href="{{ url_for('stock_solo.basic') }}"><img src = '../static/icon/股票个体分析左.png' style="height: 14px;width: 14px">&nbsp;&nbsp;&nbsp;&nbsp;股票个体分析 </a>
+                                <li><a href="{{ url_for('stock_solo.basic') }}"><img src = '../static/icon/gpgtfxz.png' style="height: 14px;width: 14px">&nbsp;&nbsp;&nbsp;&nbsp;股票个体分析 </a>
                                 </li>
-                                <li><a href="{{ url_for('stock_group.navigation') }}"><img src = '../static/icon/股票总体概览左.png' style="height: 14px;width: 14px">&nbsp;&nbsp;&nbsp;&nbsp;股票总体概览
+                                <li><a href="{{ url_for('stock_group.navigation') }}"><img src = '../static/icon/gpztglz.png' style="height: 14px;width: 14px">&nbsp;&nbsp;&nbsp;&nbsp;股票总体概览
                                 </a></li>
-                                <li><a href="{{ url_for('industry_analysis.mymark') }}"><img src = '../static/icon/整体行业状况分析左.png' style="height: 14px;width: 14px">&nbsp;&nbsp;&nbsp;&nbsp;整体行业状况分析
+                                <li><a href="{{ url_for('industry_analysis.mymark') }}"><img src = '../static/icon/zthyzkfxz.png' style="height: 14px;width: 14px">&nbsp;&nbsp;&nbsp;&nbsp;整体行业状况分析
                                 </a></li>
-                                <li><a href="{{ url_for('global_industry.basic') }}"><img src = '../static/icon/投资分类评级左.png' style="height: 14px;width: 14px">&nbsp;&nbsp;&nbsp;&nbsp;投资分类评级
+                                <li><a href="{{ url_for('global_industry.basic') }}"><img src = '../static/icon/tzflpjz.png' style="height: 14px;width: 14px">&nbsp;&nbsp;&nbsp;&nbsp;投资分类评级
                                 </a></li>
                             </ul>
                         </li>
                         <li><a class="collapsed" data-toggle="collapse" href="#togglePages_quant">
-                            <i class="icon-chevron-down pull-right"></i><img src = '../static/icon/量化模型左.png' style="height: 14px;width: 14px">&nbsp;&nbsp;&nbsp;&nbsp;量化模型 </a>
+                            <i class="icon-chevron-down pull-right"></i><img src = '../static/icon/lhmxz.png' style="height: 14px;width: 14px">&nbsp;&nbsp;&nbsp;&nbsp;量化模型 </a>
                             <ul id="togglePages_quant" class="collapse unstyled">
-                                <li><a href="{{ url_for("quant.models") }}"><img src = '../static/icon/量化模型左.png' style="height: 14px;width: 14px">&nbsp;&nbsp;&nbsp;&nbsp;量化模型 </a></li>
-                                <li><a href="{{ url_for("quant.backtest") }}"><img src = '../static/icon/历史回测左.png' style="height: 14px;width: 14px">&nbsp;&nbsp;&nbsp;&nbsp;历史回测 </a></li>
-                                <li><a href="{{ url_for("quant.realtime_simulation") }}"><img src = '../static/icon/实时模拟左.png' style="height: 14px;width: 14px">&nbsp;&nbsp;&nbsp;&nbsp;实时模拟
+                                <li><a href="{{ url_for("quant.models") }}"><img src = '../static/icon/lhmxz.png' style="height: 14px;width: 14px">&nbsp;&nbsp;&nbsp;&nbsp;量化模型 </a></li>
+                                <li><a href="{{ url_for("quant.backtest") }}"><img src = '../static/icon/lshcz.png' style="height: 14px;width: 14px">&nbsp;&nbsp;&nbsp;&nbsp;历史回测 </a></li>
+                                <li><a href="{{ url_for("quant.realtime_simulation") }}"><img src = '../static/icon/ssmnz.png' style="height: 14px;width: 14px">&nbsp;&nbsp;&nbsp;&nbsp;实时模拟
                                 </a></li>
                             </ul>
                         </li>
-                        <li><a href="table.html"><img src = '../static/icon/交易系统左.png' style="height: 14px;width: 14px">&nbsp;&nbsp;&nbsp;&nbsp;交易模型 </a></li>
+                        <li><a href="table.html"><img src = '../static/icon/jyxtz.png' style="height: 14px;width: 14px">&nbsp;&nbsp;&nbsp;&nbsp;交易模型 </a></li>
                         <!--<li><a href="charts.html"><i class="menu-icon icon-bar-chart"></i>Charts </a></li>-->
                     </ul>
                     <!--/.widget-nav-->
