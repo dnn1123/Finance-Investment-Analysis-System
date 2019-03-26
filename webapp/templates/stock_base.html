@@ -178,7 +178,7 @@
                 <ul class="nav nav-icons">
                     <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
                     <li class="active"><a href="{{ url_for('message.system_message') }}" ><i class="icon-bullhorn"></i><b id="b_for_system_message" style="color: #ef4300"> </b></a></li>
-                    <li class="active"><a href="{{ url_for('message.my_message') }}" id="a_my_message"><i class="icon-envelope"></i><b id="b_for_my_message" style="color:#00c800"> </b></a></li>
+{#                    <li class="active"><a href="{{ url_for('message.my_message') }}" id="a_my_message"><i class="icon-envelope"></i><b id="b_for_my_message" style="color:#00c800"> </b></a></li>#}
                     <li class="active"><a href="{{ url_for('stock_solo.basic') }}"><i><img src = '../static/icon/gpgtfxz.png' style="height: 15px;width: 16px"></i></a></li>
                 </ul>
                 {% block searchForm %}{% endblock %}
@@ -250,14 +250,14 @@
                         </li>
                         <li><a href="{{ url_for('stock.myposition') }}"><img src = '../static/icon/dqccz.png' style="height: 14px;width: 14px">&nbsp;&nbsp;&nbsp;&nbsp;当前持仓 </a>
                         </li>
-                        <li><a href="{{ url_for('message.my_message') }}"><i class="icon-envelope"></i>&nbsp;&nbsp;&nbsp;&nbsp;我的动态 <b
-                                id="personal_message_count"
-                                class="label green pull-right">
-                        </b> </a></li>
-                        <li><a href="{{ url_for('message.system_message') }}"><i class="icon-bullhorn"></i>&nbsp;&nbsp;&nbsp;&nbsp;系统消息
-                            <b id="system_message_count"
-                               class="label orange pull-right">
-                            </b> </a></li>
+{#                        <li><a href="{{ url_for('message.my_message') }}"><i class="icon-envelope"></i>&nbsp;&nbsp;&nbsp;&nbsp;我的动态 <b#}
+{#                                id="personal_message_count"#}
+{#                                class="label green pull-right">#}
+{#                        </b> </a></li>#}
+{#                        <li><a href="{{ url_for('message.system_message') }}"><i class="icon-bullhorn"></i>&nbsp;&nbsp;&nbsp;&nbsp;系统消息#}
+{#                            <b id="system_message_count"#}
+{#                               class="label orange pull-right">#}
+{#                            </b> </a></li>#}
                     </ul>
                     <!--/.widget-nav-->
 
