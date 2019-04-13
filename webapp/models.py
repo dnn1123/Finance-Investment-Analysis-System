@@ -286,6 +286,7 @@ class stock_basics(db.Model):
     phone = db.Column(db.String(200))
     majorproducttype = db.Column(db.String(200))
     majorproductname = db.Column(db.String(2000))
+    jianpin=db.Column(db.String(255))
 
 
 class finance_basics(db.Model):

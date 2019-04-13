@@ -452,17 +452,21 @@ def stock_code():
     stockcode = request.args.get('q')
     filters = {
         stock_basics.trade_code.like("%" + stockcode + "%"),
-        stock_basics.sec_name.like("%" + stockcode + "%")
+        stock_basics.sec_name.like("%" + stockcode + "%"),
+        stock_basics.jianpin.like(stockcode+"%")
     }
     results = stock_basics.query.filter(or_(*filters)).all()
     data = {}
     stockcode_list = []
     secname_list = []
+    jianpin_list=[]
     for result in results:
         stockcode_list.append(result.trade_code)
         secname_list.append(result.sec_name)
+        jianpin_list.append(result.jianpin)
     data['stockcode'] = stockcode_list
     data['stockname'] = secname_list
+    data['jianpin']=jianpin_list
     return jsonify(data)
 
 

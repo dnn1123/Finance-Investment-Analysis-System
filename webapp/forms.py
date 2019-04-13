@@ -52,7 +52,7 @@ class RegisterForm(Form):
 # cns_list3 = cns_industry.query.with_entities(cns_industry.industry_gicscode_3,cns_industry.industry_gics_3).all()
 # cns_list4 = cns_sub_industry.query.with_entities(cns_sub_industry.industry_gicscode_4,cns_sub_industry.industry_gics_4).all()
 
-conn = MySQLdb.connect(user="root", passwd="0000", db="test", charset="utf8")
+conn = MySQLdb.connect(host="116.196.90.212",user="root", passwd="0000", db="test", charset="utf8")
 cursor = conn.cursor()
 cursor.execute('select industry_gicscode_1,industry_gics_1 from cns_department_industry')
 value1 = cursor.fetchall()
@@ -94,7 +94,7 @@ class cns_filterForm5(Form):  # 证监会第一级分类 ps 第二级分类存�
 
 
 # 大陆市场 B股全部公司
-conn = MySQLdb.connect(user="root", passwd="0000", db="test", charset="utf8")
+conn = MySQLdb.connect(host="116.196.90.212",user="root", passwd="0000", db="test", charset="utf8")
 cursor = conn.cursor()
 cursor.execute('select industry_gicscode_1,industry_gics_1 from cnsb_department_industry')
 value1 = cursor.fetchall()
@@ -129,7 +129,7 @@ class cnsb_filterForm4(Form):
 
 
 # 创建list数据源(python的方法做不出来了:有办法做出来)
-conn = MySQLdb.connect(user="root", passwd="0000", db="test", charset="utf8")
+conn = MySQLdb.connect(host="116.196.90.212",user="root", passwd="0000", db="test", charset="utf8")
 cursor = conn.cursor()
 cursor.execute('select industry_gicscode_4,industry_gics_4 from cns_sub_industry ')
 cns_value = cursor.fetchall()
@@ -142,7 +142,7 @@ class cns_UpdateForm(Form):
 
 
 # 创建list数据源
-conn = MySQLdb.connect(user="root", passwd="0000", db="test", charset="utf8")
+conn = MySQLdb.connect(host="116.196.90.212",user="root", passwd="0000", db="test", charset="utf8")
 cursor = conn.cursor()
 cursor.execute('select industry_gicscode_4,industry_gics_4 from usa_sub_industry')
 usa_value = cursor.fetchall()
@@ -157,7 +157,7 @@ class usa_UpdateForm(Form):
 # test    language = SelectField('Programming Language', choices=[('cpp', 'C++'), ('py', 'Python'), ('text', 'Plain Text')])
 
 # 美国行业筛选数据源
-conn = MySQLdb.connect(user="root", passwd="0000", db="test", charset="utf8")
+conn = MySQLdb.connect(host="116.196.90.212",user="root", passwd="0000", db="test", charset="utf8")
 cursor = conn.cursor()
 cursor.execute('select industry_gicscode_1,industry_gics_1 from usa_department_industry')
 value1 = cursor.fetchall()
@@ -201,7 +201,7 @@ class departmentForm(Form):
     gics_code_1 = SelectField('gics_code_1', choices=list1)
 
 
-conn = MySQLdb.connect(user="root", passwd="0000", db="test", charset="utf8")
+conn = MySQLdb.connect(host="116.196.90.212",user="root", passwd="0000", db="test", charset="utf8")
 cursor = conn.cursor()
 cursor.execute('select industry_gicscode_1,industry_gics_1 from hks_department_industry')
 value1 = cursor.fetchall()
@@ -236,7 +236,7 @@ class hks_filterForm4(Form):
 
 
 # 全球市场-中国市场的投资级别修改表单
-conn = MySQLdb.connect(user="root", passwd="0000", db="test", charset="utf8")
+conn = MySQLdb.connect(host="116.196.90.212",user="root", passwd="0000", db="test", charset="utf8")
 cursor = conn.cursor()
 # 不用id排序，用name排序
 cursor.execute('select grade_id,grade_name from invest_grade order by grade_name')
